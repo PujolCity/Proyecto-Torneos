@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.CrearCompetenciaActivity">
+
+
+    <TextView
+            android:id="@+id/txtCrearCompetencia"
+            android:layout_width="266dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="40dp"
+            android:text="@string/Txt_creaCompetencia"
+            android:textSize="26dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <TextView
+        android:id="@+id/txtCrearCompNmb"
+        android:layout_width="177dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="72dp"
+        android:text="@string/txtCrearCompNmb"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCrearCompetencia">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/txtNmbComp"
+        android:layout_width="153dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toEndOf="@+id/txtCrearCompNmb"
+        app:layout_constraintTop_toBottomOf="@+id/txtCrearCompetencia">
+    </EditText>
+
+    <TextView
+        android:id="@+id/dateInicioCrearComp"
+        android:layout_width="150dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="64dp"
+        android:text="@string/datePicker"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtCrearCompNmb">
+    </TextView>
+
+
+    <EditText
+        android:id="@+id/txtfechaComp"
+        android:layout_width="111dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="72dp"
+        android:clickable="true"
+        android:focusable="false"
+        android:hint="@string/formatoFecha"
+        android:inputType="date"
+        android:maxLines="1"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@+id/ib_obtener_fecha"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toEndOf="@+id/dateInicioCrearComp"
+        app:layout_constraintTop_toBottomOf="@+id/txtNmbComp">
+
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/ib_obtener_fecha"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="32dp"
+        android:layout_marginTop="76dp"
+        android:src="@drawable/baseline_calendar_today_black_18dp"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toRightOf="@+id/dateInicioCrearComp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtNmbComp"
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:id="@+id/btnCCSig_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="544dp"
+        android:text="Siguiente"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.143">
+    </Button>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
