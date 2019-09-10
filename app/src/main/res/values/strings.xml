@@ -2,10 +2,13 @@
     <string name="app_name">Proyecto Torneos</string>
     //Strings de creado de competencia
     <string name="Txt_creaCompetencia"> Crea Tu Competencia</string>
-  //<string name="txtCrearCompNmb"> Coloque el nombre de su competencia</string>
+    <string name="txtCrearCompNmb"> Coloque el nombre de su competencia</string>
     <string name="datePicker"> Fecha de inicio de la Competencia </string>
     <string name="formatoFecha"> dd/mm/yyyy </string>
-
+    <string name="txtTipoOrg"> Seleccione como se va a organizar su competencia </string>
+    <string name="txtSeleccioneDeporte"> Seleccione el deporte su competencia </string>
+    <string name="txtDeporte"> Deporte</string>
+    <string name="txtCategoria"> Categoria</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

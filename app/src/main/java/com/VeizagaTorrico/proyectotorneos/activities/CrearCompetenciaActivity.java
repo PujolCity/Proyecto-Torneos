@@ -20,20 +20,18 @@ import java.util.Calendar;
 public class  CrearCompetenciaActivity extends AppCompatActivity {
     private static final String CERO = "0";
     private static final String BARRA = "/";
-
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
-
     //Variables para obtener la fecha
     final int mes = c.get(Calendar.MONTH);
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
-
     //Widgets
     private TextView txtView;
     private ImageButton ibObtenerFecha;
     private EditText txtNmbComp, txtFecha;
     private Button btnSig;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
