@@ -9,8 +9,8 @@
 
     <TextView
         android:id="@+id/textView"
-        android:layout_width="281dp"
-        android:layout_height="99dp"
+        android:layout_width="289dp"
+        android:layout_height="94dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
@@ -18,7 +18,7 @@
         android:layout_marginStart="61dp"
         android:layout_marginTop="28dp"
         android:text="@string/txtSeleccioneDeporte"
-        android:textSize="26sp"
+        android:textSize="30sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.619"
         app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,6 @@
         app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </TextView>
 
     <Spinner
@@ -62,9 +61,7 @@
         app:layout_constraintHorizontal_bias="0.121"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSelecDeporte">
-
     </TextView>
-
 
     <Spinner
         android:id="@+id/spinnerCategoria"
@@ -77,7 +74,6 @@
         app:layout_constraintHorizontal_bias="0.708"
         app:layout_constraintStart_toEndOf="@+id/txtSelecCategoria"
         app:layout_constraintTop_toBottomOf="@+id/spinnerDeporte">
-
     </Spinner>
 
     <TextView
@@ -85,57 +81,52 @@
         android:layout_width="174dp"
         android:layout_height="35dp"
         android:layout_marginTop="20dp"
-        android:text="@string/txtDescripcionCat"
+        android:text="@string/txtDescripcion"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.118"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtSelecCategoria">
-
     </TextView>
 
     <TextView
         android:id="@+id/descripcionCategoria"
-        android:layout_width="354dp"
-        android:layout_height="91dp"
+        android:layout_width="273dp"
+        android:layout_height="117dp"
         android:layout_marginTop="372dp"
         android:textSize="25sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.58"
+        app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </TextView>
+        app:layout_constraintTop_toTopOf="parent"></TextView>
 
     <Button
         android:id="@+id/btnCCSig_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
-        android:layout_marginTop="544dp"
+        android:layout_marginTop="24dp"
         android:text="@string/txtBtnSig"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.783"
+        app:layout_constraintHorizontal_bias="0.701"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-    </Button>
+        app:layout_constraintTop_toBottomOf="@+id/descripcionCategoria"
+        app:layout_constraintVertical_bias="0.258"></Button>
 
     <Button
         android:id="@+id/btnCCvlvr_1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="200dp"
-        android:layout_marginTop="544dp"
+        android:layout_marginTop="24dp"
         android:text="@string/txtBtnVolver"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.281"
+        app:layout_constraintEnd_toStartOf="@+id/btnCCSig_2"
+        app:layout_constraintHorizontal_bias="0.651"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/descripcionCategoria"
+        app:layout_constraintVertical_bias="0.258">
 
     </Button>
 

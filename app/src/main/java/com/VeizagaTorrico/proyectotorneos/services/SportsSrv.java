@@ -11,8 +11,7 @@ import retrofit2.http.GET;
 
 public interface SportsSrv {
 
-    @GET(ConstantURL.GET_SPORTS_URL)
+    @GET(ConstantURL.BASE_URL + "sports")
     Call<List<Sport>> getSports();
-
 
 }

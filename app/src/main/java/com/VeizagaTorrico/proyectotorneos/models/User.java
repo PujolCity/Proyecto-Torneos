@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Objects;
 
-public class Users {
+public class User {
     @SerializedName("id")
     private int id;
 
@@ -24,7 +24,7 @@ public class Users {
     private String password;
 
 
-    public Users(int id, String nombreUsuario, String nombre, String apellido, String email, String password) {
+    public User(int id, String nombreUsuario, String nombre, String apellido, String email, String password) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.nombre = nombre;
@@ -84,9 +84,9 @@ public class Users {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Users)) return false;
-        Users users = (Users) o;
-        return id == users.id;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return id == user.id;
     }
 
     @Override

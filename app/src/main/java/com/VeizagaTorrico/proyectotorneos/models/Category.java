@@ -2,9 +2,10 @@ package com.VeizagaTorrico.proyectotorneos.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Category {
+public class Category implements Serializable {
     @SerializedName("id")
     private int id;
 
