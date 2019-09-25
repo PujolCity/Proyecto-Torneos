@@ -2,11 +2,12 @@ package com.VeizagaTorrico.proyectotorneos.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Sport {
+public class Sport implements Serializable {
 
     @SerializedName("id")
     private int id;
