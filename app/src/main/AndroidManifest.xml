@@ -12,22 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".NavigationMainActivity"
-            android:label="@string/title_activity_navigation_main"
+            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <activity android:name=".activities.DetalleCompListActivity" />
-        <activity android:name=".activities.CrearCompetenciaActivity" />
-        <activity android:name=".activities.CrearCompetenciaDeporteActivity" />
-        <activity android:name=".activities.CrearCompetenciaOrgActivity" />
-        <activity android:name=".MainActivity">
-
         </activity>
     </application>
 

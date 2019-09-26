@@ -1,47 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    tools:context=".fragments.DetalleCompListFragment"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        >
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp">
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtNmbCompList"
+                android:id="@+id/txtNmbCompDet"
                 android:hint="Nombre competencia">
             </TextView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtDepCompList"
+                android:id="@+id/txtDepCompDet"
                 android:hint="@string/txtDeporte">
             </TextView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtCatCompList"
+                android:id="@+id/txtCatCompDet"
                 android:hint="@string/txtCategoria">
             </TextView>
 
         </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</FrameLayout>

@@ -43,7 +43,7 @@ public class AdapterListCompetencias extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         View vista = view;
         LayoutInflater inflater =  LayoutInflater.from(this.context);
-        vista = inflater.inflate(R.layout.list_view_competencias,null);
+        vista = inflater.inflate(R.layout.fragment_list__view__comp_,null);
         txtCompetencia = vista.findViewById(R.id.txtNmbCompList);
         txtDeporte = vista.findViewById(R.id.txtDepCompList);
         txtCategoria = vista.findViewById(R.id.txtCatCompList);

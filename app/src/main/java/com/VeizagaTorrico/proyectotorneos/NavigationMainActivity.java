@@ -1,12 +1,18 @@
 package com.VeizagaTorrico.proyectotorneos;
 
+import android.net.Uri;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
+import com.VeizagaTorrico.proyectotorneos.fragments.CompetenciasListFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia1Fragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia2Fragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia3Fragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.DetalleCompListFragment;
 
-import android.view.View;
+import android.view.MenuItem;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -21,24 +27,24 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 
-public class NavigationMainActivity extends AppCompatActivity {
+public class NavigationMainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
+        CrearCompetencia1Fragment.OnFragmentInteractionListener ,
+        CrearCompetencia2Fragment.OnFragmentInteractionListener ,
+        CrearCompetencia3Fragment.OnFragmentInteractionListener ,
+        CompetenciasListFragment.OnFragmentInteractionListener ,
+        DetalleCompListFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_navigation_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
@@ -65,5 +71,15 @@ public class NavigationMainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        return false;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri) {
+
     }
 }
