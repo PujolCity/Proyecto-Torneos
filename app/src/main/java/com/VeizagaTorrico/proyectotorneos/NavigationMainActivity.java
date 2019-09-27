@@ -9,15 +9,12 @@ import com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia2Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia3Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.DetalleCompListFragment;
 
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.VeizagaTorrico.proyectotorneos.fragments.InicioFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -28,15 +25,14 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 
 public class NavigationMainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
-        CrearCompetencia1Fragment.OnFragmentInteractionListener ,
+        implements CrearCompetencia1Fragment.OnFragmentInteractionListener ,
         CrearCompetencia2Fragment.OnFragmentInteractionListener ,
         CrearCompetencia3Fragment.OnFragmentInteractionListener ,
         CompetenciasListFragment.OnFragmentInteractionListener ,
-        DetalleCompListFragment.OnFragmentInteractionListener {
+        DetalleCompListFragment.OnFragmentInteractionListener ,
+        InicioFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,9 +45,10 @@ public class NavigationMainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+
+        //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
-                R.id.nav_tools, R.id.nav_share, R.id.nav_send)
+                R.id.inicioFragment, R.id.competenciasListFragment, R.id.crearCompetencia1Fragment)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -71,11 +68,6 @@ public class NavigationMainActivity extends AppCompatActivity
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-        return false;
     }
 
     @Override

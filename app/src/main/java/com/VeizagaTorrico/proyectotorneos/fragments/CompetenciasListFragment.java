@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -14,13 +16,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.adapters.SportsAdapter;
-import com.VeizagaTorrico.proyectotorneos.list_view_adapters.AdapterListCompetencias;
+import com.VeizagaTorrico.proyectotorneos.recycle_view_adapters.AdapterRecyclerCompView;
 import com.VeizagaTorrico.proyectotorneos.models.Sport;
 import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
 
@@ -49,8 +49,11 @@ public class CompetenciasListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private View vista;
-    private ListView listView;
     private SportsSrv sportsSrv;
+    private RecyclerView recycleComp;
+    private AdapterRecyclerCompView adapter;
+    private List<Sport> deportes;
+    private RecyclerView.LayoutManager manager;
 
     public CompetenciasListFragment() {
         // Required empty public constructor
@@ -89,27 +92,41 @@ public class CompetenciasListFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competencias_list, container, false);
 
-
         sportsSrv = new SportsAdapter().connectionEnable();
 
-        listView = vista.findViewById(R.id.listViewComp);
+        initAdapter();
 
         //En call viene el tipo de dato que espero del servidor
         Call<List<Sport>> call = sportsSrv.getSports();
         call.enqueue(new Callback<List<Sport>>() {
             @Override
             public void onResponse(Call<List<Sport>> call, Response<List<Sport>> response) {
-                List<Sport> deportes = new ArrayList<Sport>();
+                deportes = new ArrayList<Sport>();
 
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     //asigno a deportes lo que traje del servidor
                     deportes = response.body();
                     Log.d("RESPONSE CODE", Integer.toString(response.code()));
+                    adapter.setDeportes(deportes);
                 }
+                //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                recycleComp.setAdapter(adapter);
 
-                AdapterListCompetencias adapterListCompetencias = new AdapterListCompetencias(getContext(), deportes);
-                listView.setAdapter(adapterListCompetencias);
+                //LISTENER PARA EL ELEMENTO SELECCIONADO
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Sport deporte = deportes.get(recycleComp.getChildAdapterPosition(view));
+
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("deporte", deporte);
+
+                        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                        Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
+
+                    }
+                });
             }
 
             @Override
@@ -119,21 +136,6 @@ public class CompetenciasListFragment extends Fragment {
                 Log.d("onResponse", "no anda");
             }
         });
-
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Sport deporte = (Sport)  adapterView.getItemAtPosition(i);
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("deporte", deporte);
-
-                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
-            }
-        });
-
-
         return vista;
     }
 
@@ -174,5 +176,15 @@ public class CompetenciasListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void initAdapter(){
+        // COSAS PARA LLENAR El RECYCLERVIEW
+        recycleComp = vista.findViewById(R.id.recycleCompView);
+        manager = new LinearLayoutManager(getContext());
+        recycleComp.setLayoutManager(manager);
+        recycleComp.setHasFixedSize(true);
+        adapter = new AdapterRecyclerCompView(vista.getContext(),deportes);
+        recycleComp.setAdapter(adapter);
     }
 }

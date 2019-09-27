@@ -114,7 +114,7 @@ public class CrearCompetencia1Fragment extends Fragment {
         competition =  new Competition();
         competitionSrv = new CompetitionAdapter().connectionEnable();
         //Widget TextView donde se mostrara el nombre de la competencia
-      //  txtView = vista.findViewById(R.id.txtNmbComp);
+        //txtView = vista.findViewById(R.id.txtNmbComp);
         //Wdget de donde tomo el posible nombre de la competencia
         txtNmbComp = vista.findViewById(R.id.txtNmbComp);
         //Widget TextView donde se mostrara la fecha obtenida

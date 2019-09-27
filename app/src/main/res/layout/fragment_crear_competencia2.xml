@@ -103,25 +103,12 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="100dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             >
 
-            <Button
-                android:id="@+id/btnCCvlvr_1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/txtBtnVolver">
-            </Button>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                >
-            </TextView>
             <Button
                 android:id="@+id/btnCCSig_2"
                 android:layout_width="wrap_content"

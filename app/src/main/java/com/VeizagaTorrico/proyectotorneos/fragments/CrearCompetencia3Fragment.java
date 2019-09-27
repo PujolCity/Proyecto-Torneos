@@ -51,7 +51,7 @@ public class CrearCompetencia3Fragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     //Widgets
-    private Button btnCrear,btnVlvr;
+    private Button btnCrear;
     private Spinner spinner;
     private TextView txtView;
     private Competition competition;
@@ -97,7 +97,6 @@ public class CrearCompetencia3Fragment extends Fragment {
 
         txtView = vista.findViewById(R.id.descripcionTipoOrg);
         btnCrear = vista.findViewById(R.id.btnCCSig_3);
-        btnVlvr = vista.findViewById(R.id.btnCCvlvr_2);
         spinner = vista.findViewById(R.id.spinnerTipoOrg);
         orgSrv = new TypesOrganizationAdapter().connectionEnable();
 
@@ -109,16 +108,6 @@ public class CrearCompetencia3Fragment extends Fragment {
                 Toast toast = Toast.makeText(getContext(), "Implementar servicio de creacion", Toast.LENGTH_SHORT);
                 toast.show();
 
-            }
-        });
-
-        btnVlvr.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competition", competition);
-                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                Navigation.findNavController(vista).navigate(R.id.crearCompetencia2Fragment, bundle);
             }
         });
 

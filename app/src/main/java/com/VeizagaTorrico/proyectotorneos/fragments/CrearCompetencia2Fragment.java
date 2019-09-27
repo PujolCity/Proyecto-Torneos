@@ -57,7 +57,7 @@ public class CrearCompetencia2Fragment extends Fragment {
     private Spinner spinnerDeporte, spinnerCategoria;
     private TextView txtDescripcion;
     private SportsSrv sportsSrv;
-    private Button vlvrBtn, sigBtn;
+    private Button sigBtn;
 
     private Competition competencia;
     private View vista;
@@ -102,7 +102,6 @@ public class CrearCompetencia2Fragment extends Fragment {
         txtDescripcion = vista.findViewById(R.id.descripcionCategoria);
         sportsSrv = new SportsAdapter().connectionEnable();
         sigBtn = vista.findViewById(R.id.btnCCSig_2);
-        vlvrBtn = vista.findViewById(R.id.btnCCvlvr_1);
 
         //LISTENER BOTONES
         sigBtn.setOnClickListener(new View.OnClickListener() {
@@ -114,17 +113,6 @@ public class CrearCompetencia2Fragment extends Fragment {
                 // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                 Navigation.findNavController(vista).navigate(R.id.crearCompetencia3Fragment, bundle);
 
-            }
-        });
-
-        vlvrBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competition", competencia);
-
-                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                Navigation.findNavController(vista).navigate(R.id.crearCompetencia1Fragment, bundle);
             }
         });
 
@@ -241,17 +229,3 @@ public class CrearCompetencia2Fragment extends Fragment {
     }
 
 }
-
-
-/*
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (getArguments() != null) {
-            //competencia = getArguments()
-            competencia = (Competition) getArguments().getSerializable("competition");
-            Log.d("Recibi caca fragment", competencia.toString());
-        }
-
-
-    }*/

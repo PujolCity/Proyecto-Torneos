@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/competenciasListFragment">
+    app:startDestination="@id/inicioFragment">
+
+    <fragment
+        android:id="@+id/inicioFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.InicioFragment"
+        android:label=""
+        tools:layout="@layout/fragment_inicio" />
 
     <fragment
         android:id="@+id/crearCompetencia1Fragment"
@@ -14,6 +20,7 @@
             android:id="@+id/toPantalla2"
             app:destination="@id/crearCompetencia2Fragment" />
     </fragment>
+
     <fragment
         android:id="@+id/crearCompetencia2Fragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia2Fragment"
@@ -54,4 +61,5 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.DetalleCompListFragment"
         android:label=""
         tools:layout="@layout/fragment_detalle_comp_list" />
+
 </navigation>

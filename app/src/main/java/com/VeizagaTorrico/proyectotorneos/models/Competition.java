@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 
 public class Competition implements Serializable {
 
