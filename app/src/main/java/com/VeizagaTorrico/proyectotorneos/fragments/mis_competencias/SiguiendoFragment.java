@@ -13,15 +13,15 @@ import android.view.ViewGroup;
 import com.VeizagaTorrico.proyectotorneos.R;
 
 
-public class SieguiendoFragment extends Fragment {
+public class SiguiendoFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public SieguiendoFragment() {
+    public SiguiendoFragment() {
         // Required empty public constructor
     }
-public static SieguiendoFragment newInstance(String param1, String param2) {
-        SieguiendoFragment fragment = new SieguiendoFragment();
+public static SiguiendoFragment newInstance(String param1, String param2) {
+        SiguiendoFragment fragment = new SiguiendoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;

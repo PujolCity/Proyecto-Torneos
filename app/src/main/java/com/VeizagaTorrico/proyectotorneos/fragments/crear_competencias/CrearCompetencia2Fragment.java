@@ -1,11 +1,9 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import retrofit2.Call;
@@ -181,7 +179,7 @@ public class CrearCompetencia2Fragment extends Fragment {
             public void onFailure(Call<List<Sport>> call, Throwable t) {
                 Toast toast = Toast.makeText(getContext(), "No anda una mierda", Toast.LENGTH_SHORT);
                 toast.show();
-                Log.d("onResponse", "no anda");
+                Log.d("onFailure", t.getMessage());
 
             }
         });

@@ -1,11 +1,10 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -131,7 +130,7 @@ public class CrearCompetencia3Fragment extends Fragment {
                         TypesOrganization org = (TypesOrganization) spinner.getSelectedItem();
                         txtView.setText(org.getDescription());
                         competition =(Competition) getArguments().getSerializable("competition");
-                        competition.setTypesOrganization(org);
+                      //  competition.setTypesOrganization(org);
                         Log.d("A ver que trajo",org.getName());
                     }
                     @Override
