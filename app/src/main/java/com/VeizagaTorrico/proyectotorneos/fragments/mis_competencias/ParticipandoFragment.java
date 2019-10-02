@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,27 +9,47 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.models.Competition;
 
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * {@link ParticipandoFragment.OnFragmentInteractionListener} interface
+ * to handle interaction events.
+ * Use the {@link ParticipandoFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class ParticipandoFragment extends Fragment {
+    // TODO: Rename parameter arguments, choose names that match
+    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
 
-
-public class DetalleCompListFragment extends Fragment {
+    // TODO: Rename and change types of parameters
+    private String mParam1;
+    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView nmb, dep, cat;
-    private View vista;
-
-    public DetalleCompListFragment() {
+    public ParticipandoFragment() {
         // Required empty public constructor
     }
-// TODO: Rename and change types and number of parameters
-    public static DetalleCompListFragment newInstance(String param1, String param2) {
-        DetalleCompListFragment fragment = new DetalleCompListFragment();
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @param param1 Parameter 1.
+     * @param param2 Parameter 2.
+     * @return A new instance of fragment ParticipandoFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static ParticipandoFragment newInstance(String param1, String param2) {
+        ParticipandoFragment fragment = new ParticipandoFragment();
         Bundle args = new Bundle();
+        args.putString(ARG_PARAM1, param1);
+        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,6 +58,8 @@ public class DetalleCompListFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
+            mParam1 = getArguments().getString(ARG_PARAM1);
+            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -45,21 +67,7 @@ public class DetalleCompListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_detalle_comp_list, container, false);
-
-        //vista.setContentView(R.layout.fragment_detalle_comp_list);
-
-        nmb = vista.findViewById(R.id.txtNmbCompDet);
-        dep = vista.findViewById(R.id.txtDepCompDet);
-        cat = vista.findViewById(R.id.txtCatCompDet);
-
-        Competition competition = (Competition) getArguments().getSerializable("deporte");
-
-        nmb.setText(competition.getName());
-        cat.setText(competition.getCategory().getNombreCat());
-        dep.setText(competition.getCategory().getSport());
-
-        return vista;
+        return inflater.inflate(R.layout.fragment_participando, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event

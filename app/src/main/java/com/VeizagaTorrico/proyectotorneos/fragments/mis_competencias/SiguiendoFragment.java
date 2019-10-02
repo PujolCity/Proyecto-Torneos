@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,26 +9,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.models.Competition;
 
 
-
-public class DetalleCompListFragment extends Fragment {
+public class SieguiendoFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView nmb, dep, cat;
-    private View vista;
-
-    public DetalleCompListFragment() {
+    public SieguiendoFragment() {
         // Required empty public constructor
     }
-// TODO: Rename and change types and number of parameters
-    public static DetalleCompListFragment newInstance(String param1, String param2) {
-        DetalleCompListFragment fragment = new DetalleCompListFragment();
+public static SieguiendoFragment newInstance(String param1, String param2) {
+        SieguiendoFragment fragment = new SieguiendoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -45,21 +38,7 @@ public class DetalleCompListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_detalle_comp_list, container, false);
-
-        //vista.setContentView(R.layout.fragment_detalle_comp_list);
-
-        nmb = vista.findViewById(R.id.txtNmbCompDet);
-        dep = vista.findViewById(R.id.txtDepCompDet);
-        cat = vista.findViewById(R.id.txtCatCompDet);
-
-        Competition competition = (Competition) getArguments().getSerializable("deporte");
-
-        nmb.setText(competition.getName());
-        cat.setText(competition.getCategory().getNombreCat());
-        dep.setText(competition.getCategory().getSport());
-
-        return vista;
+        return inflater.inflate(R.layout.fragment_siguiendo, container, false);
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -86,16 +65,6 @@ public class DetalleCompListFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

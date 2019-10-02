@@ -9,11 +9,21 @@
         android:id="@+id/inicioFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.InicioFragment"
         android:label=""
-        tools:layout="@layout/fragment_inicio" />
+        tools:layout="@layout/fragment_inicio" >
+        <action
+            android:id="@+id/action_inicioFragment_to_crearCompetencia1Fragment"
+            app:destination="@id/crearCompetencia1Fragment" />
+        <action
+            android:id="@+id/action_inicioFragment_to_competidoresListFragment"
+            app:destination="@id/competidoresListFragment" />
+        <action
+            android:id="@+id/action_inicioFragment_to_competenciasListFragment"
+            app:destination="@id/competenciasListFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/crearCompetencia1Fragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia1Fragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment"
         android:label=""
         tools:layout="@layout/fragment_crear_competencia1" >
         <action
@@ -23,7 +33,7 @@
 
     <fragment
         android:id="@+id/crearCompetencia2Fragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia2Fragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment"
         android:label=""
         tools:layout="@layout/fragment_crear_competencia2" >
         <action
@@ -35,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/crearCompetencia3Fragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.CrearCompetencia3Fragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia3Fragment"
         android:label=""
         tools:layout="@layout/fragment_crear_competencia3" >
         <action
@@ -46,14 +56,9 @@
         android:id="@+id/competenciasListFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.CompetenciasListFragment"
         android:label=""
-        tools:layout="@layout/fragment_competencias_list" />
-    <fragment
-        android:id="@+id/list_View_Comp_Fragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.List_View_Comp_Fragment"
-        android:label=""
-        tools:layout="@layout/fragment_list__view__comp_" >
+        tools:layout="@layout/fragment_competencias_list" >
         <action
-            android:id="@+id/toDetalleCompListFragment"
+            android:id="@+id/action_competenciasListFragment_to_detalleCompListFragment"
             app:destination="@id/detalleCompListFragment" />
     </fragment>
     <fragment
@@ -61,5 +66,19 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.DetalleCompListFragment"
         android:label=""
         tools:layout="@layout/fragment_detalle_comp_list" />
+    <fragment
+        android:id="@+id/competidoresListFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.CompetidoresListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_competidores_list" />
+    <fragment
+        android:id="@+id/misCompetencias"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.MisCompetenciasFragment"
+        android:label=""
+        tools:layout="@layout/fragment_mis_competencias" >
+        <action
+            android:id="@+id/action_misCompetencias_to_competidoresListFragment"
+            app:destination="@id/competidoresListFragment" />
+    </fragment>
 
 </navigation>

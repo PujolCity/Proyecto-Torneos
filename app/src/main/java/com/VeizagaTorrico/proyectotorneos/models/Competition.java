@@ -1,5 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
@@ -9,13 +11,26 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class Competition implements Serializable {
 
+    @SerializedName("id")
     private int id;
-    private String name;
-    private Calendar initDate;
-    private Category category;
-    private TypesOrganization typesOrganization;
-    private int idUser;
 
+    @SerializedName("nombre")
+    private String name;
+
+
+    private Calendar initDate;
+
+    private Calendar endDate;
+
+    @SerializedName("categoria")
+    private Category category;
+
+  //  @SerializedName("organizacion")
+    private TypesOrganization typesOrganization;
+
+   /* @SerializedName("idUser")
+    private int idUser;
+*/
     public Competition() {
     }
 
@@ -50,7 +65,7 @@ public class Competition implements Serializable {
     public void setTypesOrganization(TypesOrganization typesOrganization) {
         this.typesOrganization = typesOrganization;
     }
-
+/*
     public int getIdUser() {
         return idUser;
     }
@@ -58,7 +73,7 @@ public class Competition implements Serializable {
     public void setIdUser(int idUser) {
         this.idUser = idUser;
     }
-
+*/
     public Calendar getInitDate() {
         return initDate;
     }

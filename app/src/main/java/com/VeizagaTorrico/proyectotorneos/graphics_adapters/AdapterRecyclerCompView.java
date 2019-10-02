@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.recycle_view_adapters;
+package com.VeizagaTorrico.proyectotorneos.graphics_adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.models.Sport;
+import com.VeizagaTorrico.proyectotorneos.models.Competition;
 
 import java.util.List;
 
@@ -18,16 +18,16 @@ public class AdapterRecyclerCompView extends RecyclerView.Adapter<AdapterRecycle
                                         implements View.OnClickListener {
 
     private Context context;
-    private List<Sport> deportes;
+    private List<Competition> competencias;
     private View.OnClickListener listener;
 
-    public AdapterRecyclerCompView(Context context, List<Sport> deportes) {
+    public AdapterRecyclerCompView(Context context, List<Competition> competencias) {
         this.context = context;
-        this.deportes = deportes;
+        this.competencias = competencias;
     }
 
-    public void setDeportes(List<Sport> deportes) {
-        this.deportes = deportes;
+    public void setCompetencias(List<Competition> competencias) {
+        this.competencias = competencias;
     }
 
     @NonNull
@@ -40,16 +40,16 @@ public class AdapterRecyclerCompView extends RecyclerView.Adapter<AdapterRecycle
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        Sport sport = deportes.get(position);
-        holder.txtCategoria.setText(sport.getCategories().get(0).getNombreCat());
-        holder.txtCompetencia.setText(sport.getCategories().get(0).getDescripcion());
-        holder.txtDeporte.setText(deportes.get(position).getNombre());
+        Competition competition= competencias.get(position);
+        holder.txtCategoria.setText(competition.getCategory().getNombreCat());
+        holder.txtCompetencia.setText(competition.getName());
+        holder.txtDeporte.setText(competition.getCategory().getSport());
     }
 
     @Override
     public int getItemCount() {
-        if(this.deportes != null){
-            return this.deportes.size();
+        if(this.competencias != null){
+            return this.competencias.size();
         }
         return 0;
     }

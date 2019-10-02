@@ -1,7 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.adapters;
 
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
-import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
 import retrofit2.Retrofit;

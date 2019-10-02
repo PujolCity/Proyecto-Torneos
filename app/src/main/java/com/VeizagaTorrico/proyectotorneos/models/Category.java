@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public class Category implements Serializable {
+
     @SerializedName("id")
     private int id;
 
@@ -18,10 +19,10 @@ public class Category implements Serializable {
     @SerializedName("minIntegrantes")
     private int minIntegrantes;
 
-    @SerializedName("sport")
-    private Sport sport;
+    @SerializedName("deporte")
+    private String sport;
 
-    public Category(int id, String nombreCat, String descripcion, int minIntegrantes, Sport sport) {
+    public Category(int id, String nombreCat, String descripcion, int minIntegrantes, String sport) {
         this.id = id;
         this.nombreCat = nombreCat;
         this.descripcion = descripcion;
@@ -61,11 +62,11 @@ public class Category implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public Sport getSport(){
+    public String getSport(){
         return this.sport;
     }
 
-    public void setSport(Sport sport){
+    public void setSport(String sport){
         this.sport = sport;
     }
 
