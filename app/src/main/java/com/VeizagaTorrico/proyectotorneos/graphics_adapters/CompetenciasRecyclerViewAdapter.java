@@ -33,7 +33,7 @@ public class AdapterRecyclerCompView extends RecyclerView.Adapter<AdapterRecycle
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(this.context).inflate(R.layout.fragment_list__view__comp_,null);
+        View vista = LayoutInflater.from(this.context).inflate(R.layout.fragment_competencias,null);
         vista.setOnClickListener(this);
         return new Holder(vista);
     }

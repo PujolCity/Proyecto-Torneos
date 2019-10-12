@@ -22,32 +22,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.adapters.SportsAdapter;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.Category;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.Sport;
 import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
 
-import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CrearCompetencia2Fragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CrearCompetencia2Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CrearCompetencia2Fragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -63,20 +46,9 @@ public class CrearCompetencia2Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CrearCompetencia2Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CrearCompetencia2Fragment newInstance(String param1, String param2) {
         CrearCompetencia2Fragment fragment = new CrearCompetencia2Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -98,7 +70,7 @@ public class CrearCompetencia2Fragment extends Fragment {
         spinnerDeporte = vista.findViewById(R.id.spinnerDeporte);
         spinnerCategoria = vista.findViewById(R.id.spinnerCategoria);
         txtDescripcion = vista.findViewById(R.id.descripcionCategoria);
-        sportsSrv = new SportsAdapter().connectionEnable();
+        sportsSrv = new RetrofitAdapter().connectionEnable().create(SportsSrv.class);
         sigBtn = vista.findViewById(R.id.btnCCSig_2);
 
         //LISTENER BOTONES
@@ -119,65 +91,65 @@ public class CrearCompetencia2Fragment extends Fragment {
         call.enqueue(new Callback<List<Sport>>() {
             @Override
             public void onResponse(Call<List<Sport>> call, Response<List<Sport>> response) {
-                List<Sport> deportes = new ArrayList<Sport>();
+                List<Sport> deportes;
 
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     //asigno a deportes lo que traje del servidor
                     deportes = response.body();
                     Log.d("RESPONSE CODE",  Integer.toString(response.code()) );
+                    // creo el adapter para el spinnerDeporte y asigno el origen de los datos para el adaptador del spinner
+                    ArrayAdapter<Sport> adapterDeporte = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, deportes);
+                    //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
+                    adapterDeporte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    // seteo el adapter
+                    spinnerDeporte.setAdapter(adapterDeporte);
+                    // manejador del evento OnItemSelected
+
+                    spinnerDeporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            Sport dep;
+                            //elemento obtenido del spinner lo asigno a deporte y traigo la lista de categories que tiene
+                            dep = (Sport) spinnerDeporte.getSelectedItem();
+                            categories = dep.getCategories();
+
+                            //creo el adapter para el spinnerCategorias
+                            ArrayAdapter<Category> adapterCategoria = new ArrayAdapter<Category>(vista.getContext(),android.R.layout.simple_spinner_item, categories);
+
+                            //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
+                            adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerCategoria.setAdapter(adapterCategoria);
+                            spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                                    // EN ESTA LINEA ES DONDE RECIBE EL DATO DE OTRO FRAGMENT
+                                    competencia = (Competition) getArguments().getSerializable("competition");
+                                    Category cat;
+                                    // para mostrar la descripcion de la categoria
+                                    cat = (Category) spinnerCategoria.getSelectedItem();
+                                    txtDescripcion.setText(cat.getDescripcion());
+                                    if(cat != null)
+                                        competencia.setCategory(cat);
+                                    Log.d("A ver que trajo", competencia.toString());
+                                }
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                }
+                            });
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+                        }
+                    });
+
                 }
-
-                // creo el adapter para el spinnerDeporte y asigno el origen de los datos para el adaptador del spinner
-                ArrayAdapter<Sport> adapterDeporte = new ArrayAdapter<Sport>(getContext(),android.R.layout.simple_spinner_item, deportes);
-                //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
-                adapterDeporte.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                // seteo el adapter
-                spinnerDeporte.setAdapter(adapterDeporte);
-                // manejador del evento OnItemSelected
-
-                spinnerDeporte.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        Sport dep;
-                        //elemento obtenido del spinner lo asigno a deporte y traigo la lista de categories que tiene
-                        dep = (Sport) spinnerDeporte.getSelectedItem();
-                        categories = dep.getCategories();
-
-                        //creo el adapter para el spinnerCategorias
-                        ArrayAdapter<Category> adapterCategoria = new ArrayAdapter<Category>(getContext(),android.R.layout.simple_spinner_item, categories);
-
-                        //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
-                        adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerCategoria.setAdapter(adapterCategoria);
-                        spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                // EN ESTA LINEA ES DONDE RECIBE EL DATO DE OTRO FRAGMENT
-                                competencia = (Competition) getArguments().getSerializable("competition");
-                                Category cat;
-                                // para mostrar la descripcion de la categoria
-                                cat = (Category) spinnerCategoria.getSelectedItem();
-                                txtDescripcion.setText(cat.getDescripcion());
-                                if(cat != null)
-                                    competencia.setCategory(cat);
-                                Log.d("A ver que trajo", competencia.toString());
-                            }
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-                            }
-                        });
-                    }
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-                    }
-                });
             }
             @Override
             public void onFailure(Call<List<Sport>> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "No anda una mierda", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.d("onFailure", t.getMessage());
 
@@ -187,7 +159,6 @@ public class CrearCompetencia2Fragment extends Fragment {
         return vista;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -211,18 +182,7 @@ public class CrearCompetencia2Fragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 

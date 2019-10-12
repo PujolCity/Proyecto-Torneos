@@ -6,7 +6,7 @@
     <string name="datePicker"> Fecha de inicio de la Competencia </string>
     <string name="formatoFecha"> dd/mm/yyyy </string>
     <string name="txtTipoOrg"> Seleccione como se va a organizar su competencia </string>
-    <string name="txtTipo"> Tipo de organizacion</string>
+    <string name="txtTipo"> Organizacion</string>
     <string name="txtSeleccioneDeporte"> Seleccione el deporte de su competencia </string>
     <string name="txtDeporte"> Deporte</string>
     <string name="txtCategoria"> Categoria</string>
@@ -16,6 +16,11 @@
     <string name="txtNombre"> Nombre </string>
     <string name="txtApellido"> Apellido </string>
 
+    <!-- BUSQUEDA / FILTRO-->
+    <string name="txtBusqueda"> Buscar </string>
+    <string name="txtFiltro"> Filtrar Competencias</string>
+    <string name="txtCiudad"> Ciudad </string>
+    <string name="txtGenero"> Genero </string>
 
     <!--  BARRA MENU LATERAL -->
     <string name="menu_Ininio"> Inicio </string>

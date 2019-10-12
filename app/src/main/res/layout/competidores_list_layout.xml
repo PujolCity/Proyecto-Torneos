@@ -1,50 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         android:background="@color/colorPrimary">
 
         <TextView
-            android:id="@+id/apelido"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
-            android:text="@string/txtApellido"
-            android:textAppearance="?attr/textAppearanceListItem" />
-
-
-        <TextView
             android:id="@+id/nombUsuario"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="16dp"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
             android:text="@string/txtNombreUsuario"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             android:id="@+id/nomb"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/text_margin"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginBottom="@dimen/text_margin"
             android:text="@string/txtNombre"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            android:id="@+id/apelido"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/text_margin"
+            android:layout_marginBottom="@dimen/text_margin"
+            android:text="@string/txtApellido"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <ImageButton
             android:id="@+id/btnAceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:src="@drawable/ic_aceptar">
         </ImageButton>
 
@@ -52,9 +46,12 @@
             android:id="@+id/btnRechazar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:src="@drawable/ic_rechazar">
         </ImageButton>
     </LinearLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/cardview_shadow_start_color">
+    </LinearLayout>
+</FrameLayout>

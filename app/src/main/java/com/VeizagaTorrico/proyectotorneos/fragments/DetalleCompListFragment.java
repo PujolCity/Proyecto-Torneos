@@ -26,7 +26,6 @@ public class DetalleCompListFragment extends Fragment {
     public DetalleCompListFragment() {
         // Required empty public constructor
     }
-// TODO: Rename and change types and number of parameters
     public static DetalleCompListFragment newInstance(String param1, String param2) {
         DetalleCompListFragment fragment = new DetalleCompListFragment();
         Bundle args = new Bundle();
@@ -45,15 +44,15 @@ public class DetalleCompListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_detalle_comp_list, container, false);
+        vista = inflater.inflate(R.layout.fragment_detalle_competencias, container, false);
 
-        //vista.setContentView(R.layout.fragment_detalle_comp_list);
+        //vista.setContentView(R.layout.fragment_detalle_competencias);
 
         nmb = vista.findViewById(R.id.txtNmbCompDet);
         dep = vista.findViewById(R.id.txtDepCompDet);
         cat = vista.findViewById(R.id.txtCatCompDet);
 
-        Competition competition = (Competition) getArguments().getSerializable("deporte");
+        Competition competition = (Competition) getArguments().getSerializable("competencia");
 
         nmb.setText(competition.getName());
         cat.setText(competition.getCategory().getNombreCat());
@@ -62,7 +61,6 @@ public class DetalleCompListFragment extends Fragment {
         return vista;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -86,18 +84,7 @@ public class DetalleCompListFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

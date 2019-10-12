@@ -16,36 +16,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.adapters.CompetitionAdapter;
-import com.VeizagaTorrico.proyectotorneos.graphics_adapters.AdapterRecyclerCompView;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetenciasRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CompetenciasListFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CompetenciasListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CompetenciasListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     private CompetitionSrv competitionSrv;
-    private AdapterRecyclerCompView adapter;
+    private CompetenciasRecyclerViewAdapter adapter;
     private List<Competition> competitions;
     private View vista;
     private RecyclerView recycleComp;
     private RecyclerView.LayoutManager manager;
+    private ImageButton btnBuscar;
+    private EditText editText;
+    private Map<String,String> filtros;
 
     public CompetenciasListFragment() {
         // Required empty public constructor
@@ -61,8 +60,6 @@ public class CompetenciasListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
@@ -70,50 +67,27 @@ public class CompetenciasListFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competencias_list, container, false);
-
-        competitionSrv = new CompetitionAdapter().connectionEnable();
+        filtros = (Map<String, String>) getArguments().getSerializable("filtros");
+        Log.d("Filtros recibidos",filtros.toString());
+        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+        if(!filtros.isEmpty()) {
+            Call<List<CompetitionMin>> call = competitionSrv.findCompetitionsByFilters(filtros);
+            Log.d("Url Filtros", call.request().url().toString());
+        }
 
         initAdapter();
 
-        //En call viene el tipo de dato que espero del servidor
-        Call<List<Competition>> call = competitionSrv.getCompetitions();
-        call.enqueue(new Callback<List<Competition>>() {
+        editText = vista.findViewById(R.id.etBuscardor);
+        btnBuscar = vista.findViewById(R.id.btnBuscar);
+
+        btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onResponse(Call<List<Competition>> call, Response<List<Competition>> response) {
-                Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
-                //codigo 200 si salio tdo bien
-                if (response.code() == 200) {
-                    //asigno a deportes lo que traje del servidor
-                    competitions = response.body();
-                    Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
-                    adapter.setCompetencias(competitions);
-                }
-                //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
-                recycleComp.setAdapter(adapter);
-
-                //LISTENER PARA EL ELEMENTO SELECCIONADO
-                adapter.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Competition competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("deporte", competition);
-
-                        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                        Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
-
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<List<Competition>> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "No anda una mierda", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onResponse", t.getMessage());
+            public void onClick(View view) {
+                llenarRecyclerBusqueda();
             }
         });
+
+        inflarRecycler();
         return vista;
     }
 
@@ -140,8 +114,7 @@ public class CompetenciasListFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
-public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+    public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
 
@@ -152,7 +125,100 @@ public interface OnFragmentInteractionListener {
         manager = new LinearLayoutManager(getContext());
         recycleComp.setLayoutManager(manager);
         recycleComp.setHasFixedSize(true);
-        adapter = new AdapterRecyclerCompView(vista.getContext(),competitions);
+        adapter = new CompetenciasRecyclerViewAdapter(vista.getContext(),competitions);
         recycleComp.setAdapter(adapter);
     }
+
+
+    public void siguienteFragment(Competition competition){
+
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("competencia", competition);
+
+        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+        Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
+    }
+
+
+    public void llenarRecyclerBusqueda(){
+
+        String nComp = editText.getText().toString();
+        Log.d("STRING EDIT", nComp);
+
+        Call<List<Competition>> call = competitionSrv.findCompetitionsByName(nComp);
+        Log.d("Request Retrofit", call.request().url().toString());
+
+        call.enqueue(new Callback<List<Competition>>() {
+            @Override
+            public void onResponse(Call<List<Competition>> call, Response<List<Competition>> response) {
+                if(!response.body().isEmpty()) {
+                    Log.d("onResponse complist", Integer.toString(response.code()));
+                    competitions = response.body();
+                    adapter.setCompetencias(competitions);
+                    recycleComp.setAdapter(adapter);
+                }else {
+                    Toast toast = Toast.makeText(vista.getContext(), "Busqueda sin resultados, por favor intente con otra palabra", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                }
+                //LISTENER PARA EL ELEMENTO SELECCIONADO
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Competition competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                        editText.setText("");
+                        siguienteFragment(competition);
+                    }
+                });
+
+            }
+            @Override
+            public void onFailure(Call<List<Competition>> call, Throwable t) {
+                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.d("onFailure", t.getMessage());
+
+            }
+        });
+
+    }
+
+
+    private void inflarRecycler() {
+        //En call viene el tipo de dato que espero del servidor
+        Call<List<Competition>> call = competitionSrv.getCompetitions();
+        call.enqueue(new Callback<List<Competition>>() {
+            @Override
+            public void onResponse(Call<List<Competition>> call, Response<List<Competition>> response) {
+                Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
+                //codigo 200 si salio tdo bien
+                if (response.code() == 200) {
+                    //asigno a deportes lo que traje del servidor
+                    competitions = response.body();
+                    Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
+                    adapter.setCompetencias(competitions);
+                    //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                    recycleComp.setAdapter(adapter);
+
+                    //LISTENER PARA EL ELEMENTO SELECCIONADO
+                    adapter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Competition competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                            siguienteFragment(competition);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Competition>> call, Throwable t) {
+                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.d("onFailure", t.getMessage());
+            }
+        });
+    }
+
 }

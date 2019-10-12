@@ -26,21 +26,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtNmbCompList"
-                android:hint="Nombre competencia">
+                android:text="@string/txtNombre">
             </TextView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtDepCompList"
-                android:hint="@string/txtDeporte">
+                android:text="@string/txtDeporte">
             </TextView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/txtCatCompList"
-                android:hint="@string/txtCategoria">
+                android:text="@string/txtCategoria">
             </TextView>
 
         </LinearLayout>

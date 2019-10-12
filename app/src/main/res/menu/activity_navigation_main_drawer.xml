@@ -13,7 +13,7 @@
             android:icon="@drawable/ic_new"
             android:title="@string/menu_CreaMisCompetencias" />
         <item
-            android:id="@+id/competenciasListFragment"
+            android:id="@+id/filtroFragment"
             android:icon="@drawable/ic_menu_gallery"
             android:title="@string/menu_Competencias"/>
         <item

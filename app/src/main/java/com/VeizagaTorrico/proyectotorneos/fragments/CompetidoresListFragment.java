@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.adapters.UsersAdapter;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetidoresRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
@@ -36,7 +36,6 @@ public class CompetidoresListFragment extends Fragment {
     private List<User> competidores;
     private View vista;
     private RecyclerView recycle;
-    //private RecyclerView.LayoutManager manager;
 
 
     public CompetidoresListFragment() {
@@ -63,7 +62,7 @@ public class CompetidoresListFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competidores_list, container, false);
 
-        userSrv = new UsersAdapter().connectionEnable();
+        userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
 
         initAdapter();
 
@@ -118,7 +117,6 @@ public class CompetidoresListFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 

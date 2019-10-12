@@ -34,7 +34,7 @@ public class CompetidoresRecyclerViewAdapter extends RecyclerView.Adapter<Compet
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(this.context).inflate(R.layout.competidores_layout, null);
+        View view = LayoutInflater.from(this.context).inflate(R.layout.competidores_list_layout, null);
 
         return new ViewHolder(view);
     }

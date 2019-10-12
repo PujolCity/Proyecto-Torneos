@@ -8,23 +8,23 @@
     <fragment
         android:id="@+id/inicioFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.InicioFragment"
-        android:label=""
+        android:label="Bienvenido a Proyecto Torneos"
         tools:layout="@layout/fragment_inicio" >
         <action
             android:id="@+id/action_inicioFragment_to_crearCompetencia1Fragment"
             app:destination="@id/crearCompetencia1Fragment" />
         <action
-            android:id="@+id/action_inicioFragment_to_competidoresListFragment"
-            app:destination="@id/competidoresListFragment" />
+            android:id="@+id/action_inicioFragment_to_filtroFragment"
+            app:destination="@id/filtroFragment" />
         <action
-            android:id="@+id/action_inicioFragment_to_competenciasListFragment"
-            app:destination="@id/competenciasListFragment" />
+            android:id="@+id/action_inicioFragment_to_misCompetencias"
+            app:destination="@id/misCompetencias" />
     </fragment>
 
     <fragment
         android:id="@+id/crearCompetencia1Fragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment"
-        android:label=""
+        android:label="Crea Tu Competencia"
         tools:layout="@layout/fragment_crear_competencia1" >
         <action
             android:id="@+id/toPantalla2"
@@ -34,7 +34,7 @@
     <fragment
         android:id="@+id/crearCompetencia2Fragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment"
-        android:label=""
+        android:label="Crea Tu Competencia"
         tools:layout="@layout/fragment_crear_competencia2" >
         <action
             android:id="@+id/toPantalla3"
@@ -46,7 +46,7 @@
     <fragment
         android:id="@+id/crearCompetencia3Fragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia3Fragment"
-        android:label=""
+        android:label="Crea Tu Competencia"
         tools:layout="@layout/fragment_crear_competencia3" >
         <action
             android:id="@+id/toPantalla2"
@@ -55,30 +55,79 @@
     <fragment
         android:id="@+id/competenciasListFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.CompetenciasListFragment"
-        android:label=""
+        android:label="Competencias"
         tools:layout="@layout/fragment_competencias_list" >
         <action
             android:id="@+id/action_competenciasListFragment_to_detalleCompListFragment"
             app:destination="@id/detalleCompListFragment" />
+        <action
+            android:id="@+id/action_competenciasListFragment_to_filtroFragment"
+            app:destination="@id/filtroFragment" />
     </fragment>
     <fragment
         android:id="@+id/detalleCompListFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.DetalleCompListFragment"
-        android:label=""
-        tools:layout="@layout/fragment_detalle_comp_list" />
+        android:label="Detalle"
+        tools:layout="@layout/fragment_detalle_competencias" >
+        <action
+            android:id="@+id/action_detalleCompListFragment_to_competenciasListFragment"
+            app:destination="@id/competenciasListFragment" />
+    </fragment>
     <fragment
         android:id="@+id/competidoresListFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.CompetidoresListFragment"
-        android:label=""
+        android:label="Solicitud de competidores"
         tools:layout="@layout/fragment_competidores_list" />
     <fragment
         android:id="@+id/misCompetencias"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.MisCompetenciasFragment"
-        android:label=""
+        android:label="Mis competencias"
         tools:layout="@layout/fragment_mis_competencias" >
         <action
-            android:id="@+id/action_misCompetencias_to_competidoresListFragment"
+            android:id="@+id/action_misCompetencias_to_siguiendoFragment"
+            app:destination="@id/siguiendoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/participandoFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment"
+        android:label="Participando"
+        tools:layout="@layout/fragment_participando" >
+        <action
+            android:id="@+id/action_participandoFragment_to_organizandoFragment"
+            app:destination="@id/organizandoFragment" />
+        <action
+            android:id="@+id/action_participandoFragment_to_siguiendoFragment"
+            app:destination="@id/siguiendoFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/filtroFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.FiltroFragment"
+        android:label="Filtrar Competencias"
+        tools:layout="@layout/fragment_filtro" >
+        <action
+            android:id="@+id/action_filtroFragment_to_competenciasListFragment"
+            app:destination="@id/competenciasListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/organizandoFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment"
+        android:label="Organizando"
+        tools:layout="@layout/fragment_organizando" >
+        <action
+            android:id="@+id/action_organizandoFragment_to_participandoFragment"
+            app:destination="@id/participandoFragment" />
+        <action
+            android:id="@+id/action_organizandoFragment_to_competidoresListFragment"
             app:destination="@id/competidoresListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/siguiendoFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment"
+        android:label="Siguiendo"
+        tools:layout="@layout/fragment_siguiendo" >
+        <action
+            android:id="@+id/action_siguiendoFragment_to_participandoFragment"
+            app:destination="@id/participandoFragment" />
     </fragment>
 
 </navigation>

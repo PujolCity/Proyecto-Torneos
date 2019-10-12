@@ -23,42 +23,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.adapters.CompetitionAdapter;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
 import java.util.Calendar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link CrearCompetencia1Fragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link CrearCompetencia1Fragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class CrearCompetencia1Fragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
    // ***************************************** //
     private static final String CERO = "0";
     private static final String BARRA = "/";
+
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
+
     //Variables para obtener la fecha
     final int mes = c.get(Calendar.MONTH);
     final int dia = c.get(Calendar.DAY_OF_MONTH);
     final int anio = c.get(Calendar.YEAR);
+
     //Widgets
     private TextView txtView;
     private ImageButton ibObtenerFecha;
@@ -73,20 +60,9 @@ public class CrearCompetencia1Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment CrearCompetencia1Fragment.
-     */
-    // TODO: Rename and change types and number of parameters
     public static CrearCompetencia1Fragment newInstance(String param1, String param2) {
         CrearCompetencia1Fragment fragment = new CrearCompetencia1Fragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -95,8 +71,6 @@ public class CrearCompetencia1Fragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
         }
     }
 
@@ -107,7 +81,7 @@ public class CrearCompetencia1Fragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_crear_competencia1, container, false);
 
         competition =  new Competition();
-        competitionSrv = new CompetitionAdapter().connectionEnable();
+        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         //Widget TextView donde se mostrara el nombre de la competencia
         //txtView = vista.findViewById(R.id.txtNmbComp);
         //Wdget de donde tomo el posible nombre de la competencia
@@ -135,7 +109,7 @@ public class CrearCompetencia1Fragment extends Fragment {
                                               @Override
                                               public void onResponse(Call<Success> call, Response<Success> response) {
                                                   Log.d("onResponse", Integer.toString(response.code()));
-                                                  if (!response.body().isExiste()) {
+                                                  if ( response.code() == 200 && !response.body().isExiste()) {
                                                       Bundle bundle = new Bundle();
                                                       competition.setName(txtNmbComp.getText().toString());
                                                       competition.setInitDate(c);
@@ -150,9 +124,9 @@ public class CrearCompetencia1Fragment extends Fragment {
                                               }
                                               @Override
                                               public void onFailure(Call<Success> call, Throwable t) {
-                                                  Toast toast = Toast.makeText(getContext(), "No anda una mierda", Toast.LENGTH_SHORT);
+                                                  Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                                                   toast.show();
-                                                  Log.d("onResponse", "no anda");
+                                                  Log.d("onFailure", t.getMessage());
 
                                               }
                                           });
@@ -162,7 +136,6 @@ public class CrearCompetencia1Fragment extends Fragment {
         return vista;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -186,18 +159,7 @@ public class CrearCompetencia1Fragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
@@ -216,7 +178,7 @@ public class CrearCompetencia1Fragment extends Fragment {
                 txtFecha.setText(diaFormateado+ BARRA + mesFormateado + BARRA + year);
             }
             //Estos valores deben ir en ese orden, de lo contrario no mostrara la fecha actual
-            /**
+            /*
              *También puede cargar los valores que usted desee
              */
         },anio, mes, dia);

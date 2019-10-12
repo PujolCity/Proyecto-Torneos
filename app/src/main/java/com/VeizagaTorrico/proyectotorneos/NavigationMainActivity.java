@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import com.VeizagaTorrico.proyectotorneos.fragments.CompetenciasListFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.CompetidoresListFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.FiltroFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.MisCompetenciasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment;
@@ -40,7 +41,8 @@ public class NavigationMainActivity extends AppCompatActivity
         MisCompetenciasFragment.OnFragmentInteractionListener,
         ParticipandoFragment.OnFragmentInteractionListener,
         SiguiendoFragment.OnFragmentInteractionListener,
-        OrganizandoFragment.OnFragmentInteractionListener {
+        OrganizandoFragment.OnFragmentInteractionListener,
+        FiltroFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -58,7 +60,7 @@ public class NavigationMainActivity extends AppCompatActivity
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.inicioFragment, R.id.competenciasListFragment, R.id.crearCompetencia1Fragment, R.id.competidoresListFragment, R.id.misCompetencias)
+                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.competidoresListFragment, R.id.misCompetencias)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
