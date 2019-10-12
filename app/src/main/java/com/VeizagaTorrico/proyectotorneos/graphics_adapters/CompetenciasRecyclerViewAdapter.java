@@ -14,14 +14,14 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class AdapterRecyclerCompView extends RecyclerView.Adapter<AdapterRecyclerCompView.Holder>
+public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<CompetenciasRecyclerViewAdapter.Holder>
                                         implements View.OnClickListener {
 
     private Context context;
     private List<Competition> competencias;
     private View.OnClickListener listener;
 
-    public AdapterRecyclerCompView(Context context, List<Competition> competencias) {
+    public CompetenciasRecyclerViewAdapter(Context context, List<Competition> competencias) {
         this.context = context;
         this.competencias = competencias;
     }

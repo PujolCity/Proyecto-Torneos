@@ -7,26 +7,26 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.models.Competition;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 
 import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<CompetenciasRecyclerViewAdapter.Holder>
+public class CompetenciasMinRecyclerViewAdapter extends RecyclerView.Adapter<CompetenciasMinRecyclerViewAdapter.Holder>
                                         implements View.OnClickListener {
 
     private Context context;
-    private List<Competition> competencias;
+    private List<CompetitionMin> competencias;
     private View.OnClickListener listener;
 
-    public CompetenciasRecyclerViewAdapter(Context context, List<Competition> competencias) {
+    public CompetenciasMinRecyclerViewAdapter(Context context, List<CompetitionMin> competencias) {
         this.context = context;
         this.competencias = competencias;
     }
 
-    public void setCompetencias(List<Competition> competencias) {
+    public void setCompetencias(List<CompetitionMin> competencias) {
         this.competencias = competencias;
     }
 
@@ -40,10 +40,10 @@ public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<Compet
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        Competition competition= competencias.get(position);
-        holder.txtCategoria.setText(competition.getCategory().getNombreCat());
-        holder.txtCompetencia.setText(competition.getName());
-        holder.txtDeporte.setText(competition.getCategory().getSport());
+        CompetitionMin competitionMin = competencias.get(position);
+        holder.txtCategoria.setText(competitionMin.getTypesOrganization());
+        holder.txtCompetencia.setText(competitionMin.getName());
+        holder.txtDeporte.setText(competitionMin.getName());
     }
 
     @Override

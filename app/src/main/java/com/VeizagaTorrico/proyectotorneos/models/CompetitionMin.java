@@ -5,11 +5,10 @@ import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
 
 
-    public class CompetitionS implements Serializable {
+    public class CompetitionMin implements Serializable {
 
         @SerializedName("nombre")
         private String name;
-
 
         @SerializedName("categoria")
         private String category;
@@ -17,8 +16,14 @@ import java.io.Serializable;
         @SerializedName("tipo_organizacion")
         private String typesOrganization;
 
+        @SerializedName("ciudad")
+        private String ciudad;
 
-        public CompetitionS() {
+        @SerializedName("genero")
+        private String genero;
+
+
+        public CompetitionMin() {
         }
 
         public String getName() {
@@ -39,6 +44,22 @@ import java.io.Serializable;
 
         public String getTypesOrganization() {
             return typesOrganization;
+        }
+
+        public String getCiudad() {
+            return ciudad;
+        }
+
+        public void setCiudad(String ciudad) {
+            this.ciudad = ciudad;
+        }
+
+        public String getGenero() {
+            return genero;
+        }
+
+        public void setGenero(String genero) {
+            this.genero = genero;
         }
 
         public void setTypesOrganization(String typesOrganization) {
