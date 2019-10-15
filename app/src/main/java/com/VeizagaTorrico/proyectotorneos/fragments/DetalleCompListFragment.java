@@ -9,18 +9,20 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
-
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 
 
 public class DetalleCompListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView nmb, dep, cat;
+    private TextView nmb, cat, org, ciudad, genero;
+    private ImageButton follow;
     private View vista;
 
     public DetalleCompListFragment() {
@@ -46,19 +48,29 @@ public class DetalleCompListFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_detalle_competencias, container, false);
 
-        //vista.setContentView(R.layout.fragment_detalle_competencias);
+        initElements();
 
-        nmb = vista.findViewById(R.id.txtNmbCompDet);
-        dep = vista.findViewById(R.id.txtDepCompDet);
-        cat = vista.findViewById(R.id.txtCatCompDet);
+        CompetitionMin competition = (CompetitionMin) getArguments().getSerializable("competencia");
 
-        Competition competition = (Competition) getArguments().getSerializable("competencia");
+        try{
+            nmb.setText(competition.getName());
+            cat.setText(competition.getCategory());
+            org.setText(competition.getTypesOrganization());
+            ciudad.setText(competition.getCiudad());
+            genero.setText(competition.getGenero());
 
-        nmb.setText(competition.getName());
-        cat.setText(competition.getCategory().getNombreCat());
-        dep.setText(competition.getCategory().getSport());
-
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return vista;
+    }
+
+    private void initElements() {
+        nmb = vista.findViewById(R.id.txtNmbCompDet);
+        cat = vista.findViewById(R.id.txtCatCompDet);
+        org = vista.findViewById(R.id.txtOrgCompDet);
+        ciudad = vista.findViewById(R.id.txtCityCompDet);
+        genero = vista.findViewById(R.id.txtGenderCompDet);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -87,4 +99,6 @@ public class DetalleCompListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
+
+
 }

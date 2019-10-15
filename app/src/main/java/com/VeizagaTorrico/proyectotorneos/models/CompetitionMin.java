@@ -23,7 +23,12 @@ import java.io.Serializable;
         private String genero;
 
 
-        public CompetitionMin() {
+        public CompetitionMin(String name, String category, String typesOrganization, String ciudad, String genero) {
+            this.name = name;
+            this.category = category;
+            this.typesOrganization = typesOrganization;
+            this.ciudad = ciudad;
+            this.genero = genero;
         }
 
         public String getName() {

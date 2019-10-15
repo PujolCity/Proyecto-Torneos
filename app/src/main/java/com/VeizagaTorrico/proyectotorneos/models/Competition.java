@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,17 +18,23 @@ public class Competition implements Serializable {
     @SerializedName("nombre")
     private String name;
 
+    @SerializedName("fecha_inicio")
+    private String fechaInicio;
 
-    private Calendar initDate;
-
-    private Calendar endDate;
+    @SerializedName("fecha_fin")
+    private String fechaFin;
 
     @SerializedName("categoria")
     private Category category;
 
-  //  @SerializedName("organizacion")
+    @SerializedName("organizacion")
     private TypesOrganization typesOrganization;
 
+    @SerializedName("genero")
+    private Gender genero;
+
+    @SerializedName("ciudad")
+    private String ciudad;
    /* @SerializedName("idUser")
     private int idUser;
 */
@@ -65,21 +72,37 @@ public class Competition implements Serializable {
     public void setTypesOrganization(TypesOrganization typesOrganization) {
         this.typesOrganization = typesOrganization;
     }
-/*
-    public int getIdUser() {
-        return idUser;
+
+    public Gender getGenero() {
+        return genero;
     }
 
-    public void setIdUser(int idUser) {
-        this.idUser = idUser;
-    }
-*/
-    public Calendar getInitDate() {
-        return initDate;
+    public void setGenero(Gender genero) {
+        this.genero = genero;
     }
 
-    public void setInitDate(Calendar initDate) {
-        this.initDate = initDate;
+    public String getFechaInicio() {
+        return fechaInicio;
+    }
+
+    public void setFechaInicio(String fechaInicio) {
+        this.fechaInicio = fechaInicio;
+    }
+
+    public String getFechaFin() {
+        return fechaFin;
+    }
+
+    public void setFechaFin(String fechaFin) {
+        this.fechaFin = fechaFin;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
     }
 
     @Override

@@ -32,15 +32,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtDepCompList"
-                android:text="@string/txtDeporte">
+                android:id="@+id/txtCatCompList"
+                android:text="@string/txtCategoria">
             </TextView>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/txtCatCompList"
-                android:text="@string/txtCategoria">
+                android:id="@+id/txtOrgCompList"
+                android:text="@string/txtTipo">
             </TextView>
 
         </LinearLayout>

@@ -51,6 +51,9 @@
         <action
             android:id="@+id/toPantalla2"
             app:destination="@id/crearCompetencia2Fragment" />
+        <action
+            android:id="@+id/action_crearCompetencia3Fragment_to_misCompetencias"
+            app:destination="@id/misCompetencias" />
     </fragment>
     <fragment
         android:id="@+id/competenciasListFragment"

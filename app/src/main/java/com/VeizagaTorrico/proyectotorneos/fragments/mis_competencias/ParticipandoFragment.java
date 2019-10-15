@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import retrofit2.Call;
@@ -106,7 +107,7 @@ public class ParticipandoFragment extends Fragment {
 
     private void inflarRecycler() {
         //En call viene el tipo de dato que espero del servidor
-        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsParticipates(3);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
+        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsParticipates(5);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
         Log.d("request retrofit", call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {
             @Override
@@ -116,31 +117,32 @@ public class ParticipandoFragment extends Fragment {
                 if (response.code() == 200) {
                     //asigno a deportes lo que traje del servidor
                     competitions = response.body();
-                    Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
                 }
                 if(competitions != null){
-                    Log.d("COMPETITIONS",competitions.toString());
-                    adapter.setCompetencias(competitions);
-                    //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
-                    recycleComp.setAdapter(adapter);
-                    //LISTENER PARA EL ELEMENTO SELECCIONADO
-                    /*adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("deporte", competition);
-                            // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                            Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
-                        }
+                    try {
+                        Log.d("COMPETITIONS",competitions.toString());
+                        adapter.setCompetencias(competitions);
+                        //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                        recycleComp.setAdapter(adapter);
+                        //LISTENER PARA EL ELEMENTO SELECCIONADO
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("competencia", competition);
+                                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                                Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    );*/
                 }else {
                     Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }
-
             @Override
             public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
                 Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);

@@ -41,9 +41,9 @@ public class CompetenciasMinRecyclerViewAdapter extends RecyclerView.Adapter<Com
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
         CompetitionMin competitionMin = competencias.get(position);
-        holder.txtCategoria.setText(competitionMin.getTypesOrganization());
+        holder.txtOrg.setText(competitionMin.getTypesOrganization());
         holder.txtCompetencia.setText(competitionMin.getName());
-        holder.txtDeporte.setText(competitionMin.getName());
+        holder.txtCat.setText(competitionMin.getCategory());
     }
 
     @Override
@@ -67,14 +67,14 @@ public class CompetenciasMinRecyclerViewAdapter extends RecyclerView.Adapter<Com
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        TextView txtCompetencia, txtDeporte, txtCategoria;
+        TextView txtCompetencia, txtCat, txtOrg;
 
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             txtCompetencia = itemView.findViewById(R.id.txtNmbCompList);
-            txtDeporte = itemView.findViewById(R.id.txtDepCompList);
-            txtCategoria = itemView.findViewById(R.id.txtCatCompList);
+            txtCat = itemView.findViewById(R.id.txtCatCompList);
+            txtOrg = itemView.findViewById(R.id.txtOrgCompList);
 
 
         }

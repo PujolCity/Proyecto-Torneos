@@ -73,10 +73,8 @@ public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<Compet
         public Holder(@NonNull View itemView) {
             super(itemView);
             txtCompetencia = itemView.findViewById(R.id.txtNmbCompList);
-            txtDeporte = itemView.findViewById(R.id.txtDepCompList);
+            //txtDeporte = itemView.findViewById(R.id.txtDepCompList);
             txtCategoria = itemView.findViewById(R.id.txtCatCompList);
-
-
         }
     }
 }
