@@ -36,13 +36,14 @@ public class CompetidoresListFragment extends Fragment {
     private List<User> competidores;
     private View vista;
     private RecyclerView recycle;
+    private int idCompetencia;
 
 
     public CompetidoresListFragment() {
         // Required empty public constructor
     }
 
-    public static CompetidoresListFragment newInstance(String param1, String param2) {
+    public static CompetidoresListFragment newInstance() {
         CompetidoresListFragment fragment = new CompetidoresListFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -60,6 +61,7 @@ public class CompetidoresListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        idCompetencia = 4;
         vista = inflater.inflate(R.layout.fragment_competidores_list, container, false);
 
         userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
@@ -68,24 +70,29 @@ public class CompetidoresListFragment extends Fragment {
 
 
         //En call viene el tipo de dato que espero del servidor
-        Call<List<User>> call = userSrv.getUsers();
+        Call<List<User>> call = userSrv.getPetitionersByCompetition(idCompetencia);
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 Log.d("RESPONSE CODE USERS", Integer.toString(response.code()));
 
                 if(response.code() == 200){
-                    competidores = response.body();
-                    adapter.setCompetidores(competidores);
+                    try {
+                        competidores = response.body();
+                        adapter.setCompetidores(competidores);
+                        adapter.setIdComptencia(idCompetencia);
+                        recycle.setAdapter(adapter);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            recycle.setAdapter(adapter);
             }
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "No anda una mierda", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                 toast.show();
-                Log.d("onResponse", t.getMessage());
+                Log.d("onFailure", t.getMessage());
             }
         });
 
@@ -127,7 +134,7 @@ public class CompetidoresListFragment extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(vista.getContext());
         recycle.setLayoutManager(manager);
         recycle.setHasFixedSize(true);
-        adapter = new CompetidoresRecyclerViewAdapter(vista.getContext(),competidores);
+        adapter = new CompetidoresRecyclerViewAdapter(vista.getContext());
         recycle.setAdapter(adapter);
 
     }

@@ -44,4 +44,5 @@ public interface CompetitionSrv {
 
     @GET(ConstantURL.BASE_URL + "competitions/filter")
     Call<List<CompetitionMin>> findCompetitionsByFilters(@QueryMap Map<String,String> filters);
+
 }
