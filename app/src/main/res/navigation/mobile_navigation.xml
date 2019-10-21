@@ -120,8 +120,8 @@
             android:id="@+id/action_organizandoFragment_to_participandoFragment"
             app:destination="@id/participandoFragment" />
         <action
-            android:id="@+id/action_organizandoFragment_to_competidoresListFragment"
-            app:destination="@id/competidoresListFragment" />
+            android:id="@+id/action_organizandoFragment_to_detalleOrganizandoFragment"
+            app:destination="@id/detalleOrganizandoFragment" />
     </fragment>
     <fragment
         android:id="@+id/siguiendoFragment"
@@ -132,5 +132,10 @@
             android:id="@+id/action_siguiendoFragment_to_participandoFragment"
             app:destination="@id/participandoFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/detalleOrganizandoFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment"
+        android:label="A Organizar!!"
+        tools:layout="@layout/fragment_detalle_organizando" />
 
 </navigation>

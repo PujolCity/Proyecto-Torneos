@@ -18,6 +18,11 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.VeizagaTorrico.proyectotorneos.fragments.InicioFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CargasDetalleFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresDetalleFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EncuentrosDetalleFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralDetalleFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
@@ -42,7 +47,12 @@ public class NavigationMainActivity extends AppCompatActivity
         ParticipandoFragment.OnFragmentInteractionListener,
         SiguiendoFragment.OnFragmentInteractionListener,
         OrganizandoFragment.OnFragmentInteractionListener,
-        FiltroFragment.OnFragmentInteractionListener {
+        FiltroFragment.OnFragmentInteractionListener,
+        CargasDetalleFragment.OnFragmentInteractionListener,
+        CompetidoresDetalleFragment.OnFragmentInteractionListener,
+        DetalleOrganizandoFragment.OnFragmentInteractionListener,
+        EncuentrosDetalleFragment.OnFragmentInteractionListener,
+        GeneralDetalleFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 

@@ -7,8 +7,16 @@ import java.io.Serializable;
 
     public class CompetitionMin implements Serializable {
 
+        /*@SerializedName("id")
+        private int id;
+        */
+
         @SerializedName("nombre")
         private String name;
+
+        /*@SerializedName("deporte")
+        private String deporte;
+        */
 
         @SerializedName("categoria")
         private String category;
@@ -21,6 +29,10 @@ import java.io.Serializable;
 
         @SerializedName("genero")
         private String genero;
+
+        /*@SerializedName("rol")
+        private String rol;
+        */
 
 
         public CompetitionMin(String name, String category, String typesOrganization, String ciudad, String genero) {
