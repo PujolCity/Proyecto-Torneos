@@ -26,6 +26,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralD
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
+import com.VeizagaTorrico.proyectotorneos.notification.ManagerToken;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,6 +34,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 
 public class NavigationMainActivity extends AppCompatActivity
@@ -67,6 +69,7 @@ public class NavigationMainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
+     //   Log.d("Prob SHAREDPREFERENCES", ManagerToken.getInstance().getTokenInternal(this));
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "150306296385",
+    "firebase_url": "https://proyectotorneosfcm.firebaseio.com",
+    "project_id": "proyectotorneosfcm",
+    "storage_bucket": "proyectotorneosfcm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:150306296385:android:3069290ca6f9063f25acc0",
+        "android_client_info": {
+          "package_name": "com.VeizagaTorrico.proyectotorneos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "150306296385-9lejbsb4qt09g0dee22g6e8gr2dg568v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn2tkZQcw3sX97nR8OAu67qDabdXobYRY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "150306296385-9lejbsb4qt09g0dee22g6e8gr2dg568v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
