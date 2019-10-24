@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,6 +50,7 @@ public class GeneralDetalleFragment extends Fragment {
 
         initElements();
 
+        Log.d("competencia",this.competencia.toString());
         try{
             nmb.setText(competencia.getName());
             cat.setText(competencia.getCategory());

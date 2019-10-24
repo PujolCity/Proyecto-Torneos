@@ -89,15 +89,23 @@ public class DetalleOrganizandoFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
     public void llenarPager() {
-        //detalleCompListFragment
         CompetitionMin competition = (CompetitionMin) getArguments().getSerializable("competencia");
+
         GeneralDetalleFragment general = new GeneralDetalleFragment();
+        CompetidoresDetalleFragment competidoresDetalleFragment = new CompetidoresDetalleFragment();
+        CargasDetalleFragment cargasDetalleFragment = new CargasDetalleFragment();
+        EncuentrosDetalleFragment encuentrosDetalleFragment = new EncuentrosDetalleFragment();
+
         adapter = new ViewPagerAdapter(getChildFragmentManager());
+
         adapter.addFragment(general,"Info General");
         general.setCompetencia(competition);
-        adapter.addFragment(new CompetidoresDetalleFragment(),"Competidores");
-        adapter.addFragment(new CargasDetalleFragment(),"Cargas");
-        adapter.addFragment(new EncuentrosDetalleFragment(),"Encuentros");
+
+        adapter.addFragment(competidoresDetalleFragment,"Competidores");
+        competidoresDetalleFragment.setCompetencia(competition);
+
+        adapter.addFragment(cargasDetalleFragment,"Cargas");
+        adapter.addFragment(encuentrosDetalleFragment,"Encuentros");
 
         this.pager.setAdapter(adapter);
     }

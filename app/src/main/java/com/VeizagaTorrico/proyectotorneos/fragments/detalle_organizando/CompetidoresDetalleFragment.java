@@ -5,18 +5,42 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetidoresRecyclerViewAdapter;
+import com.VeizagaTorrico.proyectotorneos.models.Competition;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.User;
+import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CompetidoresDetalleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private UserSrv userSrv;
+    private List<User> competidores;
     private View vista;
+    private RecyclerView recycle;
+    private CompetitionMin competencia;
+    private ImageButton solicitudes;
+    private CompetidoresRecyclerViewAdapter adapter;
 
     public CompetidoresDetalleFragment() {
         // Required empty public constructor
@@ -39,8 +63,69 @@ public class CompetidoresDetalleFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competidores_detalle, container, false);
+        initElement();
+
+        Log.d("otr competencia",this.competencia.toString());
+
+        solicitudes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("competencia", competencia);
+
+                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
+
+            }
+        });
+
+        Call<List<User>> call = userSrv.getCompetidoresByCompetencia(competencia.getId());
+
+        Log.d("call competencia",call.request().url().toString());
+
+        call.enqueue(new Callback<List<User>>() {
+            @Override
+            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+                Log.d("RESPONSE CODE USERS", Integer.toString(response.code()));
+
+                if(response.code() == 200){
+                    try {
+                        competidores = response.body();
+                        Log.d("COMPETIDORES",competidores.toString());
+
+                        adapter.setCompetidores(competidores);
+                        recycle.setAdapter(adapter);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<User>> call, Throwable t) {
+                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.d("onFailure", t.getMessage());
+            }
+        });
 
         return vista;
+    }
+
+    private void initElement() {
+        userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
+        competidores = new ArrayList<>();
+        recycle = vista.findViewById(R.id.recyclerCompetidores);
+        solicitudes = vista.findViewById(R.id.btnSolicitudes);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(vista.getContext());
+        recycle.setLayoutManager(manager);
+        recycle.setHasFixedSize(true);
+        adapter = new CompetidoresRecyclerViewAdapter(vista.getContext());
+        recycle.setAdapter(adapter);
+    }
+
+    public void setCompetencia(CompetitionMin competencia) {
+        this.competencia = competencia;
     }
 
     public void onButtonPressed(Uri uri) {

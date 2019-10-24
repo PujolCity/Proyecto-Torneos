@@ -28,4 +28,8 @@ public interface UserSrv {
 
     @POST(ConstantURL.BASE_URL + "add-participate")
     Call<Success> acceptPetitionUser(@Body Map<String,String> userComp);
+
+    @GET(ConstantURL.BASE_URL + "competitors-competition")
+    Call<List<User>> getCompetidoresByCompetencia(@Query ("idCompetencia") int idCompetencia);
+
 }

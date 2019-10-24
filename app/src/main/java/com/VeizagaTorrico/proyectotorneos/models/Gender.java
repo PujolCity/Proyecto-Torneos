@@ -3,24 +3,15 @@ package com.VeizagaTorrico.proyectotorneos.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Gender implements Serializable {
-
-    @SerializedName("id")
-    private int id;
 
     @SerializedName("nombre")
     private String nombre;
 
-    public Gender() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+    public Gender(String nombre) {
+        this.nombre = nombre;
     }
 
     public String getNombre() {
@@ -36,4 +27,16 @@ public class Gender implements Serializable {
         return nombre;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Gender)) return false;
+        Gender gender = (Gender) o;
+        return Objects.equals(nombre, gender.nombre);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nombre);
+    }
 }

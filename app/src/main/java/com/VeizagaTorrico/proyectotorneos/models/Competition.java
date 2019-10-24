@@ -3,11 +3,7 @@ package com.VeizagaTorrico.proyectotorneos.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Objects;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 
 public class Competition implements Serializable {
@@ -35,6 +31,7 @@ public class Competition implements Serializable {
 
     @SerializedName("ciudad")
     private String ciudad;
+
    /* @SerializedName("idUser")
     private int idUser;
 */

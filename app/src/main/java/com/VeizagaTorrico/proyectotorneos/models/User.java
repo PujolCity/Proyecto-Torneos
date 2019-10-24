@@ -8,6 +8,9 @@ public class User {
     @SerializedName("id")
     private int id;
 
+    @SerializedName("alias")
+    private String alias;
+
     @SerializedName("nombreUsuario")
     private String nombreUsuario;
 
@@ -24,13 +27,14 @@ public class User {
     private String password;
 
 
-    public User(int id, String nombreUsuario, String nombre, String apellido, String email, String password) {
+    public User(int id, String nombreUsuario, String nombre, String apellido, String alias, String email, String password) {
         this.id = id;
         this.nombreUsuario = nombreUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
         this.password = password;
+        this.alias = alias;
     }
 
     public int getId() {
@@ -79,6 +83,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getAlias() {
+        return alias;
+    }
+
+    public void setAlias(String alias) {
+        this.alias = alias;
     }
 
     @Override

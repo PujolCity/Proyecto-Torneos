@@ -96,6 +96,7 @@ public class OrganizandoFragment extends Fragment {
     }
 
 
+
     private void initAdapter(){
         // COSAS PARA LLENAR El RECYCLERVIEW
         competitions = new ArrayList<>();

@@ -45,7 +45,6 @@ public class FiltroFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private View vista;
-    private CheckBox checkNombre, checkDeporte, checkCategoria,checkOrganizacion,checkCiudad,checkGenero;
     private Spinner spnnrDeporte, spnnrCategoria, spnnrOrganizacion, spnnrGenero;
     private EditText etNombre, etCiudad;
     private Button btnSiguiente;
@@ -77,75 +76,17 @@ public class FiltroFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_filtro, container, false);
+
         initElements();
+        llenarSpinnerDeporte();
+        llenarSpinnerCategoriaByServer(0);
+        llenarSpinnerOrganizacion();
+        llenarSpinnerGeneros();
 
-        checkNombre.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                etNombre.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-            }
-        });
-
-        checkDeporte.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                spnnrDeporte.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-                sportsSrv = new RetrofitAdapter().connectionEnable().create(SportsSrv.class);
-                if(checkDeporte.isChecked()){
-                    llenarSpinnerDeporte();
-                }else {
-                    if(checkCategoria.isChecked()){
-                        llenarSpinnerCategoriaByServer();
-                    }
-                }
-            }
-        });
-
-        checkCategoria.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                spnnrCategoria.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-                categorySrv = new RetrofitAdapter().connectionEnable().create(CategorySrv.class);
-
-                if(checkDeporte.isChecked()){
-                    llenarSpinnerCategoriaByDeporte();
-                }else {
-                    llenarSpinnerCategoriaByServer();
-                }
-            }
-        });
-
-        checkCiudad.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                etCiudad.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-            }
-        });
-
-        checkOrganizacion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                spnnrOrganizacion.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-                orgSrv = new RetrofitAdapter().connectionEnable().create(TypesOrganizationSrv.class);
-                llenarSpinnerOrganizacion();
-
-            }
-        });
-
-        checkGenero.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                spnnrGenero.setVisibility(b ? View.VISIBLE : View.INVISIBLE);
-                genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
-
-                llenarSpinnerGeneros();
-            }
-        });
 
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(checkNombre.isChecked()) {
                     try {
                         nombreCompetencia = etNombre.getText().toString();
                         if(!nombreCompetencia.isEmpty())
@@ -153,49 +94,51 @@ public class FiltroFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                try {
+                    if(!deporte.isEmpty()){
+                        filtros.put("deporte",deporte);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if(checkDeporte.isChecked()){
-                    filtros.put("deporte",deporte);
+                try {
+
+                    if(!categoria.isEmpty()){
+                        filtros.put("categoria",categoria);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if(checkCategoria.isChecked()){
-                    filtros.put("categoria",categoria);
-                }
-                if(checkCiudad.isChecked()){
-                    try{
-                        ciudad = etCiudad.getText().toString();
-                        if(!ciudad.isEmpty())
-                            filtros.put("ciudad",ciudad);
+                try{
+                    ciudad = etCiudad.getText().toString();
+                    if(!ciudad.isEmpty())
+                        filtros.put("ciudad",ciudad);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                try {
+                    if(!organizacion.isEmpty()){
+                        filtros.put("tipo_organizacion",organizacion);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if(checkOrganizacion.isChecked()){
-                    filtros.put("tipo_organizacion",organizacion);
+                try {
+                    if(!genero.isEmpty()){
+                        filtros.put("genero",genero);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                if(checkGenero.isChecked()){
-                    filtros.put("genero",genero);
-                }
-                if(validar()) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("filtros",(Serializable) filtros);
-                    Navigation.findNavController(vista).navigate(R.id.competenciasListFragment, bundle);
-                }else {
-                    Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
+
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("filtros",(Serializable) filtros);
+                Navigation.findNavController(vista).navigate(R.id.competenciasListFragment, bundle);
             }
         });
         return vista;
     }
 
-    private boolean validar() {
-        if(checkNombre.isChecked() && nombreCompetencia.isEmpty())
-            return  false;
-        if(checkCiudad.isChecked() && ciudad.isEmpty())
-            return false;
-
-        return true;
-    }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
@@ -225,15 +168,16 @@ public class FiltroFragment extends Fragment {
     }
 
     private void initElements() {
+        Category category = new Category(0,"Seleccione..."," ",0,null);
         categorias = new ArrayList<>();
-        filtros = new HashMap<>();
+        categorias.add(category);
 
-        checkNombre = vista.findViewById(R.id.checkNombre);
-        checkDeporte = vista.findViewById(R.id.checkDeporte);
-        checkCategoria = vista.findViewById(R.id.checkCategoria);
-        checkCiudad= vista.findViewById(R.id.checkCiudad);
-        checkOrganizacion = vista.findViewById(R.id.checkOrganizacion);
-        checkGenero = vista.findViewById(R.id.checkGenero);
+        filtros = new HashMap<>();
+        categorySrv = new RetrofitAdapter().connectionEnable().create(CategorySrv.class);
+        genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
+        orgSrv = new RetrofitAdapter().connectionEnable().create(TypesOrganizationSrv.class);
+        sportsSrv = new RetrofitAdapter().connectionEnable().create(SportsSrv.class);
+
         etCiudad = vista.findViewById(R.id.etCiudad);
         etNombre = vista.findViewById(R.id.etNombre);
         spnnrCategoria = vista.findViewById(R.id.spnnrCategoria);
@@ -249,10 +193,12 @@ public class FiltroFragment extends Fragment {
         call.enqueue(new Callback<List<TypesOrganization>>() {
             @Override
             public void onResponse(Call<List<TypesOrganization>> call, Response<List<TypesOrganization>> response) {
-                List<TypesOrganization> tipos;
+                List<TypesOrganization> tipos = new ArrayList<>();
+                TypesOrganization tipo = new TypesOrganization(0,"Seleccione..","");
+                tipos.add(tipo);
                 if(response.code() == 200) {
                     try {
-                        tipos = response.body();
+                        tipos.addAll(response.body());
                         Log.d("RESPONSECODE OrgActvty", Integer.toString(response.code()));
                         ArrayAdapter<TypesOrganization> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, tipos);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -262,7 +208,12 @@ public class FiltroFragment extends Fragment {
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 TypesOrganization org = (TypesOrganization) spnnrOrganizacion.getSelectedItem();
                                 Log.d("ItemSelected", org.getName());
-                                organizacion = Integer.toString(org.getId());
+                                if(org.getId() != 0){
+                                    organizacion = Integer.toString(org.getId());
+                                }else {
+                                    organizacion = "";
+                                }
+
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -289,12 +240,14 @@ public class FiltroFragment extends Fragment {
         call.enqueue(new Callback<List<Sport>>() {
             @Override
             public void onResponse(Call<List<Sport>> call, Response<List<Sport>> response) {
-                List<Sport> deportes;
+                List<Sport> deportes = new ArrayList<>();
+                Sport sport = new Sport(0,"Seleccione...");
+                deportes.add(sport);
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     try{
                         //asigno a deportes lo que traje del servidor
-                        deportes = response.body();
+                        deportes.addAll(response.body());
                         Log.d("RESPONSE CODE",  Integer.toString(response.code()) );
                         // creo el adapter para el spinnerDeporte y asigno el origen de los datos para el adaptador del spinner
                         ArrayAdapter<Sport> adapterDeporte = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, deportes);
@@ -310,9 +263,14 @@ public class FiltroFragment extends Fragment {
                                 Sport dep;
                                 //elemento obtenido del spinner lo asigno a deporte y traigo la lista de categories que tiene
                                 dep = (Sport) spnnrDeporte.getSelectedItem();
-                                categorias = dep.getCategories();
-                                llenarSpinnerCategoriaByDeporte();
-                                deporte = Integer.toString(dep.getId());
+                                if(dep.getId() != 0){
+                                    categorias = dep.getCategories();
+                                    llenarSpinnerCategoriaByServer(dep.getId());
+                                    deporte = Integer.toString(dep.getId());
+                                } else {
+                                    deporte = "";
+                                    llenarSpinnerCategoriaByServer(0);
+                                }
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -332,41 +290,28 @@ public class FiltroFragment extends Fragment {
         });
     }
 
-
-    private void llenarSpinnerCategoriaByDeporte() {
-        try {
-            ArrayAdapter<Category> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,categorias);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spnnrCategoria.setAdapter(adapter);
-            spnnrCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    Category category = (Category) spnnrCategoria.getSelectedItem();
-                    Log.d("Categoria Selected",category.getNombreCat());
-                    categoria = Integer.toString(category.getId());
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
-        } catch (Exception e) {
-            e.printStackTrace();
+    private void llenarSpinnerCategoriaByServer(int idDeporte) {
+        Call<List<Category>> call;
+        if(idDeporte == 0){
+            call = categorySrv.getCategorias();
+        }else {
+            call = categorySrv.getCategoriasDeporte(idDeporte);
         }
-    }
-
-    private void llenarSpinnerCategoriaByServer() {
         //En call viene el tipo de dato que espero del servidor
-        Call<List<Category>> call = categorySrv.getCategorias();
         Log.d("request categoria", call.request().url().toString());
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
-                List<Category> categorias;
+                List<Category> categorias = new ArrayList<>();
+                Category category = new Category(0,"Seleccione..."," ",0,null);
+                categorias.add(category);
+
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     try{
                         //asigno a deportes lo que traje del servidor
-                        categorias = response.body();
+                        categorias.addAll(response.body());
+
                         Log.d("RESPONSE CATEGORY CODE", response.body().toString() );//Integer.toString(response.code())
                         // creo el adapter para el spinnerDeporte y asigno el origen de los datos para el adaptador del spinner
                         ArrayAdapter<Category> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, categorias);
@@ -380,7 +325,12 @@ public class FiltroFragment extends Fragment {
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 Category category;
                                 category = (Category) spnnrCategoria.getSelectedItem();
-                                categoria = Integer.toString(category.getId());
+                                if(category.getId() != 0){
+                                    categoria = Integer.toString(category.getId());
+                                }else {
+                                    categoria = "";
+                                }
+
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -408,12 +358,15 @@ public class FiltroFragment extends Fragment {
         call.enqueue(new Callback<List<Gender>>() {
             @Override
             public void onResponse(Call<List<Gender>> call, Response<List<Gender>> response) {
-                List<Gender> generos;
+                List<Gender> generos = new ArrayList<>();
+                Gender gender = new Gender("Seleccione...");
+                generos.add(gender);
+
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     try{
                         //asigno a deportes lo que traje del servidor
-                        generos = response.body();
+                        generos.addAll(response.body());
                         Log.d("RESPONSE GENDER CODE",  Integer.toString(response.code()));
                         // creo el adapter para el spinnerDeporte y asigno el origen de los datos para el adaptador del spinner
                         ArrayAdapter<Gender> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, generos);
@@ -426,9 +379,14 @@ public class FiltroFragment extends Fragment {
                         spnnrGenero.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                Gender gender;
-                                gender = (Gender) spnnrGenero.getSelectedItem();
-                                genero = "'" + gender.getNombre() + "'" ;
+                                Gender gndr;
+                                Gender gender = new Gender("Seleccione...");
+                                gndr = (Gender) spnnrGenero.getSelectedItem();
+                                if(!gndr.equals(gender)){
+                                    genero = "'" + gndr.getNombre() + "'" ;
+                                }else {
+                                    genero = "";
+                                }
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {

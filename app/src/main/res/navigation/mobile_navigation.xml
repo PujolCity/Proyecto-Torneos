@@ -136,6 +136,45 @@
         android:id="@+id/detalleOrganizandoFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment"
         android:label="A Organizar!!"
-        tools:layout="@layout/fragment_detalle_organizando" />
+        tools:layout="@layout/fragment_detalle_organizando" >
+        <action
+            android:id="@+id/action_detalleOrganizandoFragment_to_generalDetalleFragment"
+            app:destination="@id/generalDetalleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cargasDetalleFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CargasDetalleFragment"
+        android:label="fragment_cargas_detalle"
+        tools:layout="@layout/fragment_cargas_detalle" >
+        <action
+            android:id="@+id/action_cargasDetalleFragment_to_encuentrosDetalleFragment"
+            app:destination="@id/encuentrosDetalleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/competidoresDetalleFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresDetalleFragment"
+        android:label="fragment_competidores_detalle"
+        tools:layout="@layout/fragment_competidores_detalle" >
+        <action
+            android:id="@+id/action_competidoresDetalleFragment_to_competidoresListFragment"
+            app:destination="@id/competidoresListFragment" />
+        <action
+            android:id="@+id/action_competidoresDetalleFragment_to_cargasDetalleFragment"
+            app:destination="@id/cargasDetalleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/generalDetalleFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralDetalleFragment"
+        android:label="fragment_general_detalle"
+        tools:layout="@layout/fragment_general_detalle" >
+        <action
+            android:id="@+id/action_generalDetalleFragment_to_competidoresDetalleFragment"
+            app:destination="@id/competidoresDetalleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/encuentrosDetalleFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EncuentrosDetalleFragment"
+        android:label="fragment_encuentros_detalle"
+        tools:layout="@layout/fragment_encuentros_detalle" />
 
 </navigation>

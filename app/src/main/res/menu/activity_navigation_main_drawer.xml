@@ -16,11 +16,6 @@
             android:id="@+id/filtroFragment"
             android:icon="@drawable/baseline_emoji_events_black_18dp"
             android:title="@string/menu_Competencias"/>
-        <item
-            android:id="@+id/competidoresListFragment"
-            android:icon="@drawable/ic_inicio"
-            android:title="@string/menu_competidores" />
-
     </group>
 
     <item android:title="Communicate">

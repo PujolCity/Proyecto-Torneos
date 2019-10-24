@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        >
+        <TextView
+            android:id="@+id/usrAlias"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Alias"
+            android:gravity="center"
+            android:textSize="25sp">
+
+        </TextView>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+
+        <TextView
+            android:id="@+id/usrNombreUsuario"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Nombre Usuario">
+
+        </TextView>
+        <TextView
+            android:id="@+id/usrNombre"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Nombre">
+        </TextView>
+        <TextView
+            android:id="@+id/usrApellido"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Apellido">
+        </TextView>
+
+        <TextView
+            android:id="@+id/usrCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Correo">
+        </TextView>
+    </LinearLayout>
+
+</LinearLayout>

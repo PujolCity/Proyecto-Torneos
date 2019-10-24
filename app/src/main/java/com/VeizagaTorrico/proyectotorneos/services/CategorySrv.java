@@ -7,9 +7,15 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 public interface CategorySrv {
 
     @GET(ConstantURL.BASE_URL + "categories")
     Call<List<Category>> getCategorias();
+
+    @GET(ConstantURL.BASE_URL + "categoriesBySport")
+    Call<List<Category>> getCategoriasDeporte(@Query("idDeporte") int idDeporte);
+
+
 }

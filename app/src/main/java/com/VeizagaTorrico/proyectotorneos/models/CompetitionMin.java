@@ -7,16 +7,14 @@ import java.io.Serializable;
 
     public class CompetitionMin implements Serializable {
 
-        /*@SerializedName("id")
+        @SerializedName("id")
         private int id;
-        */
 
         @SerializedName("nombre")
         private String name;
 
-        /*@SerializedName("deporte")
+        @SerializedName("deporte")
         private String deporte;
-        */
 
         @SerializedName("categoria")
         private String category;
@@ -30,17 +28,19 @@ import java.io.Serializable;
         @SerializedName("genero")
         private String genero;
 
-        /*@SerializedName("rol")
+        @SerializedName("rol")
         private String rol;
-        */
 
 
-        public CompetitionMin(String name, String category, String typesOrganization, String ciudad, String genero) {
+        public CompetitionMin(int id, String name, String deporte, String category, String typesOrganization, String ciudad, String genero, String rol) {
+            this.id = id;
             this.name = name;
+            this.deporte = deporte;
             this.category = category;
             this.typesOrganization = typesOrganization;
             this.ciudad = ciudad;
             this.genero = genero;
+            this.rol = rol;
         }
 
         public String getName() {
@@ -77,6 +77,30 @@ import java.io.Serializable;
 
         public void setGenero(String genero) {
             this.genero = genero;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public String getDeporte() {
+            return deporte;
+        }
+
+        public void setDeporte(String deporte) {
+            this.deporte = deporte;
+        }
+
+        public String getRol() {
+            return rol;
+        }
+
+        public void setRol(String rol) {
+            this.rol = rol;
         }
 
         public void setTypesOrganization(String typesOrganization) {

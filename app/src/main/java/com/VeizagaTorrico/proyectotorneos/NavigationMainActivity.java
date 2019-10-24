@@ -73,7 +73,7 @@ public class NavigationMainActivity extends AppCompatActivity
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.competidoresListFragment, R.id.misCompetencias)
+                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

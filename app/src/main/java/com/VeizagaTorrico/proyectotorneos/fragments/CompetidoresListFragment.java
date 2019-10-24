@@ -19,7 +19,9 @@ import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
-import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetidoresRecyclerViewAdapter;
+import com.VeizagaTorrico.proyectotorneos.graphics_adapters.SolicitudesRecyclerViewAdapter;
+import com.VeizagaTorrico.proyectotorneos.models.Competition;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 
@@ -31,12 +33,12 @@ public class CompetidoresListFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private SolicitudesRecyclerViewAdapter adapter;
     private UserSrv userSrv;
-    private CompetidoresRecyclerViewAdapter adapter;
     private List<User> competidores;
     private View vista;
     private RecyclerView recycle;
-    private int idCompetencia;
+    private CompetitionMin competencia;
 
 
     public CompetidoresListFragment() {
@@ -61,16 +63,14 @@ public class CompetidoresListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        idCompetencia = 4;
         vista = inflater.inflate(R.layout.fragment_competidores_list, container, false);
-
         userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
-
+        this.competencia = (CompetitionMin) getArguments().getSerializable("competencia");
         initAdapter();
 
 
         //En call viene el tipo de dato que espero del servidor
-        Call<List<User>> call = userSrv.getPetitionersByCompetition(idCompetencia);
+        Call<List<User>> call = userSrv.getPetitionersByCompetition(competencia.getId());
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -80,7 +80,7 @@ public class CompetidoresListFragment extends Fragment {
                     try {
                         competidores = response.body();
                         adapter.setCompetidores(competidores);
-                        adapter.setIdComptencia(idCompetencia);
+                        adapter.setIdComptencia(competencia.getId());
                         recycle.setAdapter(adapter);
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -97,6 +97,10 @@ public class CompetidoresListFragment extends Fragment {
         });
 
         return vista;
+    }
+
+    public void setCompetencia(CompetitionMin competencia) {
+        this.competencia = competencia;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -134,7 +138,7 @@ public class CompetidoresListFragment extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(vista.getContext());
         recycle.setLayoutManager(manager);
         recycle.setHasFixedSize(true);
-        adapter = new CompetidoresRecyclerViewAdapter(vista.getContext());
+        adapter = new SolicitudesRecyclerViewAdapter(vista.getContext());
         recycle.setAdapter(adapter);
 
     }
