@@ -120,26 +120,37 @@ public class OrganizandoFragment extends Fragment {
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     //asigno a deportes lo que traje del servidor
-                    competitions = response.body();
-                    Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
-                }
-                if(competitions != null){
-                    Log.d("COMPETITIONS",competitions.toString());
-                    adapter.setCompetencias(competitions);
-                    //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
-                    recycleComp.setAdapter(adapter);
-                    //LISTENER PARA EL ELEMENTO SELECCIONADO
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("competencia", competition);
-                            // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                            Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
-                        }
+                    try {
+                        competitions = response.body();
+                        Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    );
+                }
+
+                if(competitions != null){
+                    try {
+
+                        Log.d("COMPETITIONS",competitions.toString());
+                        adapter.setCompetencias(competitions);
+                        //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                        recycleComp.setAdapter(adapter);
+                        //LISTENER PARA EL ELEMENTO SELECCIONADO
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("competencia", competition);
+                                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                                Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }else {
                     Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
@@ -148,10 +159,14 @@ public class OrganizandoFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onFailure", t.getMessage());
-            }
+                try{
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }}
         });
     }
 }

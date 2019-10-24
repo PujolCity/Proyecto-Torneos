@@ -136,7 +136,7 @@ public class CompetenciasListFragment extends Fragment {
         bundle.putSerializable("competencia", competition);
 
         // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-        Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
+        Navigation.findNavController(vista).navigate(R.id.detalleCompetenciaFragment, bundle);
     }
 
 

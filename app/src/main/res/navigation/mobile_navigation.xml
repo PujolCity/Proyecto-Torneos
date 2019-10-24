@@ -61,21 +61,17 @@
         android:label="Competencias"
         tools:layout="@layout/fragment_competencias_list" >
         <action
-            android:id="@+id/action_competenciasListFragment_to_detalleCompListFragment"
-            app:destination="@id/detalleCompListFragment" />
-        <action
             android:id="@+id/action_competenciasListFragment_to_filtroFragment"
             app:destination="@id/filtroFragment" />
+        <action
+            android:id="@+id/action_competenciasListFragment_to_detalleCompetenciaFragment"
+            app:destination="@id/detalleCompetenciaFragment" />
     </fragment>
     <fragment
         android:id="@+id/detalleCompListFragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.DetalleCompListFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.InfoGeneralCompetenciaFragment"
         android:label="Detalle"
-        tools:layout="@layout/fragment_detalle_competencias" >
-        <action
-            android:id="@+id/action_detalleCompListFragment_to_competenciasListFragment"
-            app:destination="@id/competenciasListFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_info_general_competencia" />
     <fragment
         android:id="@+id/competidoresListFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.CompetidoresListFragment"
@@ -176,5 +172,14 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EncuentrosDetalleFragment"
         android:label="fragment_encuentros_detalle"
         tools:layout="@layout/fragment_encuentros_detalle" />
+    <fragment
+        android:id="@+id/detalleCompetenciaFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.DetalleCompetenciaFragment"
+        android:label="Detalle"
+        tools:layout="@layout/fragment_detalle_competencia" >
+        <action
+            android:id="@+id/action_detalleCompetenciaFragment_to_competenciasListFragment"
+            app:destination="@id/competenciasListFragment" />
+    </fragment>
 
 </navigation>

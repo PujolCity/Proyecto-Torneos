@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
+package com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias;
 
 import android.content.Context;
 import android.net.Uri;
@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,22 +15,23 @@ import android.widget.TextView;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 
-public class GeneralDetalleFragment extends Fragment {
+
+public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private View vista;
-    private CompetitionMin competencia;
-    private ImageButton follow;
+    private CompetitionMin competition;
 
     private TextView nmb, cat, org, ciudad, genero;
+    private ImageButton follow;
+    private View vista;
 
-    public GeneralDetalleFragment() {
+    public InfoGeneralCompetenciaFragment() {
         // Required empty public constructor
     }
 
-    public static GeneralDetalleFragment newInstance() {
-        GeneralDetalleFragment fragment = new GeneralDetalleFragment();
+    public static InfoGeneralCompetenciaFragment newInstance() {
+        InfoGeneralCompetenciaFragment fragment = new InfoGeneralCompetenciaFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -50,19 +50,16 @@ public class GeneralDetalleFragment extends Fragment {
 
         initElements();
 
-        Log.d("competencia",this.competencia.toString());
         try{
-            nmb.setText(competencia.getName());
-            cat.setText(competencia.getCategory());
-            org.setText(competencia.getTypesOrganization());
-            ciudad.setText(competencia.getCiudad());
-            genero.setText(competencia.getGenero());
+            nmb.setText(competition.getName());
+            cat.setText(competition.getCategory());
+            org.setText(competition.getTypesOrganization());
+            ciudad.setText(competition.getCiudad());
+            genero.setText(competition.getGenero());
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return vista;
     }
 
@@ -72,8 +69,6 @@ public class GeneralDetalleFragment extends Fragment {
         org = vista.findViewById(R.id.txtOrgCompDet);
         ciudad = vista.findViewById(R.id.txtCityCompDet);
         genero = vista.findViewById(R.id.txtGenderCompDet);
-        follow = vista.findViewById(R.id.btnFollow);
-        follow.setVisibility(View.INVISIBLE);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -93,6 +88,10 @@ public class GeneralDetalleFragment extends Fragment {
         }
     }
 
+    public void setCompetencia(CompetitionMin competition) {
+        this.competition = competition;
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -103,7 +102,5 @@ public class GeneralDetalleFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    public void setCompetencia(CompetitionMin competencia) {
-        this.competencia = competencia;
-    }
+
 }

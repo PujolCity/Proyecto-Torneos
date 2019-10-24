@@ -10,7 +10,9 @@ import com.VeizagaTorrico.proyectotorneos.fragments.MisCompetenciasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia3Fragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.DetalleCompListFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.DetalleCompetenciaFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.EncuentrosFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.InfoGeneralCompetenciaFragment;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -18,6 +20,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.VeizagaTorrico.proyectotorneos.fragments.InicioFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.PosicionesFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CargasDetalleFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresDetalleFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment;
@@ -26,7 +29,6 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralD
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
-import com.VeizagaTorrico.proyectotorneos.notification.ManagerToken;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -34,7 +36,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.Menu;
 
 public class NavigationMainActivity extends AppCompatActivity
@@ -42,7 +43,7 @@ public class NavigationMainActivity extends AppCompatActivity
         CrearCompetencia2Fragment.OnFragmentInteractionListener ,
         CrearCompetencia3Fragment.OnFragmentInteractionListener ,
         CompetenciasListFragment.OnFragmentInteractionListener ,
-        DetalleCompListFragment.OnFragmentInteractionListener ,
+        InfoGeneralCompetenciaFragment.OnFragmentInteractionListener ,
         InicioFragment.OnFragmentInteractionListener,
         CompetidoresListFragment.OnFragmentInteractionListener,
         MisCompetenciasFragment.OnFragmentInteractionListener,
@@ -54,7 +55,10 @@ public class NavigationMainActivity extends AppCompatActivity
         CompetidoresDetalleFragment.OnFragmentInteractionListener,
         DetalleOrganizandoFragment.OnFragmentInteractionListener,
         EncuentrosDetalleFragment.OnFragmentInteractionListener,
-        GeneralDetalleFragment.OnFragmentInteractionListener {
+        GeneralDetalleFragment.OnFragmentInteractionListener,
+        DetalleCompetenciaFragment.OnFragmentInteractionListener,
+        EncuentrosFragment.OnFragmentInteractionListener,
+        PosicionesFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 

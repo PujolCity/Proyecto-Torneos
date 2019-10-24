@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias;
 
 import android.content.Context;
 import android.net.Uri;
@@ -9,27 +9,21 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.models.Competition;
-import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 
-
-public class DetalleCompListFragment extends Fragment {
+public class EncuentrosFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    private TextView nmb, cat, org, ciudad, genero;
-    private ImageButton follow;
     private View vista;
 
-    public DetalleCompListFragment() {
+    public EncuentrosFragment() {
         // Required empty public constructor
     }
-    public static DetalleCompListFragment newInstance(String param1, String param2) {
-        DetalleCompListFragment fragment = new DetalleCompListFragment();
+
+    public static EncuentrosFragment newInstance() {
+        EncuentrosFragment fragment = new EncuentrosFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -38,39 +32,14 @@ public class DetalleCompListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_detalle_competencias, container, false);
-
-        initElements();
-
-        CompetitionMin competition = (CompetitionMin) getArguments().getSerializable("competencia");
-
-        try{
-            nmb.setText(competition.getName());
-            cat.setText(competition.getCategory());
-            org.setText(competition.getTypesOrganization());
-            ciudad.setText(competition.getCiudad());
-            genero.setText(competition.getGenero());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        vista = inflater.inflate(R.layout.fragment_encuentros, container, false);
         return vista;
-    }
-
-    private void initElements() {
-        nmb = vista.findViewById(R.id.txtNmbCompDet);
-        cat = vista.findViewById(R.id.txtCatCompDet);
-        org = vista.findViewById(R.id.txtOrgCompDet);
-        ciudad = vista.findViewById(R.id.txtCityCompDet);
-        genero = vista.findViewById(R.id.txtGenderCompDet);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -99,6 +68,4 @@ public class DetalleCompListFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
-
-
 }

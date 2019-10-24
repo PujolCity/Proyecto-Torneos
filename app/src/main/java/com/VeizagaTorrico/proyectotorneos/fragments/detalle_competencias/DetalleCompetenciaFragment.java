@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
+package com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,22 +16,21 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.ViewPagerAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.google.android.material.tabs.TabLayout;
 
-public class DetalleOrganizandoFragment extends Fragment {
+
+public class DetalleCompetenciaFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
-
     private View vista;
     private ViewPagerAdapter adapter;
     private ViewPager pager;
     private TabLayout tabLayout;
 
-
-    public DetalleOrganizandoFragment() {
+    public DetalleCompetenciaFragment() {
         // Required empty public constructor
     }
 
-    public static DetalleOrganizandoFragment newInstance(String param1, String param2) {
-        DetalleOrganizandoFragment fragment = new DetalleOrganizandoFragment();
+    public static DetalleCompetenciaFragment newInstance() {
+        DetalleCompetenciaFragment fragment = new DetalleCompetenciaFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -46,9 +45,8 @@ public class DetalleOrganizandoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_detalle_organizando, container, false);
-
-        pager = vista.findViewById(R.id.pagerDetalle);
+        vista = inflater.inflate(R.layout.fragment_detalle_competencia, container, false);
+        pager = vista.findViewById(R.id.pagerCompetencias);
         llenarPager();
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
@@ -56,7 +54,7 @@ public class DetalleOrganizandoFragment extends Fragment {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
         });
-        tabLayout = vista.findViewById(R.id.tabLayoutDetalle);
+        tabLayout = vista.findViewById(R.id.tabLayoutCompetencias);
         tabLayout.setupWithViewPager(pager);
 
         return vista;
@@ -92,23 +90,20 @@ public class DetalleOrganizandoFragment extends Fragment {
     public void llenarPager() {
         CompetitionMin competition = (CompetitionMin) getArguments().getSerializable("competencia");
 
-        GeneralDetalleFragment general = new GeneralDetalleFragment();
-        CompetidoresDetalleFragment competidoresDetalleFragment = new CompetidoresDetalleFragment();
-        CargasDetalleFragment cargasDetalleFragment = new CargasDetalleFragment();
-        EncuentrosDetalleFragment encuentrosDetalleFragment = new EncuentrosDetalleFragment();
+        InfoGeneralCompetenciaFragment infoGeneral = new InfoGeneralCompetenciaFragment();
+        PosicionesFragment posicionesFragment = new PosicionesFragment();
+        EncuentrosFragment encuentrosFragment = new EncuentrosFragment();
 
         adapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        adapter.addFragment(general,"Info General");
-        general.setCompetencia(competition);
+        adapter.addFragment(infoGeneral,"Info General");
+        infoGeneral.setCompetencia(competition);
 
-        adapter.addFragment(competidoresDetalleFragment,"Competidores");
-        competidoresDetalleFragment.setCompetencia(competition);
+        adapter.addFragment(posicionesFragment, "Posiciones");
 
-        adapter.addFragment(cargasDetalleFragment,"Cargas");
-        adapter.addFragment(encuentrosDetalleFragment,"Encuentros");
+        adapter.addFragment(encuentrosFragment, "Encuentros");
 
         this.pager.setAdapter(adapter);
-    }
 
+    }
 }
