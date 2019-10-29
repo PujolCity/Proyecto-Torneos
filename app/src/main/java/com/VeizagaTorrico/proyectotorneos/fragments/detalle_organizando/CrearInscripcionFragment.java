@@ -12,20 +12,18 @@ import android.view.ViewGroup;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 
-public class CargasDetalleFragment extends Fragment {
+public class CrearInscripcionFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     private View vista;
 
-
-
-    public CargasDetalleFragment() {
+    public CrearInscripcionFragment() {
         // Required empty public constructor
     }
 
-    public static CargasDetalleFragment newInstance() {
-        CargasDetalleFragment fragment = new CargasDetalleFragment();
+    public static CrearInscripcionFragment newInstance() {
+        CrearInscripcionFragment fragment = new CrearInscripcionFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -34,13 +32,14 @@ public class CargasDetalleFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+       }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_cargas_detalle, container, false);
+        vista = inflater.inflate(R.layout.fragment_crear_inscripcion, container, false);
+
 
         return vista;
     }

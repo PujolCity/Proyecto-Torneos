@@ -82,9 +82,25 @@
         android:src="@drawable/baseline_thumb_up_black_18dp"
         android:tint="@color/cardview_light_background"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.658"
-        app:layout_constraintStart_toEndOf="@+id/txtNmbCompDet"
+        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/btnNoFollow"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="48dp"
+        android:backgroundTint="@color/colorDejarSeguir"
+        android:src="@drawable/baseline_thumb_down"
+        android:tint="@color/cardview_light_background"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/btnFollow"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="invisible">
+
     </ImageButton>
 
     <Button
@@ -100,7 +116,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </Button>
 
 

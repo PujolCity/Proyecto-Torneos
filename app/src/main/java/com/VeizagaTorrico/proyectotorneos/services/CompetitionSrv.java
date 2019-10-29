@@ -14,6 +14,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
@@ -44,5 +45,12 @@ public interface CompetitionSrv {
 
     @GET(ConstantURL.BASE_URL + "competitions/filter")
     Call<List<CompetitionMin>> findCompetitionsByFilters(@QueryMap Map<String,String> filters);
+
+    @PUT(ConstantURL.BASE_URL + "usercomp-rolfollow")
+    Call<Success> followCompetition(@Body Map<String,Integer> seguir);
+
+    @PUT(ConstantURL.BASE_URL + "usercomp-delfollow")
+    Call<Success> noFollowCompetition(@Body Map<String,Integer> noSeguir);
+
 
 }

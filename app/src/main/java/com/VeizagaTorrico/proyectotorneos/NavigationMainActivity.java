@@ -26,6 +26,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.Competid
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EncuentrosDetalleFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralDetalleFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_siguiendo.DetalleSiguiendoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
@@ -58,7 +59,8 @@ public class NavigationMainActivity extends AppCompatActivity
         GeneralDetalleFragment.OnFragmentInteractionListener,
         DetalleCompetenciaFragment.OnFragmentInteractionListener,
         EncuentrosFragment.OnFragmentInteractionListener,
-        PosicionesFragment.OnFragmentInteractionListener {
+        PosicionesFragment.OnFragmentInteractionListener,
+        DetalleSiguiendoFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 

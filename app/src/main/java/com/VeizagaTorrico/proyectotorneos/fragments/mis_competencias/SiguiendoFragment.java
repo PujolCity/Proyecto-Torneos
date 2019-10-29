@@ -41,7 +41,7 @@ public class SiguiendoFragment extends Fragment {
 
 
     public SiguiendoFragment() {
-        // Required empty public constructor
+
     }
     public static SiguiendoFragment newInstance() {
         SiguiendoFragment fragment = new SiguiendoFragment();
@@ -53,8 +53,7 @@ public class SiguiendoFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-        }
+
     }
 
     @Override
@@ -70,7 +69,6 @@ public class SiguiendoFragment extends Fragment {
         return vista;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -95,7 +93,6 @@ public class SiguiendoFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
@@ -137,7 +134,7 @@ public class SiguiendoFragment extends Fragment {
                             Bundle bundle = new Bundle();
                             bundle.putSerializable("competencia", competition);
                             // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                            Navigation.findNavController(vista).navigate(R.id.detalleCompListFragment, bundle);
+                            Navigation.findNavController(vista).navigate(R.id.detalleCompetenciaFragment, bundle);
                         }
                     }
                     );

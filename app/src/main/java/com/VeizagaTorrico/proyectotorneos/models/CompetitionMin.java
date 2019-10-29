@@ -109,9 +109,8 @@ import java.io.Serializable;
 
         @Override
         public String toString() {
-            return name;
+            return id + name +  deporte +  category +  typesOrganization + ciudad + genero + rol;
         }
-
-}
+    }
 
 

@@ -41,7 +41,7 @@ public class OrganizandoFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static OrganizandoFragment newInstance(String param1, String param2) {
+    public static OrganizandoFragment newInstance() {
         OrganizandoFragment fragment = new OrganizandoFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);

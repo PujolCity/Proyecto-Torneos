@@ -85,6 +85,17 @@ public class CrearCompetencia3Fragment extends Fragment {
              /*   Toast toast = Toast.makeText(getContext(), "Implementar servicio de creacion", Toast.LENGTH_SHORT);
                 toast.show();
                */
+                competencia.put("nombre",competition.getName());
+                competencia.put("fecha_ini",competition.getFechaInicio());
+                competencia.put("fecha_fin",competition.getFechaFin());
+                competencia.put("ciudad",competition.getCiudad());
+                competencia.put("genero",competition.getGenero().getNombre());
+                competencia.put("max_comp","20");
+                competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
+                competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
+                competencia.put("user_id","9");
+                Log.d("BODY" , competencia.toString());
+
                 if(hayGrupo) {
                     cantGrupos = etGrupo.getText().toString();
                     if(validarGrupo()){
@@ -93,6 +104,9 @@ public class CrearCompetencia3Fragment extends Fragment {
                         Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
                         toast.show();
                     }
+                } else {
+                    competencia.put("cant_grupos", "1");
+
                 }
                 Call<Competition> call = competitionSrv.createCompetition(competencia);
                 Log.d("Url",call.request().url().toString());
@@ -192,15 +206,6 @@ public class CrearCompetencia3Fragment extends Fragment {
                                      grupo.setVisibility(View.INVISIBLE);
                                      hayGrupo = false;
                                  }
-                                 competencia.put("nombre",competition.getName());
-                                 competencia.put("fecha_ini",competition.getFechaInicio());
-                                 competencia.put("fecha_fin",competition.getFechaFin());
-                                 competencia.put("ciudad",competition.getCiudad());
-                                 competencia.put("genero",competition.getGenero().getNombre());
-                                 competencia.put("max_comp","20");
-                                 competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
-                                 competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
-                                 competencia.put("user_id","9");
                              } catch (Exception e) {
                                  e.printStackTrace();
                              }

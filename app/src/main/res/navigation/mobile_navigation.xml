@@ -127,6 +127,9 @@
         <action
             android:id="@+id/action_siguiendoFragment_to_participandoFragment"
             app:destination="@id/participandoFragment" />
+        <action
+            android:id="@+id/action_siguiendoFragment_to_detalleSiguiendoFragment"
+            app:destination="@id/detalleSiguiendoFragment" />
     </fragment>
     <fragment
         android:id="@+id/detalleOrganizandoFragment"
@@ -181,5 +184,9 @@
             android:id="@+id/action_detalleCompetenciaFragment_to_competenciasListFragment"
             app:destination="@id/competenciasListFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/detalleSiguiendoFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_siguiendo.DetalleSiguiendoFragment"
+        android:label="DetalleSiguiendoFragment" />
 
 </navigation>

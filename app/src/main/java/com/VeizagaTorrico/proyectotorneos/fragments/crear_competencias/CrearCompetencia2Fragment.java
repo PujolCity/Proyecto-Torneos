@@ -26,8 +26,10 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.Category;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.Sport;
+import com.VeizagaTorrico.proyectotorneos.services.CategorySrv;
 import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class CrearCompetencia2Fragment extends Fragment {
@@ -39,6 +41,7 @@ public class CrearCompetencia2Fragment extends Fragment {
     private TextView txtDescripcion;
     private SportsSrv sportsSrv;
     private Button sigBtn;
+    private CategorySrv categorySrv;
 
     private Competition competencia;
     private View vista;
@@ -112,33 +115,10 @@ public class CrearCompetencia2Fragment extends Fragment {
                             Sport dep;
                             //elemento obtenido del spinner lo asigno a deporte y traigo la lista de categories que tiene
                             dep = (Sport) spinnerDeporte.getSelectedItem();
-                            categories = dep.getCategories();
 
-                            //creo el adapter para el spinnerCategorias
-                            ArrayAdapter<Category> adapterCategoria = new ArrayAdapter<Category>(vista.getContext(),android.R.layout.simple_spinner_item, categories);
+                            llenarSpinnerCategoriaByServer(dep.getId());
 
-                            //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
-                            adapterCategoria.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinnerCategoria.setAdapter(adapterCategoria);
-                            spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
-                                @Override
-                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                                    // EN ESTA LINEA ES DONDE RECIBE EL DATO DE OTRO FRAGMENT
-                                    competencia = (Competition) getArguments().getSerializable("competition");
-                                    Category cat;
-                                    // para mostrar la descripcion de la categoria
-                                    cat = (Category) spinnerCategoria.getSelectedItem();
-                                    txtDescripcion.setText(cat.getDescripcion());
-                                    if(cat != null)
-                                        competencia.setCategory(cat);
-                                    Log.d("A ver que trajo", competencia.toString());
-                                }
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {
-                                }
-                            });
+                            //categories = dep.getCategories();
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> adapterView) {
@@ -149,10 +129,14 @@ public class CrearCompetencia2Fragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<Sport>> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onFailure", t.getMessage());
+                try{
+                    Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
 
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
 
@@ -185,5 +169,69 @@ public class CrearCompetencia2Fragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
+
+    private void llenarSpinnerCategoriaByServer(int idDeporte) {
+        categorySrv = new RetrofitAdapter().connectionEnable().create(CategorySrv.class);
+
+        Call<List<Category>> call = categorySrv.getCategoriasDeporte(idDeporte);
+
+        //En call viene el tipo de dato que espero del servidor
+        Log.d("request categoria", call.request().url().toString());
+        call.enqueue(new Callback<List<Category>>() {
+            @Override
+            public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                List<Category> categorias = new ArrayList<>();
+                //codigo 200 si salio tdo bien
+                if (response.code() == 200) {
+                    try{
+                        //asigno a deportes lo que traje del servidor
+                        categorias = response.body();
+
+                        Log.d("RESPONSE CATEGORY CODE", Integer.toString(response.code()));
+                        // creo el adapter para el spinnerDeporte y asigno el origen de los datos para el adaptador del spinner
+                        ArrayAdapter<Category> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, categorias);
+                        //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        // seteo el adapter
+                        spinnerCategoria.setAdapter(adapter);
+                        // manejador del evento OnItemSelected
+                        spinnerCategoria.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                                // EN ESTA LINEA ES DONDE RECIBE EL DATO DE OTRO FRAGMENT
+                                competencia = (Competition) getArguments().getSerializable("competition");
+                                Category cat;
+                                // para mostrar la descripcion de la categoria
+                                cat = (Category) spinnerCategoria.getSelectedItem();
+                                txtDescripcion.setText(cat.getDescripcion());
+                                if(cat != null)
+                                    competencia.setCategory(cat);
+                                Log.d("A ver que trajo", competencia.getCategory().toString());
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<List<Category>> call, Throwable t) {
+                try{
+                    Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
+
 
 }
