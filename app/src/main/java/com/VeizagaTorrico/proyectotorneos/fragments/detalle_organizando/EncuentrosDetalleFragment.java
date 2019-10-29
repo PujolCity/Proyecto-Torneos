@@ -22,7 +22,7 @@ public class EncuentrosDetalleFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static EncuentrosDetalleFragment newInstance(String param1, String param2) {
+    public static EncuentrosDetalleFragment newInstance() {
         EncuentrosDetalleFragment fragment = new EncuentrosDetalleFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
