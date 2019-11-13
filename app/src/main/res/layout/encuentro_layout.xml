@@ -1,46 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="20dp">
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingTop="10dp"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/txtComp1"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="60dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_weight="2"
             android:text="competidor 1"
-            android:textSize="20sp">
+            android:textSize="15sp">
         </TextView>
 
         <EditText
             android:id="@+id/etResultadoC1"
-            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_width="45dp"
             android:layout_height="50dp"
-            android:layout_marginStart="20dp">
+            android:text="-"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:inputType="numberDecimal">
         </EditText>
 
         <EditText
             android:id="@+id/etResultadoC2"
-            android:layout_width="50dp"
+            android:layout_weight="1"
+            android:layout_width="45dp"
             android:layout_height="50dp"
-            android:layout_marginStart="20dp">
+            android:text="-"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:layout_marginStart="10dp"
+            android:inputType="numberDecimal">
         </EditText>
 
         <TextView
             android:id="@+id/txtComp2"
-            android:layout_width="110dp"
+            android:layout_weight="2"
+            android:layout_width="100dp"
             android:layout_height="60dp"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:text="competidor 2"
-            android:textSize="20sp">
+            android:textSize="15sp">
         </TextView>
 
+        <!--
+        <ImageButton
+            android:id="@+id/btnEditar"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:visibility="invisible"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:tint="@color/cardview_light_background">
+        </ImageButton>
+        -->
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

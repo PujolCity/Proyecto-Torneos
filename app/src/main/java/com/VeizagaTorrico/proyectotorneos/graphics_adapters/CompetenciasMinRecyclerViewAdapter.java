@@ -27,7 +27,11 @@ public class CompetenciasMinRecyclerViewAdapter extends RecyclerView.Adapter<Com
     }
 
     public void setCompetencias(List<CompetitionMin> competencias) {
-        this.competencias = competencias;
+        try {
+            this.competencias = competencias;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -40,10 +44,16 @@ public class CompetenciasMinRecyclerViewAdapter extends RecyclerView.Adapter<Com
 
     @Override
     public void onBindViewHolder(@NonNull Holder holder, int position) {
-        CompetitionMin competitionMin = competencias.get(position);
-        holder.txtOrg.setText(competitionMin.getTypesOrganization());
-        holder.txtCompetencia.setText(competitionMin.getName());
-        holder.txtCat.setText(competitionMin.getCategory());
+        try {
+            CompetitionMin competitionMin = competencias.get(position);
+            holder.txtOrg.setText(competitionMin.getTypesOrganization());
+            holder.txtCompetencia.setText(competitionMin.getName());
+            holder.txtCat.setText(competitionMin.getCategory());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override
@@ -72,11 +82,13 @@ public class CompetenciasMinRecyclerViewAdapter extends RecyclerView.Adapter<Com
 
         public Holder(@NonNull View itemView) {
             super(itemView);
-            txtCompetencia = itemView.findViewById(R.id.txtNmbCompList);
-            txtCat = itemView.findViewById(R.id.txtCatCompList);
-            txtOrg = itemView.findViewById(R.id.txtOrgCompList);
-
-
+            try {
+                txtCompetencia = itemView.findViewById(R.id.txtNmbCompList);
+                txtCat = itemView.findViewById(R.id.txtCatCompList);
+                txtOrg = itemView.findViewById(R.id.txtOrgCompList);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

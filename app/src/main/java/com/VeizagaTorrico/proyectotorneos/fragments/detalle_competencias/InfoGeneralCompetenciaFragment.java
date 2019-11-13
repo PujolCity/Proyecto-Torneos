@@ -196,4 +196,5 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private void ocultarBotones(){
     }
+
 }

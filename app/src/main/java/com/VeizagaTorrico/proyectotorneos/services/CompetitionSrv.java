@@ -43,7 +43,7 @@ public interface CompetitionSrv {
     @GET(ConstantURL.BASE_URL + "findCompetitionsByName/{nameCompetition}")
     Call<List<Competition>> findCompetitionsByName(@Path("nameCompetition") String nameCompetition);
 
-    @GET(ConstantURL.BASE_URL + "competitions/filter")
+    @GET(ConstantURL.BASE_URL + "competitions-roles")
     Call<List<CompetitionMin>> findCompetitionsByFilters(@QueryMap Map<String,String> filters);
 
     @PUT(ConstantURL.BASE_URL + "usercomp-rolfollow")

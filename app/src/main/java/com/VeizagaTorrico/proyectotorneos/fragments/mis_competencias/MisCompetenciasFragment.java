@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias;
 
 import android.content.Context;
 import android.net.Uri;
@@ -13,9 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.VeizagaTorrico.proyectotorneos.R;
-import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 

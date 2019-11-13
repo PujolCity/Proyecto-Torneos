@@ -64,8 +64,9 @@ public class CompetidoresDetalleFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competidores_detalle, container, false);
         initElement();
+        inflarRecycler();
 
-        Log.d("otr competencia",this.competencia.toString());
+//        Log.d("otr competencia",this.competencia.toString());
 
         solicitudes.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,10 +80,12 @@ public class CompetidoresDetalleFragment extends Fragment {
             }
         });
 
+        return vista;
+    }
+
+    private void inflarRecycler() {
         Call<List<User>> call = userSrv.getCompetidoresByCompetencia(competencia.getId());
-
         Log.d("call competencia",call.request().url().toString());
-
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -103,13 +106,17 @@ public class CompetidoresDetalleFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onFailure", t.getMessage());
+                try {
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         });
 
-        return vista;
     }
 
     private void initElement() {

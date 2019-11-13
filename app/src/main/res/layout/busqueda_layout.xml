@@ -6,21 +6,27 @@
     android:background="@color/colorPrimaryDark">
 
 
-    <EditText
-        android:id="@+id/etBuscardor"
-        android:layout_width="209dp"
-        android:layout_height="41dp"
-        android:layout_marginEnd="92dp"
-        android:imeOptions="actionDone"
-        android:inputType="text"
-        android:textColor="@color/cardview_light_background"
+    <Spinner
+        android:id="@+id/spinnerJornada"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.145"
+        app:layout_constraintHorizontal_bias="0.259"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
-    </EditText>
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/spinnerGrupo"
+        android:layout_width="80dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="80dp"
+        app:layout_constraintStart_toEndOf="@+id/spinnerJornada"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </Spinner>
 
     <ImageButton
         android:id="@+id/btnBuscar"
@@ -29,22 +35,9 @@
         android:src="@drawable/ic_search"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.15"
-        app:layout_constraintStart_toEndOf="@+id/etBuscardor"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
-    </ImageButton>
-
-    <Spinner
-        android:id="@+id/spinnerBusqueda"
-        android:layout_width="80dp"
-        android:layout_height="50dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.833"
-        app:layout_constraintStart_toEndOf="@+id/btnBuscar"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/spinnerGrupo"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0">
-    </Spinner>
-
+    </ImageButton>
 </androidx.constraintlayout.widget.ConstraintLayout>

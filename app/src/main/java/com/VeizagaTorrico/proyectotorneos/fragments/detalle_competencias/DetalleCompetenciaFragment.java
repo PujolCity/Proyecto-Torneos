@@ -99,9 +99,9 @@ public class DetalleCompetenciaFragment extends Fragment {
         adapter.addFragment(infoGeneral,"Info General");
         infoGeneral.setCompetencia(competition);
 
-        adapter.addFragment(posicionesFragment, "Posiciones");
-
         adapter.addFragment(encuentrosFragment, "Encuentros");
+
+        adapter.addFragment(posicionesFragment, "Posiciones");
 
         this.pager.setAdapter(adapter);
 

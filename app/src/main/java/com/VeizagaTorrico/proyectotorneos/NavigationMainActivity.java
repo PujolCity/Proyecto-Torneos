@@ -3,10 +3,11 @@ package com.VeizagaTorrico.proyectotorneos;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.VeizagaTorrico.proyectotorneos.fragments.CompetenciasListFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.CompetidoresListFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.FiltroFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.MisCompetenciasFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.competencias.CompetenciasListFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresListFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.competencias.FiltroFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.encuentros.DetalleEncuentroFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.MisCompetenciasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia3Fragment;
@@ -26,7 +27,6 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.Competid
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EncuentrosDetalleFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralDetalleFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.detalle_siguiendo.DetalleSiguiendoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
@@ -60,7 +60,7 @@ public class NavigationMainActivity extends AppCompatActivity
         DetalleCompetenciaFragment.OnFragmentInteractionListener,
         EncuentrosFragment.OnFragmentInteractionListener,
         PosicionesFragment.OnFragmentInteractionListener,
-        DetalleSiguiendoFragment.OnFragmentInteractionListener {
+        DetalleEncuentroFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 

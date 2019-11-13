@@ -1,14 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.encuentros.DetalleEncuentroFragment">
+    tools:context=".fragments.encuentros.DetalleEncuentroFragment"
+    android:padding="5dp">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:id="@+id/txtComp1Titulo"
+        android:layout_width="100dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="48dp"
+        android:text="Competidor"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.012"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/txtComp2Titulo"
+        android:layout_width="100dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="48dp"
+        android:layout_marginEnd="4dp"
+        android:text="Competidor 2"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
+        android:text="VS"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/resultadoComp1"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:text=" - "
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.423"
+        app:layout_constraintStart_toEndOf="@+id/txtComp1Titulo"
+        app:layout_constraintTop_toTopOf="parent">
+    </EditText>
+
+    <EditText
+        android:id="@+id/resultadoComp2"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="40dp"
+        android:gravity="center"
+        android:inputType="numberDecimal"
+        android:text=" - "
+        app:layout_constraintEnd_toStartOf="@+id/txtComp2Titulo"
+        app:layout_constraintHorizontal_bias="0.652"
+        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintTop_toTopOf="parent">
+    </EditText>
+
+    <TextView
+        android:id="@+id/txtDiaEncuentro"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="176dp"
+        android:gravity="center"
+        android:text="@string/formatoFecha"
+        app:layout_constraintEnd_toStartOf="@+id/calendarImg"
+        app:layout_constraintHorizontal_bias="0.942"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <ImageButton
+        android:id="@+id/calendarImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="176dp"
+        android:layout_marginEnd="76dp"
+        android:src="@drawable/baseline_calendar_today_black_18dp"
+        android:tint="@color/colorPrimary"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageButton>
+
+    <ImageButton
+        android:id="@+id/relojImg"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="244dp"
+        android:layout_marginEnd="76dp"
+        android:src="@drawable/ic_watch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </ImageButton>
+
+    <TextView
+        android:id="@+id/txtHoraEncuentro"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="244dp"
+        android:gravity="center"
+        android:text="@string/formatoHora"
+        app:layout_constraintEnd_toStartOf="@+id/relojImg"
+        app:layout_constraintHorizontal_bias="0.947"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
+
+    <Spinner
+        android:id="@+id/spinnerJuez"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="312dp"
+        android:layout_marginEnd="76dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/spinnerPredio"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="76dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.989"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerJuez">
+    </Spinner>
+
+    <Spinner
+        android:id="@+id/spinnerCampo"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="76dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerPredio">
+    </Spinner>
+
+    <ImageButton
+        android:id="@+id/checConfirmar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="112dp"
+        android:src="@drawable/ic_check"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCampo"
+        app:layout_constraintVertical_bias="0.373">
+    </ImageButton>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

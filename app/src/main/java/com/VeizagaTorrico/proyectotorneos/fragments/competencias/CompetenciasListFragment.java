@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.competencias;
 
 import android.content.Context;
 import android.net.Uri;
@@ -16,20 +16,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetenciasMinRecyclerViewAdapter;
-import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetenciasRecyclerViewAdapter;
-import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

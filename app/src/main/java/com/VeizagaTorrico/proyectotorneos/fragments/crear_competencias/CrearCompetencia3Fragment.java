@@ -89,11 +89,12 @@ public class CrearCompetencia3Fragment extends Fragment {
                 competencia.put("fecha_ini",competition.getFechaInicio());
                 competencia.put("fecha_fin",competition.getFechaFin());
                 competencia.put("ciudad",competition.getCiudad());
-                competencia.put("genero",competition.getGenero().getNombre());
+                competencia.put("genero",competition.getGenero());
                 competencia.put("max_comp","20");
                 competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
                 competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
                 competencia.put("user_id","9");
+
                 Log.d("BODY" , competencia.toString());
 
                 if(hayGrupo) {

@@ -5,10 +5,16 @@
     android:layout_height="match_parent"
     tools:context=".fragments.detalle_organizando.EncuentrosDetalleFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <include
+        layout="@layout/busqueda_layout">
+
+    </include>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="55dp"
+        android:id="@+id/recyclerEncuentrosDetalle"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
 
 </FrameLayout>

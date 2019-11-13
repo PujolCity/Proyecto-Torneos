@@ -27,7 +27,7 @@ public class Competition implements Serializable {
     private TypesOrganization typesOrganization;
 
     @SerializedName("genero")
-    private Gender genero;
+    private String genero;
 
     @SerializedName("ciudad")
     private String ciudad;
@@ -70,11 +70,11 @@ public class Competition implements Serializable {
         this.typesOrganization = typesOrganization;
     }
 
-    public Gender getGenero() {
+    public String getGenero() {
         return genero;
     }
 
-    public void setGenero(Gender genero) {
+    public void setGenero(String genero) {
         this.genero = genero;
     }
 

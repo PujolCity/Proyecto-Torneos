@@ -19,7 +19,7 @@ public class Category implements Serializable {
     @SerializedName("minIntegrantes")
     private int minIntegrantes;
 
-    @SerializedName("deporte")
+    //@SerializedName("deporte")
     private String sport;
 
     public Category(int id, String nombreCat, String descripcion, int minIntegrantes, String sport) {

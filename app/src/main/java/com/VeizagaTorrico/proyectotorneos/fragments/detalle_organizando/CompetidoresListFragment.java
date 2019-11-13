@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
 
 import android.content.Context;
 import android.net.Uri;
@@ -20,7 +20,6 @@ import android.widget.Toast;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.SolicitudesRecyclerViewAdapter;
-import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;

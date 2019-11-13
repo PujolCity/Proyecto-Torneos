@@ -5,6 +5,7 @@
     <string name="txtCrearCompNmb"> Coloque el nombre de su competencia</string>
     <string name="datePicker"> Fecha de inicio de la Competencia </string>
     <string name="formatoFecha"> dd/mm/yyyy </string>
+    <string name="formatoHora"> HH:MM </string>
     <string name="txtTipoOrg"> Seleccione como se va a organizar su competencia </string>
     <string name="txtTipo"> Organizacion</string>
     <string name="txtSeleccioneDeporte"> Seleccione el deporte de su competencia </string>

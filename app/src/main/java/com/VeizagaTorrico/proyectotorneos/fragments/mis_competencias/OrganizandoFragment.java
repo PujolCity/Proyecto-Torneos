@@ -111,7 +111,7 @@ public class OrganizandoFragment extends Fragment {
 
     private void inflarRecycler() {
         //En call viene el tipo de dato que espero del servidor
-        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(9);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
+        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(7);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
         Log.d("request retrofit", call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {
             @Override
@@ -123,16 +123,13 @@ public class OrganizandoFragment extends Fragment {
                     try {
                         competitions = response.body();
                         Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-
                 if(competitions != null){
                     try {
-
-                        Log.d("COMPETITIONS",competitions.toString());
+//                        Log.d("COMPETITIONS",competitions.toString());
                         adapter.setCompetencias(competitions);
                         //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
                         recycleComp.setAdapter(adapter);
@@ -152,7 +149,7 @@ public class OrganizandoFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(getContext(), "No hay competencias para mostrar", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }

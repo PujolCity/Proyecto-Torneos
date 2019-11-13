@@ -3,9 +3,10 @@ package com.VeizagaTorrico.proyectotorneos.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 
-    public class CompetitionMin implements Serializable {
+public class CompetitionMin implements Serializable {
 
         @SerializedName("id")
         private int id;
@@ -29,10 +30,10 @@ import java.io.Serializable;
         private String genero;
 
         @SerializedName("rol")
-        private String rol;
+        private List<String> rol;
 
 
-        public CompetitionMin(int id, String name, String deporte, String category, String typesOrganization, String ciudad, String genero, String rol) {
+        public CompetitionMin(int id, String name, String deporte, String category, String typesOrganization, String ciudad, String genero, List<String> rol) {
             this.id = id;
             this.name = name;
             this.deporte = deporte;
@@ -95,11 +96,11 @@ import java.io.Serializable;
             this.deporte = deporte;
         }
 
-        public String getRol() {
+        public List<String> getRol() {
             return rol;
         }
 
-        public void setRol(String rol) {
+        public void setRol(List<String> rol) {
             this.rol = rol;
         }
 

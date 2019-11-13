@@ -122,7 +122,7 @@ public class CrearCompetencia1Fragment extends Fragment {
                                                               competition.setName(txtNmbComp.getText().toString());
                                                               competition.setFechaInicio(fecha_ini);
                                                               competition.setFechaFin(fecha_fin);
-                                                              competition.setGenero(genero);
+                                                              competition.setGenero(genero.getNombre());
                                                               competition.setCiudad(ciudad);
                                                               Log.d("competencia",competition.getFechaFin());
                                                               bundle.putSerializable("competition", competition);

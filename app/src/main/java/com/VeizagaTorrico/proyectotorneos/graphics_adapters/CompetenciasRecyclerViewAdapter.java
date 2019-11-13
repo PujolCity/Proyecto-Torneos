@@ -27,7 +27,24 @@ public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<Compet
     }
 
     public void setCompetencias(List<Competition> competencias) {
-        this.competencias = competencias;
+        try {
+            this.competencias = competencias;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull Holder holder, int position) {
+        try {
+            Competition competition= competencias.get(position);
+            holder.txtCategoria.setText(competition.getCategory().getNombreCat());
+            holder.txtCompetencia.setText(competition.getName());
+            holder.txtDeporte.setText(competition.getCategory().getSport());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @NonNull
@@ -36,14 +53,6 @@ public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<Compet
         View vista = LayoutInflater.from(this.context).inflate(R.layout.fragment_competencias,null);
         vista.setOnClickListener(this);
         return new Holder(vista);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull Holder holder, int position) {
-        Competition competition= competencias.get(position);
-        holder.txtCategoria.setText(competition.getCategory().getNombreCat());
-        holder.txtCompetencia.setText(competition.getName());
-        holder.txtDeporte.setText(competition.getCategory().getSport());
     }
 
     @Override
@@ -69,12 +78,15 @@ public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<Compet
     public class Holder extends RecyclerView.ViewHolder {
         TextView txtCompetencia, txtDeporte, txtCategoria;
 
-
         public Holder(@NonNull View itemView) {
             super(itemView);
-            txtCompetencia = itemView.findViewById(R.id.txtNmbCompList);
-            //txtDeporte = itemView.findViewById(R.id.txtDepCompList);
-            txtCategoria = itemView.findViewById(R.id.txtCatCompList);
-        }
+            try {
+                txtCompetencia = itemView.findViewById(R.id.txtNmbCompList);
+                //txtDeporte = itemView.findViewById(R.id.txtDepCompList);
+                txtCategoria = itemView.findViewById(R.id.txtCatCompList);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            }
     }
 }

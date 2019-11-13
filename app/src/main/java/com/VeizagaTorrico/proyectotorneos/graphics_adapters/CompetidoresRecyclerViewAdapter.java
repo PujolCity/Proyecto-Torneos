@@ -39,14 +39,17 @@ public class CompetidoresRecyclerViewAdapter extends RecyclerView.Adapter<Compet
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        User usuario = this.competidores.get(position);
+        try {
+            User usuario = this.competidores.get(position);
 
-        holder.txtNombUsuario.setText(usuario.getNombreUsuario());
-        holder.txtNombre.setText(usuario.getNombre());
-        holder.txtApellido.setText(usuario.getApellido());
-        holder.txtAlias.setText(usuario.getAlias());
-        holder.txtCorreo.setText(usuario.getEmail());
-
+            holder.txtNombUsuario.setText(usuario.getNombreUsuario());
+            holder.txtNombre.setText(usuario.getNombre());
+            holder.txtApellido.setText(usuario.getApellido());
+            holder.txtAlias.setText(usuario.getAlias());
+            holder.txtCorreo.setText(usuario.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,11 +66,15 @@ public class CompetidoresRecyclerViewAdapter extends RecyclerView.Adapter<Compet
 
         public ViewHolder(@NonNull View view) {
             super(view);
-            txtNombUsuario = view.findViewById(R.id.usrNombreUsuario);
-            txtNombre = view.findViewById(R.id.usrNombre);
-            txtApellido = view.findViewById(R.id.usrApellido);
-            txtAlias = view.findViewById(R.id.usrAlias);
-            txtCorreo = view.findViewById(R.id.usrCorreo);
-        }
+            try {
+                txtNombUsuario = view.findViewById(R.id.usrNombreUsuario);
+                txtNombre = view.findViewById(R.id.usrNombre);
+                txtApellido = view.findViewById(R.id.usrApellido);
+                txtAlias = view.findViewById(R.id.usrAlias);
+                txtCorreo = view.findViewById(R.id.usrCorreo);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            }
     }
 }

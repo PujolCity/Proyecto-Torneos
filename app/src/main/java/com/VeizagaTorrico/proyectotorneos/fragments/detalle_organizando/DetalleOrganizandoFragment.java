@@ -106,7 +106,9 @@ public class DetalleOrganizandoFragment extends Fragment {
         competidoresDetalleFragment.setCompetencia(competition);
 
         adapter.addFragment(cargasDetalleFragment,"Cargas");
+
         adapter.addFragment(encuentrosDetalleFragment,"Encuentros");
+        encuentrosDetalleFragment.setCompetencia(competition);
 
         this.pager.setAdapter(adapter);
     }
