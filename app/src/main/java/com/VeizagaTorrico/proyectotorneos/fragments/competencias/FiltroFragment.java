@@ -54,6 +54,7 @@ public class FiltroFragment extends Fragment {
     private CategorySrv categorySrv;
     private List<Category> categorias;
     private Map <String,String> filtros;
+    private int idUsuario;
     private String deporte,categoria,nombreCompetencia,organizacion,ciudad,genero;
 
     public FiltroFragment() {
@@ -169,10 +170,14 @@ public class FiltroFragment extends Fragment {
 
     private void initElements() {
         Category category = new Category(0,"Seleccione..."," ",0,null);
+        idUsuario = 2;
+
         categorias = new ArrayList<>();
         categorias.add(category);
 
         filtros = new HashMap<>();
+        filtros.put("idUsuario",Integer.toString(idUsuario));
+
         categorySrv = new RetrofitAdapter().connectionEnable().create(CategorySrv.class);
         genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
         orgSrv = new RetrofitAdapter().connectionEnable().create(TypesOrganizationSrv.class);

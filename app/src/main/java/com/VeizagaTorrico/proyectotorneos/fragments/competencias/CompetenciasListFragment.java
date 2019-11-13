@@ -73,6 +73,7 @@ public class CompetenciasListFragment extends Fragment {
         initAdapter();
 
         filtros = (Map<String, String>) getArguments().getSerializable("filtros");
+
         Log.d("Filtros recibidos",filtros.toString());
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         inflarRecycler();
@@ -151,7 +152,7 @@ public class CompetenciasListFragment extends Fragment {
                 if (response.code() == 200) {
                     //asigno a deportes lo que traje del servidor
                     competitions = response.body();
-                    Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
+                    Log.d("RESP CODE COMPETITION", competitions.toString());
                     adapter.setCompetencias(competitions);
                     //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
                     recycleComp.setAdapter(adapter);

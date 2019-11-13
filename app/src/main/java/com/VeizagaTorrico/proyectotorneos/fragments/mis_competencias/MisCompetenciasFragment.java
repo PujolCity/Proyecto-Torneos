@@ -28,11 +28,12 @@ public class MisCompetenciasFragment extends Fragment {
     private ViewPager pager;
     private Toolbar toolbar;
     private TabLayout tabLayout;
+
     public MisCompetenciasFragment() {
         // Required empty public constructor
     }
 
-    public static MisCompetenciasFragment newInstance(String param1, String param2) {
+    public static MisCompetenciasFragment newInstance() {
         MisCompetenciasFragment fragment = new MisCompetenciasFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -69,7 +70,6 @@ public class MisCompetenciasFragment extends Fragment {
         return vista;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -94,7 +94,6 @@ public class MisCompetenciasFragment extends Fragment {
     }
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 
