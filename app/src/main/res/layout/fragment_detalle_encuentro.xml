@@ -79,7 +79,7 @@
         android:id="@+id/txtDiaEncuentro"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_marginTop="176dp"
+        android:layout_marginTop="140dp"
         android:gravity="center"
         android:text="@string/formatoFecha"
         app:layout_constraintEnd_toStartOf="@+id/calendarImg"
@@ -93,8 +93,8 @@
         android:id="@+id/calendarImg"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="176dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginTop="140dp"
+        android:layout_marginEnd="80dp"
         android:src="@drawable/baseline_calendar_today_black_18dp"
         android:tint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
@@ -105,11 +105,11 @@
         android:id="@+id/relojImg"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="244dp"
+        android:layout_marginTop="208dp"
         android:layout_marginEnd="76dp"
         android:src="@drawable/ic_watch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.983"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </ImageButton>
@@ -118,11 +118,11 @@
         android:id="@+id/txtHoraEncuentro"
         android:layout_width="100dp"
         android:layout_height="40dp"
-        android:layout_marginTop="244dp"
+        android:layout_marginTop="208dp"
         android:gravity="center"
         android:text="@string/formatoHora"
         app:layout_constraintEnd_toStartOf="@+id/relojImg"
-        app:layout_constraintHorizontal_bias="0.947"
+        app:layout_constraintHorizontal_bias="0.926"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -130,10 +130,10 @@
 
     <Spinner
         android:id="@+id/spinnerJuez"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="312dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginTop="280dp"
+        android:layout_marginEnd="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -145,7 +145,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginEnd="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.989"
         app:layout_constraintStart_toStartOf="parent"
@@ -157,7 +157,7 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginEnd="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -168,14 +168,13 @@
         android:id="@+id/checConfirmar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="112dp"
         android:src="@drawable/ic_check"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCampo"
-        app:layout_constraintVertical_bias="0.373">
+        app:layout_constraintVertical_bias="0.691">
     </ImageButton>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

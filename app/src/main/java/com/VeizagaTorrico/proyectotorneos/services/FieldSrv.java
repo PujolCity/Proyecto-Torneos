@@ -2,6 +2,7 @@ package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
+import com.VeizagaTorrico.proyectotorneos.models.Success;
 
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,9 @@ public interface FieldSrv {
     Call<List<Field>> getFieldsByGround(@Query("idPredio") int idPredio);
 
     @POST( ConstantURL.BASE_URL + "grounds/field" )
-    Call<Field>createField(@Body Map<String,String> campo);
+    Call<Success>createField(@Body Map<String,String> campo);
 
     @DELETE( ConstantURL.BASE_URL + "grounds/fields/del" )
-    Call<Field>deleteField(@QueryMap  Map<String,Integer> datos);
+    Call<Success>deleteField(@QueryMap  Map<String,Integer> datos);
 
 }

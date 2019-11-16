@@ -36,7 +36,9 @@
     <string name="txtBtnVolver"> Volver</string>
     <string name="txtCrear"> Crear</string>
     <string name="txtBtnCrearInscripcion"> Crear Inscripcion </string>
-
+    <string name="txtBtnCargarPredio"> Cargar Predios</string>
+    <string name="txtBtnAgregarPredio"> Agregar Predio</string>
+    <string name="txtBtnAgregarCampo"> Agregar Campo</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_navigation_main">NavigationMainActivity</string>

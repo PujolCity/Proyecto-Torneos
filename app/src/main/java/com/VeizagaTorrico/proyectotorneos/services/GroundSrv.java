@@ -2,6 +2,7 @@ package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
+import com.VeizagaTorrico.proyectotorneos.models.Success;
 
 import java.util.List;
 import java.util.Map;
@@ -19,9 +20,9 @@ public interface GroundSrv {
     Call<List<Ground>> getGrounds(@Query("idCompetencia") int idCompetencia);
 
     @POST( ConstantURL.BASE_URL + "grounds" )
-    Call<Ground>createGround(@Body Map<String,String> predio);
+    Call<Success>createGround(@Body Map<String,String> predio);
 
     @DELETE( ConstantURL.BASE_URL + "grounds/del" )
-    Call<Ground>deleteGround(@Query("idPredio") int predio);
+    Call<Success>deleteGround(@Query("idPredio") int predio);
 
 }

@@ -21,6 +21,16 @@ public class Confrontation implements Serializable {
     @SerializedName("jornada")
     private String jornada;
 
+    private String juez;
+
+    private String campo;
+
+    private String turno;
+
+    private String resultadoComp1;
+
+    private String resultadoComp2;
+
     private int idCompetencia;
 
     public Confrontation(int id, String competidor1, String competidor2, int grupo, String jornada) {
@@ -79,9 +89,49 @@ public class Confrontation implements Serializable {
         this.idCompetencia = idCompetencia;
     }
 
+    public String getJuez() {
+        return juez;
+    }
+
+    public void setJuez(String juez) {
+        this.juez = juez;
+    }
+
+    public String getCampo() {
+        return campo;
+    }
+
+    public void setCampo(String campo) {
+        this.campo = campo;
+    }
+
+    public String getTurno() {
+        return turno;
+    }
+
+    public void setTurno(String turno) {
+        this.turno = turno;
+    }
+
+    public String getResultadoComp1() {
+        return resultadoComp1;
+    }
+
+    public void setResultadoComp1(String resultadoComp1) {
+        this.resultadoComp1 = resultadoComp1;
+    }
+
+    public String getResultadoComp2() {
+        return resultadoComp2;
+    }
+
+    public void setResultadoComp2(String resultadoComp2) {
+        this.resultadoComp2 = resultadoComp2;
+    }
+
     @Override
     public String toString() {
         return id + "  " + competidor1 +
-                "  " + competidor2 +"  " + grupo +"  " + jornada;
+                "  " + competidor2;
     }
 }

@@ -30,6 +30,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralD
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -60,7 +61,8 @@ public class NavigationMainActivity extends AppCompatActivity
         DetalleCompetenciaFragment.OnFragmentInteractionListener,
         EncuentrosFragment.OnFragmentInteractionListener,
         PosicionesFragment.OnFragmentInteractionListener,
-        DetalleEncuentroFragment.OnFragmentInteractionListener {
+        DetalleEncuentroFragment.OnFragmentInteractionListener,
+        CargarPredioFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 

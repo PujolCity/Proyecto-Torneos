@@ -5,18 +5,24 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.VeizagaTorrico.proyectotorneos.R;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 
 public class CargasDetalleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     private View vista;
+    private CompetitionMin competencia;
+    private Button btnPredio;
 
 
 
@@ -39,10 +45,24 @@ public class CargasDetalleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_cargas_detalle, container, false);
+        initElements();
+        btnPredio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("competencia", competencia);
+                Navigation.findNavController(vista).navigate(R.id.cargarPredioFragment, bundle);
+            }
+        });
+
 
         return vista;
+    }
+
+    private void initElements() {
+        btnPredio = vista.findViewById(R.id.btnCargarPredio);
+
     }
 
     public void onButtonPressed(Uri uri) {
@@ -70,5 +90,9 @@ public class CargasDetalleFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
+    }
+
+    public void setCompetencia(CompetitionMin competencia) {
+        this.competencia = competencia;
     }
 }

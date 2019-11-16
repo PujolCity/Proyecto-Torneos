@@ -111,7 +111,7 @@ public class OrganizandoFragment extends Fragment {
 
     private void inflarRecycler() {
         //En call viene el tipo de dato que espero del servidor
-        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(7);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
+        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(9);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
         Log.d("request retrofit", call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {
             @Override

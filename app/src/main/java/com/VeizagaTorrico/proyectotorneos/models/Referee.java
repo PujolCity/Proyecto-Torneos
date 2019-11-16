@@ -1,15 +1,21 @@
 package com.VeizagaTorrico.proyectotorneos.models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Referee implements Serializable {
 
+    @SerializedName("id")
     private int id;
 
+    @SerializedName("nombre")
     private String nombre;
 
+    @SerializedName("apellido")
     private String apellido;
 
+    @SerializedName("dni")
     private int dni;
 
     private CompetitionMin competencia;
@@ -65,10 +71,7 @@ public class Referee implements Serializable {
 
     @Override
     public String toString() {
-        return  id +
-                " " + nombre  +
-                "" + apellido +
-                " " + dni +
-                " " + competencia.getName() ;
+        return  nombre  +
+                " " + apellido ;
     }
 }

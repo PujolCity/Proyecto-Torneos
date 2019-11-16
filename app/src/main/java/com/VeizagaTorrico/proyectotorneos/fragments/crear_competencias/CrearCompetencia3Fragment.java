@@ -85,18 +85,22 @@ public class CrearCompetencia3Fragment extends Fragment {
              /*   Toast toast = Toast.makeText(getContext(), "Implementar servicio de creacion", Toast.LENGTH_SHORT);
                 toast.show();
                */
-                competencia.put("nombre",competition.getName());
-                competencia.put("fecha_ini",competition.getFechaInicio());
-                competencia.put("fecha_fin",competition.getFechaFin());
-                competencia.put("ciudad",competition.getCiudad());
-                competencia.put("genero",competition.getGenero());
-                competencia.put("max_comp","20");
-                competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
-                competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
-                competencia.put("user_id","9");
+             try{
+                 competencia.put("nombre",competition.getName());
+                 competencia.put("fecha_ini",competition.getFechaInicio());
+                 competencia.put("fecha_fin",competition.getFechaFin());
+                 competencia.put("ciudad",competition.getCiudad());
+                 competencia.put("genero",competition.getGenero());
+                 competencia.put("max_comp","20");
+                 competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
+                 competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
+                 competencia.put("user_id","9");
 
-                Log.d("BODY" , competencia.toString());
+                 Log.d("BODY" , competencia.toString());
 
+             } catch (Exception e) {
+                 e.printStackTrace();
+             }
                 if(hayGrupo) {
                     cantGrupos = etGrupo.getText().toString();
                     if(validarGrupo()){
