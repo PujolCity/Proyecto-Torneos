@@ -13,6 +13,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
+import retrofit2.http.QueryMap;
 
 public interface GroundSrv {
 
@@ -23,6 +24,6 @@ public interface GroundSrv {
     Call<Success>createGround(@Body Map<String,String> predio);
 
     @DELETE( ConstantURL.BASE_URL + "grounds/del" )
-    Call<Success>deleteGround(@Query("idPredio") int predio);
+    Call<Success>deleteGround(@QueryMap Map<String,Integer> datos);
 
 }

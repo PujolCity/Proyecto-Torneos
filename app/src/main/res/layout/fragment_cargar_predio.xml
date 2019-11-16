@@ -67,6 +67,20 @@
         app:layout_constraintTop_toBottomOf="@+id/btnAgregarPredio">
     </Spinner>
 
+    <ImageButton
+        android:id="@+id/btnDeletePredio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/ic_delete"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerCargaPredio"
+        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etCiudadPredio"
+        android:visibility="invisible">
+    </ImageButton>
+
     <Spinner
         android:id="@+id/spinnerCargarCampo"
         android:layout_width="200dp"
@@ -78,6 +92,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
     </Spinner>
+
+    <ImageButton
+        android:id="@+id/btnDeleteCampo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_delete"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/spinnerCargarCampo"
+        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnDeletePredio">
+    </ImageButton>
 
     <EditText
         android:id="@+id/etCampoNombre"
