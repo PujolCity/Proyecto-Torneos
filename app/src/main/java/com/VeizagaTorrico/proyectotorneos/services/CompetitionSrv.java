@@ -3,6 +3,7 @@ package com.VeizagaTorrico.proyectotorneos.services;
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 
 import java.util.List;
@@ -52,5 +53,7 @@ public interface CompetitionSrv {
     @PUT(ConstantURL.BASE_URL + "usercomp-delfollow")
     Call<Success> noFollowCompetition(@Body Map<String,Integer> noSeguir);
 
+    @POST(ConstantURL.BASE_URL + "competition/org")
+    Call<CompetitionOrg> getFaseGrupoCompetition(@Query("idCompetencia") int idCompetencia);
 
 }

@@ -24,8 +24,6 @@ public class CargasDetalleFragment extends Fragment {
     private CompetitionMin competencia;
     private Button btnPredio;
 
-
-
     public CargasDetalleFragment() {
         // Required empty public constructor
     }
