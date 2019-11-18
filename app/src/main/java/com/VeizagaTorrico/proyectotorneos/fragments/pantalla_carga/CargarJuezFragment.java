@@ -15,6 +15,7 @@ import com.VeizagaTorrico.proyectotorneos.R;
 public class CargarJuezFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private View vista;
 
     public CargarJuezFragment() {
         // Required empty public constructor
@@ -35,11 +36,11 @@ public class CargarJuezFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_cargar_juez, container, false);
+    vista = inflater.inflate(R.layout.fragment_cargar_juez, container, false);
+    
+    return vista;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);

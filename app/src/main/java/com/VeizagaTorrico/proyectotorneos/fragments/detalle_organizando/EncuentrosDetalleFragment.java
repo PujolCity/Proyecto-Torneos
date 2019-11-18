@@ -134,6 +134,8 @@ public class EncuentrosDetalleFragment extends Fragment {
 //       }
 
     private void initElements() {
+        fecha_grupo = new HashMap<>();
+
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         encuentros = new ArrayList<>();
@@ -154,7 +156,6 @@ public class EncuentrosDetalleFragment extends Fragment {
         btnBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                fecha_grupo = new HashMap<>();
                 if(nroJornada != null){
                     fecha_grupo.put("fase", nroJornada);
                 }

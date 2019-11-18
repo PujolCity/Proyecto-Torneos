@@ -43,6 +43,7 @@
     <string name="txtBtnAgregarCampo"> Agregar Campo</string>
     <string name="txtBtnAgregarTurno"> Agregar turno</string>
     <string name="txtBtnAgregarJuez"> Agregar juez</string>
+    <string name="txtBtnCargarJuez"> Cargar Juez </string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_navigation_main">NavigationMainActivity</string>

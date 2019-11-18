@@ -44,4 +44,15 @@
         android:text="@string/txtBtnCargarTurno">
     </Button>
 
+    <Button
+        android:id="@+id/btnCargarJuez"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/cardview_light_background"
+        android:text="@string/txtBtnCargarJuez">
+
+    </Button>
+
+
 </LinearLayout>
