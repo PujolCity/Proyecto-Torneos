@@ -103,13 +103,13 @@ public class SiguiendoFragment extends Fragment {
         manager = new LinearLayoutManager(vista.getContext());
         recycleComp.setLayoutManager(manager);
         recycleComp.setHasFixedSize(true);
-        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext(),competitions);
+        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext());
         recycleComp.setAdapter(adapter);
     }
 
     private void inflarRecycler() {
         //En call viene el tipo de dato que espero del servidor
-        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsFollow(5);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
+        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsFollow(2);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
         Log.d("request retrofit", call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {
             @Override

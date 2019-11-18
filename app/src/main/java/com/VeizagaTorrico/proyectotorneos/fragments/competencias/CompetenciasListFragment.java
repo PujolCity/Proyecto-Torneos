@@ -70,19 +70,7 @@ public class CompetenciasListFragment extends Fragment {
         filtros = (Map<String, String>) getArguments().getSerializable("filtros");
 
         Log.d("Filtros recibidos",filtros.toString());
-        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         inflarRecycler();
-
-        //editText = vista.findViewById(R.id.etBuscardor);
-        //btnBuscar = vista.findViewById(R.id.btnBuscar);
-
-        /*btnBuscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                llenarRecyclerBusqueda();
-            }
-        });*/
-
         return vista;
     }
 
@@ -114,19 +102,19 @@ public class CompetenciasListFragment extends Fragment {
     }
 
     private void initAdapter(){
+        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         // COSAS PARA LLENAR El RECYCLERVIEW
         competitions = new ArrayList<>();
         recycleComp = vista.findViewById(R.id.recycleCompView);
         manager = new LinearLayoutManager(vista.getContext());
         recycleComp.setLayoutManager(manager);
         recycleComp.setHasFixedSize(true);
-        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext(),competitions);
+        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext());
         recycleComp.setAdapter(adapter);
     }
 
 
     private void siguienteFragment(CompetitionMin competition){
-
 
         Bundle bundle = new Bundle();
         bundle.putSerializable("competencia", competition);
@@ -172,48 +160,5 @@ public class CompetenciasListFragment extends Fragment {
         });
     }
 
-   /* public void llenarRecyclerBusqueda(){
-
-        String nComp = editText.getText().toString();
-        Log.d("STRING EDIT", nComp);
-
-        Call<List<Competition>> call = competitionSrv.findCompetitionsByName(nComp);
-        Log.d("Request Retrofit", call.request().url().toString());
-
-        call.enqueue(new Callback<List<Competition>>() {
-            @Override
-            public void onResponse(Call<List<Competition>> call, Response<List<Competition>> response) {
-                if(!response.body().isEmpty()) {
-                    Log.d("onResponse complist", Integer.toString(response.code()));
-                    competitions = response.body();
-                    adapter.setCompetencias(competitions);
-                    recycleComp.setAdapter(adapter);
-                }else {
-                    Toast toast = Toast.makeText(vista.getContext(), "Busqueda sin resultados, por favor intente con otra palabra", Toast.LENGTH_SHORT);
-                    toast.show();
-
-                }
-                //LISTENER PARA EL ELEMENTO SELECCIONADO
-                adapter.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Competition competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-                        editText.setText("");
-                        siguienteFragment(competition);
-                    }
-                });
-
-            }
-            @Override
-            public void onFailure(Call<List<Competition>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onFailure", t.getMessage());
-
-            }
-        });
-
-    }
-*/
 
 }

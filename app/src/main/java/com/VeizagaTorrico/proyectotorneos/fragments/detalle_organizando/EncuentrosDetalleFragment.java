@@ -82,18 +82,19 @@ public class EncuentrosDetalleFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_encuentros_detalle, container, false);
         initElements();
         //inflarRecycler();
-        btnBuscar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(nroJornada != null){
-                    fecha_grupo.put("fase", nroJornada);
-                }
-                if(nroGrupo != null){
-                    fecha_grupo.put("grupo", nroGrupo);
-                }
-                getEncuentros(fecha_grupo);
-            }
-        });
+//        btnBuscar.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                fecha_grupo.clear();
+//                if(nroJornada != null){
+//                    fecha_grupo.put("fase", nroJornada);
+//                }
+//                if(nroGrupo != null){
+//                    fecha_grupo.put("grupo", nroGrupo);
+//                }
+//                getEncuentros(fecha_grupo);
+//            }
+//        });
 
         return vista;
     }
@@ -165,6 +166,8 @@ public class EncuentrosDetalleFragment extends Fragment {
     }
 
     private void getEncuentros(Map<String, String> fechaGrupo) {
+        Log.d("ENCUENTROS_FG body", fecha_grupo.toString());
+
         Call<List<ConfrontationFull>> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
         Log.d("call competencia FG",call.request().url().toString());
         call.enqueue(new Callback<List<ConfrontationFull>>() {
@@ -172,9 +175,9 @@ public class EncuentrosDetalleFragment extends Fragment {
             public void onResponse(Call<List<ConfrontationFull>> call, Response<List<ConfrontationFull>> response) {
                 if(response.code() == 200){
                     try {
-                        Log.d("ENCUENTROS_FG response", response.body().get(0).toString());
+                        Log.d("ENCUENTROS_FG response", Integer.toString(response.code()));
                         encuentros = response.body();
-
+                        Log.d("ENCUENTROS_FG response", response.body().toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -253,6 +256,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     try{
+                        fecha_grupo.clear();
                         Log.d("RESPONSE FILTER CODE",  Integer.toString(response.code()));
                         //asigno a deportes lo que traje del servidor
                         datosSpinner = response.body();
@@ -273,9 +277,13 @@ public class EncuentrosDetalleFragment extends Fragment {
                                     // controlamos que no se elija el primer elemento
                                     if(spinnerJornada.getSelectedItemPosition() == 0){
                                         nroJornada = null;
+                                        fecha_grupo.put("fase", nroJornada);
+                                        getEncuentros(fecha_grupo);
                                     }
                                     else{
                                         nroJornada = (String) spinnerJornada.getSelectedItem();
+                                        fecha_grupo.put("fase", nroJornada);
+                                        getEncuentros(fecha_grupo);
                                     }
                                 }
                                 @Override
@@ -300,9 +308,13 @@ public class EncuentrosDetalleFragment extends Fragment {
                                     // controlamos que no se elija el primer elemento
                                     if(spinnerGrupo.getSelectedItemPosition() == 0){
                                         nroGrupo = null;
+                                        fecha_grupo.put("grupo", nroGrupo);
+                                        getEncuentros(fecha_grupo);
                                     }
                                     else{
                                         nroGrupo = (String) spinnerGrupo.getSelectedItem();
+                                        fecha_grupo.put("grupo", nroGrupo);
+                                        getEncuentros(fecha_grupo);
                                     }
                                 }
                                 @Override
@@ -326,7 +338,7 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     private  List<String> getItemJornadas(int nroJornadas){
         List<String> itemJornadas = new ArrayList<>();
-        itemJornadas.add("Jornada nro");
+        itemJornadas.add("Jornada");
         if(contieneJornadas(nroJornadas)){
             for (int i = 1; i <= nroJornadas ; i++) {
                 itemJornadas.add(String.valueOf(i));
@@ -337,7 +349,7 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     private List<String> getItemGrupos(int nroGrupos){
         List<String> itemGrupos = new ArrayList<>();
-        itemGrupos.add("Grupo nro");
+        itemGrupos.add("Grupo ");
         if(contieneJornadas(nroGrupos)){
             for (int i = 1; i <= nroGrupos ; i++) {
                 itemGrupos.add(String.valueOf(i));

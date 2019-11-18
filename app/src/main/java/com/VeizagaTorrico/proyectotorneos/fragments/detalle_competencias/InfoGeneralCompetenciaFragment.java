@@ -25,6 +25,7 @@ import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -80,7 +81,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                compFollow.put("idUsuario", 5);
+                compFollow.put("idUsuario", 2);
                 compFollow.put("idCompetencia",competition.getId());
 
                 Call<Success> call = competitionSrv.followCompetition(compFollow);
@@ -114,7 +115,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         noFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                compFollow.put("idUsuario", 5);
+                compFollow.put("idUsuario", 2);
                 compFollow.put("idCompetencia",competition.getId());
 
                 Call<Success> call = competitionSrv.noFollowCompetition(compFollow);
@@ -195,6 +196,31 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     }
 
     private void ocultarBotones(){
+        List<String> roles = this.competition.getRol();
+
+        for (int i = 0 ; i < roles.size(); i++){
+            if(roles.get(i).contains("ORGANIZADOR")){
+                follow.setVisibility(View.INVISIBLE);
+                noFollow.setVisibility(View.INVISIBLE);
+                inscribirse.setVisibility(View.VISIBLE);
+            }
+            if (roles.get(i).contains("COMPETIDOR")){
+                follow.setVisibility(View.INVISIBLE);
+                noFollow.setVisibility(View.INVISIBLE);
+                inscribirse.setVisibility(View.INVISIBLE);
+            }
+            if(roles.get(i).contains("SEGUIDOR")){
+                follow.setVisibility(View.INVISIBLE);
+                noFollow.setVisibility(View.VISIBLE);
+                inscribirse.setVisibility(View.VISIBLE);
+            }
+            if(roles.get(i).contains("EXPECTADOR")){
+                follow.setVisibility(View.VISIBLE);
+                noFollow.setVisibility(View.INVISIBLE);
+                inscribirse.setVisibility(View.VISIBLE);
+            }
+        }
+
     }
 
 }

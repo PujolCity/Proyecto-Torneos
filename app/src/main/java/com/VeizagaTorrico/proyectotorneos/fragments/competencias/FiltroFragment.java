@@ -229,10 +229,15 @@ public class FiltroFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<TypesOrganization>> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "Por favor recargar pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onFailure", t.getMessage());
-            }
+                try{
+                    Toast toast = Toast.makeText(getContext(), "Por favor recargar pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                }
         });
 
     }
