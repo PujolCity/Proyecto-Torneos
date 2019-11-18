@@ -54,9 +54,9 @@ public class EncuentrosDetalleFragment extends Fragment {
     private Spinner spinnerJornada;
     private Spinner spinnerGrupo;
     private CompetitionSrv competitionSrv;
-    String nroJornada;
-    String nroGrupo;
-    ImageButton btnBuscar;
+    private String nroJornada;
+    private String nroGrupo;
+    private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
 
     public EncuentrosDetalleFragment() {
@@ -82,6 +82,18 @@ public class EncuentrosDetalleFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_encuentros_detalle, container, false);
         initElements();
         //inflarRecycler();
+        btnBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(nroJornada != null){
+                    fecha_grupo.put("fase", nroJornada);
+                }
+                if(nroGrupo != null){
+                    fecha_grupo.put("grupo", nroGrupo);
+                }
+                getEncuentros(fecha_grupo);
+            }
+        });
 
         return vista;
     }
@@ -148,65 +160,53 @@ public class EncuentrosDetalleFragment extends Fragment {
         spinnerJornada = vista.findViewById(R.id.spinnerJornada);
         spinnerGrupo = vista.findViewById(R.id.spinnerGrupo);
         btnBuscar = vista.findViewById(R.id.btnBuscar);
-        listenBtnBuscar();
         cargarSpinnerFiltroEncuentros(competencia.getId());
+        getEncuentros(fecha_grupo);
     }
 
-    private void listenBtnBuscar() {
-        btnBuscar.setOnClickListener(new View.OnClickListener() {
+    private void getEncuentros(Map<String, String> fechaGrupo) {
+        Call<List<ConfrontationFull>> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
+        Log.d("call competencia FG",call.request().url().toString());
+        call.enqueue(new Callback<List<ConfrontationFull>>() {
             @Override
-            public void onClick(View view) {
-                if(nroJornada != null){
-                    fecha_grupo.put("fase", nroJornada);
-                }
-                if(nroGrupo != null){
-                    fecha_grupo.put("grupo", nroGrupo);
-                }
-                // hacemos la peticion
-                Call<List<ConfrontationFull>> call = confrontationSrv.getConfrontations(competencia.getId(), fecha_grupo);
-                Log.d("call competencia FG",call.request().url().toString());
-                call.enqueue(new Callback<List<ConfrontationFull>>() {
-                    @Override
-                    public void onResponse(Call<List<ConfrontationFull>> call, Response<List<ConfrontationFull>> response) {
-                        if(response.code() == 200){
-                            try {
-                                Log.d("ENCUENTROS_FG response", Integer.toString(response.code()));
-                                encuentros = response.body();
+            public void onResponse(Call<List<ConfrontationFull>> call, Response<List<ConfrontationFull>> response) {
+                if(response.code() == 200){
+                    try {
+                        Log.d("ENCUENTROS_FG response", response.body().get(0).toString());
+                        encuentros = response.body();
 
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                        if(encuentros != null){
-                            try {
-                                adapter.setEncuentros(encuentros);
-                                recycleCon.setAdapter(adapter);
-                                adapter.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        ConfrontationFull encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                                        Bundle bundle = new Bundle();
-                                        encuentro.setIdCompetencia(competencia.getId());
-                                        bundle.putSerializable("encuentro", encuentro);
-                                        Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    @Override
-                    public void onFailure(Call<List<ConfrontationFull>> call, Throwable t) {
-                        try {
-                            Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                            toast.show();
-                            Log.d("onFailure", t.getMessage());
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                }
+                if(encuentros != null){
+                    try {
+                        adapter.setEncuentros(encuentros);
+                        recycleCon.setAdapter(adapter);
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ConfrontationFull encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                Bundle bundle = new Bundle();
+                                encuentro.setIdCompetencia(competencia.getId());
+                                bundle.putSerializable("encuentro", encuentro);
+                                Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                });
+                }
+            }
+            @Override
+            public void onFailure(Call<List<ConfrontationFull>> call, Throwable t) {
+                try {
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -256,6 +256,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                         Log.d("RESPONSE FILTER CODE",  Integer.toString(response.code()));
                         //asigno a deportes lo que traje del servidor
                         datosSpinner = response.body();
+                        Log.d("datosSpinner",response.body().toString());
                         if(contieneJornadas(datosSpinner.getN_jornadas())){
                             //List<Integer> jornadas = getAllIntegerRange(1 , datosSpinner.getN_jornadas());
                             List<String> jornadas = getItemJornadas(datosSpinner.getN_jornadas());

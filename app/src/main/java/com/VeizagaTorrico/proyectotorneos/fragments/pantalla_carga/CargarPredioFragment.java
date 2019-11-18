@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -119,6 +118,9 @@ public class CargarPredioFragment extends Fragment {
                                 Toast toast = Toast.makeText(vista.getContext(), "Predio Cargado!", Toast.LENGTH_SHORT);
                                 toast.show();
                                 llenarSpinnerPredio();
+                            } else {
+                                Toast toast = Toast.makeText(vista.getContext(), "Predio ya cargado", Toast.LENGTH_SHORT);
+                                toast.show();
                             }
                         }
 
@@ -165,6 +167,9 @@ public class CargarPredioFragment extends Fragment {
                                 Toast toast = Toast.makeText(vista.getContext(), "Campo Cargado!", Toast.LENGTH_SHORT);
                                 toast.show();
                                 llenarSpinnerCampo(predioSeleccionado.getId());
+                            }else {
+                                Toast toast = Toast.makeText(vista.getContext(), "Campo ya cargado", Toast.LENGTH_SHORT);
+                                toast.show();
                             }
                         }
                         @Override

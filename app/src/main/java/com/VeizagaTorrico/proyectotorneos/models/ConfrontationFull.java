@@ -13,10 +13,10 @@ public class ConfrontationFull implements Serializable {
     private int grupo;
 
     @SerializedName("competidor1")
-    private Competitor competidor1;
+    private User competidor1;
 
     @SerializedName("competidor2")
-    private Competitor competidor2;
+    private User competidor2;
 
     @SerializedName("rdoComp1")
     private int rdoc1;
@@ -51,19 +51,19 @@ public class ConfrontationFull implements Serializable {
         this.grupo = grupo;
     }
 
-    public Competitor getCompetidor1() {
+    public User getCompetidor1() {
         return competidor1;
     }
 
-    public void setCompetidor1(Competitor competidor1) {
+    public void setCompetidor1(User competidor1) {
         this.competidor1 = competidor1;
     }
 
-    public Competitor getCompetidor2() {
+    public User getCompetidor2() {
         return competidor2;
     }
 
-    public void setCompetidor2(Competitor competidor2) {
+    public void setCompetidor2(User competidor2) {
         this.competidor2 = competidor2;
     }
 
@@ -113,5 +113,21 @@ public class ConfrontationFull implements Serializable {
 
     public void setIdCompetencia(int id) {
         this.idCompetencia = id;
+    }
+
+    @Override
+    public String toString() {
+        return "ConfrontationFull{" +
+                "id=" + id +
+                ", grupo=" + grupo +
+                ", competidor1=" + competidor1 +
+                ", competidor2=" + competidor2 +
+                ", rdoc1=" + rdoc1 +
+                ", rdoc2=" + rdoc2 +
+                ", juez=" + juez +
+                ", campo=" + campo +
+                ", turno=" + turno +
+                ", idCompetencia=" + idCompetencia +
+                '}';
     }
 }
