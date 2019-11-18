@@ -23,6 +23,8 @@ public class CargasDetalleFragment extends Fragment {
     private View vista;
     private CompetitionMin competencia;
     private Button btnPredio;
+    private Button btnTurno;
+    private Button btnJuez;
 
     public CargasDetalleFragment() {
         // Required empty public constructor
@@ -45,6 +47,19 @@ public class CargasDetalleFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_cargas_detalle, container, false);
         initElements();
+        listenButtons();
+
+        return vista;
+    }
+
+    private void initElements() {
+        btnPredio = vista.findViewById(R.id.btnCargarPredio);
+        btnTurno = vista.findViewById(R.id.btnCargarTurno);
+        btnJuez = vista.findViewById(R.id.btnCargarJuez);
+    }
+
+    private void listenButtons() {
+        // ponemos a la escucha el boton de cargar Predio y campos
         btnPredio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,13 +69,25 @@ public class CargasDetalleFragment extends Fragment {
             }
         });
 
+        // ponemos a la escucha el boton de cargar Turnos
+        btnTurno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("competencia", competencia);
+                Navigation.findNavController(vista).navigate(R.id.cargarTurnoFragment, bundle);
+            }
+        });
 
-        return vista;
-    }
-
-    private void initElements() {
-        btnPredio = vista.findViewById(R.id.btnCargarPredio);
-
+        // ponemos a la escucha el boton de cargar Turnos
+        btnJuez.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("competencia", competencia);
+                Navigation.findNavController(vista).navigate(R.id.cargarJuezFragment, bundle);
+            }
+        });
     }
 
     public void onButtonPressed(Uri uri) {

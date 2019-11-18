@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.pantalla_carga.CargarTurnosFragment">
+
+    <TimePicker
+        android:id="@+id/tm_pick"
+        android:layout_width="288dp"
+        android:layout_height="85dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="25dp"
+        android:amPmTextColor="#03A9F4"
+        android:headerBackground="@color/colorPrimaryDark"
+        android:numbersBackgroundColor="#00AAA2A2"
+        android:timePickerMode="spinner"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTitleHora" />
+
+    <TextView
+        android:id="@+id/tvTitleHora"
+        android:layout_width="233dp"
+        android:layout_height="26dp"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="35dp"
+        android:text="Asigne un horario para el turno"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="151dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="15dp"
+        android:text="@string/txtBtnAgregarTurno"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tm_pick" />
+</androidx.constraintlayout.widget.ConstraintLayout>

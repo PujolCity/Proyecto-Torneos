@@ -36,9 +36,13 @@
     <string name="txtBtnVolver"> Volver</string>
     <string name="txtCrear"> Crear</string>
     <string name="txtBtnCrearInscripcion"> Crear Inscripcion </string>
-    <string name="txtBtnCargarPredio"> Cargar Predios</string>
+    <string name="txtBtnCargarPredio"> Cargar Predios y Campos</string>
+    <string name="txtBtnCargarTurno"> Cargar Turnos</string>
+    <string name="txtBtnCargarJuez"> Cargar Jueces</string>
     <string name="txtBtnAgregarPredio"> Agregar Predio</string>
     <string name="txtBtnAgregarCampo"> Agregar Campo</string>
+    <string name="txtBtnAgregarTurno"> Agregar turno</string>
+    <string name="txtBtnAgregarJuez"> Agregar juez</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_navigation_main">NavigationMainActivity</string>

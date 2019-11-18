@@ -199,5 +199,15 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment"
         android:label="Cargar Predios y campos"
         tools:layout="@layout/fragment_cargar_predio" />
+    <fragment
+        android:id="@+id/cargarJuezFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarJuezFragment"
+        android:label="Cargar jueces"
+        tools:layout="@layout/fragment_cargar_juez" />
+    <fragment
+        android:id="@+id/cargarTurnoFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment"
+        android:label="Cargar turnos"
+        tools:layout="@layout/fragment_cargar_turnos" />
 
 </navigation>
