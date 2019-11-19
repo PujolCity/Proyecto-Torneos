@@ -15,30 +15,27 @@ public class Confrontation implements Serializable {
     @SerializedName("competidor2")
     private String competidor2;
 
-    @SerializedName("grupo")
-    private int grupo;
+    @SerializedName("juez")
+    private Referee juez;
 
-    @SerializedName("jornada")
-    private String jornada;
+    @SerializedName("campo")
+    private Field campo;
 
-    private String juez;
+    @SerializedName("turno")
+    private Turn turno;
 
-    private String campo;
+    @SerializedName("rdoComp1")
+    private int resultadoComp1;
 
-    private String turno;
-
-    private String resultadoComp1;
-
-    private String resultadoComp2;
+    @SerializedName("rdoComp2")
+    private int resultadoComp2;
 
     private int idCompetencia;
 
-    public Confrontation(int id, String competidor1, String competidor2, int grupo, String jornada) {
+    public Confrontation(int id, String competidor1, String competidor2) {
         this.id = id;
         this.competidor1 = competidor1;
         this.competidor2 = competidor2;
-        this.grupo = grupo;
-        this.jornada = jornada;
     }
 
     public int getId() {
@@ -65,22 +62,6 @@ public class Confrontation implements Serializable {
         this.competidor2 = competidor2;
     }
 
-    public int getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(int grupo) {
-        this.grupo = grupo;
-    }
-
-    public String getJornada() {
-        return jornada;
-    }
-
-    public void setJornada(String jornada) {
-        this.jornada = jornada;
-    }
-
     public int getIdCompetencia() {
         return idCompetencia;
     }
@@ -89,43 +70,43 @@ public class Confrontation implements Serializable {
         this.idCompetencia = idCompetencia;
     }
 
-    public String getJuez() {
+    public Referee getJuez() {
         return juez;
     }
 
-    public void setJuez(String juez) {
+    public void setJuez(Referee juez) {
         this.juez = juez;
     }
 
-    public String getCampo() {
+    public Field getCampo() {
         return campo;
     }
 
-    public void setCampo(String campo) {
+    public void setCampo(Field campo) {
         this.campo = campo;
     }
 
-    public String getTurno() {
+    public Turn getTurno() {
         return turno;
     }
 
-    public void setTurno(String turno) {
+    public void setTurno(Turn turno) {
         this.turno = turno;
     }
 
-    public String getResultadoComp1() {
+    public int getResultadoComp1() {
         return resultadoComp1;
     }
 
-    public void setResultadoComp1(String resultadoComp1) {
+    public void setResultadoComp1(int resultadoComp1) {
         this.resultadoComp1 = resultadoComp1;
     }
 
-    public String getResultadoComp2() {
+    public int getResultadoComp2() {
         return resultadoComp2;
     }
 
-    public void setResultadoComp2(String resultadoComp2) {
+    public void setResultadoComp2(int resultadoComp2) {
         this.resultadoComp2 = resultadoComp2;
     }
 

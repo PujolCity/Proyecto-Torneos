@@ -2,7 +2,6 @@ package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
-import com.VeizagaTorrico.proyectotorneos.models.ConfrontationFull;
 
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,6 @@ public interface ConfrontationSrv {
     Call<List<Confrontation>> getConfrontation(@Query("idCompetencia") int idCompetencia);
 
     @POST(ConstantURL.BASE_URL + "confrontations/competition")
-    Call<List<ConfrontationFull>> getConfrontations(@Query("idCompetencia") int idCompetencia, @Body Map<String,String> fecha_grupo);
+    Call<List<Confrontation>> getConfrontations(@Query("idCompetencia") int idCompetencia, @Body Map<String,String> fecha_grupo);
 
 }

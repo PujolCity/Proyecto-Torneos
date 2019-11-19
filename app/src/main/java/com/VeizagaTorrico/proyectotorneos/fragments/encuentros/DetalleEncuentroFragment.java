@@ -25,7 +25,6 @@ import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
-import com.VeizagaTorrico.proyectotorneos.models.ConfrontationFull;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
@@ -45,7 +44,7 @@ public class DetalleEncuentroFragment extends Fragment {
     private TextView comp1, comp2,fecha,hora;
     private ImageButton fechaImg, horaImg;
     private Spinner spinnerPredio,spinnerCampo,spinnerJuez;
-    private ConfrontationFull encuentro;
+    private Confrontation encuentro;
     private GroundSrv prediosSrv;
     private FieldSrv camposSrv;
     private List<Ground> predios;
@@ -85,7 +84,7 @@ public class DetalleEncuentroFragment extends Fragment {
     }
 
     private void initElements(){
-        this.encuentro = (ConfrontationFull) getArguments().getSerializable("encuentro");
+        this.encuentro = (Confrontation) getArguments().getSerializable("encuentro");
         predios = new ArrayList<>();
         campos = new ArrayList<>();
         jueces = new ArrayList<>();
@@ -108,8 +107,8 @@ public class DetalleEncuentroFragment extends Fragment {
 
         msjCampos();
 
-        comp1.setText(encuentro.getCompetidor1().getNombreUsuario());
-        comp2.setText(encuentro.getCompetidor2().getNombreUsuario());
+        comp1.setText(encuentro.getCompetidor1());
+        comp2.setText(encuentro.getCompetidor2());
     }
 
     private void msjCampos() {

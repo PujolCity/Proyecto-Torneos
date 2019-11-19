@@ -13,13 +13,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -30,8 +28,6 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.EncuentrosRecyclerVi
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
-import com.VeizagaTorrico.proyectotorneos.models.ConfrontationFull;
-import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 
@@ -47,7 +43,7 @@ public class EncuentrosDetalleFragment extends Fragment {
     private View vista;
     private ConfrontationSrv confrontationSrv;
     private EncuentrosRecyclerViewAdapter adapter;
-    private List<ConfrontationFull> encuentros;
+    private List<Confrontation> encuentros;
     private RecyclerView recycleCon;
     private RecyclerView.LayoutManager manager;
     private CompetitionMin competencia;
@@ -165,11 +161,11 @@ public class EncuentrosDetalleFragment extends Fragment {
     }
 
     private void getEncuentros(Map<String, String> fechaGrupo) {
-        Call<List<ConfrontationFull>> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
+        Call<List<Confrontation>> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
         Log.d("call competencia FG",call.request().url().toString());
-        call.enqueue(new Callback<List<ConfrontationFull>>() {
+        call.enqueue(new Callback<List<Confrontation>>() {
             @Override
-            public void onResponse(Call<List<ConfrontationFull>> call, Response<List<ConfrontationFull>> response) {
+            public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
                 if(response.code() == 200){
                     try {
                         Log.d("ENCUENTROS_FG response", response.body().get(0).toString());
@@ -186,7 +182,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                         adapter.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
-                                ConfrontationFull encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
                                 Bundle bundle = new Bundle();
                                 encuentro.setIdCompetencia(competencia.getId());
                                 bundle.putSerializable("encuentro", encuentro);
@@ -199,7 +195,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                 }
             }
             @Override
-            public void onFailure(Call<List<ConfrontationFull>> call, Throwable t) {
+            public void onFailure(Call<List<Confrontation>> call, Throwable t) {
                 try {
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
