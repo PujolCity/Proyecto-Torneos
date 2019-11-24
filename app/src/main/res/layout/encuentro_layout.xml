@@ -26,7 +26,7 @@
             android:layout_weight="1"
             android:layout_width="45dp"
             android:layout_height="50dp"
-            android:text="-"
+            android:hint="-"
             android:focusableInTouchMode="false"
             android:gravity="center"
             android:inputType="numberDecimal">
@@ -37,7 +37,7 @@
             android:layout_weight="1"
             android:layout_width="45dp"
             android:layout_height="50dp"
-            android:text="-"
+            android:hint="-"
             android:focusableInTouchMode="false"
             android:gravity="center"
             android:layout_marginStart="10dp"
@@ -54,19 +54,6 @@
             android:textSize="15sp">
         </TextView>
 
-        <!--
-        <ImageButton
-            android:id="@+id/btnEditar"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/ic_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:visibility="invisible"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:tint="@color/cardview_light_background">
-        </ImageButton>
-        -->
     </LinearLayout>
 
 </androidx.cardview.widget.CardView>

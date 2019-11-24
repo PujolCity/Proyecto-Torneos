@@ -54,7 +54,7 @@
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:inputType="numberDecimal"
-        android:text=" - "
+        android:hint=" - "
         app:layout_constraintEnd_toStartOf="@+id/textView2"
         app:layout_constraintHorizontal_bias="0.423"
         app:layout_constraintStart_toEndOf="@+id/txtComp1Titulo"
@@ -68,13 +68,13 @@
         android:layout_marginTop="40dp"
         android:gravity="center"
         android:inputType="numberDecimal"
-        android:text=" - "
+        android:hint=" - "
         app:layout_constraintEnd_toStartOf="@+id/txtComp2Titulo"
         app:layout_constraintHorizontal_bias="0.652"
         app:layout_constraintStart_toEndOf="@+id/textView2"
         app:layout_constraintTop_toTopOf="parent">
     </EditText>
-
+<!--
     <TextView
         android:id="@+id/txtDiaEncuentro"
         android:layout_width="100dp"
@@ -125,8 +125,20 @@
         app:layout_constraintHorizontal_bias="0.926"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-
     </TextView>
+-->
+
+    <Spinner
+        android:id="@+id/spinnerTurno"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="236dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.597"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </Spinner>
 
     <Spinner
         android:id="@+id/spinnerJuez"

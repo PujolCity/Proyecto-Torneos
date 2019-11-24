@@ -47,7 +47,7 @@ public class EncuentrosDetalleFragment extends Fragment {
     private View vista;
     private ConfrontationSrv confrontationSrv;
     private EncuentrosRecyclerViewAdapter adapter;
-    private List<ConfrontationFull> encuentros;
+    private List<Confrontation> encuentros;
     private RecyclerView recycleCon;
     private RecyclerView.LayoutManager manager;
     private CompetitionMin competencia;
@@ -81,20 +81,6 @@ public class EncuentrosDetalleFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_encuentros_detalle, container, false);
         initElements();
-        //inflarRecycler();
-//        btnBuscar.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                fecha_grupo.clear();
-//                if(nroJornada != null){
-//                    fecha_grupo.put("fase", nroJornada);
-//                }
-//                if(nroGrupo != null){
-//                    fecha_grupo.put("grupo", nroGrupo);
-//                }
-//                getEncuentros(fecha_grupo);
-//            }
-//        });
 
         return vista;
     }
@@ -168,11 +154,11 @@ public class EncuentrosDetalleFragment extends Fragment {
     private void getEncuentros(Map<String, String> fechaGrupo) {
         Log.d("ENCUENTROS_FG body", fecha_grupo.toString());
 
-        Call<List<ConfrontationFull>> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
+        Call<List<Confrontation>> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
         Log.d("call competencia FG",call.request().url().toString());
-        call.enqueue(new Callback<List<ConfrontationFull>>() {
+        call.enqueue(new Callback<List<Confrontation>>() {
             @Override
-            public void onResponse(Call<List<ConfrontationFull>> call, Response<List<ConfrontationFull>> response) {
+            public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
                 if(response.code() == 200){
                     try {
                         Log.d("ENCUENTROS_FG response", Integer.toString(response.code()));
@@ -186,23 +172,25 @@ public class EncuentrosDetalleFragment extends Fragment {
                     try {
                         adapter.setEncuentros(encuentros);
                         recycleCon.setAdapter(adapter);
-                        adapter.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                ConfrontationFull encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                                Bundle bundle = new Bundle();
-                                encuentro.setIdCompetencia(competencia.getId());
-                                bundle.putSerializable("encuentro", encuentro);
-                                Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-                            }
-                        });
+                        if(competencia.getRol().contains("ORGANIZADOR")){
+                            adapter.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                    Bundle bundle = new Bundle();
+                                    encuentro.setIdCompetencia(competencia.getId());
+                                    bundle.putSerializable("encuentro", encuentro);
+                                    Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                                }
+                            });
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
             @Override
-            public void onFailure(Call<List<ConfrontationFull>> call, Throwable t) {
+            public void onFailure(Call<List<Confrontation>> call, Throwable t) {
                 try {
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
@@ -376,14 +364,4 @@ public class EncuentrosDetalleFragment extends Fragment {
         return true;
     }
 
-    // devuelve una lista de Integer desde el cero hasta el nro recibido
-//    private List<Integer> getAllIntegerRange(int begin, int end) {
-//        List<Integer> values = new ArrayList<>();
-//
-//        for (int i = begin; i <= end; i++) {
-//            values.add(i);
-//        }
-//
-//        return values;
-//    }
 }

@@ -1,5 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -14,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,6 +24,7 @@ import android.widget.Toast;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
@@ -41,6 +45,10 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private CompetitionSrv competitionSrv;
     private Button inscribirse;
     private View vista;
+    private AlertDialog dialog;
+    private Map<String,String> solicitud;
+    private boolean comprobado;
+
 
     public InfoGeneralCompetenciaFragment() {
         // Required empty public constructor
@@ -147,12 +155,21 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
             }
         });
+
+        inscribirse.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                createLoginDialogo();
+
+            }
+        });
         return vista;
     }
 
     private void initElements() {
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         compFollow = new HashMap<>();
+        solicitud = new HashMap<>();
 
         nmb = vista.findViewById(R.id.txtNmbCompDet);
         cat = vista.findViewById(R.id.txtCatCompDet);
@@ -162,6 +179,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
+
     }
 
     public void onButtonPressed(Uri uri) {
@@ -198,29 +216,129 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private void ocultarBotones(){
         List<String> roles = this.competition.getRol();
 
-        for (int i = 0 ; i < roles.size(); i++){
-            if(roles.get(i).contains("ORGANIZADOR")){
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.VISIBLE);
-            }
-            if (roles.get(i).contains("COMPETIDOR")){
+        for (int i = 0 ; i < roles.size(); i++) {
+            if (roles.get(i).contains("SOLICITANTE")) {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
             }
-            if(roles.get(i).contains("SEGUIDOR")){
+            if (roles.get(i).contains("ORGANIZADOR")) {
                 follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.VISIBLE);
+                noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
             }
-            if(roles.get(i).contains("EXPECTADOR")){
+            if (roles.get(i).contains("COMPETIDOR")) {
+                follow.setVisibility(View.INVISIBLE);
+            //    noFollow.setVisibility(View.INVISIBLE);
+                inscribirse.setVisibility(View.INVISIBLE);
+            }
+            if (roles.get(i).contains("SEGUIDOR")) {
+                follow.setVisibility(View.INVISIBLE);
+                noFollow.setVisibility(View.VISIBLE);
+                //     inscribirse.setVisibility(View.VISIBLE);
+            }
+            if (roles.get(i).contains("ESPECTADOR")) {
                 follow.setVisibility(View.VISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
             }
         }
 
+
+    }
+
+
+    private void createLoginDialogo() {
+        final Dialog builder = new Dialog(vista.getContext());
+        builder.setContentView(R.layout.alias_form);
+
+        Button confirmar = builder.findViewById(R.id.confirmar);
+        Button cancelar =  builder.findViewById(R.id.cancelar);
+        final EditText alias = builder.findViewById(R.id.etAlias);
+
+        confirmar.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String alia = alias.getText().toString();
+                        if(alia.isEmpty()){
+                            Toast toast = Toast.makeText(builder.getContext(), "Por favor agreagar un Alias", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }else {
+                            if(comprobarAlias(alia)){
+                                Toast toast = Toast.makeText(builder.getContext(), "Solicitud registrada!!", Toast.LENGTH_SHORT);
+                                toast.show();
+                                builder.dismiss();
+                            }
+                        }
+                        builder.dismiss();
+
+                    }
+                }
+        );
+
+        cancelar.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Loguear...
+                    builder.dismiss();
+                    }
+                }
+
+        );
+
+        builder.show();
+    }
+
+    private boolean comprobarAlias(String alia) {
+        solicitud.clear();
+        solicitud.put("idUsuario",Integer.toString(2));
+        solicitud.put("idCompetencia", Integer.toString(competition.getId()));
+        solicitud.put("alias",alia);
+
+        Call<MsgRequest> call = competitionSrv.solicitudCompetition(solicitud);
+        Log.d("body", solicitud.toString());
+
+        Log.d("response Dialog", call.request().url().toString());
+
+        call.enqueue(new Callback<MsgRequest>() {
+            @Override
+            public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+               try {
+                   Log.d("response Dialog", Integer.toString(response.code()));
+
+                   if(response.code() == 200){
+                       MsgRequest msj = response.body();
+                       Log.d("msj", msj.toString());
+                       Toast toast = Toast.makeText(vista.getContext(),msj.toString() , Toast.LENGTH_SHORT);
+                       toast.show();
+                       inscribirse.setVisibility(View.INVISIBLE);
+                       comprobado =  true;
+
+                   } else{
+
+                       Toast toast = Toast.makeText(vista.getContext(), "Alias en Uso", Toast.LENGTH_SHORT);
+                       toast.show();
+                       comprobado = false;
+                   }
+
+               } catch (Exception e) {
+                   e.printStackTrace();
+               }
+            }
+
+            @Override
+            public void onFailure(Call<MsgRequest> call, Throwable t) {
+                try {
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        return comprobado;
     }
 
 }

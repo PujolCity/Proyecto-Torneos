@@ -31,6 +31,7 @@ import com.VeizagaTorrico.proyectotorneos.models.TypesOrganization;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class CrearCompetencia3Fragment extends Fragment {
 
     //Widgets
     private Button btnCrear;
-    private Spinner spinner;
+    private Spinner spinner, spinnerFase;
     private TextView txtView;
     private LinearLayout grupo;
     private EditText etGrupo;
@@ -51,7 +52,11 @@ public class CrearCompetencia3Fragment extends Fragment {
     private View vista;
     private Map<String,String> competencia;
     private String cantGrupos;
+    private int fase;
     private boolean hayGrupo ;
+    private boolean hayFase ;
+
+    private List<String> fases;
 
     public CrearCompetencia3Fragment() {
         // Required empty public constructor
@@ -91,7 +96,7 @@ public class CrearCompetencia3Fragment extends Fragment {
                  competencia.put("fecha_fin",competition.getFechaFin());
                  competencia.put("ciudad",competition.getCiudad());
                  competencia.put("genero",competition.getGenero());
-                 competencia.put("max_comp","20");
+                 competencia.put("max_comp","32");
                  competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
                  competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
                  competencia.put("user_id","9");
@@ -113,6 +118,13 @@ public class CrearCompetencia3Fragment extends Fragment {
                     competencia.put("cant_grupos", "1");
 
                 }
+                if(hayFase){
+                    competencia.put("fase", Integer.toString(fase));
+                }else {
+                    competencia.put("fase", null);
+                }
+
+
                 Call<Competition> call = competitionSrv.createCompetition(competencia);
                 Log.d("Url",call.request().url().toString());
 
@@ -179,6 +191,7 @@ public class CrearCompetencia3Fragment extends Fragment {
         etGrupo = vista.findViewById(R.id.etCantGrupo);
         btnCrear = vista.findViewById(R.id.btnCCSig_3);
         spinner = vista.findViewById(R.id.spinnerTipoOrg);
+        spinnerFase = vista.findViewById(R.id.spinnerFase);
 
     }
      private void llenarSpinnerOrg(){
@@ -211,6 +224,17 @@ public class CrearCompetencia3Fragment extends Fragment {
                                      grupo.setVisibility(View.INVISIBLE);
                                      hayGrupo = false;
                                  }
+
+                                 if(org.getName().contains("Eliminatorias")){
+                                     Log.d("prueba" , "entra?" );
+                                     spinnerFase.setVisibility(View.VISIBLE);
+                                     hayFase = true;
+                                     llenarSpinnerFase();
+                                 } else{
+                                     spinnerFase.setVisibility(View.INVISIBLE);
+                                     hayFase = false;
+                                 }
+
                              } catch (Exception e) {
                                  e.printStackTrace();
                              }
@@ -232,6 +256,31 @@ public class CrearCompetencia3Fragment extends Fragment {
          });
 
      }
+
+    private void llenarSpinnerFase() {
+        final List<String> fases = new ArrayList<>();
+        fases.add("Final");
+        fases.add("Semi Final");
+        fases.add("Cuartos");
+        fases.add("Octavos");
+        fases.add("16 avos");
+        fases.add("32 avos");
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,fases);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFase.setAdapter(adapter);
+        spinnerFase.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                fase = i+1;
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+    }
 
     private boolean validarGrupo() {
         if(cantGrupos.isEmpty())
