@@ -7,14 +7,22 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
+import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
 public class CargasDetalleFragment extends Fragment {
 
@@ -25,6 +33,8 @@ public class CargasDetalleFragment extends Fragment {
     private Button btnPredio;
     private Button btnTurno;
     private Button btnJuez;
+    private Button btnGenerar;
+    private CompetitionSrv competenciaSrv;
 
     public CargasDetalleFragment() {
         // Required empty public constructor
@@ -53,9 +63,12 @@ public class CargasDetalleFragment extends Fragment {
     }
 
     private void initElements() {
+        competenciaSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+
         btnPredio = vista.findViewById(R.id.btnCargarPredio);
         btnTurno = vista.findViewById(R.id.btnCargarTurno);
         btnJuez = vista.findViewById(R.id.btnCargarJuez);
+        btnGenerar = vista.findViewById(R.id.btnGenerarEncuentros);
     }
 
     private void listenButtons() {
@@ -86,6 +99,29 @@ public class CargasDetalleFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("competencia", competencia);
                 Navigation.findNavController(vista).navigate(R.id.cargarJuezFragment, bundle);
+            }
+        });
+
+        btnGenerar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Call<MsgRequest> call = competenciaSrv.generarEncuentros(competencia.getId());
+                Log.d("Url Call", call.request().url().toString());
+                call.enqueue(new Callback<MsgRequest>() {
+                    @Override
+                    public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                        Log.d("response",Integer.toString(response.code()));
+                        if(response.code() == 200) {
+                            Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MsgRequest> call, Throwable t) {
+
+                    }
+                });
             }
         });
     }

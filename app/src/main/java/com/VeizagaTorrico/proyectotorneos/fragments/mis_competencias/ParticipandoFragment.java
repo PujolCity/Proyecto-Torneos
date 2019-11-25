@@ -101,7 +101,7 @@ public class ParticipandoFragment extends Fragment {
         RecyclerView.LayoutManager manager = new LinearLayoutManager(vista.getContext());
         recycleComp.setLayoutManager(manager);
         recycleComp.setHasFixedSize(true);
-        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext(),competitions);
+        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext());
         recycleComp.setAdapter(adapter);
     }
 

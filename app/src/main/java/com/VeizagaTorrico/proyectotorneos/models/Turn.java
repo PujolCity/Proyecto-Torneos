@@ -9,8 +9,21 @@ public class Turn implements Serializable {
     @SerializedName("id")
     private int id;
 
-    @SerializedName("hora")
-    private String hora;
+    @SerializedName("idCompetencia")
+    private int idCompetencia;
+
+    @SerializedName("hora_desde")
+    private String horaDesde;
+
+    @SerializedName("hora_hasta")
+    private String horaHasta;
+
+    public Turn(int id, int idCompetencia, String horaDesde, String horaHasta) {
+        this.id = id;
+        this.idCompetencia = idCompetencia;
+        this.horaDesde = horaDesde;
+        this.horaHasta = horaHasta;
+    }
 
     public int getId() {
         return id;
@@ -20,15 +33,33 @@ public class Turn implements Serializable {
         this.id = id;
     }
 
-    public String getHora() {
-        return hora;
+    public int getIdCompetencia() {
+        return idCompetencia;
     }
 
-    public void setHora(String hora) {
-        this.hora = hora;
+    public void setIdCompetencia(int idCompetencia) {
+        this.idCompetencia = idCompetencia;
     }
 
+    public String getHoraDesde() {
+        return horaDesde;
+    }
+
+    public void setHoraDesde(String horaDesde) {
+        this.horaDesde = horaDesde;
+    }
+
+    public String getHoraHasta() {
+        return horaHasta;
+    }
+
+    public void setHoraHasta(String horaHasta) {
+        this.horaHasta = horaHasta;
+    }
+
+    @Override
     public String toString() {
-        return hora ;
+        return "Desde : " + horaDesde + '-' +
+                " Hasta : " + horaHasta ;
     }
 }

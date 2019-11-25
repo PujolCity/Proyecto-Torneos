@@ -100,6 +100,7 @@ public class DetalleCompetenciaFragment extends Fragment {
         infoGeneral.setCompetencia(competition);
 
         adapter.addFragment(encuentrosFragment, "Encuentros");
+        encuentrosFragment.setCompetencia(competition);
 
         adapter.addFragment(posicionesFragment, "Posiciones");
 

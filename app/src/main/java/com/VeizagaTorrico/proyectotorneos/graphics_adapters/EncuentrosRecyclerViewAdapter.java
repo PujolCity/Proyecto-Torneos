@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.graphics_adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -59,8 +60,12 @@ public class EncuentrosRecyclerViewAdapter extends RecyclerView.Adapter<Encuentr
         try {
             Confrontation encuentro = this.encuentros.get(position);
 
+            Log.d("encuentro dentr",encuentro.toString());
             holder.comp1.setText(encuentro.getCompetidor1());
             holder.comp2.setText(encuentro.getCompetidor2());
+
+            holder.edComp1.setText(Integer.toString(encuentro.getRdoc1()));
+            holder.edComp2.setText(Integer.toString(encuentro.getRdoc2()));
 
         } catch (Exception e) {
             e.printStackTrace();

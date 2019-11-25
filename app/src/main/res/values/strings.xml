@@ -35,6 +35,7 @@
     <string name="txtBtnSig"> Siguiente</string>
     <string name="txtBtnVolver"> Volver</string>
     <string name="txtCrear"> Crear</string>
+    <string name="txtbtnGenerarEncuentros"> Generar Encuentros</string>
     <string name="txtBtnCrearInscripcion"> Crear Inscripcion </string>
     <string name="txtBtnCargarPredio"> Cargar Predios y Campos</string>
     <string name="txtBtnCargarTurno"> Cargar Turnos</string>

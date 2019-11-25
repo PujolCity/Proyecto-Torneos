@@ -15,6 +15,12 @@ public class Confrontation implements Serializable {
     @SerializedName("competidor2")
     private String competidor2;
 
+    @SerializedName("rdoComp1")
+    private int rdoc1;
+
+    @SerializedName("rdoComp2")
+    private int rdoc2;
+
     @SerializedName("juez")
     private Referee juez;
 
@@ -24,18 +30,17 @@ public class Confrontation implements Serializable {
     @SerializedName("turno")
     private Turn turno;
 
-    @SerializedName("rdoComp1")
-    private int resultadoComp1;
-
-    @SerializedName("rdoComp2")
-    private int resultadoComp2;
-
     private int idCompetencia;
 
-    public Confrontation(int id, String competidor1, String competidor2) {
+    public Confrontation(int id, String competidor1, String competidor2, int rdoc1, int rdoc2, Referee juez, Field campo) {
         this.id = id;
         this.competidor1 = competidor1;
         this.competidor2 = competidor2;
+        this.rdoc1 = rdoc1;
+        this.rdoc2 = rdoc2;
+        this.juez = juez;
+        this.campo = campo;
+        this.turno = turno;
     }
 
     public int getId() {
@@ -62,12 +67,20 @@ public class Confrontation implements Serializable {
         this.competidor2 = competidor2;
     }
 
-    public int getIdCompetencia() {
-        return idCompetencia;
+    public int getRdoc1() {
+        return rdoc1;
     }
 
-    public void setIdCompetencia(int idCompetencia) {
-        this.idCompetencia = idCompetencia;
+    public void setRdoc1(int rdoc1) {
+        this.rdoc1 = rdoc1;
+    }
+
+    public int getRdoc2() {
+        return rdoc2;
+    }
+
+    public void setRdoc2(int rdoc2) {
+        this.rdoc2 = rdoc2;
     }
 
     public Referee getJuez() {
@@ -94,25 +107,17 @@ public class Confrontation implements Serializable {
         this.turno = turno;
     }
 
-    public int getResultadoComp1() {
-        return resultadoComp1;
+    public int getIdCompetencia() {
+        return idCompetencia;
     }
 
-    public void setResultadoComp1(int resultadoComp1) {
-        this.resultadoComp1 = resultadoComp1;
-    }
-
-    public int getResultadoComp2() {
-        return resultadoComp2;
-    }
-
-    public void setResultadoComp2(int resultadoComp2) {
-        this.resultadoComp2 = resultadoComp2;
+    public void setIdCompetencia(int idCompetencia) {
+        this.idCompetencia = idCompetencia;
     }
 
     @Override
     public String toString() {
         return id + "  " + competidor1 +
-                "  " + competidor2;
+                "  " + competidor2 + " " + rdoc1 + " "+ rdoc2;
     }
 }

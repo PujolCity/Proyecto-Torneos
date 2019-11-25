@@ -27,13 +27,22 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
+import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
+import com.VeizagaTorrico.proyectotorneos.models.Turn;
+import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
 import com.VeizagaTorrico.proyectotorneos.services.RefereeSrv;
+import com.VeizagaTorrico.proyectotorneos.services.TurnSrv;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.crypto.MacSpi;
 
 public class DetalleEncuentroFragment extends Fragment {
 
@@ -41,18 +50,22 @@ public class DetalleEncuentroFragment extends Fragment {
 
     private View vista;
     private EditText r1,r2;
-    private TextView comp1, comp2,fecha,hora;
-    private ImageButton fechaImg, horaImg;
-    private Spinner spinnerPredio,spinnerCampo,spinnerJuez;
+    private TextView comp1, comp2;
+    private ImageButton confirmarEdit;
+    private Spinner spinnerPredio,spinnerCampo,spinnerJuez,spinnerTurno;
     private Confrontation encuentro;
+    private ConfrontationSrv confrontationSrv;
     private GroundSrv prediosSrv;
     private FieldSrv camposSrv;
     private List<Ground> predios;
     private List<Field> campos;
     private ArrayAdapter<Field> adapterCampo;
     private RefereeSrv refereeSrv;
+    private String juezSeleccionado,campoSeleccionado,turnoSeleccionado,rdo_1,rdo_2;
     private List<Referee> jueces;
-
+    private TurnSrv turnoSrv;
+    private List<Turn> turnos;
+    private Map<String,String> editEncuentro;
 
     public DetalleEncuentroFragment() {
         // Required empty public constructor
@@ -79,32 +92,97 @@ public class DetalleEncuentroFragment extends Fragment {
 
         llenarSpinnerJuez();
         llenarSpinnerPredio();
+        llenarSpinnerTurno();
+
+        confirmarEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editEncuentro.clear();
+
+                rdo_1 = r1.getText().toString();
+                rdo_2 = r2.getText().toString();
+                editEncuentro.put("idCompetencia", Integer.toString(encuentro.getIdCompetencia()));
+                editEncuentro.put("idEncuentro", Integer.toString(encuentro.getId()));
+
+                if(!juezSeleccionado.isEmpty())
+                    editEncuentro.put("idJuez",juezSeleccionado);
+                if(!campoSeleccionado.isEmpty())
+                    editEncuentro.put("idCampo",campoSeleccionado);
+                if(!turnoSeleccionado.isEmpty())
+                    editEncuentro.put("idTurno",turnoSeleccionado);
+                if(validar()){
+                    editEncuentro.put("rdo_comp1", rdo_1);
+                    editEncuentro.put("rdo_comp2",rdo_2);
+                }
+                Log.d("body edit",editEncuentro.toString());
+
+                Call<MsgRequest> call = confrontationSrv.editEncuentro(editEncuentro);
+                Log.d("url call", call.request().url().toString());
+                call.enqueue(new Callback<MsgRequest>() {
+                    @Override
+                    public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                        try{
+                            if(response.code() == 200){
+                                Toast toast = Toast.makeText(vista.getContext(), "Edicion realizada con exito", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                            else {
+                                Toast toast = Toast.makeText(vista.getContext(), "Pasaron cosas", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<MsgRequest> call, Throwable t) {
+
+                    }
+                });
+
+
+
+            }
+        });
 
         return vista;
     }
+
+    private boolean validar() {
+        if(rdo_1.isEmpty())
+            return false;
+        if(rdo_2.isEmpty())
+            return false;
+        return true;
+    }
+
 
     private void initElements(){
         this.encuentro = (Confrontation) getArguments().getSerializable("encuentro");
         predios = new ArrayList<>();
         campos = new ArrayList<>();
         jueces = new ArrayList<>();
+        editEncuentro = new HashMap<>();
 
+        confirmarEdit = vista.findViewById(R.id.checConfirmar);
         comp1 = vista.findViewById(R.id.txtComp1Titulo);
         comp2 = vista.findViewById(R.id.txtComp2Titulo);
-        r1 = vista.findViewById(R.id.etResultadoC1);
-        r2 = vista.findViewById(R.id.etResultadoC2);
+        r1 = vista.findViewById(R.id.resultadoComp1);
+        r2 = vista.findViewById(R.id.resultadoComp2);
         spinnerPredio = vista.findViewById(R.id.spinnerPredio);
         spinnerCampo = vista.findViewById(R.id.spinnerCampo);
         spinnerJuez = vista.findViewById(R.id.spinnerJuez);
-        fechaImg = vista.findViewById(R.id.calendarImg);
-        horaImg = vista.findViewById(R.id.relojImg);
-        fecha = vista.findViewById(R.id.txtDiaEncuentro);
-        hora = vista.findViewById(R.id.txtHoraEncuentro);
+        spinnerTurno = vista.findViewById(R.id.spinnerTurno);
 
+        juezSeleccionado = "";
+        campoSeleccionado = "";
+        turnoSeleccionado= "";
         prediosSrv = new RetrofitAdapter().connectionEnable().create(GroundSrv.class);
         camposSrv = new RetrofitAdapter().connectionEnable().create(FieldSrv.class);
         refereeSrv = new RetrofitAdapter().connectionEnable().create(RefereeSrv.class);
-
+        turnoSrv = new RetrofitAdapter().connectionEnable().create(TurnSrv.class);
+        confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
         msjCampos();
 
         comp1.setText(encuentro.getCompetidor1());
@@ -121,6 +199,45 @@ public class DetalleEncuentroFragment extends Fragment {
 
     }
 
+    private void llenarSpinnerTurno() {
+        Call<List<Turn>> call = turnoSrv.getTurnsByCompetition(encuentro.getIdCompetencia());
+        call.enqueue(new Callback<List<Turn>>() {
+            @Override
+            public void onResponse(Call<List<Turn>> call, Response<List<Turn>> response) {
+                if(response.code() == 200){
+                    try {
+
+                        turnos = response.body();
+                        ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerTurno.setAdapter(adapter);
+                        spinnerTurno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                Turn turnoSel = (Turn) spinnerTurno.getSelectedItem();
+                                if(turnoSel.getId() != 0 ){
+                                    turnoSeleccionado = Integer.toString(turnoSel.getId());
+                                }
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Turn>> call, Throwable t) {
+
+            }
+        });
+    }
 
     private void llenarSpinnerJuez() {
 
@@ -140,7 +257,10 @@ public class DetalleEncuentroFragment extends Fragment {
                         spinnerJuez.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                                Referee juezSel = (Referee) spinnerJuez.getSelectedItem();
+                                if(juezSel.getId() != 0){
+                                    juezSeleccionado = Integer.toString(juezSel.getId());
+                                }
                             }
 
                             @Override
@@ -239,7 +359,10 @@ public class DetalleEncuentroFragment extends Fragment {
                             spinnerCampo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                                    Field campoSel = (Field) spinnerCampo.getSelectedItem();
+                                    if(campoSel.getId() != 0){
+                                        campoSeleccionado = Integer.toString(campoSel.getId());
+                                    }
                                 }
                                 @Override
                                 public void onNothingSelected(AdapterView<?> adapterView) {

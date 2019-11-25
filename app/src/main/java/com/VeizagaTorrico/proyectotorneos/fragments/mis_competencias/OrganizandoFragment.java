@@ -104,7 +104,7 @@ public class OrganizandoFragment extends Fragment {
         manager = new LinearLayoutManager(vista.getContext());
         recycleComp.setLayoutManager(manager);
         recycleComp.setHasFixedSize(true);
-        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext(),competitions);
+        adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext());
         recycleComp.setAdapter(adapter);
     }
 
@@ -144,12 +144,11 @@ public class OrganizandoFragment extends Fragment {
                                 Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
                             }
                         });
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }else {
-                    Toast toast = Toast.makeText(getContext(), "No hay competencias para mostrar", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "No hay competencias para mostrar", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             }

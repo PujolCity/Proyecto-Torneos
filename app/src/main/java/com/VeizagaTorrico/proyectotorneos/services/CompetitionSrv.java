@@ -4,6 +4,7 @@ import com.VeizagaTorrico.proyectotorneos.ConstantURL;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
+import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 
 import java.util.List;
@@ -55,5 +56,11 @@ public interface CompetitionSrv {
 
     @POST(ConstantURL.BASE_URL + "competition/org")
     Call<CompetitionOrg> getFaseGrupoCompetition(@Query("idCompetencia") int idCompetencia);
+
+    @POST( ConstantURL.BASE_URL + "usercomp" )
+    Call<MsgRequest> solicitudCompetition(@Body Map<String,String> solicitud);
+
+    @GET(ConstantURL.BASE_URL + "generator/matches")
+    Call<MsgRequest> generarEncuentros(@Query("idCompetencia") int idCompetencia);
 
 }
