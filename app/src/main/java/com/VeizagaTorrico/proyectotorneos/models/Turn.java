@@ -57,7 +57,12 @@ public class Turn implements Serializable {
         this.horaHasta = horaHasta;
     }
 
-    @Override
+    public boolean vacio(){
+        if(this.horaHasta == null || this.horaDesde == null)
+            return true;
+        return false;
+    }
+
     public String toString() {
         return "Desde : " + horaDesde + '-' +
                 " Hasta : " + horaHasta ;

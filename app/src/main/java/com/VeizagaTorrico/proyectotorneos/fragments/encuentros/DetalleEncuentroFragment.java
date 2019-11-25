@@ -51,7 +51,7 @@ public class DetalleEncuentroFragment extends Fragment {
 
     private View vista;
     private EditText r1,r2;
-    private TextView comp1, comp2;
+    private TextView comp1, comp2,txtCampo,txtPredio,txtJuez,txtTurno;
     private ImageButton confirmarEdit;
     private Spinner spinnerPredio,spinnerCampo,spinnerJuez,spinnerTurno;
     private Confrontation encuentro;
@@ -67,6 +67,11 @@ public class DetalleEncuentroFragment extends Fragment {
     private TurnSrv turnoSrv;
     private List<Turn> turnos;
     private Map<String,String> editEncuentro;
+
+    private Ground predio;
+    private Referee referee;
+    private Field campo;
+    private Turn turno;
 
     public DetalleEncuentroFragment() {
         // Required empty public constructor
@@ -141,9 +146,6 @@ public class DetalleEncuentroFragment extends Fragment {
 
                     }
                 });
-
-
-
             }
         });
 
@@ -164,13 +166,49 @@ public class DetalleEncuentroFragment extends Fragment {
         predios = new ArrayList<>();
         campos = new ArrayList<>();
         jueces = new ArrayList<>();
-        editEncuentro = new HashMap<>();
+        turnos = new ArrayList<>();
 
+        editEncuentro = new HashMap<>();
         confirmarEdit = vista.findViewById(R.id.checConfirmar);
+
         comp1 = vista.findViewById(R.id.txtComp1Titulo);
         comp2 = vista.findViewById(R.id.txtComp2Titulo);
+
+        txtCampo = vista.findViewById(R.id.txtCampo);
+        txtPredio = vista.findViewById(R.id.txtPredio);
+        txtJuez = vista.findViewById(R.id.txtJuez);
+        txtTurno = vista.findViewById(R.id.txtTurno);
+
         r1 = vista.findViewById(R.id.resultadoComp1);
+        r1.setText(Integer.toString(encuentro.getRdoc1()));
         r2 = vista.findViewById(R.id.resultadoComp2);
+        r2.setText(Integer.toString(encuentro.getRdoc2()));
+
+        referee = new Referee(0, "Elija un juez", " ",0,null);
+        predio = new Ground(0, "Elije un predio", "", "");
+        campo = new Field(0, "Elije un capo de Juego", 0, 0, null);
+        turno = new Turn(0,0,"Elije un turno", "");
+
+        if(encuentro.getCampo() != null){
+            txtCampo.setText(encuentro.getCampo().toString());
+            if(encuentro.getCampo().getPredio() != null){
+                txtPredio.setText(encuentro.getCampo().getPredio().toString());
+            }
+        }
+        if(encuentro.getJuez() != null){
+            txtJuez.setText(encuentro.getJuez().toString());
+        }
+        if(encuentro.getTurno() != null){
+            try {
+                Log.d("hora", encuentro.getTurno().toString());
+                txtTurno.setText(encuentro.getTurno().toString());
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+
         spinnerPredio = vista.findViewById(R.id.spinnerPredio);
         spinnerCampo = vista.findViewById(R.id.spinnerCampo);
         spinnerJuez = vista.findViewById(R.id.spinnerJuez);
@@ -186,13 +224,15 @@ public class DetalleEncuentroFragment extends Fragment {
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
         msjCampos();
 
+
         comp1.setText(encuentro.getCompetidor1());
         comp2.setText(encuentro.getCompetidor2());
+
     }
 
     private void msjCampos() {
         campos.clear();
-        Field campo = new Field(0,"Por favor agregar campos en la pantalla de carga",0,0,null);
+        campo = new Field(0,"Por favor agregar campos en la pantalla de carga",0,0,null);
         campos.add(campo);
         adapterCampo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,campos);
         adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -207,25 +247,34 @@ public class DetalleEncuentroFragment extends Fragment {
             public void onResponse(Call<List<Turn>> call, Response<List<Turn>> response) {
                 if(response.code() == 200){
                     try {
+                        if(!response.body().isEmpty()){
+                            turnos.add(turno);
 
-                        turnos = response.body();
-                        ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerTurno.setAdapter(adapter);
-                        spinnerTurno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                Turn turnoSel = (Turn) spinnerTurno.getSelectedItem();
-                                if(turnoSel.getId() != 0 ){
-                                    turnoSeleccionado = Integer.toString(turnoSel.getId());
+                            turnos.addAll(response.body());
+                            ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerTurno.setAdapter(adapter);
+                            spinnerTurno.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    Turn turnoSel = (Turn) spinnerTurno.getSelectedItem();
+                                    if(turnoSel.getId() != 0 ){
+                                        turnoSeleccionado = Integer.toString(turnoSel.getId());
+                                    }
                                 }
-                            }
 
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
 
-                            }
-                        });
+                                }
+                            });
+                        }else {
+                            turno = new Turn(0,0,"Cargar turnos en pantalla de carga", "Cargar turnos en pantalla de carga");
+                            turnos.add(turno);
+                            ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
+                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                            spinnerTurno.setAdapter(adapter);
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -249,7 +298,6 @@ public class DetalleEncuentroFragment extends Fragment {
             public void onResponse(Call<List<Referee>> call, Response<List<Referee>> response) {
                 try{
                     if(!response.body().isEmpty()){
-                        Referee referee = new Referee(0, "Elija un juez", " ",0,null);
                         jueces.add(referee);
                         jueces.addAll(response.body());
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
@@ -270,7 +318,7 @@ public class DetalleEncuentroFragment extends Fragment {
                             }
                         });
                     }else {
-                        Referee referee = new Referee(0, "Por favor agregar jueces en la pantalla de carga", " ",0,null);
+                        referee = new Referee(0, "Por favor agregar jueces en la pantalla de carga", " ",0,null);
                         jueces.add(referee);
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -300,7 +348,6 @@ public class DetalleEncuentroFragment extends Fragment {
                     Log.d("encuentro response", Integer.toString(response.code()));
 
                     if(!response.body().isEmpty()) {
-                        Ground predio = new Ground(0, "Elije un predio", "", "");
                         predios.add(predio);
                         predios.addAll(response.body());
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
@@ -323,7 +370,7 @@ public class DetalleEncuentroFragment extends Fragment {
                             }
                         });
                     }else {
-                        Ground predio = new Ground(0, "Por favor agregar predios en la pantalla de carga", "", "");
+                        predio = new Ground(0, "Por favor agregar predios en la pantalla de carga", "", "");
                         predios.add(predio);
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -350,7 +397,6 @@ public class DetalleEncuentroFragment extends Fragment {
                 public void onResponse(Call<List<Field>> call, Response<List<Field>> response) {
                     try {
                         if(!response.body().isEmpty()) {
-                            Field campo = new Field(0, "Elije un capo de Juego", 0, 0, null);
                             campos.clear();
                             campos.add(campo);
                             campos.addAll(response.body());
@@ -379,8 +425,12 @@ public class DetalleEncuentroFragment extends Fragment {
                 }
                 @Override
                 public void onFailure(Call<List<Field>> call, Throwable t) {
-                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                    toast.show();
+                    try{
+                        Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                        toast.show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             });
         }else {

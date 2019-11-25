@@ -152,6 +152,7 @@ public class CargarPredioFragment extends Fragment {
                     campo.put("nombre",campoNombre);
                     campo.put("idPredio",Integer.toString(predioSeleccionado.getId()));
                     campo.put("dimensiones",campoDimensiones);
+                    campo.put("capacidad",campoCapacidad);
                     Log.d("body campo", predio.toString());
 
                     Call<Success> call = camposSrv.createField(campo);
@@ -414,6 +415,7 @@ public class CargarPredioFragment extends Fragment {
             return false;
         if(campoDimensiones.isEmpty())
             return false;
+
 
         return true;
     }
