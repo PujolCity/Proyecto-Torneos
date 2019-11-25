@@ -13,13 +13,11 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import android.util.Log;
-import android.util.StringBuilderPrinter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -30,8 +28,6 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.EncuentrosRecyclerVi
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
-import com.VeizagaTorrico.proyectotorneos.models.ConfrontationFull;
-import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 
@@ -172,6 +168,18 @@ public class EncuentrosDetalleFragment extends Fragment {
                     try {
                         adapter.setEncuentros(encuentros);
                         recycleCon.setAdapter(adapter);
+
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                Bundle bundle = new Bundle();
+                                encuentro.setIdCompetencia(competencia.getId());
+                                bundle.putSerializable("encuentro", encuentro);
+                                Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                            }
+                        });
+
                         if(competencia.getRol().contains("ORGANIZADOR")){
                             adapter.setOnClickListener(new View.OnClickListener() {
                                 @Override

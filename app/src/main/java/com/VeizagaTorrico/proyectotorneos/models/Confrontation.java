@@ -81,7 +81,6 @@ public class Confrontation implements Serializable {
 
     public void setRdoc2(int rdoc2) {
         this.rdoc2 = rdoc2;
-
     }
 
     public Referee getJuez() {

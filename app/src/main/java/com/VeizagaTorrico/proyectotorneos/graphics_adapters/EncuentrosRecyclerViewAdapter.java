@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
-import com.VeizagaTorrico.proyectotorneos.models.ConfrontationFull;
 
 import java.util.List;
 
@@ -60,6 +59,7 @@ public class EncuentrosRecyclerViewAdapter extends RecyclerView.Adapter<Encuentr
     public void onBindViewHolder(@NonNull EncuentrosRecyclerViewAdapter.Holder holder, int position) {
         try {
             Confrontation encuentro = this.encuentros.get(position);
+
             Log.d("encuentro dentr",encuentro.toString());
             holder.comp1.setText(encuentro.getCompetidor1());
             holder.comp2.setText(encuentro.getCompetidor2());

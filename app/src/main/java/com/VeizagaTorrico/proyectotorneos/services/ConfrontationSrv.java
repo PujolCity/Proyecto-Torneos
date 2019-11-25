@@ -2,7 +2,7 @@ package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
-import com.VeizagaTorrico.proyectotorneos.models.ConfrontationFull;
+
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 
 import java.util.List;

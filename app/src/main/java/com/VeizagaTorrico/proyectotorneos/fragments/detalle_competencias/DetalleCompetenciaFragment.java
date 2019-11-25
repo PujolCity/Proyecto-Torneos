@@ -96,6 +96,7 @@ public class DetalleCompetenciaFragment extends Fragment {
 
         adapter = new ViewPagerAdapter(getChildFragmentManager());
 
+        // le pasamos la competencia a cada fragment
         adapter.addFragment(infoGeneral,"Info General");
         infoGeneral.setCompetencia(competition);
 
@@ -103,6 +104,7 @@ public class DetalleCompetenciaFragment extends Fragment {
         encuentrosFragment.setCompetencia(competition);
 
         adapter.addFragment(posicionesFragment, "Posiciones");
+        posicionesFragment.setCompetencia(competition);
 
         this.pager.setAdapter(adapter);
 
