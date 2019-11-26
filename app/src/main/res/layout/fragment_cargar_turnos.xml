@@ -6,62 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".fragments.pantalla_carga.CargarTurnosFragment">
 
-    <TimePicker
-        android:id="@+id/tm_pick"
-        android:layout_width="288dp"
-        android:layout_height="85dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="25dp"
-        android:amPmTextColor="#03A9F4"
-        android:headerBackground="@color/colorPrimaryDark"
-        android:numbersBackgroundColor="#00AAA2A2"
-        android:timePickerMode="spinner"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTitleHora" />
 
     <TextView
         android:id="@+id/tvTitleHora"
         android:layout_width="233dp"
         android:layout_height="26dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="35dp"
+        android:layout_marginTop="32dp"
         android:text="Asigne un horario para el turno"
         android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.447"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
 
     <Button
         android:id="@+id/button"
         android:layout_width="151dp"
         android:layout_height="44dp"
-        android:layout_marginStart="172dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="152dp"
         android:text="@string/txtBtnAgregarTurno"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tm_pick" />
-
+        app:layout_constraintTop_toBottomOf="@+id/horaHasta" />
 
     <EditText
         android:id="@+id/horaHasta"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="108dp"
+        android:hint="Desde Hs"
+        android:clickable="true"
+        android:focusable="true"
+        android:focusableInTouchMode="false"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button">
+        app:layout_constraintTop_toTopOf="parent">
     </EditText>
 
-    <ImageButton
-        android:id="@+id/btnHoraHasta"
-        android:layout_width="wrap_content"
+    <EditText
+        android:id="@+id/etHoraHasta"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="72dp"
-        android:src="@drawable/ic_watch"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="108dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:hint="Hasta Hs"
+        android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.193"
         app:layout_constraintStart_toEndOf="@+id/horaHasta"
-        app:layout_constraintTop_toBottomOf="@+id/button">
-    </ImageButton>
-
+        app:layout_constraintTop_toTopOf="parent">
+    </EditText>
 </androidx.constraintlayout.widget.ConstraintLayout>

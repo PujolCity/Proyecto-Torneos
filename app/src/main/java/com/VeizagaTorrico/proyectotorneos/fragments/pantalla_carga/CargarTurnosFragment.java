@@ -24,9 +24,10 @@ public class CargarTurnosFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private View vista;
+    String horaTomada;
     private TimePicker tmpHorario;
     private ImageButton btnHasta;
-    private EditText etHora;
+    private EditText etHoraDesde, etHoraHasta;
     private final Calendar c = Calendar.getInstance();
 
     private final int hora = c.get(Calendar.HOUR_OF_DAY);
@@ -59,20 +60,27 @@ public class CargarTurnosFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_cargar_turnos, container, false);
         initElements();
 
-        btnHasta.setOnClickListener(new View.OnClickListener() {
+        etHoraDesde.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                obtenerHora();
+                obtenerHora(etHoraDesde);
                 Log.d("horaOb 1...",Integer.toString(horaOb) + " : " + Integer.toString(minutoOb) );
 
                 Log.d("hora",Integer.toString(hora) + " : " + Integer.toString(minuto) );
+
             }
         });
 
+        etHoraHasta.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                obtenerHora(etHoraHasta);
+            }
+        });
 
         return vista;
     }
-    private void obtenerHora(){
+    private void obtenerHora(final EditText setHora){
         TimePickerDialog recogerHora = new TimePickerDialog(vista.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
@@ -80,7 +88,7 @@ public class CargarTurnosFragment extends Fragment {
                 String horaFormateada =  (hourOfDay < 10)? String.valueOf("0" + hourOfDay) : String.valueOf(hourOfDay);
                 //Formateo el minuto obtenido: antepone el 0 si son menores de 10
                 String minutoFormateado = (minute < 10)? String.valueOf("0" + minute):String.valueOf(minute);
-                etHora.setText(horaFormateada +" : "+ minutoFormateado + " hs");
+                setHora.setText(horaFormateada +" : "+ minutoFormateado + " hs");
                 horaOb = hourOfDay;
                 minutoOb = minute;
                 Log.d("horaOb 2...",Integer.toString(horaOb) + " : " + Integer.toString(minutoOb) );
@@ -125,11 +133,9 @@ public class CargarTurnosFragment extends Fragment {
 
     private void initElements() {
         // ponemos el timepicker en 24 hs
-        tmpHorario = vista.findViewById(R.id.tm_pick);
-        tmpHorario.setIs24HourView(true);
 
-        btnHasta =  vista.findViewById(R.id.btnHoraHasta);
-        etHora = vista.findViewById(R.id.horaHasta);
-
+       // btnHasta =  vista.findViewById(R.id.btnHoraHasta);
+        etHoraDesde = vista.findViewById(R.id.horaHasta);
+        etHoraHasta = vista.findViewById(R.id.etHoraHasta);
     }
 }
