@@ -13,6 +13,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -112,8 +113,13 @@ public class PosicionesFragment extends Fragment {
         }
     }
 
+    // crea una tabla de posiciones con los resultados
+    // pre: existen equipos para mostrar
     private void showTablePositions(List<PositionCompetitor> posiciones) {
-        // agregamos los resultados a la tabla
+        // agregamos la cabecera a la tabla
+        addHeaderTable();
+
+        // agregamos los resultados de las posiciones
         for (int i = 0; i < posiciones.size(); i++) {
             TableRow resultadoCompetidor = getRowTable(posiciones.get(i));
             tablaPosiciones.addView(resultadoCompetidor);
@@ -124,39 +130,99 @@ public class PosicionesFragment extends Fragment {
     // crea una nueva fila para la tabla de resultados desde la info recuperada del servidor
     private TableRow getRowTable(PositionCompetitor posicionCompetidor){
         // creamos una fila vacia
-        TableRow tbrow = new TableRow(getContext());
+        TableRow tbrow = new TableRow(vista.getContext());
 
         // agregamos los valores de las columnas
-        TextView tvCompetidor = new TextView(getContext());
+        TextView tvCompetidor = new TextView(vista.getContext());
         tvCompetidor.setText(posicionCompetidor.getCompetidor());
         tvCompetidor.setTextColor(Color.BLACK);
-        tvCompetidor.setGravity(Gravity.CENTER);
+        tvCompetidor.setGravity(Gravity.LEFT);
         tbrow.addView(tvCompetidor);
-        TextView tvPj = new TextView(getContext());
+        TextView tvPj = new TextView(vista.getContext());
         tvPj.setText(posicionCompetidor.getJugados());
         tvPj.setTextColor(Color.BLACK);
         tvPj.setGravity(Gravity.CENTER);
         tbrow.addView(tvPj);
-        TextView tvPg = new TextView(getContext());
+        TextView tvPg = new TextView(vista.getContext());
         tvPg.setText(posicionCompetidor.getGanados());
         tvPg.setTextColor(Color.BLACK);
         tvPg.setGravity(Gravity.CENTER);
         tbrow.addView(tvPg);
-        TextView tvPe = new TextView(getContext());
+        TextView tvPe = new TextView(vista.getContext());
         tvPe.setText(posicionCompetidor.getEmpatados());
         tvPe.setTextColor(Color.BLACK);
         tvPe.setGravity(Gravity.CENTER);
         tbrow.addView(tvPe);
-        TextView tvPp = new TextView(getContext());
+        TextView tvPp = new TextView(vista.getContext());
         tvPp.setText(posicionCompetidor.getPerdidos());
         tvPp.setTextColor(Color.BLACK);
         tvPp.setGravity(Gravity.CENTER);
         tbrow.addView(tvPp);
-        TextView tvPts = new TextView(getContext());
+        TextView tvPts = new TextView(vista.getContext());
         tvPts.setText(posicionCompetidor.getPuntos());
         tvPts.setTextColor(Color.BLACK);
         tvPts.setGravity(Gravity.CENTER);
         tbrow.addView(tvPts);
+
+        return tbrow;
+    }
+
+    // crea una nueva fila para la tabla de resultados desde la info recuperada del servidor
+    private TableRow addHeaderTable(){
+        // creamos una fila vacia
+        TableRow tbrow = new TableRow(vista.getContext());
+        tbrow.setBackgroundColor(Color.CYAN);
+
+        // agregamos los valores de las columnas
+        TextView tvCompetidor = new TextView(vista.getContext());
+        tvCompetidor.setText("COMPETIDOR");
+        //tvCompetidor.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        tvCompetidor.setTextColor(Color.GRAY);
+        tvCompetidor.setGravity(Gravity.CENTER);
+        tbrow.addView(tvCompetidor);
+        TextView tvPj = new TextView(vista.getContext());
+        tvPj.setText("PJ");
+        //tvPj.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        tvPj.setTextColor(Color.GRAY);
+        tvPj.setGravity(Gravity.CENTER);
+        tbrow.addView(tvPj);
+        TextView tvPg = new TextView(vista.getContext());
+        tvPg.setText("PG");
+        //tvPg.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        tvPg.setTextColor(Color.GRAY);
+        tvPg.setGravity(Gravity.CENTER);
+        tbrow.addView(tvPg);
+        TextView tvPe = new TextView(vista.getContext());
+        tvPe.setText("PE");
+        //tvPe.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        tvPe.setTextColor(Color.GRAY);
+        tvPe.setGravity(Gravity.CENTER);
+        tbrow.addView(tvPe);
+        TextView tvPp = new TextView(vista.getContext());
+        tvPp.setText("PP");
+        //tvPp.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        tvPp.setTextColor(Color.GRAY);
+        tvPp.setGravity(Gravity.CENTER);
+        tbrow.addView(tvPp);
+        TextView tvPts = new TextView(vista.getContext());
+        tvPts.setText("Pts");
+        //tvPts.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
+        tvPts.setTextColor(Color.GRAY);
+        tvPts.setGravity(Gravity.CENTER);
+        tbrow.addView(tvPts);
+
+        tablaPosiciones.addView(tbrow);
+
+        // agregamos el separador
+        TableRow tbrowsep = new TableRow(vista.getContext());
+        FrameLayout separator = new FrameLayout(vista.getContext());
+
+        separator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, 2));
+        separator.setBackgroundColor(Color.WHITE);
+
+        tbrowsep.addView(separator);
+
+        tablaPosiciones.addView(tbrowsep);
 
         return tbrow;
     }
