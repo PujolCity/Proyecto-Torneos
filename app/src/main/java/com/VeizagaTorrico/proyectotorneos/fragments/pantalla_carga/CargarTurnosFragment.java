@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -24,12 +25,11 @@ public class CargarTurnosFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private View vista;
-    String horaTomada;
-    private TimePicker tmpHorario;
-    private ImageButton btnHasta;
+    private ImageButton delete;
+    private Spinner spinnerTurnos;
     private EditText etHoraDesde, etHoraHasta;
     private final Calendar c = Calendar.getInstance();
-
+    private String hsDesde,hsHasta;
     private final int hora = c.get(Calendar.HOUR_OF_DAY);
     private final int minuto = c.get(Calendar.MINUTE);
 
@@ -88,7 +88,7 @@ public class CargarTurnosFragment extends Fragment {
                 String horaFormateada =  (hourOfDay < 10)? String.valueOf("0" + hourOfDay) : String.valueOf(hourOfDay);
                 //Formateo el minuto obtenido: antepone el 0 si son menores de 10
                 String minutoFormateado = (minute < 10)? String.valueOf("0" + minute):String.valueOf(minute);
-                setHora.setText(horaFormateada +" : "+ minutoFormateado + " hs");
+                setHora.setText(horaFormateada+" : "+minutoFormateado+" hs");
                 horaOb = hourOfDay;
                 minutoOb = minute;
                 Log.d("horaOb 2...",Integer.toString(horaOb) + " : " + Integer.toString(minutoOb) );
@@ -132,9 +132,9 @@ public class CargarTurnosFragment extends Fragment {
     }
 
     private void initElements() {
-        // ponemos el timepicker en 24 hs
 
-       // btnHasta =  vista.findViewById(R.id.btnHoraHasta);
+        delete = vista.findViewById(R.id.deleteTurno);
+        spinnerTurnos = vista.findViewById(R.id.spinnerCargaTurno);
         etHoraDesde = vista.findViewById(R.id.horaHasta);
         etHoraHasta = vista.findViewById(R.id.etHoraHasta);
     }
