@@ -33,6 +33,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFr
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarJuezFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -66,7 +67,8 @@ public class NavigationMainActivity extends AppCompatActivity
         DetalleEncuentroFragment.OnFragmentInteractionListener,
         CargarPredioFragment.OnFragmentInteractionListener,
         CargarTurnosFragment.OnFragmentInteractionListener,
-        CargarJuezFragment.OnFragmentInteractionListener {
+        CargarJuezFragment.OnFragmentInteractionListener,
+        CoOrganizadorFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 

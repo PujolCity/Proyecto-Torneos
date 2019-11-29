@@ -149,6 +149,15 @@
         <action
             android:id="@+id/action_cargasDetalleFragment_to_cargarPredioFragment"
             app:destination="@id/cargarPredioFragment" />
+        <action
+            android:id="@+id/action_cargasDetalleFragment_to_coOrganizadorFragment"
+            app:destination="@id/coOrganizadorFragment" />
+        <action
+            android:id="@+id/action_cargasDetalleFragment_to_cargarTurnoFragment"
+            app:destination="@id/cargarTurnoFragment" />
+        <action
+            android:id="@+id/action_cargasDetalleFragment_to_cargarJuezFragment"
+            app:destination="@id/cargarJuezFragment" />
     </fragment>
     <fragment
         android:id="@+id/competidoresDetalleFragment"
@@ -209,5 +218,10 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment"
         android:label="Cargar turnos"
         tools:layout="@layout/fragment_cargar_turnos" />
+    <fragment
+        android:id="@+id/coOrganizadorFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment"
+        android:label="Invita a un Usuario a organizar"
+        tools:layout="@layout/fragment_co_organizador" />
 
 </navigation>

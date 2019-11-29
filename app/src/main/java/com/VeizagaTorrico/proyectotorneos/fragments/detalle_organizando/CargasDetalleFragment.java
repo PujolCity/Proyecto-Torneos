@@ -34,6 +34,8 @@ public class CargasDetalleFragment extends Fragment {
     private Button btnTurno;
     private Button btnJuez;
     private Button btnGenerar;
+    private Button btnInvitar;
+
     private CompetitionSrv competenciaSrv;
 
     public CargasDetalleFragment() {
@@ -69,6 +71,8 @@ public class CargasDetalleFragment extends Fragment {
         btnTurno = vista.findViewById(R.id.btnCargarTurno);
         btnJuez = vista.findViewById(R.id.btnCargarJuez);
         btnGenerar = vista.findViewById(R.id.btnGenerarEncuentros);
+        btnInvitar = vista.findViewById(R.id.btnInvitar);
+
     }
 
     private void listenButtons() {
@@ -107,21 +111,36 @@ public class CargasDetalleFragment extends Fragment {
             public void onClick(View view) {
                 Call<MsgRequest> call = competenciaSrv.generarEncuentros(competencia.getId());
                 Log.d("Url Call", call.request().url().toString());
-                call.enqueue(new Callback<MsgRequest>() {
-                    @Override
-                    public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
-                        Log.d("response",Integer.toString(response.code()));
-                        if(response.code() == 200) {
-                            Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
+                try {
+                    call.enqueue(new Callback<MsgRequest>() {
+                        @Override
+                        public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                            Log.d("response",Integer.toString(response.code()));
+                            if(response.code() == 200) {
+                                Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MsgRequest> call, Throwable t) {
+                            Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                             toast.show();
                         }
-                    }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
-                    @Override
-                    public void onFailure(Call<MsgRequest> call, Throwable t) {
+        btnInvitar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("competencia", competencia);
+                Navigation.findNavController(vista).navigate(R.id.coOrganizadorFragment, bundle);
 
-                    }
-                });
             }
         });
     }

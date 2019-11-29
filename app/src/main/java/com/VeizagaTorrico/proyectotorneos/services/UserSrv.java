@@ -32,4 +32,7 @@ public interface UserSrv {
     @GET(ConstantURL.BASE_URL + "competitors-competition")
     Call<List<User>> getCompetidoresByCompetencia(@Query ("idCompetencia") int idCompetencia);
 
+    @GET(ConstantURL.BASE_URL + "users/getUsersByUsername")
+    Call<List<User>> getUsuariosByUsername(@Query ("username") String username);
+    
 }
