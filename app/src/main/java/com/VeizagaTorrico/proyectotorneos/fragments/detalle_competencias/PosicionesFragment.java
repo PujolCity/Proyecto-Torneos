@@ -13,7 +13,10 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -22,12 +25,14 @@ import android.widget.Toast;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.PositionCompetitor;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.PositionCompetitorSrv;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -47,6 +52,10 @@ public class PosicionesFragment extends Fragment {
     private TableLayout tablaPosiciones;
     private CompetitionMin competition;
     private List<PositionCompetitor> posiciones;
+    private CompetitionSrv competitionSrv;
+    private Spinner spin_grupo;
+    private Spinner spin_jornada;
+    private String nroGrupo;
 
     public PosicionesFragment() {
         // Required empty public constructor
@@ -70,13 +79,39 @@ public class PosicionesFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_posiciones, container, false);
         tablaPosiciones = vista.findViewById(R.id.TablaPosiciones);
+        spin_grupo = vista.findViewById(R.id.spinnerGrupo);
+        spin_jornada = vista.findViewById(R.id.spinnerJornada);
+        spin_jornada.setVisibility(View.INVISIBLE);
         initElements();
-        callTablePosition(competition.getId());
+        //callTablePosition(competition.getId());
+        showTablePosotion(competition.getId());
         return vista;
     }
 
     private void initElements() {
         positionSrv = new RetrofitAdapter().connectionEnable().create(PositionCompetitorSrv.class);
+        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+    }
+
+    private void showTablePosotion(int idCompetencia){
+        // analizamos el tipo de competencia
+        if(competition.getTypesOrganization().contains("Liga")){
+            callTablePosition(competition.getId());
+        }
+        if(competition.getTypesOrganization().contains("grupo")){
+            spin_grupo.setVisibility(View.VISIBLE);
+            // cargamos las opciones del spinner y ponemos los botones a la escucha para llamar el serv de tabla segun grupo y competencia
+            // determinar serv de tabla segun competencia y grupo
+            cargarSpinnerGrupo(competition.getId());
+        }
+        else{
+            spin_grupo.setVisibility(View.INVISIBLE);
+        }
+        // vemos si es eliminatoria
+        if(competition.getTypesOrganization().contains("Eliminatoria")){
+            Toast toast = Toast.makeText(vista.getContext(), "Las eliminatorias no cuentan con una tabla de posiciones", Toast.LENGTH_SHORT);
+            toast.show();
+        }
     }
 
     private void callTablePosition(int idCompetencia){
@@ -88,15 +123,10 @@ public class PosicionesFragment extends Fragment {
                     if(response.code() == 200){
                         posiciones = response.body();
                     }
+
                     // si recibimos los resultados de las posiciones de los competidores
                     if(posiciones != null){
-                        Collections.sort(posiciones, new Comparator<PositionCompetitor>() {
-                            @Override
-                            public int compare(PositionCompetitor pos1, PositionCompetitor pos2) {
-                                return pos1.getPuntos().compareTo(pos2.getPuntos());
-                            }
-                        });
-                        Collections.reverse(posiciones);
+                        // sino es definitavamente una liga
                         showTablePositions(posiciones);
                     }
                 }
@@ -113,9 +143,88 @@ public class PosicionesFragment extends Fragment {
         }
     }
 
+    private void cargarSpinnerGrupo(int idCompetencia) {
+        //En call viene el tipo de dato que espero del servidor
+        Call<CompetitionOrg> call = competitionSrv.getFaseGrupoCompetition(idCompetencia);
+        //Log.d("Request Encuentros", call.request().url().toString());
+        call.enqueue(new Callback<CompetitionOrg>() {
+            @Override
+            public void onResponse(Call<CompetitionOrg> call, Response<CompetitionOrg> response) {
+                CompetitionOrg datosSpinner;
+                //codigo 200 si salio tdo bien
+                if (response.code() == 200) {
+                    try{
+                        //fecha_grupo.clear();
+                        Log.d("RESPONSE FILTER CODE",  Integer.toString(response.code()));
+                        //asigno a deportes lo que traje del servidor
+                        datosSpinner = response.body();
+                        Log.d("datosSpinner",response.body().toString());
+
+
+                        // List<Integer> grupos = getAllIntegerRange(1 , datosSpinner.getN_grupos());
+                        List<String> grupos = getItemGrupos(datosSpinner.getN_grupos());
+                        // creo el adapter para el spinnerJornada y asigno el origen de los datos para el adaptador del spinner
+                        ArrayAdapter<String> adapterGrupo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, grupos);
+                        adapterGrupo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        // seteo los adapter de cada spinner
+                        spin_grupo.setAdapter(adapterGrupo);
+
+                        // manejador del evento OnItemSelectedn del spinner de grupo
+                        spin_grupo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                    // controlamos que no se elija el primer elemento
+                                    if(spin_grupo.getSelectedItemPosition() == 0){
+                                        nroGrupo = null;
+                                        //fecha_grupo.put("grupo", nroGrupo);
+                                    }
+                                    else{
+                                        nroGrupo = (String) spin_grupo.getSelectedItem();
+                                        //fecha_grupo.put("grupo", nroGrupo);
+                                        //getEncuentros(fecha_grupo);
+                                        // aca segun la opcion deberiamos mostrar la tabla correspondiente
+                                    }
+                                }
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                }
+                            });
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            @Override
+            public void onFailure(Call<CompetitionOrg> call, Throwable t) {
+                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                toast.show();
+                Log.d("onFailure", t.getMessage());
+            }
+        });
+    }
+
+    // creamos la lista de opciones del spinner
+    private List<String> getItemGrupos(int nroGrupos){
+        List<String> itemGrupos = new ArrayList<>();
+        itemGrupos.add("Grupo ");
+        for (int i = 1; i <= nroGrupos ; i++) {
+                itemGrupos.add(String.valueOf(i));
+        }
+        return itemGrupos;
+    }
+
     // crea una tabla de posiciones con los resultados
     // pre: existen equipos para mostrar
     private void showTablePositions(List<PositionCompetitor> posiciones) {
+        Collections.sort(posiciones, new Comparator<PositionCompetitor>() {
+            @Override
+            public int compare(PositionCompetitor pos1, PositionCompetitor pos2) {
+                return pos1.getPuntos().compareTo(pos2.getPuntos());
+            }
+        });
+        Collections.reverse(posiciones);
+
         // agregamos la cabecera a la tabla
         addHeaderTable();
 
