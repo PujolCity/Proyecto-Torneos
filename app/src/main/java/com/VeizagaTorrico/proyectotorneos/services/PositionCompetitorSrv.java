@@ -14,4 +14,7 @@ public interface PositionCompetitorSrv {
     @GET(ConstantURL.BASE_URL + "result/score")
     Call<List<PositionCompetitor>> getTablePositions(@Query("idCompetencia") int idCompetencia);
 
+    @GET(ConstantURL.BASE_URL + "result/score")
+    Call<List<PositionCompetitor>> getTablePositionsByGroup(@Query("idCompetencia") int idCompetencia, @Query("grupo") int grupo);
+
 }

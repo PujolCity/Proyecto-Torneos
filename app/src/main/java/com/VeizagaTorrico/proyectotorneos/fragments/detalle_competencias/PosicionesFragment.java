@@ -55,7 +55,7 @@ public class PosicionesFragment extends Fragment {
     private CompetitionSrv competitionSrv;
     private Spinner spin_grupo;
     private Spinner spin_jornada;
-    private String nroGrupo;
+    private Integer nroGrupo;
 
     public PosicionesFragment() {
         // Required empty public constructor
@@ -79,12 +79,13 @@ public class PosicionesFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_posiciones, container, false);
         tablaPosiciones = vista.findViewById(R.id.TablaPosiciones);
+        //spin_grupo = vista.findViewById(R.id.spinnerGrupoTablaPosiciones);
         spin_grupo = vista.findViewById(R.id.spinnerGrupo);
         spin_jornada = vista.findViewById(R.id.spinnerJornada);
         spin_jornada.setVisibility(View.INVISIBLE);
         initElements();
         //callTablePosition(competition.getId());
-        showTablePosotion(competition.getId());
+        showTablePosotion();
         return vista;
     }
 
@@ -93,7 +94,8 @@ public class PosicionesFragment extends Fragment {
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
     }
 
-    private void showTablePosotion(int idCompetencia){
+    private void showTablePosotion(){
+        emptyScreenTable();
         // analizamos el tipo de competencia
         if(competition.getTypesOrganization().contains("Liga")){
             callTablePosition(competition.getId());
@@ -112,6 +114,12 @@ public class PosicionesFragment extends Fragment {
             Toast toast = Toast.makeText(vista.getContext(), "Las eliminatorias no cuentan con una tabla de posiciones", Toast.LENGTH_SHORT);
             toast.show();
         }
+    }
+
+    // vaciar la pantalla de posiciones para mostrar solo una tabla de posiciones
+    private void emptyScreenTable(){
+        if (tablaPosiciones.getChildCount() > 0)
+            tablaPosiciones.removeAllViews();
     }
 
     private void callTablePosition(int idCompetencia){
@@ -135,6 +143,35 @@ public class PosicionesFragment extends Fragment {
                 public void onFailure(Call<List<PositionCompetitor>> call, Throwable t) {
                     Log.d("On failure", t.getMessage());
                     Toast toast = Toast.makeText(vista.getContext(), "No se pudieron recuperar las posiciones de la competencia", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void callTablePositionByGroup(int idCompetencia, int grupo){
+        Call<List<PositionCompetitor>> call = positionSrv.getTablePositionsByGroup(idCompetencia, grupo);
+        try{
+            call.enqueue(new Callback<List<PositionCompetitor>>() {
+                @Override
+                public void onResponse(Call<List<PositionCompetitor>> call, Response<List<PositionCompetitor>> response) {
+                    if(response.code() == 200){
+                        posiciones = response.body();
+                    }
+
+                    // si recibimos los resultados de las posiciones de los competidores
+                    if(posiciones != null){
+                        // sino es definitavamente una liga
+                        showTablePositions(posiciones);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<PositionCompetitor>> call, Throwable t) {
+                    Log.d("On failure", t.getMessage());
+                    Toast toast = Toast.makeText(vista.getContext(), "No se pudieron recuperar las posiciones de la competencia con el grupo ingresado", Toast.LENGTH_SHORT);
                     toast.show();
                 }
             });
@@ -179,11 +216,11 @@ public class PosicionesFragment extends Fragment {
                                         //fecha_grupo.put("grupo", nroGrupo);
                                     }
                                     else{
-                                        nroGrupo = (String) spin_grupo.getSelectedItem();
-                                        //fecha_grupo.put("grupo", nroGrupo);
-                                        //getEncuentros(fecha_grupo);
-                                        // aca segun la opcion deberiamos mostrar la tabla correspondiente
+                                        //nroGrupo = (Integer) spin_grupo.getSelectedItem();
+                                        nroGrupo = Integer.valueOf((String)spin_grupo.getSelectedItem());
+                                        callTablePositionByGroup(competition.getId(), nroGrupo);
                                     }
+
                                 }
                                 @Override
                                 public void onNothingSelected(AdapterView<?> adapterView) {
