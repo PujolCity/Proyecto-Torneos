@@ -34,5 +34,4 @@ public interface UserSrv {
 
     @GET(ConstantURL.BASE_URL + "users/getUsersByUsername")
     Call<List<User>> getUsuariosByUsername(@Query ("username") String username);
-    
 }
