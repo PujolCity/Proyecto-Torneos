@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -82,7 +83,7 @@ public class PosicionesFragment extends Fragment {
         //spin_grupo = vista.findViewById(R.id.spinnerGrupoTablaPosiciones);
         spin_grupo = vista.findViewById(R.id.spinnerGrupo);
         spin_jornada = vista.findViewById(R.id.spinnerJornada);
-        spin_jornada.setVisibility(View.INVISIBLE);
+        spin_jornada.setVisibility(View.GONE);
         initElements();
         //callTablePosition(competition.getId());
         showTablePosotion();
@@ -95,7 +96,6 @@ public class PosicionesFragment extends Fragment {
     }
 
     private void showTablePosotion(){
-        emptyScreenTable();
         // analizamos el tipo de competencia
         if(competition.getTypesOrganization().contains("Liga")){
             callTablePosition(competition.getId());
@@ -123,6 +123,7 @@ public class PosicionesFragment extends Fragment {
     }
 
     private void callTablePosition(int idCompetencia){
+        emptyScreenTable();
         Call<List<PositionCompetitor>> call = positionSrv.getTablePositions(idCompetencia);
         try{
             call.enqueue(new Callback<List<PositionCompetitor>>() {
@@ -152,6 +153,7 @@ public class PosicionesFragment extends Fragment {
     }
 
     private void callTablePositionByGroup(int idCompetencia, int grupo){
+        emptyScreenTable();
         Call<List<PositionCompetitor>> call = positionSrv.getTablePositionsByGroup(idCompetencia, grupo);
         try{
             call.enqueue(new Callback<List<PositionCompetitor>>() {
@@ -270,6 +272,8 @@ public class PosicionesFragment extends Fragment {
             TableRow resultadoCompetidor = getRowTable(posiciones.get(i));
             tablaPosiciones.addView(resultadoCompetidor);
         }
+
+        Log.d("TABLA_POS", "entro a MostararTabla");
 
     }
 

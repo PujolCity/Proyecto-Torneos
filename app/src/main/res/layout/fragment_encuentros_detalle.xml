@@ -7,7 +7,6 @@
 
     <include
         layout="@layout/busqueda_layout">
-
     </include>
 
     <androidx.recyclerview.widget.RecyclerView
