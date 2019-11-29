@@ -147,13 +147,14 @@ public class DetalleEncuentroFragment extends Fragment {
                 });
             }
         });
-
         return vista;
     }
 
     private boolean validar() {
-        if(rdo_1.isEmpty())
-            return false;
+        Log.d("VALORES", rdo_1+ "   "+rdo_2);
+        if(rdo_1.isEmpty()){
+            Log.d("VACIO", "NO ENTRA");
+            return false;}
         if(rdo_2.isEmpty())
             return false;
         return true;
@@ -179,10 +180,12 @@ public class DetalleEncuentroFragment extends Fragment {
         txtTurno = vista.findViewById(R.id.txtTurno);
 
         r1 = vista.findViewById(R.id.resultadoComp1);
-        r1.setText(Integer.toString(encuentro.getRdoc1()));
         r2 = vista.findViewById(R.id.resultadoComp2);
-        r2.setText(Integer.toString(encuentro.getRdoc2()));
 
+        if(encuentro.getRdoc1() != -1 && encuentro.getRdoc2() != -1){
+            r1.setText(Integer.toString(encuentro.getRdoc1()));
+            r2.setText(Integer.toString(encuentro.getRdoc2()));
+        }
         referee = new Referee(0, "Elija un juez", " ",0,null);
         predio = new Ground(0, "Elije un predio", "", "");
         campo = new Field(0, "Elije un capo de Juego", 0, 0, null);

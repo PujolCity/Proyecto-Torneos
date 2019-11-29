@@ -64,9 +64,11 @@ public class EncuentrosRecyclerViewAdapter extends RecyclerView.Adapter<Encuentr
             holder.comp1.setText(encuentro.getCompetidor1());
             holder.comp2.setText(encuentro.getCompetidor2());
 
-            holder.edComp1.setText(Integer.toString(encuentro.getRdoc1()));
-            holder.edComp2.setText(Integer.toString(encuentro.getRdoc2()));
+            if(encuentro.getRdoc1() != -1 && encuentro.getRdoc2() != -1){
+                holder.edComp1.setText(Integer.toString(encuentro.getRdoc1()));
+                holder.edComp2.setText(Integer.toString(encuentro.getRdoc2()));
 
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

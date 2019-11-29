@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -18,18 +19,22 @@ import android.widget.TimePicker;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CargarTurnosFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     private View vista;
+    private Button btnTurno;
     private ImageButton delete;
     private Spinner spinnerTurnos;
     private EditText etHoraDesde, etHoraHasta;
     private final Calendar c = Calendar.getInstance();
-    private String hsDesde,hsHasta;
+    private List<String> hsDesde,hsHasta;
+    private String segundos;
     private final int hora = c.get(Calendar.HOUR_OF_DAY);
     private final int minuto = c.get(Calendar.MINUTE);
 
@@ -63,24 +68,38 @@ public class CargarTurnosFragment extends Fragment {
         etHoraDesde.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                obtenerHora(etHoraDesde);
-                Log.d("horaOb 1...",Integer.toString(horaOb) + " : " + Integer.toString(minutoOb) );
-
-                Log.d("hora",Integer.toString(hora) + " : " + Integer.toString(minuto) );
-
+               hsDesde = obtenerHora(etHoraDesde);
             }
         });
 
         etHoraHasta.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                obtenerHora(etHoraHasta);
+                hsHasta = obtenerHora(etHoraHasta);
             }
         });
 
+        btnTurno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("Lo que se envia", hsDesde.toString());
+                Log.d("Lo OTRO", hsHasta.toString());
+
+                if(validar()){
+
+                }
+
+            }
+        });
         return vista;
     }
-    private void obtenerHora(final EditText setHora){
+
+    private boolean validar() {
+        return false;
+    }
+
+    private List<String> obtenerHora(final EditText setHora){
+        final List<String> hs = new ArrayList<>();
         TimePickerDialog recogerHora = new TimePickerDialog(vista.getContext(), new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
@@ -89,18 +108,14 @@ public class CargarTurnosFragment extends Fragment {
                 //Formateo el minuto obtenido: antepone el 0 si son menores de 10
                 String minutoFormateado = (minute < 10)? String.valueOf("0" + minute):String.valueOf(minute);
                 setHora.setText(horaFormateada+" : "+minutoFormateado+" hs");
-                horaOb = hourOfDay;
-                minutoOb = minute;
-                Log.d("horaOb 2...",Integer.toString(horaOb) + " : " + Integer.toString(minutoOb) );
-
+                hs.add(horaFormateada);
+                hs.add(minutoFormateado);
+                hs.add(segundos);
             }
         },hora,minuto,true);
 
         recogerHora.show();
-
-        Log.d("HORA@",Integer.toString(hora) + " : " + Integer.toString(minuto) );
-        Log.d("horaOb 3...",Integer.toString(horaOb) + " : " + Integer.toString(minutoOb) );
-
+        return hs;
     }
 
 
@@ -132,10 +147,14 @@ public class CargarTurnosFragment extends Fragment {
     }
 
     private void initElements() {
+        segundos = "00";
 
+        btnTurno = vista.findViewById(R.id.btnCrearTurno);
         delete = vista.findViewById(R.id.deleteTurno);
         spinnerTurnos = vista.findViewById(R.id.spinnerCargaTurno);
         etHoraDesde = vista.findViewById(R.id.horaHasta);
         etHoraHasta = vista.findViewById(R.id.etHoraHasta);
     }
+
+
 }
