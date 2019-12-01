@@ -30,10 +30,12 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralD
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaFaseFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarJuezFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.solicitudes.SolicitudesFragment;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -68,7 +70,9 @@ public class NavigationMainActivity extends AppCompatActivity
         CargarPredioFragment.OnFragmentInteractionListener,
         CargarTurnosFragment.OnFragmentInteractionListener,
         CargarJuezFragment.OnFragmentInteractionListener,
-        CoOrganizadorFragment.OnFragmentInteractionListener {
+        CoOrganizadorFragment.OnFragmentInteractionListener,
+        SolicitudesFragment.OnFragmentInteractionListener,
+        CargaFaseFragment.OnFragmentInteractionListener{
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -87,7 +91,7 @@ public class NavigationMainActivity extends AppCompatActivity
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias)
+                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misSolicitudes)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

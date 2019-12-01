@@ -18,34 +18,42 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
-public class CoOrganizadorFragment extends Fragment {
+
+public class CargaFaseFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     private View vista;
     private CompetitionMin competencia;
-    private EditText etUsername;
-    private Spinner spinnerUsuarios;
-    private Button btnComprobar, btnEnviar;
+    private TextView vs;
+    private EditText comp1, comp2;
+    private Button btnGuardar, btnEncuentro;
+    private Spinner spinnerFase, spinnerCompetidor, spinnerEncuentro;
+    private List<Confrontation> encuentros;
+    private Map<String,List <Integer>> body;
     private UserSrv userSrv;
     private List<User> usuarios;
     private ArrayAdapter<User> adapterUser;
+    private User seleccionado;
 
-    public CoOrganizadorFragment() {
+    public CargaFaseFragment() {
     }
 
-    public static CoOrganizadorFragment newInstance() {
-        CoOrganizadorFragment fragment = new CoOrganizadorFragment();
+    public static CargaFaseFragment newInstance() {
+        CargaFaseFragment fragment = new CargaFaseFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -59,34 +67,69 @@ public class CoOrganizadorFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        vista = inflater.inflate(R.layout.fragment_co_organizador, container, false);
+        vista = inflater.inflate(R.layout.fragment_carga_fase, container, false);
         initElements();
-        buttonListeners();
+        llenarSpinnerUser("a");
+        btnListener();
 
         return vista;
     }
 
-    private void buttonListeners() {
-        btnComprobar.setOnClickListener(new View.OnClickListener() {
+    private void btnListener() {
+        comp2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username = etUsername.getText().toString();
-                if(validar(username)){
-                    llenarSpinnerUser(username);
-                }else {
-                    Log.d("Llenar el campo","edit text vacio");
-                }
+                comp2.setText(seleccionado.getNombreUsuario());
+            }
+        });
+
+        comp1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                comp1.setText(seleccionado.getNombreUsuario());
+            }
+        });
+
+        btnGuardar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
             }
         });
 
-        btnEnviar.setOnClickListener(new View.OnClickListener() {
+        btnEncuentro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
             }
         });
+    }
 
+    private void initElements() {
+        competencia = (CompetitionMin) getArguments().getSerializable("competencia");
+
+        vs = vista.findViewById(R.id.asd);
+        vs.setVisibility(View.INVISIBLE);
+        comp1 = vista.findViewById(R.id.etComp1);
+        comp1.setVisibility(View.INVISIBLE);
+        comp2 = vista.findViewById(R.id.etComp2);
+        comp2.setVisibility(View.INVISIBLE);
+
+        spinnerFase = vista.findViewById(R.id.spinnerFaseCarga);
+        spinnerCompetidor = vista.findViewById(R.id.spinnerCompetidores);
+        spinnerEncuentro = vista.findViewById(R.id.spinnerEncunetrosGenerados);
+
+        btnEncuentro = vista.findViewById(R.id.guardarEncuentro);
+        btnGuardar = vista.findViewById(R.id.crearEncuentros);
+
+        userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
+        usuarios = new ArrayList<>();
+    }
+
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
     }
 
     private void llenarSpinnerUser(final String username) {
@@ -97,14 +140,17 @@ public class CoOrganizadorFragment extends Fragment {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     if(!response.body().isEmpty()){
+                        comp1.setVisibility(View.VISIBLE);
+                        comp2.setVisibility(View.VISIBLE);
+                        vs.setVisibility(View.VISIBLE);
                         usuarios = response.body();
                         adapterUser = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, usuarios);
                         adapterUser.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerUsuarios.setAdapter(adapterUser);
-                        spinnerUsuarios.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        spinnerCompetidor.setAdapter(adapterUser);
+                        spinnerCompetidor.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                                seleccionado = (User) spinnerCompetidor.getSelectedItem();
                             }
 
                             @Override
@@ -125,30 +171,6 @@ public class CoOrganizadorFragment extends Fragment {
         }
     }
 
-    private boolean validar(String username) {
-        if(username.isEmpty())
-            return false;
-        return true;
-
-    }
-
-    private void initElements() {
-        userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
-        usuarios = new ArrayList<>();
-        competencia = (CompetitionMin) getArguments().getSerializable("competencia");
-
-        etUsername = vista.findViewById(R.id.etUsername);
-        btnComprobar = vista.findViewById(R.id.btnComprobar);
-        btnEnviar = vista.findViewById(R.id.btnEnviarInvitacion);
-        spinnerUsuarios = vista.findViewById(R.id.spinnerUsers);
-
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
 
     @Override
     public void onAttach(Context context) {

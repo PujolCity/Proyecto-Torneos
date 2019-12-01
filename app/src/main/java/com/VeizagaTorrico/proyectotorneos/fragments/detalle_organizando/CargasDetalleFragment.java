@@ -35,6 +35,7 @@ public class CargasDetalleFragment extends Fragment {
     private Button btnJuez;
     private Button btnGenerar;
     private Button btnInvitar;
+    private Button btnSigFase;
 
     private CompetitionSrv competenciaSrv;
 
@@ -72,7 +73,13 @@ public class CargasDetalleFragment extends Fragment {
         btnJuez = vista.findViewById(R.id.btnCargarJuez);
         btnGenerar = vista.findViewById(R.id.btnGenerarEncuentros);
         btnInvitar = vista.findViewById(R.id.btnInvitar);
+        btnSigFase = vista.findViewById(R.id.btnSigFase);
 
+        if(competencia.getTypesOrganization().contains("grupo") || competencia.getTypesOrganization().contains("Eliminatorias")){
+            btnSigFase.setVisibility(View.VISIBLE);
+        }else {
+            btnSigFase.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void listenButtons() {
@@ -141,6 +148,15 @@ public class CargasDetalleFragment extends Fragment {
                 bundle.putSerializable("competencia", competencia);
                 Navigation.findNavController(vista).navigate(R.id.coOrganizadorFragment, bundle);
 
+            }
+        });
+
+        btnSigFase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("competencia", competencia);
+                Navigation.findNavController(vista).navigate(R.id.cargaFaseFragment, bundle);
             }
         });
     }

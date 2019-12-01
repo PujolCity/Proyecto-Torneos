@@ -26,9 +26,9 @@
                 android:icon="@drawable/baseline_sports_black_18dp"
                 android:title="@string/menu_MisCompetencias" />
             <item
-                android:id="@+id/configuracion"
-                android:icon="@drawable/ic_settings_black_24dp"
-                android:title="@string/menu_config" />
+                android:id="@+id/misSolicitudes"
+                android:icon="@drawable/ic_solicitudes"
+                android:title="@string/menu_solicitudes" />
         </menu>
     </item>
 </menu>
