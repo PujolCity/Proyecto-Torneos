@@ -63,4 +63,7 @@ public interface CompetitionSrv {
     @GET(ConstantURL.BASE_URL + "generator/matches")
     Call<MsgRequest> generarEncuentros(@Query("idCompetencia") int idCompetencia);
 
+    @POST( ConstantURL.BASE_URL + "competition/new-fase" )
+    Call<MsgRequest> generarSiguienteFase(@Body Map<String,Object> generar);
+
 }

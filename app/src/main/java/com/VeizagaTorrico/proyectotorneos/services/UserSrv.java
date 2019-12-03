@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
+import com.VeizagaTorrico.proyectotorneos.models.Classified;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 
@@ -34,4 +35,8 @@ public interface UserSrv {
 
     @GET(ConstantURL.BASE_URL + "users/getUsersByUsername")
     Call<List<User>> getUsuariosByUsername(@Query ("username") String username);
+
+    @GET(ConstantURL.BASE_URL + "competition/classified")
+    Call<List<Classified>> getClasificados(@QueryMap Map<String,Integer> datos);
+
 }
