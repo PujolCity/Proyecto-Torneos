@@ -29,12 +29,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void listenBotonSingin(){
-        btnRegister.setOnClickListener(new View.OnClickListener(){
+        btnSingin.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View v) {
                 // TODO: cambiar a singin
-                passToRegister();
+                passToSingin();
             }
         });
     }
@@ -50,14 +50,12 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void passToSingin(){
-        Intent toInitApp = new Intent(this, HomeActivity.class);
-        // starting new activity
+        Intent toInitApp = new Intent(this, SinginActivity.class);
         startActivity(toInitApp);
     }
 
     private void passToRegister(){
         Intent toRegisterUser= new Intent(this, UserRegisterActivity.class);
-        // starting new activity
         startActivity(toRegisterUser);
     }
 }

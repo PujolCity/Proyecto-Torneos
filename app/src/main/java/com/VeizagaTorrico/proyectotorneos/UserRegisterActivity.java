@@ -133,12 +133,12 @@ public class UserRegisterActivity extends AppCompatActivity {
         // hacemos la conexion con el api de rest del servidor
         apiUserService = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
 
-        UserRegister nuevoUsuario = new UserRegister();
-        nuevoUsuario.setNombre(nombre);
-        nuevoUsuario.setApellido(apellido);
-        nuevoUsuario.setNombreUsuario(usuario);
-        nuevoUsuario.setEmail(correo);
-        nuevoUsuario.setPassword(pass);
+//        UserRegister nuevoUsuario = new UserRegister();
+//        nuevoUsuario.setNombre(nombre);
+//        nuevoUsuario.setApellido(apellido);
+//        nuevoUsuario.setNombreUsuario(usuario);
+//        nuevoUsuario.setEmail(correo);
+//        nuevoUsuario.setPassword(pass);
 
         userMapRegister.put("nombre", nombre);
         userMapRegister.put("apellido", apellido);
@@ -190,7 +190,6 @@ public class UserRegisterActivity extends AppCompatActivity {
 
     private void passToInit(){
         Intent toInitApp = new Intent(this, HomeActivity.class);
-        // starting new activity
         startActivity(toInitApp);
     }
 }
