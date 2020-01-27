@@ -117,7 +117,7 @@ public class Confrontation implements Serializable {
 
     @Override
     public String toString() {
-        return id + "  " + competidor1 +
-                "  " + competidor2 + " " + rdoc1 + " "+ rdoc2;
+        return competidor1 +
+                " vs " + competidor2;
     }
 }

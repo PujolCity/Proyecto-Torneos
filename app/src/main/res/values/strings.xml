@@ -29,6 +29,7 @@
     <string name="menu_Competencias">Competencias</string>
     <string name="menu_MisCompetencias"> Mis Competencias </string>
     <string name="menu_config">Configuracion</string>
+    <string name="menu_solicitudes"> Mis solicitudes</string>
     <string name="menu_competidores">Solicitud de Competidores</string>
 
     <!-- Strings botones-->
@@ -40,6 +41,10 @@
     <string name="txtBtnCargarPredio"> Cargar Predios y Campos</string>
     <string name="txtBtnCargarTurno"> Cargar Turnos</string>
     <string name="txtBtnCargarJuez"> Cargar Jueces</string>
+    <string name="txtEnviarInvitacion"> Enviar Invitacion</string>
+    <string name="txtInvitarCoOrg"> Invitar Co-Organizador</string>
+    <string name="txtSigFase"> Pasar a siguiente Fase</string>
+    <string name="txtComprobarUsername"> Comprobar Nombre Usuario</string>
     <string name="txtBtnAgregarPredio"> Agregar Predio</string>
     <string name="txtBtnAgregarCampo"> Agregar Campo</string>
     <string name="txtBtnAgregarTurno"> Agregar turno</string>
