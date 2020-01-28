@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.ConstantURL;
+import com.VeizagaTorrico.proyectotorneos.models.RespRegisterService;
 import com.VeizagaTorrico.proyectotorneos.models.Classified;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.models.User;
@@ -29,6 +30,12 @@ public interface UserSrv {
 
     @POST(ConstantURL.BASE_URL + "add-participate")
     Call<Success> acceptPetitionUser(@Body Map<String,String> userComp);
+
+    @POST( ConstantURL.BASE_URL + "user" )
+    Call<RespRegisterService>register(@Body Map<String,String> user);
+
+    @POST( ConstantURL.BASE_URL + "user/singin" )
+    Call<RespRegisterService>initAccount(@Body Map<String,String> userAccount);
 
     @GET(ConstantURL.BASE_URL + "competitors-competition")
     Call<List<User>> getCompetidoresByCompetencia(@Query ("idCompetencia") int idCompetencia);

@@ -111,7 +111,7 @@ public class PosicionesFragment extends Fragment {
         }
         // vemos si es eliminatoria
         if(competition.getTypesOrganization().contains("Eliminatoria")){
-            Toast toast = Toast.makeText(vista.getContext(), "Las eliminatorias no cuentan con una tabla de posiciones", Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(vista.getContext(), "Las eliminatorias no cuentan con una tabla de posiciones. Podria dirigirse a la seccion de 'Encuentros' para ver el estado de la competencia.", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
