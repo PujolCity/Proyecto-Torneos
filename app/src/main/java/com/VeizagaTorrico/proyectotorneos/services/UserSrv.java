@@ -1,7 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
-import com.VeizagaTorrico.proyectotorneos.ConstantURL;
-import com.VeizagaTorrico.proyectotorneos.models.RespRegisterService;
+import com.VeizagaTorrico.proyectotorneos.Constants;
+import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.models.Classified;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.models.User;
@@ -19,34 +19,34 @@ import retrofit2.http.QueryMap;
 public interface UserSrv {
 
 
-    @GET(ConstantURL.BASE_URL + "users")
+    @GET(Constants.BASE_URL + "users")
     Call<List<User>> getUsers();
 
-    @GET(ConstantURL.BASE_URL + "usercomp/petitioners")
+    @GET(Constants.BASE_URL + "usercomp/petitioners")
     Call<List<User>> getPetitionersByCompetition(@Query ("idCompetencia") int idCompetencia);
 
-    @POST(ConstantURL.BASE_URL + "usercomp-del")
+    @POST(Constants.BASE_URL + "usercomp-del")
     Call<Success> refusePetitionerUser(@Body Map<String,String> userComp);
 
-    @POST(ConstantURL.BASE_URL + "add-participate")
+    @POST(Constants.BASE_URL + "add-participate")
     Call<Success> acceptPetitionUser(@Body Map<String,String> userComp);
 
-    @POST( ConstantURL.BASE_URL + "user" )
-    Call<RespRegisterService>register(@Body Map<String,String> user);
+    @POST( Constants.BASE_URL + "user" )
+    Call<RespSrvUser>register(@Body Map<String,String> user);
 
-    @POST( ConstantURL.BASE_URL + "user/singin" )
-    Call<RespRegisterService>initAccount(@Body Map<String,String> userAccount);
+    @POST( Constants.BASE_URL + "user/singin" )
+    Call<RespSrvUser>initAccount(@Body Map<String,String> userAccount);
 
-    @POST( ConstantURL.BASE_URL + "user/recovery" )
-    Call<RespRegisterService>resetPass(@Body Map<String,String> user);
+    @POST( Constants.BASE_URL + "user/recovery" )
+    Call<RespSrvUser>resetPass(@Body Map<String,String> user);
 
-    @GET(ConstantURL.BASE_URL + "competitors-competition")
+    @GET(Constants.BASE_URL + "competitors-competition")
     Call<List<User>> getCompetidoresByCompetencia(@Query ("idCompetencia") int idCompetencia);
 
-    @GET(ConstantURL.BASE_URL + "users/getUsersByUsername")
+    @GET(Constants.BASE_URL + "users/getUsersByUsername")
     Call<List<User>> getUsuariosByUsername(@Query ("username") String username);
 
-    @GET(ConstantURL.BASE_URL + "competition/classified")
+    @GET(Constants.BASE_URL + "competition/classified")
     Call<List<Classified>> getClasificados(@QueryMap Map<String,Integer> datos);
 
 }

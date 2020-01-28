@@ -1,6 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
-import com.VeizagaTorrico.proyectotorneos.ConstantURL;
+import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 
@@ -17,13 +17,13 @@ import retrofit2.http.QueryMap;
 
 public interface GroundSrv {
 
-    @GET(ConstantURL.BASE_URL + "grounds/competition")
+    @GET(Constants.BASE_URL + "grounds/competition")
     Call<List<Ground>> getGrounds(@Query("idCompetencia") int idCompetencia);
 
-    @POST( ConstantURL.BASE_URL + "grounds" )
+    @POST( Constants.BASE_URL + "grounds" )
     Call<Success>createGround(@Body Map<String,String> predio);
 
-    @DELETE( ConstantURL.BASE_URL + "grounds/del" )
+    @DELETE( Constants.BASE_URL + "grounds/del" )
     Call<Success>deleteGround(@QueryMap Map<String,Integer> datos);
 
 }

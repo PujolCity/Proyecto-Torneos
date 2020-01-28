@@ -1,6 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
-import com.VeizagaTorrico.proyectotorneos.ConstantURL;
+import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.models.Turn;
 
@@ -17,13 +17,13 @@ import retrofit2.http.QueryMap;
 
 public interface TurnSrv {
 
-    @GET(ConstantURL.BASE_URL + "turn/competition")
+    @GET(Constants.BASE_URL + "turn/competition")
     Call<List<Turn>> getTurnsByCompetition(@Query("idCompetencia") int idCompetencia);
 
-    @POST( ConstantURL.BASE_URL + "turn" )
+    @POST( Constants.BASE_URL + "turn" )
     Call<Success>createTurn(@Body Map<String,String> turno);
 
-    @DELETE( ConstantURL.BASE_URL + "turn/del" )
+    @DELETE( Constants.BASE_URL + "turn/del" )
     Call<Success>deleteTurn(@QueryMap Map<String,Integer> turno);
 
 }

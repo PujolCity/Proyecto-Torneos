@@ -10,13 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.VeizagaTorrico.proyectotorneos.models.RespRegisterService;
+import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.Validations;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,7 +26,7 @@ import retrofit2.Response;
 public class UserRegisterActivity extends AppCompatActivity {
 
     private UserSrv apiUserService;
-    RespRegisterService respSrvRegister;
+    RespSrvUser respSrvRegister;
     Button btn_register;
     EditText edt_nombre, edt_apellido, edt_nombreUsuario, edt_correo, edt_pass, edt_confPass;
     String nombre, apellido, usuario, correo, pass, confPass;
@@ -140,12 +139,11 @@ public class UserRegisterActivity extends AppCompatActivity {
         // cambiar este dato
         userMapRegister.put("token", "ACA_VA_EL_TOKEN_FIREBASE");
 
-        Call<RespRegisterService> call = apiUserService.register(userMapRegister);
-        call.enqueue(new Callback<RespRegisterService>() {
+        Call<RespSrvUser> call = apiUserService.register(userMapRegister);
+        call.enqueue(new Callback<RespSrvUser>() {
             @Override
-            public void onResponse(Call<RespRegisterService> call, Response<RespRegisterService> response) {
+            public void onResponse(Call<RespSrvUser> call, Response<RespSrvUser> response) {
                 if (response.code() == 201) {
-                    Log.d("RESP_CREATE_ERROR", "EXITO: "+response.body().getMsg());
                     Toast.makeText(getApplicationContext(), "Se registro el usuario exitosamente ", Toast.LENGTH_SHORT).show();
                     response.raw();
                     passToInit();
@@ -167,7 +165,7 @@ public class UserRegisterActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<RespRegisterService> call, Throwable t) {
+            public void onFailure(Call<RespSrvUser> call, Throwable t) {
                 Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
                 Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
             }

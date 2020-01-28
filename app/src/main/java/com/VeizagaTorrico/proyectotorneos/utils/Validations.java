@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos;
+package com.VeizagaTorrico.proyectotorneos.utils;
 
 import android.text.TextUtils;
 import android.util.Patterns;

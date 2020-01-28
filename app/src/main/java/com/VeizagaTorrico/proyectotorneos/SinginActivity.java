@@ -11,8 +11,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.VeizagaTorrico.proyectotorneos.models.RespRegisterService;
+import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.Validations;
 
 import org.json.JSONObject;
 
@@ -23,10 +25,17 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_EMAIL;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_LASTNAME;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_NAME;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
+
 public class SinginActivity extends AppCompatActivity {
 
     private UserSrv apiUserService;
-    RespRegisterService respSrvRegister;
+    RespSrvUser respSrvRegister;
     Button btnSingin;
     TextView tvRecoveryPass;
     EditText edtUsuario, edtPass;
@@ -113,17 +122,16 @@ public class SinginActivity extends AppCompatActivity {
         userMapSingin.put("usuario", usuario);
         userMapSingin.put("pass", pass);
 
-        Call<RespRegisterService> call = apiUserService.initAccount(userMapSingin);
-
-//        Log.d("RESP_CREATE_ERROR", "url request: " + call.request().url().toString());
-//        Log.d("RESP_CREATE_ERROR", "body request: " + call.request().body().toString());
-//        Log.d("RESP_CREATE_ERROR", "body data: " + userMapRegister);
-
-        call.enqueue(new Callback<RespRegisterService>() {
+        Call<RespSrvUser> call = apiUserService.initAccount(userMapSingin);
+        call.enqueue(new Callback<RespSrvUser>() {
             @Override
-            public void onResponse(Call<RespRegisterService> call, Response<RespRegisterService> response) {
+            public void onResponse(Call<RespSrvUser> call, Response<RespSrvUser> response) {
                 if (response.code() == 200) {
-                    Log.d("RESP_SIGNIN_ERROR", "EXITO: "+response.body().getMsg());
+                    //Log.d("RESP_SIGNIN_ERROR", "EXITO: "+response.body().getMsg());
+                    respSrvRegister = response.body();
+                    Log.d("RESP_SIGNIN_ERROR", "EXITO - usuario: "+respSrvRegister);
+                    // TODO: guardar datos del usuario localmente
+                    saveDataUserLocally(respSrvRegister);
                     Toast.makeText(getApplicationContext(), "Sesion iniciada con exito ", Toast.LENGTH_SHORT).show();
                     response.raw();
                     passToInitApp();
@@ -145,7 +153,7 @@ public class SinginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<RespRegisterService> call, Throwable t) {
+            public void onFailure(Call<RespSrvUser> call, Throwable t) {
                 Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
                 Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
             }
@@ -159,17 +167,11 @@ public class SinginActivity extends AppCompatActivity {
 
         userMapRecovery.put("usuario", usuario);
 
-        Call<RespRegisterService> call = apiUserService.resetPass(userMapRecovery);
-
-//        Log.d("RESP_CREATE_ERROR", "url request: " + call.request().url().toString());
-//        Log.d("RESP_CREATE_ERROR", "body request: " + call.request().body().toString());
-//        Log.d("RESP_CREATE_ERROR", "body data: " + userMapRegister);
-
-        call.enqueue(new Callback<RespRegisterService>() {
+        Call<RespSrvUser> call = apiUserService.resetPass(userMapRecovery);
+        call.enqueue(new Callback<RespSrvUser>() {
             @Override
-            public void onResponse(Call<RespRegisterService> call, Response<RespRegisterService> response) {
+            public void onResponse(Call<RespSrvUser> call, Response<RespSrvUser> response) {
                 if (response.code() == 200) {
-                    Log.d("RESP_RECOVERY_ERROR", "EXITO: "+response.body().getMsg());
                     Toast.makeText(getApplicationContext(), "Contraseña reestablecida. Vuelva a iniciar sesion ", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -189,11 +191,26 @@ public class SinginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<RespRegisterService> call, Throwable t) {
+            public void onFailure(Call<RespSrvUser> call, Throwable t) {
                 Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
                 Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    // guardamos los datos del usuario de manera local
+    private void saveDataUserLocally(RespSrvUser respSrvRegister) {
+        ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_ID, String.valueOf(respSrvRegister.getId()));
+        ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_NAME, respSrvRegister.getNombre());
+        ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_LASTNAME, respSrvRegister.getApellido());
+        ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_EMAIL, respSrvRegister.getCorreo());
+        ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME, respSrvRegister.getUsuario());
+
+        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_NAME));
+        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_LASTNAME));
+        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_EMAIL));
+        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
     }
 
     private void passToInitApp() {

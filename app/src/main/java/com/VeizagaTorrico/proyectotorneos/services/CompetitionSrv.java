@@ -1,6 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
-import com.VeizagaTorrico.proyectotorneos.ConstantURL;
+import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
@@ -24,46 +24,46 @@ import retrofit2.http.QueryMap;
 public interface CompetitionSrv {
 
     @FormUrlEncoded
-    @POST( ConstantURL.BASE_URL + "existcompetition" )
+    @POST( Constants.BASE_URL + "existcompetition" )
     Call<Success>comprobar(@Field("competencia") String competencia);
 
-    @POST( ConstantURL.BASE_URL + "competition" )
+    @POST( Constants.BASE_URL + "competition" )
     Call<Competition>createCompetition(@Body Map<String,String> competencia);
 
-    @GET(ConstantURL.BASE_URL + "competitions")
+    @GET(Constants.BASE_URL + "competitions")
     Call<List<Competition>> getCompetitions();
 
-    @GET(ConstantURL.BASE_URL + "competition-participates")
+    @GET(Constants.BASE_URL + "competition-participates")
     Call<List<CompetitionMin>> getCompetitionsParticipates(@Query("idUsuario") int idUsuario);
 
-    @GET(ConstantURL.BASE_URL + "competition-follow")
+    @GET(Constants.BASE_URL + "competition-follow")
     Call<List<CompetitionMin>> getCompetitionsFollow(@Query("idUsuario") int idUsuario);
 
-    @GET(ConstantURL.BASE_URL + "competition-organize")
+    @GET(Constants.BASE_URL + "competition-organize")
     Call<List<CompetitionMin>> getCompetitionsOrganize(@Query("idUsuario") int idUsuario);
 
-    @GET(ConstantURL.BASE_URL + "findCompetitionsByName/{nameCompetition}")
+    @GET(Constants.BASE_URL + "findCompetitionsByName/{nameCompetition}")
     Call<List<Competition>> findCompetitionsByName(@Path("nameCompetition") String nameCompetition);
 
-    @GET(ConstantURL.BASE_URL + "competitions-roles")
+    @GET(Constants.BASE_URL + "competitions-roles")
     Call<List<CompetitionMin>> findCompetitionsByFilters(@QueryMap Map<String,String> filters);
 
-    @PUT(ConstantURL.BASE_URL + "usercomp-rolfollow")
+    @PUT(Constants.BASE_URL + "usercomp-rolfollow")
     Call<Success> followCompetition(@Body Map<String,Integer> seguir);
 
-    @PUT(ConstantURL.BASE_URL + "usercomp-delfollow")
+    @PUT(Constants.BASE_URL + "usercomp-delfollow")
     Call<Success> noFollowCompetition(@Body Map<String,Integer> noSeguir);
 
-    @POST(ConstantURL.BASE_URL + "competition/org")
+    @POST(Constants.BASE_URL + "competition/org")
     Call<CompetitionOrg> getFaseGrupoCompetition(@Query("idCompetencia") int idCompetencia);
 
-    @POST( ConstantURL.BASE_URL + "usercomp" )
+    @POST( Constants.BASE_URL + "usercomp" )
     Call<MsgRequest> solicitudCompetition(@Body Map<String,String> solicitud);
 
-    @GET(ConstantURL.BASE_URL + "generator/matches")
+    @GET(Constants.BASE_URL + "generator/matches")
     Call<MsgRequest> generarEncuentros(@Query("idCompetencia") int idCompetencia);
 
-    @POST( ConstantURL.BASE_URL + "competition/new-fase" )
+    @POST( Constants.BASE_URL + "competition/new-fase" )
     Call<MsgRequest> generarSiguienteFase(@Body Map<String,Object> generar);
 
 }

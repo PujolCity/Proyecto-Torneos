@@ -8,7 +8,7 @@ public class RetrofitAdapter {
 
     public Retrofit connectionEnable(){
         return new Retrofit.Builder()
-                .baseUrl(ConstantURL.BASE_URL)
+                .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
     }

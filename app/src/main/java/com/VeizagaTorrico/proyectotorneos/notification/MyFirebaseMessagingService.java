@@ -15,6 +15,7 @@ import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.NotificationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.google.gson.JsonObject;
@@ -31,6 +32,8 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_TOKEN_FIREBASE;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_TOKEN;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -114,10 +117,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(@NonNull String newToken) {
         notificationSrv = new RetrofitAdapter().connectionEnable().create(NotificationSrv.class);
         //super.onNewToken(newToken);
-        Log.d("Probando Firebase", newToken);
-        ManagerToken.getInstance().setTokenInternal(this.getApplicationContext(), newToken);
-        Log.d("Prob SHAREDPREFERENCES", ManagerToken.getInstance().getTokenInternal(this.getApplicationContext()));
+        //Log.d("PROBANDO MANAGER_SHARED", newToken);
+//        ManagerToken.getInstance().setTokenInternal(this.getApplicationContext(), newToken);
+        ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN, newToken);
+        Log.d("MANAGER_SHARED_PREF", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
         // creamos el body de la peticion y agregamos el token
+        // TODO: recuperar los datos del usuario local y usarlos para actualizar el token
         bodyRequest = new HashMap<>();
         bodyRequest.put("nombreUsuario", "alex6");
         bodyRequest.put("token", newToken);
