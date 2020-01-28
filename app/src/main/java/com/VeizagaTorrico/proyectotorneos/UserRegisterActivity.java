@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.models.RespRegisterService;
-import com.VeizagaTorrico.proyectotorneos.models.UserRegister;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 
 import org.json.JSONException;
@@ -133,13 +132,6 @@ public class UserRegisterActivity extends AppCompatActivity {
         // hacemos la conexion con el api de rest del servidor
         apiUserService = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
 
-//        UserRegister nuevoUsuario = new UserRegister();
-//        nuevoUsuario.setNombre(nombre);
-//        nuevoUsuario.setApellido(apellido);
-//        nuevoUsuario.setNombreUsuario(usuario);
-//        nuevoUsuario.setEmail(correo);
-//        nuevoUsuario.setPassword(pass);
-
         userMapRegister.put("nombre", nombre);
         userMapRegister.put("apellido", apellido);
         userMapRegister.put("usuario", usuario);
@@ -149,11 +141,6 @@ public class UserRegisterActivity extends AppCompatActivity {
         userMapRegister.put("token", "ACA_VA_EL_TOKEN_FIREBASE");
 
         Call<RespRegisterService> call = apiUserService.register(userMapRegister);
-
-//        Log.d("RESP_CREATE_ERROR", "url request: " + call.request().url().toString());
-//        Log.d("RESP_CREATE_ERROR", "body request: " + call.request().body().toString());
-//        Log.d("RESP_CREATE_ERROR", "body data: " + userMapRegister);
-
         call.enqueue(new Callback<RespRegisterService>() {
             @Override
             public void onResponse(Call<RespRegisterService> call, Response<RespRegisterService> response) {

@@ -37,6 +37,9 @@ public interface UserSrv {
     @POST( ConstantURL.BASE_URL + "user/singin" )
     Call<RespRegisterService>initAccount(@Body Map<String,String> userAccount);
 
+    @POST( ConstantURL.BASE_URL + "user/recovery" )
+    Call<RespRegisterService>resetPass(@Body Map<String,String> user);
+
     @GET(ConstantURL.BASE_URL + "competitors-competition")
     Call<List<User>> getCompetidoresByCompetencia(@Query ("idCompetencia") int idCompetencia);
 
