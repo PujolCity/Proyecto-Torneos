@@ -30,8 +30,7 @@ public class CargasDetalleFragment extends Fragment {
 
     private View vista;
     private CompetitionMin competencia;
-<<<<<<< Updated upstream
-    private Button btnPredio;
+ private Button btnPredio;
     private Button btnTurno;
     private Button btnJuez;
     private Button btnGenerar;
@@ -39,9 +38,6 @@ public class CargasDetalleFragment extends Fragment {
     private Button btnSigFase;
 
     private CompetitionSrv competenciaSrv;
-=======
-    private Button btnPredio, btnJuez;
->>>>>>> Stashed changes
 
     public CargasDetalleFragment() {
         // Required empty public constructor
@@ -107,7 +103,6 @@ public class CargasDetalleFragment extends Fragment {
             }
         });
 
-<<<<<<< Updated upstream
         // ponemos a la escucha el boton de cargar Turnos
         btnJuez.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -155,15 +150,6 @@ public class CargasDetalleFragment extends Fragment {
 
             }
         });
-=======
-
-        return vista;
-    }
-
-    private void initElements() {
-        btnPredio = vista.findViewById(R.id.btnCargarPredio);
-        btnJuez = vista.findViewById(R.id.btnCargarJuez);
->>>>>>> Stashed changes
 
         btnSigFase.setOnClickListener(new View.OnClickListener() {
             @Override

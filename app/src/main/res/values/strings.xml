@@ -47,16 +47,8 @@
     <string name="txtComprobarUsername"> Comprobar Nombre Usuario</string>
     <string name="txtBtnAgregarPredio"> Agregar Predio</string>
     <string name="txtBtnAgregarCampo"> Agregar Campo</string>
-<<<<<<< Updated upstream
     <string name="txtBtnAgregarTurno"> Agregar turno</string>
     <string name="txtBtnAgregarJuez"> Agregar juez</string>
-<<<<<<< Updated upstream
-=======
-    <string name="txtBtnCargarJuez"> Cargar Juez </string>
->>>>>>> Stashed changes
-=======
-
->>>>>>> Stashed changes
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_navigation_main">NavigationMainActivity</string>

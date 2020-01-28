@@ -54,23 +54,11 @@
     </Button>
 
     <Button
-<<<<<<< Updated upstream
         android:id="@+id/btnSigFase"
-=======
-        android:id="@+id/btnCargarJuez"
->>>>>>> Stashed changes
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/colorPrimary"
         android:textColor="@color/cardview_light_background"
-<<<<<<< Updated upstream
         android:text="@string/txtSigFase">
     </Button>
-=======
-        android:text="@string/txtBtnCargarJuez">
-
-    </Button>
-
-
->>>>>>> Stashed changes
 </LinearLayout>

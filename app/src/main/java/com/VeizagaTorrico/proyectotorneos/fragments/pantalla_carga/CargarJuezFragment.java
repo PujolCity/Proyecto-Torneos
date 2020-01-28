@@ -1,17 +1,13 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga;
 
-<<<<<<< Updated upstream
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-=======
-import android.content.Context;
->>>>>>> Stashed changes
+
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-<<<<<<< Updated upstream
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,20 +35,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-=======
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
-import com.VeizagaTorrico.proyectotorneos.R;
->>>>>>> Stashed changes
 
 public class CargarJuezFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-<<<<<<< Updated upstream
     private CompetitionMin competencia;
     private View vista;
     private EditText etNombre, etApellido, etDNI;
@@ -66,9 +53,6 @@ public class CargarJuezFragment extends Fragment {
     private Referee juezSeleccionado;
 
 
-=======
-    private View vista;
->>>>>>> Stashed changes
     public CargarJuezFragment() {
         // Required empty public constructor
     }
@@ -91,7 +75,6 @@ public class CargarJuezFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_cargar_juez, container, false);
         initElements();
 
-<<<<<<< Updated upstream
         llenarSpinnerJuez();
 
         btnCrear.setOnClickListener(new View.OnClickListener() {
@@ -250,12 +233,6 @@ public class CargarJuezFragment extends Fragment {
         etNombre = vista.findViewById(R.id.etNombreJuez);
         etApellido = vista.findViewById(R.id.etApellidoJuez);
         etDNI = vista.findViewById(R.id.etDNIJuez);
-=======
-        return vista;
-    }
-
-    private void initElements() {
->>>>>>> Stashed changes
 
     }
 

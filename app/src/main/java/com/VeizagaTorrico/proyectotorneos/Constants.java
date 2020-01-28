@@ -1,17 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos;
 
 public class Constants {
-
-<<<<<<< Updated upstream
-// A VER QUE PASA
-=======
-<<<<<<< HEAD
-// probando merge
-    
-=======
-// A VER QUE PASA
->>>>>>> master
->>>>>>> Stashed changes
     // URL BASE del servidor
 //    public static final String BASE_URL = "http://132.255.7.152:20203/api/";
     public static final String BASE_URL = "http://192.168.1.46:8000/api/";

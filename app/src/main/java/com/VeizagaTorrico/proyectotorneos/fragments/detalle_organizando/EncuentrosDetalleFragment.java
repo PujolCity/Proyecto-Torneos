@@ -154,7 +154,6 @@ public class EncuentrosDetalleFragment extends Fragment {
         Log.d("call competencia FG",call.request().url().toString());
         call.enqueue(new Callback<List<Confrontation>>() {
             @Override
-<<<<<<< Updated upstream
             public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
                 if(response.code() == 200){
                     try {
@@ -164,14 +163,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-=======
-            public void onClick(View view) {
-                if(nroJornada != null){
-                    fecha_grupo.put("fase", nroJornada);
-                }
-                if(nroGrupo != null){
-                    fecha_grupo.put("grupo", nroGrupo);
->>>>>>> Stashed changes
+
                 }
                 if(encuentros != null){
                     try {
