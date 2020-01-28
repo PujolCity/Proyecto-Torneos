@@ -32,8 +32,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_TOKEN_FIREBASE;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_TOKEN;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
@@ -123,8 +125,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Log.d("MANAGER_SHARED_PREF", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
         // creamos el body de la peticion y agregamos el token
         // TODO: recuperar los datos del usuario local y usarlos para actualizar el token
+        // al enviar los token con distintos usuarios controlar ver como pedir un nuevo token, para
+        // que los distintos usuarios no tengan un mismo token
         bodyRequest = new HashMap<>();
-        bodyRequest.put("nombreUsuario", "alex6");
+//        bodyRequest.put("nombreUsuario", "alex6");
+        bodyRequest.put("nombreUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
         bodyRequest.put("token", newToken);
         Call<MsgRequest> call = notificationSrv.reportChangeTokenToServer(bodyRequest);
         //Log.d("Resp updateToken", call.toString());

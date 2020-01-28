@@ -11,7 +11,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
+import com.VeizagaTorrico.proyectotorneos.services.NotificationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.VeizagaTorrico.proyectotorneos.utils.Validations;
@@ -26,20 +28,24 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_TOKEN_FIREBASE;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_EMAIL;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_LASTNAME;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_NAME;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_TOKEN;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 public class SinginActivity extends AppCompatActivity {
 
     private UserSrv apiUserService;
     RespSrvUser respSrvRegister;
+    private Map<String,String> bodyRequest;
     Button btnSingin;
     TextView tvRecoveryPass;
     EditText edtUsuario, edtPass;
     String usuario, pass;
+    private NotificationSrv notificationSrv;
     private Map<String,String> userMapSingin = new HashMap<>();
     private Map<String,String> userMapRecovery = new HashMap<>();
 
@@ -132,6 +138,7 @@ public class SinginActivity extends AppCompatActivity {
                     Log.d("RESP_SIGNIN_ERROR", "EXITO - usuario: "+respSrvRegister);
                     // TODO: guardar datos del usuario localmente
                     saveDataUserLocally(respSrvRegister);
+                    reportTokenFirebase();
                     Toast.makeText(getApplicationContext(), "Sesion iniciada con exito ", Toast.LENGTH_SHORT).show();
                     response.raw();
                     passToInitApp();
@@ -156,6 +163,31 @@ public class SinginActivity extends AppCompatActivity {
             public void onFailure(Call<RespSrvUser> call, Throwable t) {
                 Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
                 Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void reportTokenFirebase() {
+        notificationSrv = new RetrofitAdapter().connectionEnable().create(NotificationSrv.class);
+
+        bodyRequest = new HashMap<>();
+        bodyRequest.put("nombreUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
+        bodyRequest.put("token", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
+        Call<MsgRequest> call = notificationSrv.reportChangeTokenToServer(bodyRequest);
+        //Log.d("Resp updateToken", call.toString());
+        call.enqueue(new Callback<MsgRequest>() {
+            @Override
+            public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                if(response.code() == 200){
+                    Log.d("response code", Integer.toString(response.code()));
+                    Toast toast = Toast.makeText(getApplicationContext(), "Token actualizado correctamente.: ", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+            @Override
+            public void onFailure(Call<MsgRequest> call, Throwable t) {
+                Toast toast = Toast.makeText(getApplicationContext(), "No se pudo actualizar el token del usuario.", Toast.LENGTH_SHORT);
+                toast.show();
             }
         });
     }
