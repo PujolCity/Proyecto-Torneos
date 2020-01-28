@@ -25,6 +25,7 @@ import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
+import com.VeizagaTorrico.proyectotorneos.models.ConfrontationFull;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
@@ -50,11 +51,18 @@ public class DetalleEncuentroFragment extends Fragment {
 
     private View vista;
     private EditText r1,r2;
+<<<<<<< Updated upstream
     private TextView comp1, comp2,txtCampo,txtPredio,txtJuez,txtTurno;
     private ImageButton confirmarEdit;
     private Spinner spinnerPredio,spinnerCampo,spinnerJuez,spinnerTurno;
     private Confrontation encuentro;
     private ConfrontationSrv confrontationSrv;
+=======
+    private TextView comp1, comp2,fecha,hora;
+    private ImageButton fechaImg, horaImg;
+    private Spinner spinnerPredio,spinnerCampo,spinnerJuez;
+    private ConfrontationFull encuentro;
+>>>>>>> Stashed changes
     private GroundSrv prediosSrv;
     private FieldSrv camposSrv;
     private List<Ground> predios;
@@ -162,7 +170,7 @@ public class DetalleEncuentroFragment extends Fragment {
 
 
     private void initElements(){
-        this.encuentro = (Confrontation) getArguments().getSerializable("encuentro");
+        this.encuentro = (ConfrontationFull) getArguments().getSerializable("encuentro");
         predios = new ArrayList<>();
         campos = new ArrayList<>();
         jueces = new ArrayList<>();
@@ -226,10 +234,15 @@ public class DetalleEncuentroFragment extends Fragment {
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
         msjCampos();
 
+<<<<<<< Updated upstream
 
         comp1.setText(encuentro.getCompetidor1());
         comp2.setText(encuentro.getCompetidor2());
 
+=======
+        comp1.setText(encuentro.getCompetidor1().getNombreUsuario());
+        comp2.setText(encuentro.getCompetidor2().getNombreUsuario());
+>>>>>>> Stashed changes
     }
 
     private void msjCampos() {
