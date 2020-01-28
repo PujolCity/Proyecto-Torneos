@@ -4,7 +4,9 @@ import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
+import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
+import com.VeizagaTorrico.proyectotorneos.models.Phase;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 
 import java.util.List;
@@ -65,5 +67,8 @@ public interface CompetitionSrv {
 
     @POST( Constants.BASE_URL + "competition/new-fase" )
     Call<MsgRequest> generarSiguienteFase(@Body Map<String,Object> generar);
+
+    @GET(Constants.BASE_URL + "competition/phases")
+    Call<Phase> getFase(@Query("idCompetencia") int idCompetencia);
 
 }
