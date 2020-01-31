@@ -29,11 +29,14 @@ public class CompetitionMin implements Serializable {
         @SerializedName("genero")
         private String genero;
 
+        @SerializedName("estado")
+        private String estado;
+
         @SerializedName("rol")
         private List<String> rol;
 
 
-        public CompetitionMin(int id, String name, String deporte, String category, String typesOrganization, String ciudad, String genero, List<String> rol) {
+        public CompetitionMin(int id, String name, String deporte, String category, String typesOrganization, String ciudad, String estado, String genero, List<String> rol) {
             this.id = id;
             this.name = name;
             this.deporte = deporte;
@@ -41,6 +44,7 @@ public class CompetitionMin implements Serializable {
             this.typesOrganization = typesOrganization;
             this.ciudad = ciudad;
             this.genero = genero;
+            this.estado = estado;
             this.rol = rol;
         }
 
@@ -80,6 +84,14 @@ public class CompetitionMin implements Serializable {
             this.genero = genero;
         }
 
+        public String getEstado() {
+            return estado;
+        }
+
+        public void setEstado(String estado) {
+            this.estado = estado;
+        }
+
         public int getId() {
             return id;
         }
@@ -110,7 +122,7 @@ public class CompetitionMin implements Serializable {
 
         @Override
         public String toString() {
-            return id + name +  deporte +  category +  typesOrganization + ciudad + genero + rol;
+            return id + name +  deporte +  category +  typesOrganization + ciudad + genero + rol + estado;
         }
     }
 

@@ -9,6 +9,10 @@
             android:icon="@drawable/ic_inicio"
             android:title="@string/menu_Ininio" />
         <item
+            android:id="@+id/miPerfilFragment"
+            android:icon="@drawable/ic_inicio"
+            android:title="Mi Perfil" />
+        <item
             android:id="@+id/crearCompetencia1Fragment"
             android:icon="@drawable/ic_new"
             android:title="@string/menu_CreaMisCompetencias" />

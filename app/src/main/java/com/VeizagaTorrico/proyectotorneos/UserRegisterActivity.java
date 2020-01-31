@@ -170,7 +170,6 @@ public class UserRegisterActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void passToInit(){

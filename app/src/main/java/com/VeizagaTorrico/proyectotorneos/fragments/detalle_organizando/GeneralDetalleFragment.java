@@ -5,16 +5,21 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+
+import java.util.List;
 
 public class GeneralDetalleFragment extends Fragment {
 
@@ -23,8 +28,10 @@ public class GeneralDetalleFragment extends Fragment {
     private View vista;
     private CompetitionMin competencia;
     private ImageButton follow,noFollow;
+    private Button btnIncribirse;
+    private Button btnEditar;
 
-    private TextView nmb, cat, org, ciudad, genero;
+    private TextView nmb, cat, org, ciudad, genero, estado;
 
     public GeneralDetalleFragment() {
         // Required empty public constructor
@@ -49,6 +56,8 @@ public class GeneralDetalleFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_info_general_competencia, container, false);
 
         initElements();
+        ocultarBotones();
+        listenButtonEdit();
 
         Log.d("competencia",this.competencia.toString());
         try{
@@ -57,6 +66,7 @@ public class GeneralDetalleFragment extends Fragment {
             org.setText(competencia.getTypesOrganization());
             ciudad.setText(competencia.getCiudad());
             genero.setText(competencia.getGenero());
+            estado.setText(competencia.getEstado());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -72,10 +82,49 @@ public class GeneralDetalleFragment extends Fragment {
         org = vista.findViewById(R.id.txtOrgCompDet);
         ciudad = vista.findViewById(R.id.txtCityCompDet);
         genero = vista.findViewById(R.id.txtGenderCompDet);
+        estado = vista.findViewById(R.id.tv_estado_infograll);
         follow = vista.findViewById(R.id.btnFollow);
         follow.setVisibility(View.INVISIBLE);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         noFollow.setVisibility(View.INVISIBLE);
+        btnEditar = vista.findViewById(R.id.btn_edit_competencia);
+        // en esta pantalla ocultamos el boton
+        btnIncribirse = vista.findViewById(R.id.inscribirse);
+        btnIncribirse.setVisibility(View.INVISIBLE);
+    }
+
+    private void ocultarBotones(){
+        btnEditar.setVisibility(View.INVISIBLE);
+        List<String> roles = this.competencia.getRol();
+
+        for (int i = 0 ; i < roles.size(); i++) {
+            if (roles.get(i).contains("ORGANIZADOR")) {
+                btnEditar.setVisibility(View.VISIBLE);
+            }
+        }
+
+    }
+
+    private void listenButtonEdit() {
+        // ponemos a la escucha el boton de cargar Predio y campos
+        btnEditar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+            if(competencia.getEstado().contains("SIN_INSCRIPCION")){
+                passToEditCompetencia();
+            }
+            else{
+                Toast.makeText(getContext(), "ACCION NO PERMITIDA: no se pueden editar los datos de una competencia con inscripcion abierta.", Toast.LENGTH_LONG).show();
+            }
+            }
+        });
+    }
+
+    private void passToEditCompetencia(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("competencia", this.competencia);
+        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+        Navigation.findNavController(vista).navigate(R.id.editCompetenciaFragment, bundle);
     }
 
     public void onButtonPressed(Uri uri) {

@@ -13,6 +13,7 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.QueryMap;
 
@@ -39,6 +40,9 @@ public interface UserSrv {
 
     @POST( Constants.BASE_URL + "user/recovery" )
     Call<RespSrvUser>resetPass(@Body Map<String,String> user);
+
+    @PUT(Constants.BASE_URL + "user" )
+    Call<RespSrvUser>updateData(@Body Map<String,String> dataNewUser);
 
     @GET(Constants.BASE_URL + "competitors-competition")
     Call<List<User>> getCompetidoresByCompetencia(@Query ("idCompetencia") int idCompetencia);

@@ -32,6 +32,9 @@ public interface CompetitionSrv {
     @POST( Constants.BASE_URL + "competition" )
     Call<Competition>createCompetition(@Body Map<String,String> competencia);
 
+    @PUT( Constants.BASE_URL + "competition" )
+    Call<MsgRequest>updateCompetition(@Body Map<String,String> dataCompetition);
+
     @GET(Constants.BASE_URL + "competitions")
     Call<List<Competition>> getCompetitions();
 

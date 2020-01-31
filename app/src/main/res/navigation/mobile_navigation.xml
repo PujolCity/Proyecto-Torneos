@@ -22,6 +22,9 @@
         <action
             android:id="@+id/action_inicioFragment_to_solicitudesFragment"
             app:destination="@id/misSolicitudes" />
+        <action
+            android:id="@+id/action_inicioFragment_to_miPerfilFragment"
+            app:destination="@id/miPerfilFragment" />
     </fragment>
 
     <fragment
@@ -185,6 +188,9 @@
         <action
             android:id="@+id/action_generalDetalleFragment_to_competidoresDetalleFragment"
             app:destination="@id/competidoresDetalleFragment" />
+        <action
+            android:id="@+id/action_generalDetalleFragment_to_editCompetenciaFragment"
+            app:destination="@id/editCompetenciaFragment" />
     </fragment>
     <fragment
         android:id="@+id/encuentrosDetalleFragment"
@@ -239,5 +245,14 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaFaseFragment"
         android:label="Preparando la siguiente fase"
         tools:layout="@layout/fragment_carga_fase" />
+    <fragment
+        android:id="@+id/miPerfilFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.MiPerfilFragment"
+        android:label="fragment_mi_perfil"
+        tools:layout="@layout/fragment_mi_perfil" />
+    <fragment
+        android:id="@+id/editCompetenciaFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EditCompetenciaFragment"
+        android:label="EditCompetenciaFragment" />
 
 </navigation>

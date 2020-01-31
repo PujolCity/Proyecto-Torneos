@@ -25,6 +25,7 @@
 
     <!--  BARRA MENU LATERAL -->
     <string name="menu_Ininio"> Inicio </string>
+    <string name="menu_MiPerfil"> Mi Perfil </string>
     <string name="menu_CreaMisCompetencias"> Crea Tu Competencia </string>
     <string name="menu_Competencias">Competencias</string>
     <string name="menu_MisCompetencias"> Mis Competencias </string>

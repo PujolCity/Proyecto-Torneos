@@ -3,9 +3,11 @@ package com.VeizagaTorrico.proyectotorneos;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.VeizagaTorrico.proyectotorneos.fragments.MiPerfilFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.CompetenciasListFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresListFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.FiltroFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EditCompetenciaFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.encuentros.DetalleEncuentroFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.MisCompetenciasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment;
@@ -36,6 +38,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioF
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.solicitudes.SolicitudesFragment;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -43,7 +46,14 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
+import android.view.View;
+import android.widget.TextView;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_EMAIL;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 public class NavigationMainActivity extends AppCompatActivity
         implements CrearCompetencia1Fragment.OnFragmentInteractionListener ,
@@ -72,7 +82,9 @@ public class NavigationMainActivity extends AppCompatActivity
         CargarJuezFragment.OnFragmentInteractionListener,
         CoOrganizadorFragment.OnFragmentInteractionListener,
         SolicitudesFragment.OnFragmentInteractionListener,
-        CargaFaseFragment.OnFragmentInteractionListener{
+        CargaFaseFragment.OnFragmentInteractionListener,
+        MiPerfilFragment.OnFragmentInteractionListener,
+        EditCompetenciaFragment.OnFragmentInteractionListener{
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -91,12 +103,35 @@ public class NavigationMainActivity extends AppCompatActivity
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misSolicitudes)
+//                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misSolicitudes)
+                R.id.inicioFragment, R.id.miPerfilFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misSolicitudes)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        // TODO: pasara esto a una funcion
+        updateDataNavMainMenu(navigationView);
+        // seteamos los datos del usuario en la navbar principal
+//        View vistaNavMain = navigationView.getHeaderView(0);
+//        TextView tvTitle = vistaNavMain.findViewById(R.id.tv_user_navbar_main);
+//        TextView tvSubtitle = vistaNavMain.findViewById(R.id.tv_correo_navbar_main);
+//
+//        // actualizamos los datos
+//        tvTitle.setText(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this, FILE_SHARED_DATA_USER, KEY_USERNAME));
+//        tvSubtitle.setText(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this, FILE_SHARED_DATA_USER, KEY_EMAIL));
+    }
+
+    // actualizamos los datos que se mueatran en la barra principal
+    private void updateDataNavMainMenu(NavigationView navbar) {
+        View vistaNavMain = navbar.getHeaderView(0);
+        TextView tvTitle = vistaNavMain.findViewById(R.id.tv_user_navbar_main);
+        TextView tvSubtitle = vistaNavMain.findViewById(R.id.tv_correo_navbar_main);
+
+        // actualizamos los datos
+        tvTitle.setText(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this, FILE_SHARED_DATA_USER, KEY_USERNAME));
+        tvSubtitle.setText(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this, FILE_SHARED_DATA_USER, KEY_EMAIL));
     }
 
     @Override

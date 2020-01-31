@@ -40,10 +40,10 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private CompetitionMin competition;
     private Map<String,Integer> compFollow;
-    private TextView nmb, cat, org, ciudad, genero;
+    private TextView nmb, cat, org, ciudad, genero, estado;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
-    private Button inscribirse;
+    private Button inscribirse, btnEditCompetencia;
     private View vista;
     private AlertDialog dialog;
     private Map<String,String> solicitud;
@@ -81,6 +81,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             org.setText(competition.getTypesOrganization());
             ciudad.setText(competition.getCiudad());
             genero.setText(competition.getGenero());
+            estado.setText(competition.getEstado());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,9 +177,11 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         org = vista.findViewById(R.id.txtOrgCompDet);
         ciudad = vista.findViewById(R.id.txtCityCompDet);
         genero = vista.findViewById(R.id.txtGenderCompDet);
+        estado = vista.findViewById(R.id.tv_estado_infograll);
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
+        btnEditCompetencia = vista.findViewById(R.id.btn_edit_competencia);
 
     }
 
@@ -221,26 +224,31 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
+                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("ORGANIZADOR")) {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
+                btnEditCompetencia.setVisibility(View.VISIBLE);
             }
             if (roles.get(i).contains("COMPETIDOR")) {
                 follow.setVisibility(View.INVISIBLE);
             //    noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
+                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("SEGUIDOR")) {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.VISIBLE);
                 //     inscribirse.setVisibility(View.VISIBLE);
+                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("ESPECTADOR")) {
                 follow.setVisibility(View.VISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
+                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
         }
 
