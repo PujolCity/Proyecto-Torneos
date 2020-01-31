@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EditCompetenciaActivity">
+    tools:context=".fragments.detalle_organizando.EditCompetenciaFragment">
 
     <TextView
         android:id="@+id/tv_title_edit_comp"
@@ -65,32 +65,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_title_edit_comp" />
-
-<!--    <EditText-->
-<!--        android:id="@+id/edt_genero_edit_comp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="100dp"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        android:layout_marginEnd="15dp"-->
-<!--        android:ems="9"-->
-<!--        android:inputType="textPersonName"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/edt_ciudad_edit_comp" />-->
-
-<!--    <EditText-->
-<!--        android:id="@+id/edt_estado_edit_comp"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="100dp"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        android:layout_marginEnd="15dp"-->
-<!--        android:ems="9"-->
-<!--        android:inputType="textPersonName"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/edt_genero_edit_comp" />-->
 
     <Spinner
         android:id="@+id/spinner_genero_edit"
