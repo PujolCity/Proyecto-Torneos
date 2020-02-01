@@ -30,6 +30,7 @@ import com.VeizagaTorrico.proyectotorneos.models.TypesOrganization;
 import com.VeizagaTorrico.proyectotorneos.services.CategorySrv;
 import com.VeizagaTorrico.proyectotorneos.services.GenderSrv;
 import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
+import com.VeizagaTorrico.proyectotorneos.services.StatusSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
 
 import java.io.Serializable;
@@ -43,17 +44,18 @@ public class FiltroFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private View vista;
-    private Spinner spnnrDeporte, spnnrCategoria, spnnrOrganizacion, spnnrGenero;
+    private Spinner spnnrDeporte, spnnrCategoria, spnnrOrganizacion, spnnrGenero, spnnrEstado;
     private EditText etNombre, etCiudad;
     private Button btnSiguiente;
     private TypesOrganizationSrv orgSrv;
     private SportsSrv sportsSrv;
     private GenderSrv genderSrv;
     private CategorySrv categorySrv;
+    private StatusSrv apiStatusServicce;
     private List<Category> categorias;
     private Map <String,String> filtros;
     private int idUsuario;
-    private String deporte,categoria,nombreCompetencia,organizacion,ciudad,genero;
+    private String deporte,categoria,nombreCompetencia,organizacion,ciudad,genero, estado;
 
     public FiltroFragment() {
     }
@@ -81,6 +83,7 @@ public class FiltroFragment extends Fragment {
         llenarSpinnerCategoriaByServer(0);
         llenarSpinnerOrganizacion();
         llenarSpinnerGeneros();
+        llenarSpinnerEstado();
 
 
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
@@ -125,6 +128,13 @@ public class FiltroFragment extends Fragment {
                 try {
                     if(!genero.isEmpty()){
                         filtros.put("genero",genero);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
+                    if(!estado.isEmpty()){
+                        filtros.put("estado",estado);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -187,6 +197,7 @@ public class FiltroFragment extends Fragment {
         spnnrDeporte= vista.findViewById(R.id.spnnrDeporte);
         spnnrGenero = vista.findViewById(R.id.spnnrGenero);
         spnnrOrganizacion = vista.findViewById(R.id.spnnrOrganizacion);
+        spnnrEstado = vista.findViewById(R.id.spnnr_estado_filtro);
 
         btnSiguiente = vista.findViewById(R.id.btnFiltrar);
     }
@@ -420,7 +431,60 @@ public class FiltroFragment extends Fragment {
             }
         });
 
+    }
 
+    private void llenarSpinnerEstado(){
+        apiStatusServicce = new RetrofitAdapter().connectionEnable().create(StatusSrv.class);
+        Call<List<Gender>> call = apiStatusServicce.getStatus();
+        Log.d("Call Estados",call.request().url().toString());
+        call.enqueue(new Callback<List<Gender>>() {
+            @Override
+            public void onResponse(Call<List<Gender>> call, Response<List<Gender>> response) {
+                List<Gender> estados = new ArrayList<>();
+                Gender gender = new Gender("Seleccione...");
+                estados.add(gender);
+                try{
+                    if(!response.body().isEmpty()){
+                        estados.addAll(response.body());
+                        ArrayAdapter<Gender> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_item, estados);
+                        adapter.setDropDownViewResource(R.layout.item_spinner_custom);
+                        spnnrEstado.setAdapter(adapter);
+                        spnnrEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                Gender status;
+                                Gender gender = new Gender("Seleccione...");
+                                status = (Gender) spnnrEstado.getSelectedItem();
+                                if(!status.equals(gender)){
+                                    estado = "'" + status.getNombre() + "'" ;
+                                }else {
+                                    estado = "";
+                                }
+                            }
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+                    }else {
+//                        Referee referee = new Referee(0, "Sin Jueces", " ",0,null);
+//                        jueces.add(referee);
+//                        ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
+//                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//                        spinnerJuez.setAdapter(adapter);
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Gender>> call, Throwable t) {
+                Toast toast = Toast.makeText(getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
 }
