@@ -90,12 +90,10 @@ public class SinginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(!Validations.isEmpty(edtUsuario)){
-                    getValuesFields();
-                    // TODO: reestablecer  el pass
                     recoveryPass();
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Debe ingresar su usuario correctamente para reestablecer suscontraseña", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Debe ingresar su nombre de usuario o correo correctamente para reestablecer su contraseña", Toast.LENGTH_LONG).show();
                 }
             }
         });
@@ -192,19 +190,21 @@ public class SinginActivity extends AppCompatActivity {
         });
     }
 
-    // reestablece la contraseña del usuario a su nombre de usuario
+    // envia un cod de verificacion al correo del usuario para recestablecer su contrseña
     private void recoveryPass() {
         // hacemos la conexion con el api de rest del servidor
         apiUserService = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
 
-        userMapRecovery.put("usuario", usuario);
+        userMapRecovery.put("usuario", edtUsuario.getText().toString());
 
-        Call<RespSrvUser> call = apiUserService.resetPass(userMapRecovery);
-        call.enqueue(new Callback<RespSrvUser>() {
+        Call<MsgRequest> call = apiUserService.resetPass(userMapRecovery);
+        Log.d("RESP_RECOVERY_ERROR", "PETICION: "+call.request());
+        call.enqueue(new Callback<MsgRequest>() {
             @Override
-            public void onResponse(Call<RespSrvUser> call, Response<RespSrvUser> response) {
+            public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                 if (response.code() == 200) {
-                    Toast.makeText(getApplicationContext(), "Contraseña reestablecida. Vuelva a iniciar sesion ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Se le envio un cod de verificacion a su cuenta de correo. Ingresela para poder reestablecer su contraseña.", Toast.LENGTH_LONG).show();
+                    passToVerification();
                     return;
                 }
                 if (response.code() == 400) {
@@ -214,7 +214,7 @@ public class SinginActivity extends AppCompatActivity {
                         jsonObject = new JSONObject(response.errorBody().string());
                         String userMessage = jsonObject.getString("messaging");
                         Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
-                        Toast.makeText(getApplicationContext(), "No se pudo reestablecer la contraseña:  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Hubo un problema para recuperar su contraseña.:  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -223,8 +223,8 @@ public class SinginActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<RespSrvUser> call, Throwable t) {
-                Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
+            public void onFailure(Call<MsgRequest> call, Throwable t) {
+                Log.d("RESP_RECOVERY_ERROR", "error: "+t.getMessage());
                 Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
             }
         });
@@ -248,6 +248,11 @@ public class SinginActivity extends AppCompatActivity {
     private void passToInitApp() {
         Intent toInitApp = new Intent(this, NavigationMainActivity.class);
         startActivity(toInitApp);
+    }
+
+    private void passToVerification() {
+        Intent toVerificationo = new Intent(this, CodVerification.class);
+        startActivity(toVerificationo);
     }
 
 }

@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.Constants;
+import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.models.Classified;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
@@ -38,8 +39,10 @@ public interface UserSrv {
     @POST( Constants.BASE_URL + "user/singin" )
     Call<RespSrvUser>initAccount(@Body Map<String,String> userAccount);
 
+//    @POST( Constants.BASE_URL + "user/recovery" )
+//    Call<RespSrvUser>resetPass(@Body Map<String,String> user);
     @POST( Constants.BASE_URL + "user/recovery" )
-    Call<RespSrvUser>resetPass(@Body Map<String,String> user);
+    Call<MsgRequest>resetPass(@Body Map<String,String> user);
 
     @PUT(Constants.BASE_URL + "user" )
     Call<RespSrvUser>updateData(@Body Map<String,String> dataNewUser);

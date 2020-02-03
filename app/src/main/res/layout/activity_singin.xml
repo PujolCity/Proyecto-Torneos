@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="90dp"
         android:layout_marginTop="30dp"
-        android:text="Reestablecer mi contraseña"
+        android:text="Recuperar mi contraseña"
         android:textColor="#F44336"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_pass_singin" />
