@@ -203,8 +203,8 @@ public class SinginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                 if (response.code() == 200) {
-                    Toast.makeText(getApplicationContext(), "Se le envio un cod de verificacion a su cuenta de correo. Ingresela para poder reestablecer su contraseña.", Toast.LENGTH_LONG).show();
-                    passToVerification();
+                    Toast.makeText(getApplicationContext(), "Se envio un cod de verificacion a su cuenta de correo. Ingresela para poder reestablecer su contraseña.", Toast.LENGTH_LONG).show();
+                    passToVerification(edtUsuario.getText().toString());
                     return;
                 }
                 if (response.code() == 400) {
@@ -250,9 +250,12 @@ public class SinginActivity extends AppCompatActivity {
         startActivity(toInitApp);
     }
 
-    private void passToVerification() {
-        Intent toVerificationo = new Intent(this, CodVerification.class);
-        startActivity(toVerificationo);
+    private void passToVerification(String user) {
+//        Intent mIntent = new Intent(this, Example.class);
+//        mIntent.putExtra(key, value);
+        Intent toVerification = new Intent(this, CodVerification.class);
+        toVerification.putExtra("usuario", user);
+        startActivity(toVerification);
     }
 
 }

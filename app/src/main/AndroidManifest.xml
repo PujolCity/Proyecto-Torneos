@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CodVerification"></activity>
+        <activity android:name=".ResetPassActivity"></activity>
+        <activity android:name=".CodVerification" />
         <activity android:name=".SinginActivity" />
         <activity android:name=".NavigationMainActivity" /> <!-- <activity android:name=".HomeActivity"></activity> -->
         <activity android:name=".UserRegisterActivity" /> <!-- android:name=".NavigationMainActivity" -->

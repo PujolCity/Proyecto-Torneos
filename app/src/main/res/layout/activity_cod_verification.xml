@@ -42,7 +42,7 @@
         android:layout_marginTop="75dp"
         android:layout_marginEnd="118dp"
         android:ems="10"
-        android:inputType="textPersonName"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_subtitle_codverif" />

@@ -47,6 +47,9 @@ public interface UserSrv {
     @PUT(Constants.BASE_URL + "user" )
     Call<RespSrvUser>updateData(@Body Map<String,String> dataNewUser);
 
+    @PUT(Constants.BASE_URL + "user/uppass" )
+    Call<MsgRequest>changePass(@Body Map<String,String> dataUser);
+
     @GET(Constants.BASE_URL + "competitors-competition")
     Call<List<User>> getCompetidoresByCompetencia(@Query ("idCompetencia") int idCompetencia);
 
