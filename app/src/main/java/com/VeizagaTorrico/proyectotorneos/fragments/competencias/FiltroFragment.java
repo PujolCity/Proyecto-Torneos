@@ -32,12 +32,16 @@ import com.VeizagaTorrico.proyectotorneos.services.GenderSrv;
 import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
 import com.VeizagaTorrico.proyectotorneos.services.StatusSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 public class FiltroFragment extends Fragment {
 
@@ -178,7 +182,8 @@ public class FiltroFragment extends Fragment {
 
     private void initElements() {
         Category category = new Category(0,"Seleccione..."," ",0,null);
-        idUsuario = 2;
+//        idUsuario = 2;
+        idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
 
         categorias = new ArrayList<>();
         categorias.add(category);

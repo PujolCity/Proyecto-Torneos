@@ -23,9 +23,13 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetenciasMinRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 public class OrganizandoFragment extends Fragment {
 
@@ -110,8 +114,8 @@ public class OrganizandoFragment extends Fragment {
 
 
     private void inflarRecycler() {
-        //En call viene el tipo de dato que espero del servidor
-        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(9);  // USUARIO 3 HARDCODE DESPUES CAMBIAR AL USUARIO REGISTRADO DEL SISTEMA
+        int idUsuarioregistrado = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(idUsuarioregistrado);
         Log.d("request retrofit", call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {
             @Override
