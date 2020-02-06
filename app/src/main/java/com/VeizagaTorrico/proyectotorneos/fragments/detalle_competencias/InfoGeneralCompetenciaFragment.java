@@ -27,11 +27,14 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 
 public class InfoGeneralCompetenciaFragment extends Fragment {
@@ -90,7 +93,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                compFollow.put("idUsuario", 2);
+                int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+                compFollow.put("idUsuario", idUsuario);
                 compFollow.put("idCompetencia",competition.getId());
 
                 Call<Success> call = competitionSrv.followCompetition(compFollow);
