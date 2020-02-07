@@ -1,13 +1,16 @@
 package com.VeizagaTorrico.proyectotorneos.notification;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.VeizagaTorrico.proyectotorneos.HomeActivity;
 import com.VeizagaTorrico.proyectotorneos.NavigationMainActivity;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
@@ -23,6 +26,7 @@ import com.google.gson.JsonParser;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -39,18 +43,18 @@ import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-//    private Map<String,String> bodyRequest;
-//    private NotificationSrv notificationSrv;
-
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
+        Log.d("MSGNotifi", "Llega la notif: ");
         //super.onMessageReceived(remoteMessage);
+        // TODO: poner afuera el showNotif
         if (remoteMessage.getNotification() != null) {
-            Log.d("Probando FIREBASE", remoteMessage.getNotification().getBody());
+            Log.d("MSGNotifi", "Notificacion: :" +remoteMessage.getNotification().getBody());
+            //showNotificationPush(remoteMessage.getData().get("message"));
         }
 
         if (remoteMessage.getData().size() > 0) {
-            Log.d(TAG, "aca van los datos: " + remoteMessage.getData());
+            Log.d("MSGNotifi", "Los datos: " + remoteMessage.getData());
 
             showNotificationPush(remoteMessage.getData().get("message"));
             //remoteMessage.getNotification();
@@ -68,6 +72,26 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
     }
 
+//    @Override
+//    public void onMessageReceived(RemoteMessage remoteMessage) {
+//        super.onMessageReceived(remoteMessage);
+//        Log.d("msg", "onMessageReceived: " + remoteMessage.getData().get("message"));
+//        Intent intent = new Intent(this, HomeActivity.class);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+//        String channelId = "Default";
+//        NotificationCompat.Builder builder = new  NotificationCompat.Builder(this, channelId)
+//                .setSmallIcon(R.mipmap.ic_launcher)
+//                .setContentTitle(remoteMessage.getNotification().getTitle())
+//                .setContentText(remoteMessage.getNotification().getBody()).setAutoCancel(true).setContentIntent(pendingIntent);;
+//        NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            NotificationChannel channel = new NotificationChannel(channelId, "Default channel", NotificationManager.IMPORTANCE_DEFAULT);
+//            manager.createNotificationChannel(channel);
+//        }
+//        manager.notify(1, builder.build());
+//    }
+
     private void squeduleJob() {
     }
 
@@ -80,7 +104,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
         // sacamos los datos recibidos
         JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
-        //Log.d(TAG, "Json convertido:" +jsonObject.get("notification"));
+        Log.d("MSGNotifi", "Json notif:" +jsonObject.get("notification"));
         String jsonNotification = jsonObject.get("notification").toString();
 
         //Log.d(TAG, "Json not string 1:" +jsonNotification);
@@ -117,35 +141,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String newToken) {
-//        notificationSrv = new RetrofitAdapter().connectionEnable().create(NotificationSrv.class);
 //        Log.d("MANAGER_SHARED newToken", newToken);
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN, newToken);
 //        Log.d("MANAGER_SHARED_PREF", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
-        // creamos el body de la peticion y agregamos el token
-
-        // al enviar los token con distintos usuarios controlar ver como pedir un nuevo token, para
-        // que los distintos usuarios no tengan un mismo token
-
-        // esto solo lo hacemos al inicar sesion
-//        bodyRequest = new HashMap<>();
-//        bodyRequest.put("nombreUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
-//        bodyRequest.put("token", newToken);
-//        Call<MsgRequest> call = notificationSrv.reportChangeTokenToServer(bodyRequest);
-//        call.enqueue(new Callback<MsgRequest>() {
-//            @Override
-//            public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
-//                if(response.code() == 200){
-//                    Log.d("response code", Integer.toString(response.code()));
-//                    Toast toast = Toast.makeText(getApplicationContext(), "Token actualizado en DB NEW: "+response.toString(), Toast.LENGTH_SHORT);
-//                    toast.show();
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<MsgRequest> call, Throwable t) {
-//                Toast toast = Toast.makeText(getApplicationContext(), "Fallo la peticion", Toast.LENGTH_SHORT);
-//                toast.show();
-//            }
-//        });
     }
 
 }

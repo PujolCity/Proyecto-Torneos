@@ -98,7 +98,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 compFollow.put("idCompetencia",competition.getId());
 
                 Call<Success> call = competitionSrv.followCompetition(compFollow);
-                Log.d("URL Seguir", call.request().url().toString());
+                Log.d("URL_Seguir", call.request().url().toString());
+                Log.d("URL_Seguir data", compFollow.toString());
                 try{
                     call.enqueue(new Callback<Success>() {
                         @Override
@@ -236,7 +237,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
-                btnEditCompetencia.setVisibility(View.VISIBLE);
+                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("COMPETIDOR")) {
                 follow.setVisibility(View.INVISIBLE);
