@@ -138,7 +138,6 @@ public class SinginActivity extends AppCompatActivity {
                     saveDataUserLocally(respSrvRegister);
                     reportTokenFirebase();
                     Toast.makeText(getApplicationContext(), "Sesion iniciada con exito ", Toast.LENGTH_SHORT).show();
-                    response.raw();
                     passToInitApp();
                     return;
                 }
@@ -171,8 +170,10 @@ public class SinginActivity extends AppCompatActivity {
         bodyRequest = new HashMap<>();
         bodyRequest.put("nombreUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
         bodyRequest.put("token", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
+//        Log.d("MANAGER_SHARED singin", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
         Call<MsgRequest> call = notificationSrv.reportChangeTokenToServer(bodyRequest);
-        //Log.d("Resp updateToken", call.toString());
+        Log.d("Req updateToken", call.request().toString());
+        Log.d("Req updateToken", bodyRequest.toString());
         call.enqueue(new Callback<MsgRequest>() {
             @Override
             public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {

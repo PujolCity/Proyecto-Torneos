@@ -39,8 +39,8 @@ import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    private Map<String,String> bodyRequest;
-    private NotificationSrv notificationSrv;
+//    private Map<String,String> bodyRequest;
+//    private NotificationSrv notificationSrv;
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -117,37 +117,35 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     @Override
     public void onNewToken(@NonNull String newToken) {
-        notificationSrv = new RetrofitAdapter().connectionEnable().create(NotificationSrv.class);
-        //super.onNewToken(newToken);
-        //Log.d("PROBANDO MANAGER_SHARED", newToken);
-//        ManagerToken.getInstance().setTokenInternal(this.getApplicationContext(), newToken);
+//        notificationSrv = new RetrofitAdapter().connectionEnable().create(NotificationSrv.class);
+//        Log.d("MANAGER_SHARED newToken", newToken);
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN, newToken);
-        Log.d("MANAGER_SHARED_PREF", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
+//        Log.d("MANAGER_SHARED_PREF", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
         // creamos el body de la peticion y agregamos el token
-        // TODO: recuperar los datos del usuario local y usarlos para actualizar el token
+
         // al enviar los token con distintos usuarios controlar ver como pedir un nuevo token, para
         // que los distintos usuarios no tengan un mismo token
-        bodyRequest = new HashMap<>();
-//        bodyRequest.put("nombreUsuario", "alex6");
-        bodyRequest.put("nombreUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
-        bodyRequest.put("token", newToken);
-        Call<MsgRequest> call = notificationSrv.reportChangeTokenToServer(bodyRequest);
-        //Log.d("Resp updateToken", call.toString());
-        call.enqueue(new Callback<MsgRequest>() {
-            @Override
-            public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
-                if(response.code() == 200){
-                    Log.d("response code", Integer.toString(response.code()));
-                    Toast toast = Toast.makeText(getApplicationContext(), "Solicitud Aceptada: "+response.toString(), Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-            @Override
-            public void onFailure(Call<MsgRequest> call, Throwable t) {
-                Toast toast = Toast.makeText(getApplicationContext(), "Fallo la peticion", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
+
+        // esto solo lo hacemos al inicar sesion
+//        bodyRequest = new HashMap<>();
+//        bodyRequest.put("nombreUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
+//        bodyRequest.put("token", newToken);
+//        Call<MsgRequest> call = notificationSrv.reportChangeTokenToServer(bodyRequest);
+//        call.enqueue(new Callback<MsgRequest>() {
+//            @Override
+//            public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+//                if(response.code() == 200){
+//                    Log.d("response code", Integer.toString(response.code()));
+//                    Toast toast = Toast.makeText(getApplicationContext(), "Token actualizado en DB NEW: "+response.toString(), Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<MsgRequest> call, Throwable t) {
+//                Toast toast = Toast.makeText(getApplicationContext(), "Fallo la peticion", Toast.LENGTH_SHORT);
+//                toast.show();
+//            }
+//        });
     }
 
 }

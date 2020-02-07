@@ -128,7 +128,9 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         noFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                compFollow.put("idUsuario", 2);
+//                compFollow.put("idUsuario", 2);
+                int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+                compFollow.put("idUsuario", idUsuario);
                 compFollow.put("idCompetencia",competition.getId());
 
                 Call<Success> call = competitionSrv.noFollowCompetition(compFollow);
