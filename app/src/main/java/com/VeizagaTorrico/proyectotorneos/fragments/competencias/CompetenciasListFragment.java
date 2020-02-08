@@ -40,9 +40,6 @@ public class CompetenciasListFragment extends Fragment {
     private RecyclerView.LayoutManager manager;
     private Map<String,String> filtros;
 
-   /* private ImageButton btnBuscar;
-    private EditText editText;
-  */
 
     public CompetenciasListFragment() {
         // Required empty public constructor
