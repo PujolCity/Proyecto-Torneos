@@ -3,12 +3,13 @@ package com.VeizagaTorrico.proyectotorneos;
 import android.net.Uri;
 import android.os.Bundle;
 
-import com.VeizagaTorrico.proyectotorneos.fragments.MiPerfilFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.MiPerfilFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.CompetenciasListFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresListFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.FiltroFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EditCompetenciaFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.encuentros.DetalleEncuentroFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.TabPerfilFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.MisCompetenciasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment;
@@ -37,7 +38,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarJuezFra
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.solicitudes.SolicitudesFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.InvitacionesFragment;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.google.android.material.navigation.NavigationView;
 
@@ -46,7 +47,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -81,10 +81,11 @@ public class NavigationMainActivity extends AppCompatActivity
         CargarTurnosFragment.OnFragmentInteractionListener,
         CargarJuezFragment.OnFragmentInteractionListener,
         CoOrganizadorFragment.OnFragmentInteractionListener,
-        SolicitudesFragment.OnFragmentInteractionListener,
+        InvitacionesFragment.OnFragmentInteractionListener,
         CargaFaseFragment.OnFragmentInteractionListener,
         MiPerfilFragment.OnFragmentInteractionListener,
-        EditCompetenciaFragment.OnFragmentInteractionListener{
+        EditCompetenciaFragment.OnFragmentInteractionListener,
+        TabPerfilFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -103,8 +104,8 @@ public class NavigationMainActivity extends AppCompatActivity
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-//                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misSolicitudes)
-                R.id.inicioFragment, R.id.miPerfilFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misSolicitudes)
+//                , R.id.miPerfilFragment,R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misInvitaciones)
+                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.tabPerfilFragment)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments.solicitudes;
+package com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil;
 
 import android.content.Context;
 import android.net.Uri;
@@ -31,7 +31,7 @@ import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 
-public class SolicitudesFragment extends Fragment {
+public class InvitacionesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
@@ -42,12 +42,12 @@ public class SolicitudesFragment extends Fragment {
     private RecyclerView recyclerInv;
     private RecyclerView.LayoutManager manager;
 
-    public SolicitudesFragment() {
+    public InvitacionesFragment() {
         // Required empty public constructor
     }
 
-    public static SolicitudesFragment newInstance() {
-        SolicitudesFragment fragment = new SolicitudesFragment();
+    public static InvitacionesFragment newInstance() {
+        InvitacionesFragment fragment = new InvitacionesFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -61,7 +61,7 @@ public class SolicitudesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        vista = inflater.inflate(R.layout.fragment_solicitudes, container, false);
+        vista = inflater.inflate(R.layout.fragment_invitaciones, container, false);
         initAdapter();
         inflarRecycler();
 
