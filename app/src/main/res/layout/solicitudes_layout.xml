@@ -7,7 +7,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/colorPrimary">
+        >
 
         <TextView
             android:id="@+id/nombUsuario"
@@ -39,6 +39,8 @@
             android:id="@+id/btnAceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/cardview_light_background"
             android:src="@drawable/ic_aceptar">
         </ImageButton>
 
@@ -46,6 +48,8 @@
             android:id="@+id/btnRechazar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/cardview_light_background"
             android:src="@drawable/ic_rechazar">
         </ImageButton>
     </LinearLayout>

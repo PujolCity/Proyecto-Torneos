@@ -5,7 +5,7 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/inicioFragment"
+            android:id="@+id/noticiasFragment"
             android:icon="@drawable/ic_inicio"
             android:title="@string/menu_Ininio" />
      <!--   <item
@@ -27,7 +27,7 @@
 
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
 
             <item

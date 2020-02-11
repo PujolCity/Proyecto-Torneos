@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -41,9 +42,9 @@ public class InvitacionesFragment extends Fragment {
     private List<Invitation> invitaciones;
     private RecyclerView recyclerInv;
     private RecyclerView.LayoutManager manager;
+    private TextView sinInitacionesTv;
 
     public InvitacionesFragment() {
-        // Required empty public constructor
     }
 
     public static InvitacionesFragment newInstance() {
@@ -74,35 +75,47 @@ public class InvitacionesFragment extends Fragment {
         call.enqueue(new Callback<List<Invitation>>() {
             @Override
             public void onResponse(Call<List<Invitation>> call, Response<List<Invitation>> response) {
+                Log.d("RESP CODE INVITATION", Integer.toString(response.code()));
                 if (response.code() == 200) {
                     try {
                         invitaciones = response.body();
-                        Log.d("RESP CODE INVITATION", Integer.toString(response.code()));
+                        if(invitaciones.size() != 0){
+                            try {
+                                invitacionAdapter.setInvitaciones(invitaciones);
+                                recyclerInv.setAdapter(invitacionAdapter);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            Toast toast = Toast.makeText(vista.getContext(), "No hay Invitaciones para mostrar", Toast.LENGTH_LONG);
+                            toast.show();
+                            sinInvitaciones();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                }
-                if(invitaciones != null){
-                    try {
-                        invitacionAdapter.setInvitaciones(invitaciones);
-                        recyclerInv.setAdapter(invitacionAdapter);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }else {
-                    Toast toast = Toast.makeText(vista.getContext(), "No hay Invitaciones para mostrar", Toast.LENGTH_LONG);
-                    toast.show();
                 }
             }
             @Override
             public void onFailure(Call<List<Invitation>> call, Throwable t) {
-
+                try{
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
 
-    private void initAdapter() {
+    private void sinInvitaciones() {
+        recyclerInv.setVisibility(View.INVISIBLE);
+        sinInitacionesTv.setVisibility(View.VISIBLE);
+    }
 
+    private void initAdapter() {
+        sinInitacionesTv = vista.findViewById(R.id.tv_sinInvitaciones);
         invitationSrv = new RetrofitAdapter().connectionEnable().create(InvitationSrv.class);
         // COSAS PARA LLENAR El RECYCLERVIEW
         invitaciones = new ArrayList<>();

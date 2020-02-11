@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -40,6 +41,7 @@ public class CompetidoresDetalleFragment extends Fragment {
     private RecyclerView recycle;
     private CompetitionMin competencia;
     private ImageButton solicitudes;
+    private TextView sinCompetidores;
     private CompetidoresRecyclerViewAdapter adapter;
 
     public CompetidoresDetalleFragment() {
@@ -90,14 +92,16 @@ public class CompetidoresDetalleFragment extends Fragment {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                 Log.d("RESPONSE CODE USERS", Integer.toString(response.code()));
-
                 if(response.code() == 200){
                     try {
                         competidores = response.body();
-                        Log.d("COMPETIDORES",competidores.toString());
-
-                        adapter.setCompetidores(competidores);
-                        recycle.setAdapter(adapter);
+                        if(competidores.size() != 0){
+                            Log.d("COMPETIDORES",competidores.toString());
+                            adapter.setCompetidores(competidores);
+                            recycle.setAdapter(adapter);
+                        } else {
+                            sinCompetidores();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -119,8 +123,14 @@ public class CompetidoresDetalleFragment extends Fragment {
 
     }
 
+    private void sinCompetidores() {
+        sinCompetidores.setVisibility(View.VISIBLE);
+        recycle.setVisibility(View.INVISIBLE);
+    }
+
     private void initElement() {
         userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
+        sinCompetidores = vista.findViewById(R.id.tv_sinCompetidores);
         competidores = new ArrayList<>();
         recycle = vista.findViewById(R.id.recyclerCompetidores);
         solicitudes = vista.findViewById(R.id.btnSolicitudes);

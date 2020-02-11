@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -42,6 +43,7 @@ public class SiguiendoFragment extends Fragment {
     private View vista;
     private RecyclerView recycleComp;
     private RecyclerView.LayoutManager manager;
+    private TextView sinCompetenciasTv;
 
 
     public SiguiendoFragment() {
@@ -101,6 +103,7 @@ public class SiguiendoFragment extends Fragment {
     }
 
     private void initAdapter(){
+        sinCompetenciasTv = vista.findViewById(R.id.tv_siguiendo);
         // COSAS PARA LLENAR El RECYCLERVIEW
         competitions = new ArrayList<>();
         recycleComp = vista.findViewById(R.id.recycleSiguiendo);
@@ -123,31 +126,32 @@ public class SiguiendoFragment extends Fragment {
                 if (response.code() == 200) {
                     //asigno a deportes lo que traje del servidor
                     competitions = response.body();
-                    Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
-                }
-                if(competitions != null){
-                    Log.d("COMPETITIONS",competitions.toString());
-                    adapter.setCompetencias(competitions);
-                    //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
-                    recycleComp.setAdapter(adapter);
-                    //LISTENER PARA EL ELEMENTO SELECCIONADO
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("competencia", competition);
-                            // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                            Navigation.findNavController(vista).navigate(R.id.detalleCompetenciaFragment, bundle);
+                    if(competitions.size() != 0){
+                        try {
+                            Log.d("COMPETITIONS",competitions.toString());
+                            adapter.setCompetencias(competitions);
+                            //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                            recycleComp.setAdapter(adapter);
+                            //LISTENER PARA EL ELEMENTO SELECCIONADO
+                            adapter.setOnClickListener(new View.OnClickListener() {
+                                                           @Override
+                                                           public void onClick(View view) {
+                                                               CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                                                               Bundle bundle = new Bundle();
+                                                               bundle.putSerializable("competencia", competition);
+                                                               // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                                                               Navigation.findNavController(vista).navigate(R.id.detalleCompetenciaFragment, bundle);
+                                                           }
+                                                       }
+                            );
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
+                    }else {
+                        sinCompetencias();
                     }
-                    );
-                }else {
-                    Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                    toast.show();
                 }
             }
-
             @Override
             public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
                 try{
@@ -161,6 +165,11 @@ public class SiguiendoFragment extends Fragment {
 }
         });
 
+    }
+
+    private void sinCompetencias() {
+        recycleComp.setVisibility(View.INVISIBLE);
+        sinCompetenciasTv.setVisibility(View.VISIBLE);
     }
 
 }

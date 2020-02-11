@@ -33,6 +33,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralD
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.OrganizandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.ParticipandoFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.SiguiendoFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.noticias.NoticiasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaFaseFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarJuezFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment;
@@ -85,7 +86,8 @@ public class NavigationMainActivity extends AppCompatActivity
         CargaFaseFragment.OnFragmentInteractionListener,
         MiPerfilFragment.OnFragmentInteractionListener,
         EditCompetenciaFragment.OnFragmentInteractionListener,
-        TabPerfilFragment.OnFragmentInteractionListener {
+        TabPerfilFragment.OnFragmentInteractionListener,
+        NoticiasFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -105,7 +107,7 @@ public class NavigationMainActivity extends AppCompatActivity
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
 //                , R.id.miPerfilFragment,R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misInvitaciones)
-                R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.tabPerfilFragment)
+                R.id.noticiasFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.tabPerfilFragment)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

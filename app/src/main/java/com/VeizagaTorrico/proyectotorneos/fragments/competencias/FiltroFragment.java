@@ -182,7 +182,6 @@ public class FiltroFragment extends Fragment {
 
     private void initElements() {
         Category category = new Category(0,"Seleccione..."," ",0,null);
-//        idUsuario = 2;
         idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
 
         categorias = new ArrayList<>();
@@ -232,7 +231,6 @@ public class FiltroFragment extends Fragment {
                                 }else {
                                     organizacion = "";
                                 }
-
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -307,9 +305,13 @@ public class FiltroFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<Sport>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onFailure", t.getMessage());
+                try{
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -335,7 +337,6 @@ public class FiltroFragment extends Fragment {
                     try{
                         //asigno a deportes lo que traje del servidor
                         categorias.addAll(response.body());
-
                         Log.d("RESPONSE CATEGORY CODE", response.body().toString() );//Integer.toString(response.code())
                         // creo el adapter para el spinnerDeporte y asigno el origen de los datos para el adaptador del spinner
                         ArrayAdapter<Category> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, categorias);
@@ -451,7 +452,7 @@ public class FiltroFragment extends Fragment {
                 try{
                     if(!response.body().isEmpty()){
                         estados.addAll(response.body());
-                        ArrayAdapter<Gender> adapter = new ArrayAdapter<>(getContext(),android.R.layout.simple_spinner_item, estados);
+                        ArrayAdapter<Gender> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, estados);
                         adapter.setDropDownViewResource(R.layout.item_spinner_custom);
                         spnnrEstado.setAdapter(adapter);
                         spnnrEstado.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -471,14 +472,7 @@ public class FiltroFragment extends Fragment {
 
                             }
                         });
-                    }else {
-//                        Referee referee = new Referee(0, "Sin Jueces", " ",0,null);
-//                        jueces.add(referee);
-//                        ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
-//                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                        spinnerJuez.setAdapter(adapter);
                     }
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -486,8 +480,12 @@ public class FiltroFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Gender>> call, Throwable t) {
-                Toast toast = Toast.makeText(getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
+                try{
+                    Toast toast = Toast.makeText(getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

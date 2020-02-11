@@ -93,7 +93,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+                int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
                 compFollow.put("idUsuario", idUsuario);
                 compFollow.put("idCompetencia",competition.getId());
 
@@ -115,9 +115,13 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<Success> call, Throwable t) {
-                            Log.d("On failure", t.getMessage());
-                            Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                            toast.show();
+                            try {
+                                Log.d("On failure", t.getMessage());
+                                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                                toast.show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 } catch (Exception e) {
@@ -130,7 +134,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             @Override
             public void onClick(View view) {
 //                compFollow.put("idUsuario", 2);
-                int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+                int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
                 compFollow.put("idUsuario", idUsuario);
                 compFollow.put("idCompetencia",competition.getId());
 
@@ -308,7 +312,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private boolean comprobarAlias(String alia) {
         solicitud.clear();
-        solicitud.put("idUsuario",Integer.toString(2));
+        int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        solicitud.put("idUsuario",Integer.toString(idUsuario));
         solicitud.put("idCompetencia", Integer.toString(competition.getId()));
         solicitud.put("alias",alia);
 

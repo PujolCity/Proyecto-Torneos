@@ -1,28 +1,37 @@
-package com.VeizagaTorrico.proyectotorneos.fragments;
+package com.VeizagaTorrico.proyectotorneos.fragments.noticias;
 
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 
+import java.util.ArrayList;
+import java.util.List;
 
-public class InicioFragment extends Fragment {
+
+public class NoticiasFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
+    private View vista;
+    private List<String> noticias;
+    private RecyclerView recyclerNoticias;
+    private TextView textNoticias;
 
-    public InicioFragment() {
+    public NoticiasFragment() {
         // Required empty public constructor
     }
 
-    public static InicioFragment newInstance() {
-        InicioFragment fragment = new InicioFragment();
+    public static NoticiasFragment newInstance() {
+        NoticiasFragment fragment = new NoticiasFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -31,12 +40,29 @@ public class InicioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-    }
+     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_inicio, container, false);
+        vista = inflater.inflate(R.layout.fragment_noticias, container, false);
+        initElement();
+        if(this.noticias.size() == 0){
+            sinNoticias();
+        }
+
+        return vista;
+    }
+
+    private void initElement() {
+        recyclerNoticias = vista.findViewById(R.id.recyclerNoticias);
+        textNoticias = vista.findViewById(R.id.tv_noticias);
+        this.noticias = new ArrayList<>();
+    }
+
+    private void sinNoticias() {
+        recyclerNoticias.setVisibility(View.INVISIBLE);
+        textNoticias.setVisibility(View.VISIBLE);
     }
 
     public void onButtonPressed(Uri uri) {

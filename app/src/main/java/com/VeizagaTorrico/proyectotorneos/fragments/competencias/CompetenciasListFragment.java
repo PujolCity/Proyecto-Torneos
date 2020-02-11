@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -36,6 +37,7 @@ public class CompetenciasListFragment extends Fragment {
     private CompetenciasMinRecyclerViewAdapter adapter;
     private List<CompetitionMin> competitions;
     private View vista;
+    private TextView sinCompetencias;
     private RecyclerView recycleComp;
     private RecyclerView.LayoutManager manager;
     private Map<String,String> filtros;
@@ -100,6 +102,7 @@ public class CompetenciasListFragment extends Fragment {
 
     private void initAdapter(){
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+        sinCompetencias = vista.findViewById(R.id.tv_sinCompetencias);
         // COSAS PARA LLENAR El RECYCLERVIEW
         competitions = new ArrayList<>();
         recycleComp = vista.findViewById(R.id.recycleCompView);
@@ -124,6 +127,7 @@ public class CompetenciasListFragment extends Fragment {
     private void inflarRecycler() {
         //En call viene el tipo de dato que espero del servidor
         Call<List<CompetitionMin>> call = competitionSrv.findCompetitionsByFilters(filtros);
+        Log.d("URL FILTROS: ",call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {
             @Override
             public void onResponse(Call<List<CompetitionMin>> call, Response<List<CompetitionMin>> response) {
@@ -133,32 +137,42 @@ public class CompetenciasListFragment extends Fragment {
                     //asigno a deportes lo que traje del servidor
                     competitions = response.body();
                     Log.d("RESP CODE COMPETITION", competitions.toString());
-                    adapter.setCompetencias(competitions);
-                    //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
-                    recycleComp.setAdapter(adapter);
-
-                    //LISTENER PARA EL ELEMENTO SELECCIONADO
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-                            siguienteFragment(competition);
-                        }
-                    });
+                    if(competitions.size() != 0){
+                        adapter.setCompetencias(competitions);
+                        //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                        recycleComp.setAdapter(adapter);
+                        //LISTENER PARA EL ELEMENTO SELECCIONADO
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                                siguienteFragment(competition);
+                            }
+                        });
+                    }else {
+                        sinCompetencias();
+                    }
                 }
             }
 
             @Override
             public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
                 try{
-                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_LONG);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
+                    sinCompetencias();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+    }
+
+    private void sinCompetencias() {
+        recycleComp.setVisibility(View.INVISIBLE);
+        sinCompetencias.setVisibility(View.VISIBLE);
+
     }
 
 
