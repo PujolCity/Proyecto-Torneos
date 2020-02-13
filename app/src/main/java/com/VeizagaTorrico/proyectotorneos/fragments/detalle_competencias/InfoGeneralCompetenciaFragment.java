@@ -72,7 +72,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_info_general_competencia, container, false);
 
         initElements();

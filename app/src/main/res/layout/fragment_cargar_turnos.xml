@@ -80,6 +80,7 @@
         android:layout_marginStart="76dp"
         android:layout_marginTop="264dp"
         android:src="@drawable/ic_delete"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/spinnerCargaTurno"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

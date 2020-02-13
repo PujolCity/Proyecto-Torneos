@@ -43,14 +43,14 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     private View vista;
     private ConfrontationSrv confrontationSrv;
-    private EncuentrosRecyclerViewAdapter adapter;
     private List<Confrontation> encuentros;
+    private EncuentrosRecyclerViewAdapter adapter;
     private RecyclerView recycleCon;
     private RecyclerView.LayoutManager manager;
+    private CompetitionSrv competitionSrv;
     private CompetitionMin competencia;
     private Spinner spinnerJornada;
     private Spinner spinnerGrupo;
-    private CompetitionSrv competitionSrv;
     private String nroJornada;
     private String nroGrupo;
     private ImageButton btnBuscar;

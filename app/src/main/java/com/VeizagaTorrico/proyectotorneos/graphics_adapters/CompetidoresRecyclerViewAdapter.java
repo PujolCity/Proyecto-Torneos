@@ -16,11 +16,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class CompetidoresRecyclerViewAdapter extends RecyclerView.Adapter<CompetidoresRecyclerViewAdapter.ViewHolder> {
-    private List<User> competidores = new ArrayList<>();
+    private List<User> competidores;
     private Context context;
 
     public CompetidoresRecyclerViewAdapter(Context context) {
         this.context = context;
+        this.competidores = new ArrayList<>();
     }
 
 

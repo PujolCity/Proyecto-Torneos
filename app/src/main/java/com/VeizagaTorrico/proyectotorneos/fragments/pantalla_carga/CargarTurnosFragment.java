@@ -6,27 +6,46 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.Success;
+import com.VeizagaTorrico.proyectotorneos.models.Turn;
+import com.VeizagaTorrico.proyectotorneos.services.TurnSrv;
 
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CargarTurnosFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private CompetitionMin competencia;
     private View vista;
     private Button btnTurno;
     private ImageButton delete;
@@ -34,17 +53,17 @@ public class CargarTurnosFragment extends Fragment {
     private EditText etHoraDesde, etHoraHasta;
     private final Calendar c = Calendar.getInstance();
     private List<String> hsDesde,hsHasta;
+    private Map<String,String> datos;
     private String segundos;
     private final int hora = c.get(Calendar.HOUR_OF_DAY);
     private final int minuto = c.get(Calendar.MINUTE);
-
-    private int horaOb ;
-    private int minutoOb ;
-
+    private static final int DIFERENCIA_MINUTOS = 10;
+    private TurnSrv turnSrv;
+    private List<Turn> turnos;
+    private Turn turnoSeleccionado;
 
     public CargarTurnosFragment() {
 
-        // Required empty public constructor
     }
 
     public static CargarTurnosFragment newInstance() {
@@ -64,7 +83,7 @@ public class CargarTurnosFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_cargar_turnos, container, false);
         initElements();
-
+        llenarSpinner();
         etHoraDesde.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -82,19 +101,132 @@ public class CargarTurnosFragment extends Fragment {
         btnTurno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("Lo que se envia", hsDesde.toString());
-                Log.d("Lo OTRO", hsHasta.toString());
+                try {
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+                    Date date1= null;
+                    Date date2 = null;
+                    if(!hsDesde.isEmpty() && !hsHasta.isEmpty()){
+                        date1 = sdf.parse(hsDesde.get(0));
+                        date2 = sdf.parse(hsHasta.get(0));
+                        Log.d("HORAS ELEGIDAS", date1.toString() + "  vs "+ date2.toString());
 
-                if(validar()){
+                        if(validar(date1,date2)){
+                            datos.put("idCompetencia", Integer.toString(competencia.getId()));
+                            datos.put("hs_desde",sdf.format(date1));
+                            datos.put("hs_hasta",sdf.format(date2));
+                            Log.d("DATOS", datos.toString());
 
+                            Call<Success> call = turnSrv.createTurn(datos);
+                            Log.d("URL TURNO", call.request().url().toString());
+                            call.enqueue(new Callback<Success>() {
+                                @Override
+                                public void onResponse(Call<Success> call, Response<Success> response) {
+                                    if(response.code() == 201) {
+                                        Log.d("response code TURNO", Integer.toString(response.code()));
+                                        Toast toast = Toast.makeText(vista.getContext(), "Turno Creado", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                        llenarSpinner();
+                                    }
+                                    if (response.code() == 400) {
+                                        Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                        JSONObject jsonObject = null;
+                                        try {
+                                            jsonObject = new JSONObject(response.errorBody().string());
+                                            String userMessage = jsonObject.getString("messaging");
+                                            Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
+                                            Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<Success> call, Throwable t) {
+                                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                                    toast.show();
+                                }
+                            });
+                        }else {
+                            Toast toast = Toast.makeText(vista.getContext(), "El turno debe tener al menos "+ DIFERENCIA_MINUTOS + " minutos de duracion", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }else {
+                        Toast toast = Toast.makeText(vista.getContext(), "Por favor verificar las horas asignadas", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-
             }
         });
         return vista;
     }
 
-    private boolean validar() {
+    private void llenarSpinner() {
+        turnos.clear();
+        Call<List<Turn>> call = turnSrv.getTurnsByCompetition(competencia.getId());
+        call.enqueue(new Callback<List<Turn>>() {
+            @Override
+            public void onResponse(Call<List<Turn>> call, Response<List<Turn>> response) {
+                try {
+                    if (response.code() == 400) {
+                        Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.errorBody().string());
+                            String userMessage = jsonObject.getString("messaging");
+                            Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
+                            Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if(!response.body().isEmpty()){
+                        delete.setVisibility(View.VISIBLE);
+                        turnos = response.body();
+                        ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
+                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spinnerTurnos.setAdapter(adapter);
+                        spinnerTurnos.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                turnoSeleccionado = (Turn) spinnerTurnos.getSelectedItem();
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+                    }else {
+                        delete.setVisibility(View.INVISIBLE);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Turn>> call, Throwable t) {
+                Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
+
+    }
+
+    private boolean validar(Date date1, Date date2) {
+        Date date;
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date1);
+        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + DIFERENCIA_MINUTOS);
+        date = cal.getTime();
+        if((date1.compareTo(date2) == -1) && (date.compareTo(date2) <= 0)){
+            Log.d("COMPARE", date.toString() + "  vs "+ date2.toString());
+            return true;
+        }
         return false;
     }
 
@@ -108,12 +240,10 @@ public class CargarTurnosFragment extends Fragment {
                 //Formateo el minuto obtenido: antepone el 0 si son menores de 10
                 String minutoFormateado = (minute < 10)? String.valueOf("0" + minute):String.valueOf(minute);
                 setHora.setText(horaFormateada+" : "+minutoFormateado+" hs");
-                hs.add(horaFormateada);
-                hs.add(minutoFormateado);
-                hs.add(segundos);
+                hs.add(horaFormateada + ":"+ minutoFormateado + ":" + segundos);
+
             }
         },hora,minuto,true);
-
         recogerHora.show();
         return hs;
     }
@@ -147,8 +277,14 @@ public class CargarTurnosFragment extends Fragment {
     }
 
     private void initElements() {
-        segundos = "00";
+        turnSrv = new RetrofitAdapter().connectionEnable().create(TurnSrv.class);
+        competencia = (CompetitionMin) getArguments().getSerializable("competencia");
 
+        hsDesde = new ArrayList<>();
+        hsHasta = new ArrayList<>();
+        turnos = new ArrayList<>();
+        datos = new HashMap<>();
+        segundos = "00";
         btnTurno = vista.findViewById(R.id.btnCrearTurno);
         delete = vista.findViewById(R.id.deleteTurno);
         spinnerTurnos = vista.findViewById(R.id.spinnerCargaTurno);
@@ -156,5 +292,6 @@ public class CargarTurnosFragment extends Fragment {
         etHoraHasta = vista.findViewById(R.id.etHoraHasta);
     }
 
+    
 
 }
