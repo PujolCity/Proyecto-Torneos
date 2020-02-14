@@ -2,34 +2,33 @@ package com.VeizagaTorrico.proyectotorneos.models;
 
 import com.google.gson.annotations.SerializedName;
 
-public class News {
+import java.io.Serializable;
+import java.sql.Timestamp;
 
-    @SerializedName("id")
-    private int id;
 
-    @SerializedName("titulo")
+public class News implements Serializable {
+
+    @SerializedName("competencia")
+    private String competencia;
+
+    @SerializedName("title")
     private String titulo;
 
-    @SerializedName("subtitulo")
+    @SerializedName("resume")
     private String subtitulo;
 
-    @SerializedName("cuerpo")
+    @SerializedName("descripcion")
     private String cuerpo;
 
+    @SerializedName("uptime")
+    private Timestamp uptime;
 
-    public News(int id, String titulo, String subtitulo, String cuerpo) {
-        this.id = id;
+    public News(String competencia, String titulo, String subtitulo, String cuerpo, Timestamp uptime) {
+        this.competencia = competencia;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.cuerpo = cuerpo;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.uptime = uptime;
     }
 
     public String getTitulo() {
@@ -56,9 +55,26 @@ public class News {
         this.cuerpo = cuerpo;
     }
 
+    public String getCompetencia() {
+        return competencia;
+    }
+
+    public void setCompetencia(String competencia) {
+        this.competencia = competencia;
+    }
+
+    public Timestamp getUptime() {
+        return uptime;
+    }
+
+    public void setUptime(Timestamp uptime) {
+        this.uptime = uptime;
+    }
+
     @Override
     public String toString() {
-        return  titulo + '\n' + subtitulo + '\n' +
-                 cuerpo;
+        return competencia + ' ' + titulo + ' '
+                + subtitulo + ' ' + cuerpo + ' ' +
+                 uptime ;
     }
 }

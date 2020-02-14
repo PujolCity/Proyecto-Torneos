@@ -132,6 +132,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                                 @Override
                                 public void onClick(View view) {
                                     Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                    Log.d("ENCUENTRO SELECCIONADO", encuentro.toString());
                                     Bundle bundle = new Bundle();
                                     encuentro.setIdCompetencia(competencia.getId());
                                     bundle.putSerializable("encuentro", encuentro);
@@ -145,6 +146,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                                     public void onClick(View view) {
                                         Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
                                         Bundle bundle = new Bundle();
+                                        Log.d("ENCUENTRO SELECCIONADO", encuentro.toString());
                                         encuentro.setIdCompetencia(competencia.getId());
                                         bundle.putSerializable("encuentro", encuentro);
                                         Navigation.findNavController(vista).navigate(R.id.detalleEncuentroFragment, bundle);

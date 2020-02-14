@@ -11,8 +11,7 @@ import retrofit2.http.Query;
 
 public interface NewsSrv {
 
-
-    @GET(Constants.BASE_URL + "news")
+    @GET(Constants.BASE_URL + "news/competitions")
     Call<List<News>> getNews(@Query("idUsuario") int idUsuario);
 
 }

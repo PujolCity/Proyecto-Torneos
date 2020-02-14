@@ -268,6 +268,15 @@
         android:id="@+id/noticiasFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.noticias.NoticiasFragment"
         android:label="Noticias!"
-        tools:layout="@layout/fragment_noticias" />
+        tools:layout="@layout/fragment_noticias" >
+        <action
+            android:id="@+id/action_noticiasFragment_to_detalleNoticiasFragment"
+            app:destination="@id/detalleNoticiasFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalleNoticiasFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.noticias.DetalleNoticiasFragment"
+        android:label=""
+        tools:layout="@layout/fragment_detalle_noticias" />
 
 </navigation>

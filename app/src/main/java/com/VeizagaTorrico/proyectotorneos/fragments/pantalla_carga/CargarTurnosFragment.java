@@ -292,6 +292,6 @@ public class CargarTurnosFragment extends Fragment {
         etHoraHasta = vista.findViewById(R.id.etHoraHasta);
     }
 
-    
+
 
 }

@@ -37,6 +37,8 @@ import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
 import com.VeizagaTorrico.proyectotorneos.services.RefereeSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TurnSrv;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -132,9 +134,17 @@ public class DetalleEncuentroFragment extends Fragment {
                                 Toast toast = Toast.makeText(vista.getContext(), "Edicion realizada con exito", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
-                            else {
-                                Toast toast = Toast.makeText(vista.getContext(), "Pasaron cosas", Toast.LENGTH_SHORT);
-                                toast.show();
+                            if (response.code() == 400) {
+                                Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                JSONObject jsonObject = null;
+                                try {
+                                    jsonObject = new JSONObject(response.errorBody().string());
+                                    String userMessage = jsonObject.getString("msg");
+                                    Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
+                                    Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -286,7 +296,12 @@ public class DetalleEncuentroFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Turn>> call, Throwable t) {
-
+                try {
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -334,8 +349,13 @@ public class DetalleEncuentroFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Referee>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
+                try {
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

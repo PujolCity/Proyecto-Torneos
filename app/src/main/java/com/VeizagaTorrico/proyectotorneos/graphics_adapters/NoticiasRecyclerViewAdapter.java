@@ -54,7 +54,6 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
             News noticia = this.noticias.get(position);
             holder.titulo.setText(noticia.getTitulo());
             holder.subtitulo.setText(noticia.getSubtitulo());
-            holder.cuerpo.setText(noticia.getCuerpo());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -70,13 +69,13 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView titulo, subtitulo, cuerpo;
+        TextView titulo, subtitulo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.tv_titulo_noticia);
             subtitulo = itemView.findViewById(R.id.tv_subtitulo_noticia);
-            cuerpo = itemView.findViewById(R.id.tv_cuerpo_noticia);
+
         }
     }
 }
