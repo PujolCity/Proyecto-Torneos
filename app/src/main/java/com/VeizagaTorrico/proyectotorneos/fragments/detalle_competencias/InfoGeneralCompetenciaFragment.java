@@ -35,6 +35,7 @@ import java.util.Map;
 
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 
 public class InfoGeneralCompetenciaFragment extends Fragment {
@@ -308,7 +309,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private boolean comprobarAlias(String alia) {
         solicitud.clear();
-        solicitud.put("idUsuario",Integer.toString(2));
+
+        solicitud.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
         solicitud.put("idCompetencia", Integer.toString(competition.getId()));
         solicitud.put("alias",alia);
 
