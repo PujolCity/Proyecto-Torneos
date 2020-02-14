@@ -5,13 +5,13 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/inicioFragment"
+            android:id="@+id/noticiasFragment"
             android:icon="@drawable/ic_inicio"
             android:title="@string/menu_Ininio" />
-        <item
+     <!--   <item
             android:id="@+id/miPerfilFragment"
             android:icon="@drawable/ic_inicio"
-            android:title="Mi Perfil" />
+            android:title="Mi Perfil" />-->
         <item
             android:id="@+id/crearCompetencia1Fragment"
             android:icon="@drawable/ic_new"
@@ -20,19 +20,20 @@
             android:id="@+id/filtroFragment"
             android:icon="@drawable/baseline_emoji_events_black_18dp"
             android:title="@string/menu_Competencias"/>
+        <item
+            android:id="@+id/misCompetencias"
+            android:icon="@drawable/baseline_sports_black_18dp"
+            android:title="@string/menu_MisCompetencias" />
+
     </group>
 
-    <item android:title="Communicate">
+    <item android:title="">
         <menu>
 
             <item
-                android:id="@+id/misCompetencias"
-                android:icon="@drawable/baseline_sports_black_18dp"
-                android:title="@string/menu_MisCompetencias" />
-            <item
-                android:id="@+id/misSolicitudes"
+                android:id="@+id/tabPerfilFragment"
                 android:icon="@drawable/ic_solicitudes"
-                android:title="@string/menu_solicitudes" />
+                android:title="@string/menu_MiPerfil" />
         </menu>
     </item>
 </menu>

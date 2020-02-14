@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -38,6 +39,7 @@ public class CompetidoresListFragment extends Fragment {
     private View vista;
     private RecyclerView recycle;
     private CompetitionMin competencia;
+    private TextView sinSolicitudes;
 
 
     public CompetidoresListFragment() {
@@ -78,9 +80,13 @@ public class CompetidoresListFragment extends Fragment {
                 if(response.code() == 200){
                     try {
                         competidores = response.body();
-                        adapter.setCompetidores(competidores);
-                        adapter.setIdComptencia(competencia.getId());
-                        recycle.setAdapter(adapter);
+                        if(competidores.size() != 0){
+                            adapter.setCompetidores(competidores);
+                            adapter.setIdComptencia(competencia.getId());
+                            recycle.setAdapter(adapter);
+                        } else {
+                            sinSolicitudes();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -96,6 +102,11 @@ public class CompetidoresListFragment extends Fragment {
         });
 
         return vista;
+    }
+
+    private void sinSolicitudes() {
+        recycle.setVisibility(View.INVISIBLE);
+        sinSolicitudes.setVisibility(View.VISIBLE);
     }
 
     public void setCompetencia(CompetitionMin competencia) {
@@ -130,6 +141,7 @@ public class CompetidoresListFragment extends Fragment {
     }
 
     public void initAdapter(){
+        sinSolicitudes = vista.findViewById(R.id.tv_sinSolicitudes);
         // COSAS PARA LLENAR El RECYCLERVIEW
         competidores = new ArrayList<>();
         recycle = vista.findViewById(R.id.CompetidoresList);

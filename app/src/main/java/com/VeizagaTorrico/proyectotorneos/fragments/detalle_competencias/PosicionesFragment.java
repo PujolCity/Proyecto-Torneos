@@ -79,6 +79,7 @@ public class PosicionesFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_posiciones, container, false);
+
         tablaPosiciones = vista.findViewById(R.id.TablaPosiciones);
         //spin_grupo = vista.findViewById(R.id.spinnerGrupoTablaPosiciones);
         spin_grupo = vista.findViewById(R.id.spinnerGrupo);

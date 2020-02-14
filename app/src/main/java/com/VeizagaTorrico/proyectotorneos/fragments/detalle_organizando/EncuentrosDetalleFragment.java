@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -42,18 +43,19 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     private View vista;
     private ConfrontationSrv confrontationSrv;
-    private EncuentrosRecyclerViewAdapter adapter;
     private List<Confrontation> encuentros;
+    private EncuentrosRecyclerViewAdapter adapter;
     private RecyclerView recycleCon;
     private RecyclerView.LayoutManager manager;
+    private CompetitionSrv competitionSrv;
     private CompetitionMin competencia;
     private Spinner spinnerJornada;
     private Spinner spinnerGrupo;
-    private CompetitionSrv competitionSrv;
     private String nroJornada;
     private String nroGrupo;
     private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
+    private TextView sinEncuentrosTv;
 
     public EncuentrosDetalleFragment() {
         // Required empty public constructor
@@ -81,56 +83,9 @@ public class EncuentrosDetalleFragment extends Fragment {
         return vista;
     }
 
-//    private void inflarRecycler() {
-//        Call<List<Confrontation>> call = confrontationSrv.getConfrontation(competencia.getId());
-//        Log.d("call competencia",call.request().url().toString());
-//        call.enqueue(new Callback<List<Confrontation>>() {
-//            @Override
-//            public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
-//                if(response.code() == 200){
-//                    try {
-//                        Log.d("ENCUENTROS response", Integer.toString(response.code()));
-//                        encuentros = response.body();
-//
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//                if(encuentros != null){
-//                    try {
-//                        adapter.setEncuentros(encuentros);
-//                        recycleCon.setAdapter(adapter);
-//                        adapter.setOnClickListener(new View.OnClickListener() {
-//                            @Override
-//                            public void onClick(View view) {
-//                                Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-//                                Bundle bundle = new Bundle();
-//                                encuentro.setIdCompetencia(competencia.getId());
-//                                bundle.putSerializable("encuentro", encuentro);
-//                                Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-//                            }
-//                        });
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<List<Confrontation>> call, Throwable t) {
-//                try {
-//                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-//                    toast.show();
-//                    Log.d("onFailure", t.getMessage());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//       }
-
     private void initElements() {
         fecha_grupo = new HashMap<>();
-
+        sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         encuentros = new ArrayList<>();
@@ -155,47 +110,55 @@ public class EncuentrosDetalleFragment extends Fragment {
         call.enqueue(new Callback<List<Confrontation>>() {
             @Override
             public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     try {
                         Log.d("ENCUENTROS_FG response", Integer.toString(response.code()));
                         encuentros = response.body();
+
                         Log.d("ENCUENTROS_FG response", response.body().toString());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                 }
-                if(encuentros != null){
-                    try {
-                        adapter.setEncuentros(encuentros);
-                        recycleCon.setAdapter(adapter);
+                if(encuentros.size() != 0){
 
-                        adapter.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                                Bundle bundle = new Bundle();
-                                encuentro.setIdCompetencia(competencia.getId());
-                                bundle.putSerializable("encuentro", encuentro);
-                                Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-                            }
-                        });
+                    if (encuentros != null) {
+                        try {
+                            adapter.setEncuentros(encuentros);
+                            recycleCon.setAdapter(adapter);
 
-                        if(competencia.getRol().contains("ORGANIZADOR")){
                             adapter.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View view) {
                                     Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                    Log.d("ENCUENTRO SELECCIONADO", encuentro.toString());
                                     Bundle bundle = new Bundle();
                                     encuentro.setIdCompetencia(competencia.getId());
                                     bundle.putSerializable("encuentro", encuentro);
-                                    Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                                    Navigation.findNavController(vista).navigate(R.id.detalleEncuentroFragment, bundle);
                                 }
                             });
+
+                            if (competencia.getRol().contains("ORGANIZADOR")) {
+                                adapter.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                        Bundle bundle = new Bundle();
+                                        Log.d("ENCUENTRO SELECCIONADO", encuentro.toString());
+                                        encuentro.setIdCompetencia(competencia.getId());
+                                        bundle.putSerializable("encuentro", encuentro);
+                                        Navigation.findNavController(vista).navigate(R.id.detalleEncuentroFragment, bundle);
+                                    }
+                                });
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } else {
+                    sinEncuentros();
                 }
             }
             @Override
@@ -209,6 +172,11 @@ public class EncuentrosDetalleFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void sinEncuentros() {
+        recycleCon.setVisibility(View.INVISIBLE);
+        sinEncuentrosTv.setVisibility(View.VISIBLE);
     }
 
     public void onButtonPressed(Uri uri) {

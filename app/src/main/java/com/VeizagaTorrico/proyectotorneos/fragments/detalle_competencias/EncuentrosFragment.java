@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -55,6 +56,7 @@ public class EncuentrosFragment extends Fragment {
     private String nroGrupo;
     private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
+    private TextView sinEncuentrosTv;
 
     public EncuentrosFragment() {
         // Required empty public constructor
@@ -85,7 +87,7 @@ public class EncuentrosFragment extends Fragment {
 
     private void initElements() {
         fecha_grupo = new HashMap<>();
-
+        sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         encuentros = new ArrayList<>();
@@ -114,31 +116,33 @@ public class EncuentrosFragment extends Fragment {
                     try {
                         Log.d("ENCUENTROS_FG response", Integer.toString(response.code()));
                         encuentros = response.body();
-                        Log.d("ENCUENTROS_FG response", response.body().toString());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if(encuentros != null){
-                    try {
-                        adapter.setEncuentros(encuentros);
-                        recycleCon.setAdapter(adapter);
-                        if(competencia.getRol().contains("ORGANIZADOR")){
-                            adapter.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                                    Bundle bundle = new Bundle();
-                                    encuentro.setIdCompetencia(competencia.getId());
-                                    bundle.putSerializable("encuentro", encuentro);
-                                    Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                        if(encuentros.size() != 0 ){
+                            try {
+                                adapter.setEncuentros(encuentros);
+                                recycleCon.setAdapter(adapter);
+                                if(competencia.getRol().contains("ORGANIZADOR")){
+                                    adapter.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                            Bundle bundle = new Bundle();
+                                            encuentro.setIdCompetencia(competencia.getId());
+                                            bundle.putSerializable("encuentro", encuentro);
+                                            Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                                        }
+                                    });
                                 }
-                            });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            sinEncuentros();
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
+
             }
             @Override
             public void onFailure(Call<List<Confrontation>> call, Throwable t) {
@@ -268,9 +272,13 @@ public class EncuentrosFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<CompetitionOrg> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-                Log.d("onFailure", t.getMessage());
+                try {
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
@@ -313,6 +321,11 @@ public class EncuentrosFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void sinEncuentros() {
+        recycleCon.setVisibility(View.INVISIBLE);
+        sinEncuentrosTv.setVisibility(View.VISIBLE);
     }
 
 }

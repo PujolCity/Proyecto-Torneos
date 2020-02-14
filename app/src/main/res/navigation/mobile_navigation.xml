@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@id/inicioFragment">
+    app:startDestination="@id/noticiasFragment">
 
     <fragment
         android:id="@+id/inicioFragment"
@@ -20,11 +20,9 @@
             android:id="@+id/action_inicioFragment_to_misCompetencias"
             app:destination="@id/misCompetencias" />
         <action
-            android:id="@+id/action_inicioFragment_to_solicitudesFragment"
-            app:destination="@id/misSolicitudes" />
-        <action
-            android:id="@+id/action_inicioFragment_to_miPerfilFragment"
-            app:destination="@id/miPerfilFragment" />
+            android:id="@+id/action_inicioFragment_to_tabPerfilFragment"
+            app:destination="@id/tabPerfilFragment" />
+
     </fragment>
 
     <fragment
@@ -236,10 +234,10 @@
         android:label="Invita a un Usuario a organizar"
         tools:layout="@layout/fragment_co_organizador" />
     <fragment
-        android:id="@+id/misSolicitudes"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.solicitudes.SolicitudesFragment"
-        android:label="Mis solicitudes"
-        tools:layout="@layout/fragment_solicitudes" />
+        android:id="@+id/misInvitaciones"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.InvitacionesFragment"
+        android:label="Mis invitaciones"
+        tools:layout="@layout/fragment_invitaciones" />
     <fragment
         android:id="@+id/cargaFaseFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaFaseFragment"
@@ -247,12 +245,38 @@
         tools:layout="@layout/fragment_carga_fase" />
     <fragment
         android:id="@+id/miPerfilFragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.MiPerfilFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.MiPerfilFragment"
         android:label="fragment_mi_perfil"
         tools:layout="@layout/fragment_mi_perfil" />
     <fragment
         android:id="@+id/editCompetenciaFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EditCompetenciaFragment"
         android:label="EditCompetenciaFragment" />
+    <fragment
+        android:id="@+id/tabPerfilFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.TabPerfilFragment"
+        android:label="Mi Perfil"
+        tools:layout="@layout/fragment_tab_perfil" >
+        <action
+            android:id="@+id/action_tabPerfilFragment_to_miPerfilFragment"
+            app:destination="@id/miPerfilFragment" />
+        <action
+            android:id="@+id/action_tabPerfilFragment_to_misInvitaciones"
+            app:destination="@id/misInvitaciones" />
+    </fragment>
+    <fragment
+        android:id="@+id/noticiasFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.noticias.NoticiasFragment"
+        android:label="Noticias!"
+        tools:layout="@layout/fragment_noticias" >
+        <action
+            android:id="@+id/action_noticiasFragment_to_detalleNoticiasFragment"
+            app:destination="@id/detalleNoticiasFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/detalleNoticiasFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.noticias.DetalleNoticiasFragment"
+        android:label=""
+        tools:layout="@layout/fragment_detalle_noticias" />
 
 </navigation>

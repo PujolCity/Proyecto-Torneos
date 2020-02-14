@@ -12,11 +12,14 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="115dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="24dp"
         android:layout_marginEnd="168dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.18"
         app:layout_constraintStart_toEndOf="@+id/tv_estado_filtro"
-        app:layout_constraintTop_toBottomOf="@+id/spnnrGenero"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/spnnrGenero">
+
+    </Spinner>
 
     <TextView
         android:id="@+id/textView3"
@@ -27,7 +30,9 @@
         android:text="@string/txtNombre"
         android:textSize="@dimen/txt_size_filtro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent">
+
+    </TextView>
 
     <EditText
         android:id="@+id/etNombre"
@@ -54,16 +59,20 @@
         android:text="@string/txtDeporte"
         android:textSize="@dimen/txt_size_filtro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/textView3">
+
+    </TextView>
 
     <Spinner
         android:id="@+id/spnnrDeporte"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toEndOf="@+id/textView4"
-        app:layout_constraintTop_toBottomOf="@+id/etNombre"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/etNombre">
+
+    </Spinner>
 
     <TextView
         android:id="@+id/textView5"
@@ -74,16 +83,20 @@
         android:text="@string/txtCategoria"
         android:textSize="@dimen/txt_size_filtro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
+
+    </TextView>
 
     <Spinner
         android:id="@+id/spnnrCategoria"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="27dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="28dp"
         app:layout_constraintStart_toEndOf="@+id/textView5"
-        app:layout_constraintTop_toBottomOf="@+id/spnnrDeporte"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/spnnrDeporte">
+
+    </Spinner>
 
     <TextView
         android:id="@+id/textView6"
@@ -94,18 +107,22 @@
         android:text="@string/txtCiudad"
         android:textSize="@dimen/txt_size_filtro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/textView5">
+
+    </TextView>
 
     <EditText
         android:id="@+id/etCiudad"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:textSize="13dp"
         app:layout_constraintStart_toEndOf="@+id/textView6"
-        app:layout_constraintTop_toBottomOf="@+id/spnnrCategoria"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/spnnrCategoria">
+
+    </EditText>
 
     <TextView
         android:id="@+id/textView8"
@@ -116,16 +133,20 @@
         android:text="@string/txtTipo"
         android:textSize="@dimen/txt_size_filtro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+    </TextView>
 
     <Spinner
         android:id="@+id/spnnrOrganizacion"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="45dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginStart="56dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/etCiudad"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/etCiudad">
+
+    </Spinner>
 
     <TextView
         android:id="@+id/textView9"
@@ -136,28 +157,35 @@
         android:text="@string/txtGenero"
         android:textSize="@dimen/txt_size_filtro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/textView8">
+
+    </TextView>
 
     <Spinner
         android:id="@+id/spnnrGenero"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="92dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@+id/spnnrOrganizacion"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/spnnrOrganizacion">
+    </Spinner>
 
     <Button
         android:id="@+id/btnFiltrar"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="45dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="128dp"
         android:text="@string/txtBtnSig"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/cardview_light_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.467"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/spnnr_estado_filtro"
+        app:layout_constraintVertical_bias="0.647" />
 
     <TextView
         android:id="@+id/tv_estado_filtro"

@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -40,6 +41,7 @@ public class OrganizandoFragment extends Fragment {
     private View vista;
     private RecyclerView recycleComp;
     private RecyclerView.LayoutManager manager;
+    private TextView sinCompetenciasTv;
 
     public OrganizandoFragment() {
         // Required empty public constructor
@@ -102,6 +104,7 @@ public class OrganizandoFragment extends Fragment {
 
 
     private void initAdapter(){
+        sinCompetenciasTv = vista.findViewById(R.id.tv_Organizando);
         // COSAS PARA LLENAR El RECYCLERVIEW
         competitions = new ArrayList<>();
         recycleComp = vista.findViewById(R.id.recycleOrganizando);
@@ -126,31 +129,34 @@ public class OrganizandoFragment extends Fragment {
                     //asigno a deportes lo que traje del servidor
                     try {
                         competitions = response.body();
-                        Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
+                        if(competitions.size() != 0){
+                            try {
+                                adapter.setCompetencias(competitions);
+                                //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                                recycleComp.setAdapter(adapter);
+                                //LISTENER PARA EL ELEMENTO SELECCIONADO
+                                adapter.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("competencia", competition);
+                                        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                                        Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
+                                    }
+                                });
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            sinCompetencias();
+                        }
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
                 if(competitions != null){
-                    try {
-//                        Log.d("COMPETITIONS",competitions.toString());
-                        adapter.setCompetencias(competitions);
-                        //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
-                        recycleComp.setAdapter(adapter);
-                        //LISTENER PARA EL ELEMENTO SELECCIONADO
-                        adapter.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("competencia", competition);
-                                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                                Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
-                            }
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+
                 }else {
                     Toast toast = Toast.makeText(vista.getContext(), "No hay competencias para mostrar", Toast.LENGTH_SHORT);
                     toast.show();
@@ -168,5 +174,10 @@ public class OrganizandoFragment extends Fragment {
                     e.printStackTrace();
                 }}
         });
+    }
+
+    private void sinCompetencias() {
+        sinCompetenciasTv.setVisibility(View.VISIBLE);
+        recycleComp.setVisibility(View.INVISIBLE);
     }
 }

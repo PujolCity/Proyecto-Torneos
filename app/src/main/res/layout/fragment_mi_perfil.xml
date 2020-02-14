@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.MiPerfilFragment">
-
+    tools:context=".fragments.mi_perfil.MiPerfilFragment">
 
     <TextView
         android:id="@+id/tv_title_miperfil"
@@ -121,9 +120,13 @@
         android:id="@+id/btn_update_miperfil"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="70dp"
         android:text="Guardar cambios"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/cardview_light_background"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_correo_miperfil" />
+        app:layout_constraintTop_toBottomOf="@+id/edt_correo_miperfil"
+        app:layout_constraintVertical_bias="0.475" />
 </androidx.constraintlayout.widget.ConstraintLayout>

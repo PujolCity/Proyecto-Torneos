@@ -4,42 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.detalle_organizando.CompetidoresDetalleFragment">
-
-    <ImageButton
-        android:id="@+id/btnSolicitudes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/baseline_person_add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.918"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </ImageButton>
+    tools:context=".fragments.mi_perfil.InvitacionesFragment">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerCompetidores"
+        android:id="@+id/recyclerSolicitudes"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="60dp"
-        app:layout_constraintTop_toBottomOf="@+id/btnSolicitudes"
         tools:layout_editor_absoluteX="185dp">
     </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
-        android:id="@+id/tv_sinCompetidores"
+        android:id="@+id/tv_sinInvitaciones"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
         android:gravity="center_vertical|center_horizontal"
-        android:text="Sin Competidores"
+        android:text="Sin Invitaciones"
         android:textSize="40sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteY="280dp">
     </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

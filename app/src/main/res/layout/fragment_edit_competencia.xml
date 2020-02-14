@@ -96,9 +96,11 @@
         android:id="@+id/btn_update_edit_comp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="70dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="88dp"
+        android:backgroundTint="@color/colorPrimary"
         android:text="Guardar cambios"
+        android:textColor="@color/cardview_light_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_estado_edit" />
 
