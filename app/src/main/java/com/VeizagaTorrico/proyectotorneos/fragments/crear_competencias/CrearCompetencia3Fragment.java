@@ -30,11 +30,15 @@ import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.TypesOrganization;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 public class CrearCompetencia3Fragment extends Fragment {
 
@@ -55,6 +59,7 @@ public class CrearCompetencia3Fragment extends Fragment {
     private int fase;
     private boolean hayGrupo ;
     private boolean hayFase ;
+    private int usuario;
 
     private List<String> fases;
 
@@ -78,7 +83,6 @@ public class CrearCompetencia3Fragment extends Fragment {
                              Bundle savedInstanceState) {
         hayGrupo = false;
 
-        // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_crear_competencia3, container, false);
         initElements();
         llenarSpinnerOrg();
@@ -86,10 +90,6 @@ public class CrearCompetencia3Fragment extends Fragment {
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //Hacer peticion al servidor
-             /*   Toast toast = Toast.makeText(getContext(), "Implementar servicio de creacion", Toast.LENGTH_SHORT);
-                toast.show();
-               */
              try{
                  competencia.put("nombre",competition.getName());
                  competencia.put("fecha_ini",competition.getFechaInicio());
@@ -99,7 +99,8 @@ public class CrearCompetencia3Fragment extends Fragment {
                  competencia.put("max_comp","32");
                  competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
                  competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
-                 competencia.put("user_id","9");
+                 competencia.put("user_id",Integer.toString(usuario));
+                 competencia.put("frecuencia",Integer.toString(competition.getFrecuencia()));
 
                  Log.d("BODY" , competencia.toString());
 
@@ -116,7 +117,6 @@ public class CrearCompetencia3Fragment extends Fragment {
                     }
                 } else {
                     competencia.put("cant_grupos", "1");
-
                 }
                 if(hayFase){
                     competencia.put("fase", Integer.toString(fase));
@@ -182,7 +182,7 @@ public class CrearCompetencia3Fragment extends Fragment {
 
     private void initElements(){
         competencia = new HashMap<>();
-
+        usuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
         orgSrv = new RetrofitAdapter().connectionEnable().create(TypesOrganizationSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
 

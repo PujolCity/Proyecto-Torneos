@@ -158,8 +158,12 @@ public class SinginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RespSrvUser> call, Throwable t) {
-                Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
-                Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
+                try{
+                    Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
+                    Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }

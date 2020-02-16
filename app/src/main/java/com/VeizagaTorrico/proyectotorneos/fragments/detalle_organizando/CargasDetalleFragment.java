@@ -24,13 +24,15 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
+import org.json.JSONObject;
+
 public class CargasDetalleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
     private View vista;
     private CompetitionMin competencia;
- private Button btnPredio;
+    private Button btnPredio;
     private Button btnTurno;
     private Button btnJuez;
     private Button btnGenerar;
@@ -126,6 +128,19 @@ public class CargasDetalleFragment extends Fragment {
                             if(response.code() == 200) {
                                 Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
                                 toast.show();
+                            }
+                            if (response.code() == 400) {
+                                Log.d("RESP_SIGNIN_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                JSONObject jsonObject = null;
+                                try {
+                                    jsonObject = new JSONObject(response.errorBody().string());
+                                    String userMessage = jsonObject.getString("msg");
+                                    Log.d("RESP_SIGNIN_ERROR", "Msg de la repuesta: "+userMessage);
+                                    Toast.makeText(vista.getContext(), "No se pueden generar mas encuentros:  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                return;
                             }
                         }
 

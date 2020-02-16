@@ -32,6 +32,8 @@ public class Competition implements Serializable {
     @SerializedName("ciudad")
     private String ciudad;
 
+    private int frecuencia;
+
    /* @SerializedName("idUser")
     private int idUser;
 */
@@ -100,6 +102,14 @@ public class Competition implements Serializable {
 
     public void setCiudad(String ciudad) {
         this.ciudad = ciudad;
+    }
+
+    public int getFrecuencia() {
+        return frecuencia;
+    }
+
+    public void setFrecuencia(int frecuencia) {
+        this.frecuencia = frecuencia;
     }
 
     @Override

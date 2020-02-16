@@ -37,14 +37,14 @@ public class CrearCompetencia2Fragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     private List<Category> categories;
-    private Spinner spinnerDeporte, spinnerCategoria;
+    private Spinner spinnerDeporte, spinnerCategoria, spinnerFrecuencia;
     private TextView txtDescripcion;
     private SportsSrv sportsSrv;
     private Button sigBtn;
     private CategorySrv categorySrv;
-
     private Competition competencia;
     private View vista;
+
     public CrearCompetencia2Fragment() {
         // Required empty public constructor
     }
@@ -69,13 +69,15 @@ public class CrearCompetencia2Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        competencia = (Competition) getArguments().getSerializable("competition");
         vista = inflater.inflate(R.layout.fragment_crear_competencia2, container, false);
         spinnerDeporte = vista.findViewById(R.id.spinnerDeporte);
         spinnerCategoria = vista.findViewById(R.id.spinnerCategoria);
         txtDescripcion = vista.findViewById(R.id.descripcionCategoria);
         sportsSrv = new RetrofitAdapter().connectionEnable().create(SportsSrv.class);
         sigBtn = vista.findViewById(R.id.btnCCSig_2);
-
+        spinnerFrecuencia = vista.findViewById(R.id.spinner_frecuencia_creaComp);
+        llenarSpinner();
         //LISTENER BOTONES
         sigBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,6 +145,30 @@ public class CrearCompetencia2Fragment extends Fragment {
         return vista;
     }
 
+    private void llenarSpinner() {
+        List<Integer> frecuencia = new ArrayList<>();
+        for(int i = 1 ; i <= 7 ; i++){
+            frecuencia.add(i);
+        }
+        ArrayAdapter<Integer> adapterFrecuencia = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, frecuencia);
+        adapterFrecuencia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFrecuencia.setAdapter(adapterFrecuencia);
+        spinnerFrecuencia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                competencia.setFrecuencia((Integer) spinnerFrecuencia.getSelectedItem());
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+
+
+    }
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -200,7 +226,6 @@ public class CrearCompetencia2Fragment extends Fragment {
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
                                 // EN ESTA LINEA ES DONDE RECIBE EL DATO DE OTRO FRAGMENT
-                                competencia = (Competition) getArguments().getSerializable("competition");
                                 Category cat;
                                 // para mostrar la descripcion de la categoria
                                 cat = (Category) spinnerCategoria.getSelectedItem();
