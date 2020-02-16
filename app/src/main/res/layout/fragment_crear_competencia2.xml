@@ -133,14 +133,14 @@
             android:layout_gravity="center"
             >
 
-            <Button
-                android:id="@+id/btnCCSig_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/txtBtnSig">
-            </Button>
         </LinearLayout>
+
+        <Button
+            android:id="@+id/btnCCSig_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/txtBtnSig"></Button>
     </LinearLayout>
 
 </FrameLayout>
