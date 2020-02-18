@@ -8,7 +8,7 @@ import java.sql.Timestamp;
 
 public class News implements Serializable {
 
-    @SerializedName("competencia")
+    @SerializedName("competition")
     private String competencia;
 
     @SerializedName("title")
@@ -20,15 +20,15 @@ public class News implements Serializable {
     @SerializedName("descripcion")
     private String cuerpo;
 
-    @SerializedName("uptime")
-    private Timestamp uptime;
+   // @SerializedName("uptime")
+  //  private Timestamp uptime;
 
-    public News(String competencia, String titulo, String subtitulo, String cuerpo, Timestamp uptime) {
+    public News(String competencia, String titulo, String subtitulo, String cuerpo /*,Timestamp uptime*/) {
         this.competencia = competencia;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.cuerpo = cuerpo;
-        this.uptime = uptime;
+   //     this.uptime = uptime;
     }
 
     public String getTitulo() {
@@ -62,7 +62,7 @@ public class News implements Serializable {
     public void setCompetencia(String competencia) {
         this.competencia = competencia;
     }
-
+/*
     public Timestamp getUptime() {
         return uptime;
     }
@@ -70,11 +70,11 @@ public class News implements Serializable {
     public void setUptime(Timestamp uptime) {
         this.uptime = uptime;
     }
-
+*/
     @Override
     public String toString() {
         return competencia + ' ' + titulo + ' '
-                + subtitulo + ' ' + cuerpo + ' ' +
-                 uptime ;
+                + subtitulo + ' ' + cuerpo /*+ ' ' +
+                 uptime*/ ;
     }
 }

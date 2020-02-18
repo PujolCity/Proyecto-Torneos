@@ -80,10 +80,10 @@ public class NoticiasFragment extends Fragment {
         call.enqueue(new Callback<List<News>>() {
             @Override
             public void onResponse(Call<List<News>> call, Response<List<News>> response) {
-                try {
-                    Log.d("RESPONSE NOTICIAS",Integer.toString(response.code()));
+                Log.d("RESPONSE NOTICIAS",Integer.toString(response.code()));
                     if(response.code() == 200){
                         noticias = response.body();
+                        Log.d("DATOS NOTICIAS",noticias.toString());
                         if(!noticias.isEmpty()){
                             newsAdapter.setNoticias(noticias);
                             recyclerNoticias.setAdapter(newsAdapter);
@@ -106,20 +106,21 @@ public class NoticiasFragment extends Fragment {
                             String userMessage = jsonObject.getString("messaging");
                             Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
                             Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                            sinNoticias();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+
             }
 
             @Override
             public void onFailure(Call<List<News>> call, Throwable t) {
                 try {
-                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    Log.d("onFailure", t.getMessage());
+                    Toast toast = Toast.makeText(vista.getContext(), "NO ANDAN LAS NOTICIAS", Toast.LENGTH_SHORT);
                     toast.show();
+                    sinNoticias();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -129,16 +130,15 @@ public class NoticiasFragment extends Fragment {
 
     private void initElement() {
         newsSrv = new RetrofitAdapter().connectionEnable().create(NewsSrv.class);
-
         recyclerNoticias = vista.findViewById(R.id.recyclerNoticias);
+        textNoticias = vista.findViewById(R.id.tv_noticias);
         manager = new LinearLayoutManager(vista.getContext());
         recyclerNoticias.setLayoutManager(manager);
+        recyclerNoticias.setHasFixedSize(true);
         newsAdapter = new NoticiasRecyclerViewAdapter(vista.getContext());
-        textNoticias = vista.findViewById(R.id.tv_noticias);
-        this.noticias = new ArrayList<>();
-        newsAdapter.setNoticias(noticias);
         recyclerNoticias.setAdapter(newsAdapter);
-        usuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        this.noticias = new ArrayList<>();
+        usuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
     }
 
     private void sinNoticias() {

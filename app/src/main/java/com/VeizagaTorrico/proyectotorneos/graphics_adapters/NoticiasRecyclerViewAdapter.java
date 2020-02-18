@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.graphics_adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
     }
 
     public void setNoticias(List<News> noticias) {
+        Log.d("NOTICIAS RECIBIDAS", noticias.toString());
         this.noticias = noticias;
     }
 
