@@ -165,6 +165,9 @@
         <action
             android:id="@+id/action_cargasDetalleFragment_to_cargaFaseFragment"
             app:destination="@id/cargaFaseFragment" />
+        <action
+            android:id="@+id/action_cargasDetalleFragment_to_cargarNoticiaFragment"
+            app:destination="@id/cargarNoticiaFragment" />
     </fragment>
     <fragment
         android:id="@+id/competidoresDetalleFragment"
@@ -278,5 +281,10 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.noticias.DetalleNoticiasFragment"
         android:label=""
         tools:layout="@layout/fragment_detalle_noticias" />
+    <fragment
+        android:id="@+id/cargarNoticiaFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarNoticiaFragment"
+        android:label="fragment_cargar_noticia"
+        tools:layout="@layout/fragment_cargar_noticia" />
 
 </navigation>

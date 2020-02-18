@@ -61,4 +61,12 @@
         android:textColor="@color/cardview_light_background"
         android:text="@string/txtSigFase">
     </Button>
+
+    <Button
+        android:id="@+id/btnPubNoticias"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/colorPrimary"
+        android:text="@string/txtBtnCargarNoticia"
+        android:textColor="@color/cardview_light_background"></Button>
 </LinearLayout>
