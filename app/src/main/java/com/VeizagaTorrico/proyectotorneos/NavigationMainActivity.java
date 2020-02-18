@@ -37,6 +37,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.noticias.DetalleNoticiasFrag
 import com.VeizagaTorrico.proyectotorneos.fragments.noticias.NoticiasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaFaseFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarJuezFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarNoticiaFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment;
@@ -89,6 +90,7 @@ public class NavigationMainActivity extends AppCompatActivity
         EditCompetenciaFragment.OnFragmentInteractionListener,
         TabPerfilFragment.OnFragmentInteractionListener,
         NoticiasFragment.OnFragmentInteractionListener,
+        CargarNoticiaFragment.OnFragmentInteractionListener,
         DetalleNoticiasFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
