@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/fondo_app"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ResetPassActivity">
@@ -53,6 +54,8 @@
         android:layout_marginStart="75dp"
         android:layout_marginTop="60dp"
         android:text="Guardar cambios"
+        android:backgroundTint="@color/colorPrimary"
+        android:textColor="@color/cardview_light_background"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/edt_confpass_resetpass" />
 
