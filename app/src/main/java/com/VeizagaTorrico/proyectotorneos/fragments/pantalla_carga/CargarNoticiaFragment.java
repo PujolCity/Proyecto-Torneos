@@ -6,12 +6,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -57,8 +60,7 @@ public class CargarNoticiaFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static CargarNoticiaFragment newInstance(String param1, String param2) {
+    public static CargarNoticiaFragment newInstance() {
         CargarNoticiaFragment fragment = new CargarNoticiaFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -73,9 +75,7 @@ public class CargarNoticiaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_cargar_noticia, container, false);
-
         initElements();
         listenPublish();
 
@@ -101,7 +101,7 @@ public class CargarNoticiaFragment extends Fragment {
             public void onClick(View view) {
             if(validar()){
                 datos.put("idCompetencia", String.valueOf(competencia.getId()));
-                datos.put("idPublicador", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+                datos.put("idPublicador", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
                 datos.put("titulo", edtTitle.getText().toString());
                 datos.put("resumen", edtResume.getText().toString());
                 datos.put("descripcion", edtDescripcion.getText().toString());
@@ -123,7 +123,7 @@ public class CargarNoticiaFragment extends Fragment {
                                 jsonObject = new JSONObject(response.errorBody().string());
                                 String message = jsonObject.getString("messaging");
                                 Log.d("RESP_NEWS_ERROR", "Msg de la repuesta: "+message);
-                                Toast.makeText( getContext(), "No se pudo publicar la noticia:  << "+message+" >>", Toast.LENGTH_SHORT).show();
+                                Toast.makeText( vista.getContext(), "No se pudo publicar la noticia:  << "+message+" >>", Toast.LENGTH_SHORT).show();
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -132,6 +132,7 @@ public class CargarNoticiaFragment extends Fragment {
                     }
                     @Override
                     public void onFailure(Call<MsgRequest> call, Throwable t) {
+                        Log.d("OnFailure CARGARNOTICIA",t.getMessage());
                         Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
                         toast.show();
                     }
@@ -154,7 +155,6 @@ public class CargarNoticiaFragment extends Fragment {
         return true;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -178,18 +178,7 @@ public class CargarNoticiaFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }
