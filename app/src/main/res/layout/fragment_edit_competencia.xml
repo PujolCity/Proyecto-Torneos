@@ -77,7 +77,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.606"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edt_ciudad_edit_comp"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/edt_ciudad_edit_comp">
+    </Spinner>
 
 
     <Spinner
@@ -90,7 +91,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.606"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_genero_edit"></Spinner>
+        app:layout_constraintTop_toBottomOf="@+id/spinner_genero_edit">
+    </Spinner>
 
     <Button
         android:id="@+id/btn_update_edit_comp"
