@@ -69,8 +69,9 @@ public class TabPerfilFragment extends Fragment {
 
     private void llenarPager() {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new MiPerfilFragment(),"Mis Datos");
-        adapter.addFragment(new InvitacionesFragment(), "Mis Invitaciones");
+        adapter.addFragment(new MiPerfilFragment(),"Mis datos");
+        adapter.addFragment(new InvitacionesFragment(), "Mis invitaciones");
+        adapter.addFragment(new NotificacionesFragment(), "Mis notificaciones");
 
         this.pager.setAdapter(adapter);
 

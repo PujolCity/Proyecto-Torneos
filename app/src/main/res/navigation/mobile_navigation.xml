@@ -266,6 +266,9 @@
         <action
             android:id="@+id/action_tabPerfilFragment_to_misInvitaciones"
             app:destination="@id/misInvitaciones" />
+        <action
+            android:id="@+id/action_tabPerfilFragment_to_notificacionesFragment"
+            app:destination="@id/notificacionesFragment" />
     </fragment>
     <fragment
         android:id="@+id/noticiasFragment"
@@ -286,5 +289,10 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarNoticiaFragment"
         android:label="fragment_cargar_noticia"
         tools:layout="@layout/fragment_cargar_noticia" />
+    <fragment
+        android:id="@+id/notificacionesFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.NotificacionesFragment"
+        android:label="fragment_notificaciones"
+        tools:layout="@layout/fragment_notificaciones" />
 
 </navigation>

@@ -9,6 +9,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.Competid
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.FiltroFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EditCompetenciaFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.encuentros.DetalleEncuentroFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.NotificacionesFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.TabPerfilFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.MisCompetenciasFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment;
@@ -87,6 +88,7 @@ public class NavigationMainActivity extends AppCompatActivity
         InvitacionesFragment.OnFragmentInteractionListener,
         CargaFaseFragment.OnFragmentInteractionListener,
         MiPerfilFragment.OnFragmentInteractionListener,
+        NotificacionesFragment.OnFragmentInteractionListener,
         EditCompetenciaFragment.OnFragmentInteractionListener,
         TabPerfilFragment.OnFragmentInteractionListener,
         NoticiasFragment.OnFragmentInteractionListener,

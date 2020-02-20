@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.services;
 
 import com.VeizagaTorrico.proyectotorneos.Constants;
+import com.VeizagaTorrico.proyectotorneos.models.ConfigNotification;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.models.Classified;
@@ -58,5 +59,11 @@ public interface UserSrv {
 
     @GET(Constants.BASE_URL + "competition/classified")
     Call<List<Classified>> getClasificados(@QueryMap Map<String,Integer> datos);
+
+    @POST(Constants.BASE_URL + "user-notif")
+    Call<MsgRequest> updateConfigNotification(@Body Map<String, String> dataConfig);
+
+    @GET(Constants.BASE_URL + "user-notif/config")
+    Call<ConfigNotification> getConfigNotification(@Query ("idUsuario") int idUsuario);
 
 }
