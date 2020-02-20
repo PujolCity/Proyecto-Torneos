@@ -16,7 +16,7 @@
        android:layout_gravity="center_horizontal|center_vertical"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:text="Sin Solicitudes"
+       android:text="Sin Solicitudes de Competidores"
        android:textSize="40sp"
        android:gravity="center_vertical|center_horizontal"
        android:visibility="invisible">

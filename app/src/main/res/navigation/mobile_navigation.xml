@@ -287,7 +287,7 @@
     <fragment
         android:id="@+id/cargarNoticiaFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarNoticiaFragment"
-        android:label="fragment_cargar_noticia"
+        android:label=""
         tools:layout="@layout/fragment_cargar_noticia" />
     <fragment
         android:id="@+id/notificacionesFragment"

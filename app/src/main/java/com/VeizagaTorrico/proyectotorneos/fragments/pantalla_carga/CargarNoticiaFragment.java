@@ -45,20 +45,16 @@ public class CargarNoticiaFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
+    private View vista;
     private EditText edtTitle, edtResume, edtDescripcion;
     private Button btnPublicar;
-
     private NewsSrv newsSrv;
     private CompetitionMin competencia;
-
     private Map<String,String> datos;
-
-    private View vista;
 
     public CargarNoticiaFragment() {
         // Required empty public constructor
     }
-
 
     public static CargarNoticiaFragment newInstance() {
         CargarNoticiaFragment fragment = new CargarNoticiaFragment();
@@ -105,6 +101,7 @@ public class CargarNoticiaFragment extends Fragment {
                 datos.put("titulo", edtTitle.getText().toString());
                 datos.put("resumen", edtResume.getText().toString());
                 datos.put("descripcion", edtDescripcion.getText().toString());
+                Log.d("Body Noticia", datos.toString());
 
                 Call<MsgRequest> call = newsSrv.publishNew(datos);
                 call.enqueue(new Callback<MsgRequest>() {

@@ -11,19 +11,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/textView7"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
-            android:gravity="center"
-            android:text="@string/Txt_creaCompetencia"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.545"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </TextView>
 
 
         <TextView
@@ -31,12 +18,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="52dp"
             android:text="@string/txtCrearCompNmb"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
+            app:layout_constraintTop_toTopOf="parent">
 
         </TextView>
 
@@ -45,7 +32,6 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="8dp"
             android:inputType="text"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -58,7 +44,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="16dp"
             android:text="@string/datePicker"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -111,9 +97,9 @@
             android:id="@+id/etCiudad"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="22dp"
+            android:layout_marginTop="24dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.289"
+            app:layout_constraintHorizontal_bias="0.543"
             app:layout_constraintStart_toEndOf="@+id/textView12"
             app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">
         </EditText>
@@ -123,7 +109,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="36dp"
+            android:layout_marginTop="48dp"
             android:text="@string/txtGenero"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView12">
@@ -131,10 +117,10 @@
 
         <Spinner
             android:id="@+id/spinnerGenero"
-            android:layout_width="80dp"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="92dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="36dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/textView13"
@@ -146,12 +132,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_marginTop="104dp"
             android:text="@string/txtBtnSig"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/cardview_light_background"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.531"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etCiudad"
-            app:layout_constraintVertical_bias="0.441">
+            app:layout_constraintTop_toBottomOf="@+id/spinnerGenero">
         </Button>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

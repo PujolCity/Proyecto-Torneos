@@ -47,8 +47,7 @@ public class CrearCompetencia3Fragment extends Fragment {
     //Widgets
     private Button btnCrear;
     private Spinner spinner, spinnerFase;
-    private TextView txtView;
-    private LinearLayout grupo;
+    private TextView txtView, tvGrupo;
     private EditText etGrupo;
     private Competition competition;
     private TypesOrganizationSrv orgSrv;
@@ -186,13 +185,12 @@ public class CrearCompetencia3Fragment extends Fragment {
         orgSrv = new RetrofitAdapter().connectionEnable().create(TypesOrganizationSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
 
-        grupo = vista.findViewById(R.id.grupoLayout);
         txtView = vista.findViewById(R.id.descripcionTipoOrg);
         etGrupo = vista.findViewById(R.id.etCantGrupo);
         btnCrear = vista.findViewById(R.id.btnCCSig_3);
         spinner = vista.findViewById(R.id.spinnerTipoOrg);
         spinnerFase = vista.findViewById(R.id.spinnerFase);
-
+        tvGrupo = vista.findViewById(R.id.tv_grupo_crearComp3);
     }
      private void llenarSpinnerOrg(){
          Call<List<TypesOrganization>> call = orgSrv.getTypesOrganization();
@@ -218,10 +216,12 @@ public class CrearCompetencia3Fragment extends Fragment {
 
                                  if(org.getName().contains("grupo")){
                                      Log.d("prueba" , "entra?" );
-                                     grupo.setVisibility(View.VISIBLE);
+                                     tvGrupo.setVisibility(View.VISIBLE);
+                                     etGrupo.setVisibility(View.VISIBLE);
                                      hayGrupo = true;
                                  } else{
-                                     grupo.setVisibility(View.INVISIBLE);
+                                     tvGrupo.setVisibility(View.INVISIBLE);
+                                     etGrupo.setVisibility(View.INVISIBLE);
                                      hayGrupo = false;
                                  }
 

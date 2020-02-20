@@ -54,8 +54,8 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="@string/txtBtnAgregarJuez"
         android:textColor="@color/cardview_light_background"
+        android:text="@string/txtBtnAgregarJuez"
         app:layout_constraintStart_toEndOf="@+id/etDNIJuez"
         app:layout_constraintTop_toBottomOf="@+id/etApellidoJuez">
     </Button>
