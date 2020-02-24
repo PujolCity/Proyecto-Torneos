@@ -32,4 +32,15 @@ public class ManagerSharedPreferences {
         editor.commit();
     }
 
+    public void setSessionFromSharedPreferences(Context context, String nameFileShared, String keyData, boolean newData){
+        SharedPreferences sharedPref = context.getSharedPreferences(nameFileShared, Context.MODE_PRIVATE);
+        sharedPref.edit().putBoolean(keyData,newData).apply();
+    }
+    public boolean getSessionFromSharedPreferences(Context context, String nameFileShared, String keyData){
+        SharedPreferences sharedPref = context.getSharedPreferences(nameFileShared, Context.MODE_PRIVATE);
+        return  sharedPref.getBoolean(keyData,false);
+    }
+
+
+
 }

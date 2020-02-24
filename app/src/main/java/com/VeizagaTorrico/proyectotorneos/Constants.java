@@ -2,8 +2,8 @@ package com.VeizagaTorrico.proyectotorneos;
 
 public class Constants {
     // URL BASE del servidor
-    //public static final String BASE_URL = "http://132.255.7.152:20203/api/";
-    public static final String BASE_URL = "http://192.168.1.46:8000/api/";
+    public static final String BASE_URL = "http://132.255.7.152:20203/api/";
+    //public static final String BASE_URL = "http://192.168.1.46:8000/api/";
 
     // nombre del archivo donde se guardan los datos del token de firebase de manera local
     public static final String FILE_SHARED_TOKEN_FIREBASE = "TokenFirebase";
@@ -17,5 +17,6 @@ public class Constants {
     public static final String KEY_LASTNAME = "lastname";
     public static final String KEY_EMAIL = "email";
     public static final String KEY_USERNAME = "username";
+    public static final String KEY_SESSION = "session";
 
 }

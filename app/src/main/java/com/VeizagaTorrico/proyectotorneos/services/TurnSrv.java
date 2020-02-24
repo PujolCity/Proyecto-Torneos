@@ -20,7 +20,7 @@ public interface TurnSrv {
     @GET(Constants.BASE_URL + "turn/competition")
     Call<List<Turn>> getTurnsByCompetition(@Query("idCompetencia") int idCompetencia);
 
-    @POST(Constants.BASE_URL + "turn")
+    @POST(Constants.BASE_URL + "turn-set")
     Call<Success>createTurn(@Body Map<String,String> turno);
 
     @DELETE(Constants.BASE_URL + "turn-del")

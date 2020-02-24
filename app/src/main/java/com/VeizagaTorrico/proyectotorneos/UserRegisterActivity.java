@@ -109,10 +109,10 @@ public class UserRegisterActivity extends AppCompatActivity {
     }
 
     private void getValuesFields() {
-        nombre = edt_nombre.getText().toString();
-        apellido = edt_apellido.getText().toString();
-        usuario = edt_nombreUsuario.getText().toString();
-        correo = edt_correo.getText().toString();
+        nombre = edt_nombre.getText().toString().trim();
+        apellido = edt_apellido.getText().toString().trim();
+        usuario = edt_nombreUsuario.getText().toString().trim();
+        correo = edt_correo.getText().toString().trim();
         pass = edt_pass.getText().toString();
         confPass = edt_confPass.getText().toString();
 

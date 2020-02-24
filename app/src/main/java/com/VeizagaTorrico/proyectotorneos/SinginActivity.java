@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,44 +34,65 @@ import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_EMAIL;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_LASTNAME;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_NAME;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_SESSION;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_TOKEN;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 public class SinginActivity extends AppCompatActivity {
 
     private UserSrv apiUserService;
-    RespSrvUser respSrvRegister;
+    private RespSrvUser respSrvRegister;
     private Map<String,String> bodyRequest;
-    Button btnSingin;
-    TextView tvRecoveryPass;
-    EditText edtUsuario, edtPass;
-    String usuario, pass;
+    private Button btnSingin;
+    private TextView tvRecoveryPass;
+    private EditText edtUsuario, edtPass;
+    private String usuario, pass;
     private NotificationSrv notificationSrv;
     private Map<String,String> userMapSingin = new HashMap<>();
     private Map<String,String> userMapRecovery = new HashMap<>();
+    private RadioButton noCerrar;
+    private boolean isActivated;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singin);
-
+        if(obtenerEstadoButton()){
+            passToInitApp();
+        }
         updateUi();
         listenBotonSingin();
         listenBotonRecoveryPass();
+        listenRadioButton();
     }
 
     // realizamos los binding con los componentes de la vista
     private void updateUi(){
         edtUsuario = findViewById(R.id.edt_usuario_signin);
         edtPass = findViewById(R.id.edt_pass_singin);
-
+        noCerrar = findViewById(R.id.radioNoCerrarSesion);
         btnSingin = findViewById(R.id.btn_signin);
         tvRecoveryPass = findViewById(R.id.tv_recovery_pass);
+        isActivated = noCerrar.isChecked();
+    }
+
+    private void listenRadioButton(){
+        noCerrar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(isActivated){
+                    noCerrar.setChecked(false);
+                }
+                isActivated = noCerrar.isChecked();
+                ManagerSharedPreferences.getInstance().setSessionFromSharedPreferences(getApplicationContext(),FILE_SHARED_DATA_USER, KEY_SESSION, isActivated);
+
+            }
+        });
     }
 
     private void listenBotonSingin(){
-        btnSingin.setOnClickListener(new View.OnClickListener(){
 
+        btnSingin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
                 if(formCorrect()){
@@ -82,6 +104,10 @@ public class SinginActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean obtenerEstadoButton() {
+        return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
     }
 
     private void listenBotonRecoveryPass(){
@@ -242,6 +268,8 @@ public class SinginActivity extends AppCompatActivity {
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_LASTNAME, respSrvRegister.getApellido());
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_EMAIL, respSrvRegister.getCorreo());
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME, respSrvRegister.getUsuario());
+        ManagerSharedPreferences.getInstance().setSessionFromSharedPreferences(this.getApplicationContext(),FILE_SHARED_DATA_USER, KEY_SESSION, isActivated);
+
 
         Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_ID));
         Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_NAME));
@@ -250,9 +278,13 @@ public class SinginActivity extends AppCompatActivity {
         Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
     }
 
+
+
     private void passToInitApp() {
         Intent toInitApp = new Intent(this, NavigationMainActivity.class);
+        toInitApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(toInitApp);
+        finish();
     }
 
     private void passToVerification(String user) {

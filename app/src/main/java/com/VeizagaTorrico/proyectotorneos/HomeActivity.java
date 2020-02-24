@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_SESSION;
+
 public class HomeActivity extends AppCompatActivity {
 
     Button btnRegister, btnSingin;
@@ -16,7 +21,9 @@ public class HomeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        if(obtenerEstadoButton()){
+            passToSingin();
+        }
         updateUi();
         listenBotonSingin();
         listenBotonRegister();
@@ -51,11 +58,16 @@ public class HomeActivity extends AppCompatActivity {
 
     private void passToSingin(){
         Intent toInitApp = new Intent(this, SinginActivity.class);
+        toInitApp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(toInitApp);
     }
 
     private void passToRegister(){
         Intent toRegisterUser= new Intent(this, UserRegisterActivity.class);
         startActivity(toRegisterUser);
+    }
+
+    private boolean obtenerEstadoButton() {
+        return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
     }
 }
