@@ -1,8 +1,10 @@
 package com.VeizagaTorrico.proyectotorneos;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
+import com.VeizagaTorrico.proyectotorneos.fragments.CerrarSesionFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.MiPerfilFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.CompetenciasListFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresListFragment;
@@ -52,11 +54,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_EMAIL;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_SESSION;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 public class NavigationMainActivity extends AppCompatActivity
@@ -93,7 +97,8 @@ public class NavigationMainActivity extends AppCompatActivity
         TabPerfilFragment.OnFragmentInteractionListener,
         NoticiasFragment.OnFragmentInteractionListener,
         CargarNoticiaFragment.OnFragmentInteractionListener,
-        DetalleNoticiasFragment.OnFragmentInteractionListener {
+        DetalleNoticiasFragment.OnFragmentInteractionListener,
+        CerrarSesionFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -113,7 +118,7 @@ public class NavigationMainActivity extends AppCompatActivity
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
 //                , R.id.miPerfilFragment,R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misInvitaciones)
-                R.id.noticiasFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.tabPerfilFragment)
+                R.id.noticiasFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.tabPerfilFragment, R.id.cerrarSesionFragment)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -122,6 +127,7 @@ public class NavigationMainActivity extends AppCompatActivity
 
         // TODO: pasara esto a una funcion
         updateDataNavMainMenu(navigationView);
+
         // seteamos los datos del usuario en la navbar principal
 //        View vistaNavMain = navigationView.getHeaderView(0);
 //        TextView tvTitle = vistaNavMain.findViewById(R.id.tv_user_navbar_main);
@@ -150,6 +156,7 @@ public class NavigationMainActivity extends AppCompatActivity
         return true;
     }
 
+
     @Override
     public boolean onSupportNavigateUp() {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -160,5 +167,25 @@ public class NavigationMainActivity extends AppCompatActivity
     @Override
     public void onFragmentInteraction(Uri uri) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(!obtenerEstadoButton()){
+            passToHome();
+        }
+    }
+
+    private boolean obtenerEstadoButton() {
+        return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
+    }
+
+    private void passToHome() {
+        ManagerSharedPreferences.getInstance().setSessionFromSharedPreferences(this.getApplicationContext(),FILE_SHARED_DATA_USER, KEY_SESSION, false);
+        Intent toInitApp = new Intent(this, HomeActivity.class);
+        toInitApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(toInitApp);
+        finish();
     }
 }

@@ -294,5 +294,10 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.NotificacionesFragment"
         android:label="fragment_notificaciones"
         tools:layout="@layout/fragment_notificaciones" />
+    <fragment
+        android:id="@+id/cerrarSesionFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.CerrarSesionFragment"
+        android:label="fragment_cerrar_sesion"
+        tools:layout="@layout/fragment_cerrar_sesion" />
 
 </navigation>

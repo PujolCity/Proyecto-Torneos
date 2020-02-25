@@ -245,14 +245,14 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             }
             if (roles.get(i).contains("COMPETIDOR")) {
                 follow.setVisibility(View.INVISIBLE);
-            //    noFollow.setVisibility(View.INVISIBLE);
+                noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
                 btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("SEGUIDOR")) {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.VISIBLE);
-                //     inscribirse.setVisibility(View.VISIBLE);
+                inscribirse.setVisibility(View.VISIBLE);
                 btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("ESPECTADOR")) {

@@ -54,12 +54,12 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
     public void onBindViewHolder(@NonNull NoticiasRecyclerViewAdapter.ViewHolder holder, int position) {
         try {
             News noticia = this.noticias.get(position);
+            holder.competencia.setText(this.noticias.get(position).getCompetencia());
             holder.titulo.setText(noticia.getTitulo());
             holder.subtitulo.setText(noticia.getSubtitulo());
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -71,12 +71,13 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView titulo, subtitulo;
+        TextView competencia, titulo, subtitulo;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             titulo = itemView.findViewById(R.id.tv_titulo_noticia);
             subtitulo = itemView.findViewById(R.id.tv_subtitulo_noticia);
+            competencia = itemView.findViewById(R.id.tv_competencia_noticia);
 
         }
     }

@@ -50,9 +50,10 @@ public class CargarTurnosFragment extends Fragment {
     private Button btnTurno;
     private ImageButton delete;
     private Spinner spinnerTurnos;
-    private EditText etHoraDesde, etHoraHasta;
+    private EditText etHoraDesde, etDuracion, etCantidad;
     private final Calendar c = Calendar.getInstance();
     private List<String> hsDesde,hsHasta;
+    private String duracion, cantidad;
     private Map<String,String> datos;
     private String segundos;
     private final int hora = c.get(Calendar.HOUR_OF_DAY);
@@ -91,29 +92,28 @@ public class CargarTurnosFragment extends Fragment {
             }
         });
 
-        etHoraHasta.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                hsHasta = obtenerHora(etHoraHasta);
-            }
-        });
 
         btnTurno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
+                    duracion = etDuracion.getText().toString();
+                    cantidad = etCantidad.getText().toString();
+
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                     Date date1= null;
-                    Date date2 = null;
-                    if(!hsDesde.isEmpty() && !hsHasta.isEmpty()){
+                    if(!hsDesde.isEmpty()){
                         date1 = sdf.parse(hsDesde.get(0));
-                        date2 = sdf.parse(hsHasta.get(0));
-                        Log.d("HORAS ELEGIDAS", date1.toString() + "  vs "+ date2.toString());
+                        Log.d("HORAS ELEGIDAS", date1.toString());
 
-                        if(validar(date1,date2)){
+                        if(validar(date1, cantidad)){
                             datos.put("idCompetencia", Integer.toString(competencia.getId()));
-                            datos.put("hs_desde",sdf.format(date1));
-                            datos.put("hs_hasta",sdf.format(date2));
+                            datos.put("horaInicio",sdf.format(date1));
+                            datos.put("cantidad", cantidad);
+                            if(!duracion.isEmpty()){
+                                datos.put("duracion",duracion);
+                            }
+
                             Log.d("DATOS", datos.toString());
 
                             Call<Success> call = turnSrv.createTurn(datos);
@@ -217,17 +217,13 @@ public class CargarTurnosFragment extends Fragment {
 
     }
 
-    private boolean validar(Date date1, Date date2) {
-        Date date;
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(date1);
-        cal.set(Calendar.MINUTE, cal.get(Calendar.MINUTE) + DIFERENCIA_MINUTOS);
-        date = cal.getTime();
-        if((date1.compareTo(date2) == -1) && (date.compareTo(date2) <= 0)){
-            Log.d("COMPARE", date.toString() + "  vs "+ date2.toString());
-            return true;
-        }
-        return false;
+    private boolean validar(Date date1, String cant) {
+        if(date1.getTime() == 0)
+            return false;
+        if(cant.isEmpty())
+            return false;
+
+        return  true;
     }
 
     private List<String> obtenerHora(final EditText setHora){
@@ -289,9 +285,7 @@ public class CargarTurnosFragment extends Fragment {
         delete = vista.findViewById(R.id.deleteTurno);
         spinnerTurnos = vista.findViewById(R.id.spinnerCargaTurno);
         etHoraDesde = vista.findViewById(R.id.horaHasta);
-        etHoraHasta = vista.findViewById(R.id.etHoraHasta);
+        etDuracion = vista.findViewById(R.id.etDuracion);
+        etCantidad = vista.findViewById(R.id.et_cantidadTurnos_turnos);
     }
-
-
-
 }
