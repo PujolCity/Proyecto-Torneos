@@ -19,15 +19,15 @@ public class Category implements Serializable {
     @SerializedName("minIntegrantes")
     private int minIntegrantes;
 
-    //@SerializedName("deporte")
-    private String sport;
+    @SerializedName("duracionDefault")
+    private int duracion;
 
-    public Category(int id, String nombreCat, String descripcion, int minIntegrantes, String sport) {
+    public Category(int id, String nombreCat, String descripcion, int minIntegrantes, int duracion) {
         this.id = id;
         this.nombreCat = nombreCat;
         this.descripcion = descripcion;
         this.minIntegrantes = minIntegrantes;
-        this.sport = sport;
+        this.duracion = duracion;
     }
 
     public int getId() {
@@ -62,12 +62,12 @@ public class Category implements Serializable {
         this.descripcion = descripcion;
     }
 
-    public String getSport(){
-        return this.sport;
+    public int getDuracion() {
+        return duracion;
     }
 
-    public void setSport(String sport){
-        this.sport = sport;
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
     }
 
     @Override

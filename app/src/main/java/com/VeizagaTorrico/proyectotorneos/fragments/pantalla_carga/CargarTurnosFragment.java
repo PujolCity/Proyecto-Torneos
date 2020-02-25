@@ -107,7 +107,7 @@ public class CargarTurnosFragment extends Fragment {
                             datos.put("idCompetencia", Integer.toString(competencia.getId()));
                             datos.put("horaInicio",sdf.format(date1));
                             datos.put("cantidad", cantidad);
-                            if(!duracion.isEmpty()){
+                            if(duracion.compareTo(Integer.toString(competencia.getDuracion())) != 0){
                                 datos.put("duracion",duracion);
                             }
                             Log.d("DATOS", datos.toString());
@@ -304,5 +304,7 @@ public class CargarTurnosFragment extends Fragment {
         etHoraDesde = vista.findViewById(R.id.horaHasta);
         etDuracion = vista.findViewById(R.id.etDuracion);
         etCantidad = vista.findViewById(R.id.et_cantidadTurnos_turnos);
+
+        etDuracion.setText(Integer.toString(competencia.getDuracion()));
     }
 }

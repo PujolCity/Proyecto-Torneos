@@ -49,7 +49,7 @@ public class CrearCompetencia2Fragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static CrearCompetencia2Fragment newInstance(String param1, String param2) {
+    public static CrearCompetencia2Fragment newInstance() {
         CrearCompetencia2Fragment fragment = new CrearCompetencia2Fragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -71,6 +71,8 @@ public class CrearCompetencia2Fragment extends Fragment {
         // Inflate the layout for this fragment
         competencia = (Competition) getArguments().getSerializable("competition");
         vista = inflater.inflate(R.layout.fragment_crear_competencia2, container, false);
+
+
         spinnerDeporte = vista.findViewById(R.id.spinnerDeporte);
         spinnerCategoria = vista.findViewById(R.id.spinnerCategoria);
         txtDescripcion = vista.findViewById(R.id.descripcionCategoria);
@@ -87,7 +89,6 @@ public class CrearCompetencia2Fragment extends Fragment {
 
                 // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                 Navigation.findNavController(vista).navigate(R.id.crearCompetencia3Fragment, bundle);
-
             }
         });
 
@@ -229,7 +230,7 @@ public class CrearCompetencia2Fragment extends Fragment {
                                 Category cat;
                                 // para mostrar la descripcion de la categoria
                                 cat = (Category) spinnerCategoria.getSelectedItem();
-                                txtDescripcion.setText(cat.getDescripcion());
+                                txtDescripcion.setText(cat.getDescripcion() + "\nDuracion de un partido aproximado: " + cat.getDuracion()+ " minutos.");
                                 if(cat != null)
                                     competencia.setCategory(cat);
                                 Log.d("A ver que trajo", competencia.getCategory().toString());

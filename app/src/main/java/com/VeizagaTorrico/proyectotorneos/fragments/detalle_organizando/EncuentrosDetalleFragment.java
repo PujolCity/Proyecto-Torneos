@@ -122,7 +122,6 @@ public class EncuentrosDetalleFragment extends Fragment {
 
                 }
                 if(encuentros.size() != 0){
-
                     if (encuentros != null) {
                         try {
                             adapter.setEncuentros(encuentros);

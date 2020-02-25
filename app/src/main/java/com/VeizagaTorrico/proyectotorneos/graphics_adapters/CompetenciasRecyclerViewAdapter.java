@@ -41,7 +41,7 @@ public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<Compet
             Competition competition= competencias.get(position);
             holder.txtCategoria.setText(competition.getCategory().getNombreCat());
             holder.txtCompetencia.setText(competition.getName());
-            holder.txtDeporte.setText(competition.getCategory().getSport());
+            //holder.txtDeporte.setText(competition.getCategory().getSport());
         } catch (Exception e) {
             e.printStackTrace();
         }
