@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.util.Log;
 import android.widget.Toast;
 
 public class NetworkReceiver extends BroadcastReceiver {
@@ -13,9 +14,11 @@ public class NetworkReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
 
         if (checkNetworkConnection(context)){
-            Toast.makeText(context, "Conexion activa.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Conexion activa.", Toast.LENGTH_SHORT).show();
+            Log.d("MONITOR_NETWORK", "Conexion activa");
         } else {
-            Toast.makeText(context, "Conexion perdida.", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context, "Conexion perdida.", Toast.LENGTH_SHORT).show();
+            Log.d("MONITOR_NETWORK", "Conexion perdida");
         }
     }
 
