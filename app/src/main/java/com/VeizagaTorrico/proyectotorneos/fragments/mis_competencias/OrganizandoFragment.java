@@ -117,7 +117,7 @@ public class OrganizandoFragment extends Fragment {
 
 
     private void inflarRecycler() {
-        int idUsuarioregistrado = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        int idUsuarioregistrado = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
         Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(idUsuarioregistrado);
         Log.d("request retrofit", call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {

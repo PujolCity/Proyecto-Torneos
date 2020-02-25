@@ -181,7 +181,7 @@ public class FiltroFragment extends Fragment {
     }
 
     private void initElements() {
-        Category category = new Category(0,"Seleccione..."," ",0,null);
+        Category category = new Category(0,"Seleccione..."," ",0,0);
         idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
 
         categorias = new ArrayList<>();
@@ -329,7 +329,7 @@ public class FiltroFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
                 List<Category> categorias = new ArrayList<>();
-                Category category = new Category(0,"Seleccione..."," ",0,null);
+                Category category = new Category(0,"Seleccione..."," ",0,0);
                 categorias.add(category);
 
                 //codigo 200 si salio tdo bien

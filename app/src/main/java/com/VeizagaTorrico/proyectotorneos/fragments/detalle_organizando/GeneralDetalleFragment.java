@@ -69,8 +69,6 @@ public class GeneralDetalleFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
         return vista;
     }
 
@@ -89,7 +87,11 @@ public class GeneralDetalleFragment extends Fragment {
         btnInscripcion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                passToCrearInscripcion();
+                if(competencia.getEstado().contains("SIN_INSCRIPCION")) {
+                    passToCrearInscripcion();
+                } else{
+                    btnInscripcion.setVisibility(View.INVISIBLE);
+                }
             }
         });
     }
@@ -98,13 +100,16 @@ public class GeneralDetalleFragment extends Fragment {
         try {
             btnEditar.setVisibility(View.INVISIBLE);
             List<String> roles = this.competencia.getRol();
-
             for (int i = 0 ; i < roles.size(); i++) {
                 if (roles.get(i).contains("ORGANIZADOR")) {
                     btnEditar.setVisibility(View.VISIBLE);
                 }
             }
-        } catch (Exception e) {
+            if(!competencia.getEstado().contains("SIN_INSCRIPCION")) {
+                btnInscripcion.setVisibility(View.INVISIBLE);
+                btnEditar.setVisibility(View.INVISIBLE);
+            }
+            } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -119,7 +124,7 @@ public class GeneralDetalleFragment extends Fragment {
                 passToEditCompetencia();
             }
             else{
-                Toast.makeText(getContext(), "ACCION NO PERMITIDA: no se pueden editar los datos de una competencia con inscripcion abierta.", Toast.LENGTH_LONG).show();
+                Toast.makeText(vista.getContext(), "ACCION NO PERMITIDA: no se pueden editar los datos de una competencia con inscripcion abierta.", Toast.LENGTH_LONG).show();
             }
             }
         });
