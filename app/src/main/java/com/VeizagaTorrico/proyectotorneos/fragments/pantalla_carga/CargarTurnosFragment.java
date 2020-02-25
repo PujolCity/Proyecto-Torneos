@@ -64,7 +64,6 @@ public class CargarTurnosFragment extends Fragment {
     private Turn turnoSeleccionado;
 
     public CargarTurnosFragment() {
-
     }
 
     public static CargarTurnosFragment newInstance() {
@@ -92,14 +91,12 @@ public class CargarTurnosFragment extends Fragment {
             }
         });
 
-
         btnTurno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 try {
                     duracion = etDuracion.getText().toString();
                     cantidad = etCantidad.getText().toString();
-
                     SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
                     Date date1= null;
                     if(!hsDesde.isEmpty()){
@@ -113,9 +110,7 @@ public class CargarTurnosFragment extends Fragment {
                             if(!duracion.isEmpty()){
                                 datos.put("duracion",duracion);
                             }
-
                             Log.d("DATOS", datos.toString());
-
                             Call<Success> call = turnSrv.createTurn(datos);
                             Log.d("URL TURNO", call.request().url().toString());
                             call.enqueue(new Callback<Success>() {
@@ -140,7 +135,6 @@ public class CargarTurnosFragment extends Fragment {
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onFailure(Call<Success> call, Throwable t) {
                                     Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
@@ -161,7 +155,30 @@ public class CargarTurnosFragment extends Fragment {
                 }
             }
         });
+        listenerBorrar();
+        longListenerBorrar();
         return vista;
+    }
+
+    private void longListenerBorrar() {
+        delete.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                Toast toast = Toast.makeText(vista.getContext(), "BORRAR TODOS LOS TURNOS", Toast.LENGTH_SHORT);
+                toast.show();
+                return false;
+            }
+        });
+    }
+
+    private void listenerBorrar() {
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast toast = Toast.makeText(vista.getContext(), "BORRAR UN TURNO", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
     }
 
     private void llenarSpinner() {
@@ -214,7 +231,6 @@ public class CargarTurnosFragment extends Fragment {
                 toast.show();
             }
         });
-
     }
 
     private boolean validar(Date date1, String cant) {
@@ -222,7 +238,6 @@ public class CargarTurnosFragment extends Fragment {
             return false;
         if(cant.isEmpty())
             return false;
-
         return  true;
     }
 
@@ -275,7 +290,6 @@ public class CargarTurnosFragment extends Fragment {
     private void initElements() {
         turnSrv = new RetrofitAdapter().connectionEnable().create(TurnSrv.class);
         competencia = (CompetitionMin) getArguments().getSerializable("competencia");
-
         hsDesde = new ArrayList<>();
         hsHasta = new ArrayList<>();
         turnos = new ArrayList<>();
