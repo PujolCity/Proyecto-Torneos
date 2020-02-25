@@ -100,7 +100,6 @@ public class CrearInscripcionFragment extends Fragment {
         etMonto = vista.findViewById(R.id.et_monto_inscripcion);
         etRequisitos = vista.findViewById(R.id.et_requisitos_inscripcion);
         btnCrearInscripcion = vista.findViewById(R.id.btn_crear_inscripcion);
-        etMonto.setText(Integer.toString(competencia.getDuracion()));
     }
 
     private void listenButton() {
