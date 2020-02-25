@@ -28,7 +28,7 @@
             android:id="@+id/tabPerfilFragment"
             android:icon="@drawable/ic_solicitudes"
             android:title="@string/menu_MiPerfil" />
-
+        
     </group>
 
     <item android:title="">

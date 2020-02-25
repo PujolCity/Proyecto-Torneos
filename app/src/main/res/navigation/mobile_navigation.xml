@@ -182,18 +182,6 @@
             app:destination="@id/cargasDetalleFragment" />
     </fragment>
     <fragment
-        android:id="@+id/generalDetalleFragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralDetalleFragment"
-        android:label=""
-        tools:layout="@layout/fragment_general_detalle" >
-        <action
-            android:id="@+id/action_generalDetalleFragment_to_competidoresDetalleFragment"
-            app:destination="@id/competidoresDetalleFragment" />
-        <action
-            android:id="@+id/action_generalDetalleFragment_to_editCompetenciaFragment"
-            app:destination="@id/editCompetenciaFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/encuentrosDetalleFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EncuentrosDetalleFragment"
         android:label=""
@@ -210,6 +198,9 @@
         <action
             android:id="@+id/action_detalleCompetenciaFragment_to_competenciasListFragment"
             app:destination="@id/competenciasListFragment" />
+        <action
+            android:id="@+id/action_detalleCompetenciaFragment_to_detalleCompListFragment"
+            app:destination="@id/detalleCompListFragment" />
     </fragment>
     <fragment
         android:id="@+id/detalleEncuentroFragment"
@@ -299,5 +290,28 @@
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.CerrarSesionFragment"
         android:label="fragment_cerrar_sesion"
         tools:layout="@layout/fragment_cerrar_sesion" />
+    <fragment
+        android:id="@+id/crearInscripcionFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CrearInscripcionFragment"
+        android:label="Crear Inscripcion"
+        tools:layout="@layout/fragment_crear_inscripcion" />
+    <fragment
+        android:id="@+id/generalDetalleFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralDetalleFragment"
+        android:label="info_general_organizando_competencia"
+        tools:layout="@layout/info_general_organizando_competencia" >
+        <action
+            android:id="@+id/action_generalDetalleFragment_to_editCompetenciaFragment"
+            app:destination="@id/editCompetenciaFragment" />
+        <action
+            android:id="@+id/action_generalDetalleFragment_to_competidoresDetalleFragment"
+            app:destination="@id/competidoresDetalleFragment" />
+        <action
+            android:id="@+id/action_generalDetalleFragment_to_crearInscripcionFragment"
+            app:destination="@id/crearInscripcionFragment" />
+        <action
+            android:id="@+id/action_generalDetalleFragment_to_crearInscripcionFragment2"
+            app:destination="@id/crearInscripcionFragment" />
+    </fragment>
 
 </navigation>

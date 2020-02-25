@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import com.VeizagaTorrico.proyectotorneos.fragments.CerrarSesionFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CrearInscripcionFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.MiPerfilFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.CompetenciasListFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresListFragment;
@@ -98,7 +99,8 @@ public class NavigationMainActivity extends AppCompatActivity
         NoticiasFragment.OnFragmentInteractionListener,
         CargarNoticiaFragment.OnFragmentInteractionListener,
         DetalleNoticiasFragment.OnFragmentInteractionListener,
-        CerrarSesionFragment.OnFragmentInteractionListener {
+        CerrarSesionFragment.OnFragmentInteractionListener,
+        CrearInscripcionFragment.OnFragmentInteractionListener {
 
     private AppBarConfiguration mAppBarConfiguration;
 
@@ -172,9 +174,14 @@ public class NavigationMainActivity extends AppCompatActivity
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        if(!obtenerEstadoButton()){
-            passToHome();
+        try{
+            if(!obtenerEstadoButton()){
+                passToHome();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+
     }
 
     private boolean obtenerEstadoButton() {

@@ -52,7 +52,7 @@ public class CargarTurnosFragment extends Fragment {
     private Spinner spinnerTurnos;
     private EditText etHoraDesde, etDuracion, etCantidad;
     private final Calendar c = Calendar.getInstance();
-    private List<String> hsDesde,hsHasta;
+    private List<String> hsDesde;
     private String duracion, cantidad;
     private Map<String,String> datos;
     private String segundos;
@@ -137,8 +137,12 @@ public class CargarTurnosFragment extends Fragment {
                                 }
                                 @Override
                                 public void onFailure(Call<Success> call, Throwable t) {
-                                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                                    toast.show();
+                                 try {
+                                     Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                                     toast.show();
+                                 } catch (Exception e) {
+                                     e.printStackTrace();
+                                 }
                                 }
                             });
                         }else {
@@ -291,7 +295,6 @@ public class CargarTurnosFragment extends Fragment {
         turnSrv = new RetrofitAdapter().connectionEnable().create(TurnSrv.class);
         competencia = (CompetitionMin) getArguments().getSerializable("competencia");
         hsDesde = new ArrayList<>();
-        hsHasta = new ArrayList<>();
         turnos = new ArrayList<>();
         datos = new HashMap<>();
         segundos = "00";

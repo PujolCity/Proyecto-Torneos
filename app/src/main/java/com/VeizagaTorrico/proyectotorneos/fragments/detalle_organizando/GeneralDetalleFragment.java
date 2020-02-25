@@ -27,14 +27,11 @@ public class GeneralDetalleFragment extends Fragment {
 
     private View vista;
     private CompetitionMin competencia;
-    private ImageButton follow,noFollow;
-    private Button btnIncribirse;
-    private Button btnEditar;
+    private Button btnEditar,btnInscripcion;
 
     private TextView nmb, cat, org, ciudad, genero, estado;
 
     public GeneralDetalleFragment() {
-        // Required empty public constructor
     }
 
     public static GeneralDetalleFragment newInstance() {
@@ -53,11 +50,12 @@ public class GeneralDetalleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_info_general_competencia, container, false);
+        vista = inflater.inflate(R.layout.info_general_organizando_competencia, container, false);
 
         initElements();
         ocultarBotones();
         listenButtonEdit();
+        listenButtonInscripcion();
 
         Log.d("competencia",this.competencia.toString());
         try{
@@ -77,30 +75,37 @@ public class GeneralDetalleFragment extends Fragment {
     }
 
     private void initElements() {
-        nmb = vista.findViewById(R.id.txtNmbCompDet);
-        cat = vista.findViewById(R.id.txtCatCompDet);
-        org = vista.findViewById(R.id.txtOrgCompDet);
-        ciudad = vista.findViewById(R.id.txtCityCompDet);
-        genero = vista.findViewById(R.id.txtGenderCompDet);
-        estado = vista.findViewById(R.id.tv_estado_infograll);
-        follow = vista.findViewById(R.id.btnFollow);
-        follow.setVisibility(View.INVISIBLE);
-        noFollow = vista.findViewById(R.id.btnNoFollow);
-        noFollow.setVisibility(View.INVISIBLE);
-        btnEditar = vista.findViewById(R.id.btn_edit_competencia);
-        // en esta pantalla ocultamos el boton
-        btnIncribirse = vista.findViewById(R.id.inscribirse);
-        btnIncribirse.setVisibility(View.INVISIBLE);
+        nmb = vista.findViewById(R.id.txtNmbCompDet_organizando);
+        cat = vista.findViewById(R.id.txtCatCompDet_organizando);
+        org = vista.findViewById(R.id.txtOrgCompDet_organizando);
+        ciudad = vista.findViewById(R.id.txtCityCompDet_organizando);
+        genero = vista.findViewById(R.id.txtGenderCompDet_organizando);
+        estado = vista.findViewById(R.id.tv_estado_infograll_organizando);
+        btnEditar = vista.findViewById(R.id.btn_edit_competencia_organizando);
+        btnInscripcion = vista.findViewById(R.id.generar_inscripcion_organizando);
+    }
+
+    private void listenButtonInscripcion() {
+        btnInscripcion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                passToCrearInscripcion();
+            }
+        });
     }
 
     private void ocultarBotones(){
-        btnEditar.setVisibility(View.INVISIBLE);
-        List<String> roles = this.competencia.getRol();
+        try {
+            btnEditar.setVisibility(View.INVISIBLE);
+            List<String> roles = this.competencia.getRol();
 
-        for (int i = 0 ; i < roles.size(); i++) {
-            if (roles.get(i).contains("ORGANIZADOR")) {
-                btnEditar.setVisibility(View.VISIBLE);
+            for (int i = 0 ; i < roles.size(); i++) {
+                if (roles.get(i).contains("ORGANIZADOR")) {
+                    btnEditar.setVisibility(View.VISIBLE);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
     }
@@ -126,6 +131,15 @@ public class GeneralDetalleFragment extends Fragment {
         // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
         Navigation.findNavController(vista).navigate(R.id.editCompetenciaFragment, bundle);
     }
+
+    private void passToCrearInscripcion(){
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("competencia", this.competencia);
+        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+        Navigation.findNavController(vista).navigate(R.id.crearInscripcionFragment, bundle);
+    }
+
+
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

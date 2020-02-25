@@ -47,7 +47,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private TextView nmb, cat, org, ciudad, genero, estado;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
-    private Button inscribirse, btnEditCompetencia;
+    private Button inscribirse;
     private View vista;
     private AlertDialog dialog;
     private Map<String,String> solicitud;
@@ -192,7 +192,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
-        btnEditCompetencia = vista.findViewById(R.id.btn_edit_competencia);
 
     }
 
@@ -235,31 +234,26 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
-                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("ORGANIZADOR")) {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
-                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("COMPETIDOR")) {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
-                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("SEGUIDOR")) {
                 follow.setVisibility(View.INVISIBLE);
                 noFollow.setVisibility(View.VISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
-                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
             if (roles.get(i).contains("ESPECTADOR")) {
                 follow.setVisibility(View.VISIBLE);
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
-                btnEditCompetencia.setVisibility(View.INVISIBLE);
             }
         }
 

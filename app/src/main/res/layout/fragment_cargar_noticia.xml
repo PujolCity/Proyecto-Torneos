@@ -40,32 +40,32 @@
             app:layout_constraintTop_toBottomOf="@+id/edt_title_news" />
 
         <TextView
-                android:id="@+id/tv_title_load_news"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="35dp"
-                android:layout_marginEnd="70dp"
-                android:gravity="center_horizontal"
-                android:text="Datos de la noticia"
-                android:textSize="@dimen/title_fragment"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+            android:id="@+id/tv_title_load_news"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginEnd="70dp"
+            android:gravity="center_horizontal"
+            android:text="Datos de la noticia"
+            android:textSize="@dimen/title_fragment"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/edt_title_news"
-                android:layout_width="221dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="80dp"
-                android:hint="Titulo"
-                android:maxLength="40"
-                android:inputType="textAutoCorrect"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_title_load_news" />
+        <EditText
+            android:id="@+id/edt_title_news"
+            android:layout_width="221dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="80dp"
+            android:hint="Titulo"
+            android:maxLength="40"
+            android:inputType="textAutoCorrect"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title_load_news" />
 
         <Button
             android:id="@+id/btn_publish_new"
