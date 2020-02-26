@@ -62,6 +62,8 @@ public class CrearInscripcionFragment extends Fragment {
     private String monto, requisito;
     private InscriptionSrv inscriptionSrv;
 
+    private boolean incrispcionCreada;
+
     public CrearInscripcionFragment() {
     }
 
@@ -88,6 +90,7 @@ public class CrearInscripcionFragment extends Fragment {
     }
 
     private void initElements() {
+        incrispcionCreada = false;
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
 
         competencia = (CompetitionMin) getArguments().getSerializable("competencia");
@@ -106,6 +109,10 @@ public class CrearInscripcionFragment extends Fragment {
         btnCrearInscripcion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(incrispcionCreada){
+                    Toast toast = Toast.makeText(vista.getContext(), "La competencia ya cuenta con una inscripcion", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
                 if(validar()){
                     try {
                         inicio = new SimpleDateFormat("yyyy/MM/dd").parse(fechaIni.get(1));
@@ -133,6 +140,7 @@ public class CrearInscripcionFragment extends Fragment {
                                             Log.d("response INSCRIPCION", Integer.toString(response.code()));
                                             Toast toast = Toast.makeText(vista.getContext(), "Inscripcion Creada", Toast.LENGTH_SHORT);
                                             toast.show();
+                                            incrispcionCreada = true;
                                         }
                                         if (response.code() == 400) {
                                             Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
@@ -151,7 +159,7 @@ public class CrearInscripcionFragment extends Fragment {
                                     @Override
                                     public void onFailure(Call<MsgRequest> call, Throwable t) {
                                         try {
-                                            Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                                            Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_LONG);
                                             toast.show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
@@ -160,7 +168,7 @@ public class CrearInscripcionFragment extends Fragment {
                                 });
 
                         }else {
-                            Toast toast = Toast.makeText(vista.getContext(), "La fecha de Cierre debe ser mayor a la fecha de Inicio", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(vista.getContext(), "La fecha de Cierre debe ser mayor a la fecha de Inicio", Toast.LENGTH_LONG);
                             toast.show();
                         }
 
@@ -168,7 +176,7 @@ public class CrearInscripcionFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }else{
-                    Toast toast = Toast.makeText(vista.getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor complete los campos vacios", Toast.LENGTH_LONG);
                     toast.show();
                 }
 

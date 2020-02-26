@@ -149,7 +149,7 @@ public class CargasDetalleFragment extends Fragment {
                                     jsonObject = new JSONObject(response.errorBody().string());
                                     String userMessage = jsonObject.getString("msg");
                                     Log.d("RESP_SIGNIN_ERROR", "Msg de la repuesta: "+userMessage);
-                                    Toast.makeText(vista.getContext(), "No se pueden generar mas encuentros:  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(vista.getContext(), "No se pueden generar mas encuentros:  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
