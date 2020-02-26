@@ -50,7 +50,6 @@ public class NoticiasFragment extends Fragment {
 
 
     public NoticiasFragment() {
-        // Required empty public constructor
     }
 
     public static NoticiasFragment newInstance() {
@@ -96,6 +95,8 @@ public class NoticiasFragment extends Fragment {
                                     Navigation.findNavController(vista).navigate(R.id.detalleNoticiasFragment,bundle);
                                 }
                             });
+                        } else {
+                            sinNoticias();
                         }
                     }
                     if (response.code() == 400) {
@@ -111,14 +112,16 @@ public class NoticiasFragment extends Fragment {
                             e.printStackTrace();
                         }
                     }
-
+                    if(response.code() == 204){
+                        sinNoticias();
+                    }
             }
 
             @Override
             public void onFailure(Call<List<News>> call, Throwable t) {
                 try {
                     Log.d("onFailure", t.getMessage());
-                    Toast toast = Toast.makeText(vista.getContext(), "NO ANDAN LAS NOTICIAS", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestañá", Toast.LENGTH_SHORT);
                     toast.show();
                     sinNoticias();
                 } catch (Exception e) {
