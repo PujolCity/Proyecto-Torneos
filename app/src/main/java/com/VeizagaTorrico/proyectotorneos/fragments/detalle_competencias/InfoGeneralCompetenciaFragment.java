@@ -229,6 +229,15 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private void ocultarBotones(){
         List<String> roles = this.competition.getRol();
 
+        // ocultamos el boton de inscripcion si la inscripcion no esta abierta
+        if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")){
+            inscribirse.setVisibility(View.VISIBLE);
+        }
+        else{
+            inscribirse.setVisibility(View.INVISIBLE);
+        }
+
+
         for (int i = 0 ; i < roles.size(); i++) {
             if (roles.get(i).contains("SOLICITANTE")) {
                 follow.setVisibility(View.INVISIBLE);
