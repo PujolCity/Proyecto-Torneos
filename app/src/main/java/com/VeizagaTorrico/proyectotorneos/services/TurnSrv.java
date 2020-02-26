@@ -23,7 +23,7 @@ public interface TurnSrv {
     @POST(Constants.BASE_URL + "turn-set")
     Call<Success>createTurn(@Body Map<String,String> turno);
 
-    @DELETE(Constants.BASE_URL + "turn-del")
+    @DELETE(Constants.BASE_URL + "del-turn")
     Call<Success>deleteTurn(@QueryMap Map<String,Integer> turno);
 
 }

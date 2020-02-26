@@ -84,10 +84,17 @@ public class CargarTurnosFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_cargar_turnos, container, false);
         initElements();
         llenarSpinner();
+        listeners();
+        listenerBorrar();
+        longListenerBorrar();
+        return vista;
+    }
+
+    private void listeners() {
         etHoraDesde.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               hsDesde = obtenerHora(etHoraDesde);
+                hsDesde = obtenerHora(etHoraDesde);
             }
         });
 
@@ -137,17 +144,14 @@ public class CargarTurnosFragment extends Fragment {
                                 }
                                 @Override
                                 public void onFailure(Call<Success> call, Throwable t) {
-                                 try {
-                                     Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                                     toast.show();
-                                 } catch (Exception e) {
-                                     e.printStackTrace();
-                                 }
+                                    try {
+                                        Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                                        toast.show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             });
-                        }else {
-                            Toast toast = Toast.makeText(vista.getContext(), "El turno debe tener al menos "+ DIFERENCIA_MINUTOS + " minutos de duracion", Toast.LENGTH_SHORT);
-                            toast.show();
                         }
                     }else {
                         Toast toast = Toast.makeText(vista.getContext(), "Por favor verificar las horas asignadas", Toast.LENGTH_SHORT);
@@ -159,9 +163,7 @@ public class CargarTurnosFragment extends Fragment {
                 }
             }
         });
-        listenerBorrar();
-        longListenerBorrar();
-        return vista;
+
     }
 
     private void longListenerBorrar() {
@@ -179,6 +181,7 @@ public class CargarTurnosFragment extends Fragment {
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Toast toast = Toast.makeText(vista.getContext(), "BORRAR UN TURNO", Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -262,7 +265,6 @@ public class CargarTurnosFragment extends Fragment {
         recogerHora.show();
         return hs;
     }
-
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
