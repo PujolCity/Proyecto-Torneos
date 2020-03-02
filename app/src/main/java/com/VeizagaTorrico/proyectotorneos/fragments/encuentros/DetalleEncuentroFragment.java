@@ -361,7 +361,7 @@ public class DetalleEncuentroFragment extends Fragment {
     }
 
     private void llenarSpinnerPredio(){
-        Call<List<Ground>> call = prediosSrv.getGrounds(encuentro.getIdCompetencia());
+        Call<List<Ground>> call = prediosSrv.getGrounds();
         Log.d("call predio",call.request().url().toString());
         call.enqueue(new Callback<List<Ground>>() {
             @Override

@@ -94,7 +94,7 @@ public class CargasDetalleFragment extends Fragment {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("competencia", competencia);
-                Navigation.findNavController(vista).navigate(R.id.cargarPredioFragment, bundle);
+                Navigation.findNavController(vista).navigate(R.id.cargaPredioCompetenciaFragment    , bundle);
             }
         });
 

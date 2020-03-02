@@ -24,15 +24,16 @@
             android:id="@+id/misCompetencias"
             android:icon="@drawable/baseline_sports_black_18dp"
             android:title="@string/menu_MisCompetencias" />
-        <item
-            android:id="@+id/tabPerfilFragment"
-            android:icon="@drawable/ic_solicitudes"
-            android:title="@string/menu_MiPerfil" />
-        
+
     </group>
 
     <item android:title="">
         <menu>
+            <item
+                android:id="@+id/tabPerfilFragment"
+                android:icon="@drawable/ic_solicitudes"
+                android:title="@string/menu_MiPerfil" />
+
             <item
                 android:icon="@drawable/ic_logout"
                 android:title="Cerrar Sesion"

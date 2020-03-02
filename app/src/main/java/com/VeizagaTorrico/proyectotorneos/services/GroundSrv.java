@@ -17,13 +17,22 @@ import retrofit2.http.QueryMap;
 
 public interface GroundSrv {
 
-    @GET(Constants.BASE_URL + "grounds/competition")
-    Call<List<Ground>> getGrounds(@Query("idCompetencia") int idCompetencia);
+    @GET(Constants.BASE_URL + "grounds")
+    Call<List<Ground>> getGrounds();
 
     @POST( Constants.BASE_URL + "grounds" )
     Call<Success>createGround(@Body Map<String,String> predio);
 
     @DELETE( Constants.BASE_URL + "grounds/del" )
     Call<Success>deleteGround(@QueryMap Map<String,Integer> datos);
+
+    @GET(Constants.BASE_URL + "grounds/competition")
+    Call<List<Ground>> getPrediosAsignados(@Query("id") int idCompetencia);
+
+    @POST( Constants.BASE_URL + "set-ground" )
+    Call<Success>asignarPredioCompetencia(@Body Map<String,String> predio);
+
+    @DELETE( Constants.BASE_URL + "del-groundCompetition" )
+    Call<Success>deletePredioCompetencia(@QueryMap Map<String,String> datos);
 
 }
