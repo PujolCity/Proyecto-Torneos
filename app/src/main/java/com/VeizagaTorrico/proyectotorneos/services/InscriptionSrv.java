@@ -15,7 +15,7 @@ import retrofit2.http.Query;
 
 public interface InscriptionSrv {
 
-    @GET(Constants.BASE_URL + "inscription/")
+    @GET(Constants.BASE_URL + "inscription-competition")
     Call<Inscription> getInscripcion(@Query("idCompetencia") int idCompetencia);
 
     @POST(Constants.BASE_URL + "inscription")

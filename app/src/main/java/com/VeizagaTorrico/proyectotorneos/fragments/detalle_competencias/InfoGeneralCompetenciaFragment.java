@@ -192,7 +192,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
-
     }
 
     public void onButtonPressed(Uri uri) {
@@ -229,15 +228,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private void ocultarBotones(){
         List<String> roles = this.competition.getRol();
 
-        // ocultamos el boton de inscripcion si la inscripcion no esta abierta
-        if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")){
-            inscribirse.setVisibility(View.VISIBLE);
-        }
-        else{
-            inscribirse.setVisibility(View.INVISIBLE);
-        }
-
-
         for (int i = 0 ; i < roles.size(); i++) {
             if (roles.get(i).contains("SOLICITANTE")) {
                 follow.setVisibility(View.INVISIBLE);
@@ -264,9 +254,16 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 noFollow.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.VISIBLE);
             }
+            // ocultamos el boton de inscripcion si la inscripcion no esta abierta
+            if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
+                inscribirse.setVisibility(View.VISIBLE);
+                Log.d("INSCRIPCION","ANDA" );
+            }
+            else{
+                inscribirse.setVisibility(View.INVISIBLE);
+                Log.d("INSCRIPCION","No AaNDA" );
+            }
         }
-
-
     }
 
 
