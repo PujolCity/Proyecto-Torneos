@@ -202,7 +202,6 @@ public class CargaPredioCompetenciaFragment extends Fragment {
                             e.printStackTrace();
                         }
                         return;
-
                     }
                 }
                 @Override

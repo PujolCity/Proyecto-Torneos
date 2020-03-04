@@ -1,153 +1,158 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fillViewport="true"
     tools:context=".fragments.detalle_competencias.InfoGeneralCompetenciaFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/txtNmbCompDet"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="128dp"
-            android:text="Competencia"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </TextView>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/txtOrgCompDet"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/txtTipo"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtCatCompDet">
-        </TextView>
+            <TextView
+                android:id="@+id/txtNmbCompDet"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="128dp"
+                android:text="Competencia"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </TextView>
 
-        <TextView
-            android:id="@+id/txtCatCompDet"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/txtCategoria"
-            android:textSize="20sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtNmbCompDet">
-        </TextView>
+            <TextView
+                android:id="@+id/txtOrgCompDet"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/txtTipo"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCatCompDet">
+            </TextView>
 
-        <TextView
-            android:id="@+id/txtCityCompDet"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"
-            android:text="@string/txtCiudad"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrgCompDet">
-        </TextView>
+            <TextView
+                android:id="@+id/txtCatCompDet"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/txtCategoria"
+                android:textSize="20sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtNmbCompDet">
+            </TextView>
 
-        <TextView
-            android:id="@+id/txtGenderCompDet"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
-            android:text="@string/txtGenero"
-            android:textSize="20sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtCityCompDet">
-        </TextView>
+            <TextView
+                android:id="@+id/txtCityCompDet"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:text="@string/txtCiudad"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtOrgCompDet">
+            </TextView>
 
-        <ImageButton
-            android:id="@+id/btnFollow"
-            android:layout_width="42dp"
-            android:layout_height="40dp"
-            android:layout_marginTop="48dp"
-            android:src="@drawable/baseline_thumb_up_black_18dp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:tint="@color/cardview_light_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.707"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </ImageButton>
+            <TextView
+                android:id="@+id/txtGenderCompDet"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/txtGenero"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtCityCompDet">
+            </TextView>
 
-        <ImageButton
-            android:id="@+id/btnNoFollow"
-            android:layout_width="42dp"
-            android:layout_height="42dp"
-            android:layout_marginTop="48dp"
-            android:backgroundTint="@color/colorDejarSeguir"
-            android:src="@drawable/baseline_thumb_down"
-            android:tint="@color/cardview_light_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/btnFollow"
-            app:layout_constraintTop_toTopOf="parent">
+            <ImageButton
+                android:id="@+id/btnFollow"
+                android:layout_width="42dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="48dp"
+                android:src="@drawable/baseline_thumb_up_black_18dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:tint="@color/cardview_light_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.707"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </ImageButton>
 
-        </ImageButton>
+            <ImageButton
+                android:id="@+id/btnNoFollow"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_marginTop="48dp"
+                android:backgroundTint="@color/colorDejarSeguir"
+                android:src="@drawable/baseline_thumb_down"
+                android:tint="@color/cardview_light_background"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/btnFollow"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <Button
-            android:id="@+id/inscribirse"
-            android:layout_width="110dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="148dp"
-            android:layout_marginTop="48dp"
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:text="Inscribirse"
-            android:textColor="@color/cardview_light_background"
-            app:layout_constraintEnd_toStartOf="@+id/btnFollow"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </Button>
+            </ImageButton>
 
-        <TextView
-            android:id="@+id/tv_estado_infograll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
-            android:text="Estado"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txtGenderCompDet" />
+            <Button
+                android:id="@+id/inscribirse"
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="148dp"
+                android:layout_marginTop="48dp"
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:text="Inscribirse"
+                android:textColor="@color/cardview_light_background"
+                app:layout_constraintEnd_toStartOf="@+id/btnFollow"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </Button>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="84dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_estado_infograll">
-
-
-            <include
-                layout="@layout/fragment_inscripcion_detalle"
+            <TextView
+                android:id="@+id/tv_estado_infograll"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="20dp"
+                android:text="Estado"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txtGenderCompDet" />
 
-                android:layout_height="match_parent">
+            <LinearLayout
+                android:id="@+id/layout_include"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_estado_infograll">
 
-            </include>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+                <include
+                    android:id="@+id/include"
+                    layout="@layout/fragment_inscripcion_detalle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                </include>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
+</androidx.cardview.widget.CardView>
+
