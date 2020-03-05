@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +15,17 @@ import android.widget.TextView;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.models.News;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
+
 
 public class DetalleNoticiasFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
     private View vista;
     private News news;
-    private TextView competencia, titulo, subtitulo, cuerpo;
+    private TextView competencia, titulo, subtitulo, cuerpo, actualizacion;
     public DetalleNoticiasFragment() {
         // Required empty public constructor
     }
@@ -52,12 +57,13 @@ public class DetalleNoticiasFragment extends Fragment {
         titulo = vista.findViewById(R.id.tv_tituloDetalle_noticia);
         subtitulo = vista.findViewById(R.id.tv_subtituloDetalle_noticia);
         cuerpo = vista.findViewById(R.id.tv_cuerpoDetalle_noticia);
+        actualizacion = vista.findViewById(R.id.tv_fechaDetalle_noticia);
 
         competencia.setText(news.getCompetencia());
         titulo.setText(news.getTitulo());
         subtitulo.setText(news.getSubtitulo());
         cuerpo.setText(news.getCuerpo());
-
+        actualizacion.setText(parsearFecha(news.getUptime()));
     }
 
     public void onButtonPressed(Uri uri) {
@@ -86,4 +92,15 @@ public class DetalleNoticiasFragment extends Fragment {
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
+    private String parsearFecha(String fechaServer) {
+        List<String> token = new ArrayList<>();
+        String fecha = fechaServer.substring(0,10);
+        String hora = fechaServer.substring(11,16);
+        StringTokenizer st = new StringTokenizer(fecha, "-");
+        while (st.hasMoreTokens()) {
+            token.add(st.nextToken());
+        }
+        return token.get(2)+"/"+ token.get(1)+"/"+token.get(0) + " " + hora + "hs";
+    }
+
 }

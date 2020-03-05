@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -13,11 +14,11 @@
             android:id="@+id/tv_competencia_noticia"
             android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
+            android:layout_marginTop="16dp"
             android:hint="Competencia"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.423"
+            app:layout_constraintHorizontal_bias="0.144"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
         </TextView>
@@ -29,21 +30,33 @@
             android:hint="Titulo"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.414"
+            app:layout_constraintHorizontal_bias="0.144"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_competencia_noticia">
         </TextView>
 
         <TextView
             android:id="@+id/tv_subtitulo_noticia"
-            android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_width="295dp"
+            android:layout_height="23dp"
             android:hint="Subtitulo"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.414"
+            app:layout_constraintHorizontal_bias="0.144"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_titulo_noticia">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_actualizacion_noticia"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="Actualizacion"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.938"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_subtitulo_noticia">
+
         </TextView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
