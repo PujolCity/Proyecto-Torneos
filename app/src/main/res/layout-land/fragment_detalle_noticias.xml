@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.noticias.DetalleNoticiasFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/tv_fechaDetalle_noticia"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="25dp"
+            android:layout_marginStart="150dp"
+            android:gravity="right"
+            android:hint="Actualizacion"
+            android:textSize="12sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_competenciaDetalle_noticia"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:hint="Competencia"
+            android:textSize="20sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_tituloDetalle_noticia"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Titulo"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textSize="25sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_subtituloDetalle_noticia"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Subtitulo"
+            android:textSize="20sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_cuerpoDetalle_noticia"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="Cuerpa"
+            android:textSize="15sp">
+        </TextView>
+
+    </LinearLayout>
+</ScrollView>

@@ -45,7 +45,7 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
     @NonNull
     @Override
     public NoticiasRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(this.context).inflate(R.layout.card_noticias, null);
+        View view = LayoutInflater.from(this.context).inflate(R.layout.card_noticias,parent,false);
         view.setOnClickListener(this);
         return new ViewHolder(view);
     }

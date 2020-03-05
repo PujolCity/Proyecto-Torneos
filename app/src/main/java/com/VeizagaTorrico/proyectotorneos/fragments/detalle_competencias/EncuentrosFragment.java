@@ -86,22 +86,26 @@ public class EncuentrosFragment extends Fragment {
 
 
     private void initElements() {
-        fecha_grupo = new HashMap<>();
-        sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
-        confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
-        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
-        encuentros = new ArrayList<>();
-        recycleCon = vista.findViewById(R.id.recyclerEncuentrosDetalle);
-        manager = new LinearLayoutManager(vista.getContext());
-        recycleCon.setLayoutManager(manager);
-        recycleCon.setHasFixedSize(true);
-        adapter = new EncuentrosRecyclerViewAdapter(vista.getContext());
-        recycleCon.setAdapter(adapter);
-        spinnerJornada = vista.findViewById(R.id.spinnerJornada);
-        spinnerGrupo = vista.findViewById(R.id.spinnerGrupo);
-        btnBuscar = vista.findViewById(R.id.btnBuscar);
-        cargarSpinnerFiltroEncuentros(competencia.getId());
-        getEncuentros(fecha_grupo);
+        try {
+            fecha_grupo = new HashMap<>();
+            sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
+            confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
+            competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+            encuentros = new ArrayList<>();
+            recycleCon = vista.findViewById(R.id.recyclerEncuentrosDetalle);
+            manager = new LinearLayoutManager(vista.getContext());
+            recycleCon.setLayoutManager(manager);
+            recycleCon.setHasFixedSize(true);
+            adapter = new EncuentrosRecyclerViewAdapter(vista.getContext());
+            recycleCon.setAdapter(adapter);
+            spinnerJornada = vista.findViewById(R.id.spinnerJornada);
+            spinnerGrupo = vista.findViewById(R.id.spinnerGrupo);
+            btnBuscar = vista.findViewById(R.id.btnBuscar);
+            cargarSpinnerFiltroEncuentros(competencia.getId());
+            getEncuentros(fecha_grupo);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void getEncuentros(Map<String, String> fechaGrupo) {

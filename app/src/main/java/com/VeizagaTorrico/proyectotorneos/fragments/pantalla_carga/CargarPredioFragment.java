@@ -182,60 +182,6 @@ public class CargarPredioFragment extends Fragment {
                 }
             }
         });
-
-       /* btnDeletePredio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog dialogo = new AlertDialog
-                        .Builder(vista.getContext()) // NombreDeTuActividad.this, o getActivity() si es dentro de un fragmento
-                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón positivo, así que la acción está confirmada
-                                eliminarPredio(competencia.getId(),predioSeleccionado.getId());
-                            }
-                        })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón negativo, no confirmaron
-                                // Simplemente descartamos el diálogo
-                                dialog.dismiss();
-                            }
-                        })
-                        .setTitle("Esta seguro?") // El título
-                        .setMessage("Si eliminas el Predio Tambien se eliminan todos los campos asociados") // El mensaje
-                        .create();// No olvides llamar a Create, ¡pues eso crea el AlertDialog!
-                dialogo.show();
-            }
-        });
-
-        btnDeleteCampo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog dialogo = new AlertDialog
-                        .Builder(vista.getContext()) // NombreDeTuActividad.this, o getActivity() si es dentro de un fragmento
-                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón positivo, así que la acción está confirmada
-                                eliminarCampo(predioSeleccionado.getId(),campoSeleccionado.getId());
-                            }
-                        })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón negativo, no confirmaron
-                                // Simplemente descartamos el diálogo
-                                dialog.dismiss();
-                            }
-                        })
-                        .setTitle("Esta seguro?") // El título
-                        .setMessage("Desea eliminar el campo seleccionado?") // El mensaje
-                        .create();// No olvides llamar a Create, ¡pues eso crea el AlertDialog!
-                dialogo.show();
-            }
-        });*/
         return vista;
     }
 

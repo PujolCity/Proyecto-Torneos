@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".fragments.pantalla_carga.CargarPredioFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/etNombrePredio"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="116dp"
+            android:layout_marginTop="16dp"
+            android:hint="Nombre de predio"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </EditText>
+
+        <EditText
+            android:id="@+id/etDireccionPredio"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="Direccion"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.277"
+            app:layout_constraintStart_toEndOf="@+id/etNombrePredio"
+            app:layout_constraintTop_toTopOf="parent">
+        </EditText>
+
+        <EditText
+            android:id="@+id/etCiudadPredio"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="116dp"
+            android:layout_marginTop="24dp"
+            android:hint="Ciudad"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etNombrePredio">
+        </EditText>
+
+        <Button
+            android:id="@+id/btnAgregarPredio"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="72dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/txtBtnAgregarPredio"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintStart_toEndOf="@+id/etCiudadPredio"
+            app:layout_constraintTop_toBottomOf="@+id/etDireccionPredio">
+        </Button>
+
+        <Spinner
+            android:id="@+id/spinnerCargaPredio"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnAgregarPredio">
+        </Spinner>
+
+        <Spinner
+            android:id="@+id/spinnerCargarCampo"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.6"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/etCapacidadCampo">
+        </Spinner>
+
+        <EditText
+            android:id="@+id/etCampoNombre"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="116dp"
+            android:layout_marginTop="28dp"
+            android:hint="Nombre del Campo"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
+        </EditText>
+
+        <EditText
+            android:id="@+id/etCapacidadCampo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:hint="Capacidad"
+            android:inputType="numberDecimal"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/etCampoNombre"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
+        </EditText>
+
+        <EditText
+            android:id="@+id/etDimensionesCampo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="24dp"
+            android:gravity="center"
+            android:hint="dim mts2"
+            android:inputType="numberDecimal"
+            android:textSize="15sp"
+            app:layout_constraintStart_toEndOf="@+id/etCapacidadCampo"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
+        </EditText>
+
+        <Button
+            android:id="@+id/btnAgregarCampo"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="44dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="@string/txtBtnAgregarCampo"
+            android:textColor="@color/cardview_light_background"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.499"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerCargarCampo">
+        </Button>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

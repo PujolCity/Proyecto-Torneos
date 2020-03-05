@@ -90,7 +90,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
         initElements();
         ocultarBotones();
-        Log.d("Competencia recibida", competition.toString());
         try{
             nmb.setText(competition.getName());
             cat.setText(competition.getCategory());
@@ -247,44 +246,48 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     }
 
     private void ocultarBotones(){
-        List<String> roles = this.competition.getRol();
+        try {
+            List<String> roles = this.competition.getRol();
 
-        for (int i = 0 ; i < roles.size(); i++) {
-            if (roles.get(i).contains("SOLICITANTE")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.INVISIBLE);
+            for (int i = 0 ; i < roles.size(); i++) {
+                if (roles.get(i).contains("SOLICITANTE")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.INVISIBLE);
+                }
+                if (roles.get(i).contains("ORGANIZADOR")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.VISIBLE);
+                }
+                if (roles.get(i).contains("COMPETIDOR")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.INVISIBLE);
+                }
+                if (roles.get(i).contains("SEGUIDOR")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.VISIBLE);
+                    inscribirse.setVisibility(View.VISIBLE);
+                }
+                if (roles.get(i).contains("ESPECTADOR")) {
+                    follow.setVisibility(View.VISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.VISIBLE);
+                }
+                // ocultamos el boton de inscripcion si la inscripcion no esta abierta
+                if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
+                    inscribirse.setVisibility(View.VISIBLE);
+                    linear.setVisibility(View.VISIBLE);
+                    llenarDatoInscripcion();
+                }
+                else{
+                    linear.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.INVISIBLE);
+                }
             }
-            if (roles.get(i).contains("ORGANIZADOR")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.VISIBLE);
-            }
-            if (roles.get(i).contains("COMPETIDOR")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.INVISIBLE);
-            }
-            if (roles.get(i).contains("SEGUIDOR")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.VISIBLE);
-                inscribirse.setVisibility(View.VISIBLE);
-            }
-            if (roles.get(i).contains("ESPECTADOR")) {
-                follow.setVisibility(View.VISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.VISIBLE);
-            }
-            // ocultamos el boton de inscripcion si la inscripcion no esta abierta
-            if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
-                inscribirse.setVisibility(View.VISIBLE);
-                linear.setVisibility(View.VISIBLE);
-                llenarDatoInscripcion();
-            }
-            else{
-                linear.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.INVISIBLE);
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

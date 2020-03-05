@@ -50,7 +50,7 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(this.context).inflate(R.layout.card_solicitudes_competidores, null);
+        View view = LayoutInflater.from(this.context).inflate(R.layout.card_solicitudes_competidores,parent,false);
         return new ViewHolder(view);
     }
 

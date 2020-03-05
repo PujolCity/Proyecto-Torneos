@@ -12,10 +12,10 @@ public class Turn implements Serializable {
     @SerializedName("idCompetencia")
     private int idCompetencia;
 
-    @SerializedName("hora_desde")
+    @SerializedName("horaDesde")
     private String horaDesde;
 
-    @SerializedName("hora_hasta")
+    @SerializedName("horaHasta")
     private String horaHasta;
 
     public Turn(int id, int idCompetencia, String horaDesde, String horaHasta) {
@@ -64,7 +64,12 @@ public class Turn implements Serializable {
     }
 
     public String toString() {
-        return "Desde : " + horaDesde + '-' +
+        return "Desde : " + horaDesde + " - " +
                 " Hasta : " + horaHasta ;
+    }
+
+    public String parsearHora() {
+        return "Desde : " + horaDesde.substring(11,16) + " - " +
+                " Hasta : " + horaHasta.substring(11,16) ;
     }
 }

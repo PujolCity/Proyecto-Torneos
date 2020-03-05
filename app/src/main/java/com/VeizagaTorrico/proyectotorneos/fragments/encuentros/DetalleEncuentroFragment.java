@@ -214,7 +214,7 @@ public class DetalleEncuentroFragment extends Fragment {
         if(encuentro.getTurno() != null){
             try {
                 Log.d("hora", encuentro.getTurno().toString());
-                txtTurno.setText(encuentro.getTurno().toString());
+                txtTurno.setText(encuentro.getTurno().parsearHora());
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -254,7 +254,7 @@ public class DetalleEncuentroFragment extends Fragment {
 
     private void llenarSpinnerTurno() {
         Call<List<Turn>> call = turnoSrv.getTurnsByCompetition(encuentro.getIdCompetencia());
-        call.enqueue(new Callback<List<Turn>>() {
+        Log.d("URL TURNO!",call.request().url().toString());        call.enqueue(new Callback<List<Turn>>() {
             @Override
             public void onResponse(Call<List<Turn>> call, Response<List<Turn>> response) {
                 if(response.code() == 200){
