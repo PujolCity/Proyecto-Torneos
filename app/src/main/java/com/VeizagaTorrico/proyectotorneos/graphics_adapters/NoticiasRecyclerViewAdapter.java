@@ -91,7 +91,6 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
             titulo = itemView.findViewById(R.id.tv_titulo_noticia);
             subtitulo = itemView.findViewById(R.id.tv_subtitulo_noticia);
             competencia = itemView.findViewById(R.id.tv_competencia_noticia);
-
         }
     }
 }

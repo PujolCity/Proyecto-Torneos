@@ -110,6 +110,7 @@ public class CargarNoticiaFragment extends Fragment {
                         if(response.code() == 200){
                             Log.d("INFO NEWS", " Noticia publicada");
                             // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                            resetCampos();
                             Toast toast = Toast.makeText(vista.getContext(), "Noticia cargada con exito!", Toast.LENGTH_SHORT);
                             toast.show();
                         }
@@ -140,6 +141,12 @@ public class CargarNoticiaFragment extends Fragment {
             }
             }
         });
+    }
+
+    private void resetCampos() {
+        edtDescripcion.setText(null);
+        edtResume.setText(null);
+        edtTitle.setText(null);
     }
 
     private boolean validar() {
