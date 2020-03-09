@@ -199,7 +199,7 @@ public class DetalleEncuentroFragment extends Fragment {
         }
         referee = new Referee(0, "Elija un juez", " ",0,null);
         predio = new Ground(0, "Elije un predio", "", "");
-        campo = new Field(0, "Elije un capo de Juego", 0, 0, null);
+        campo = new Field(0, "Elije un campo de Juego", 0, 0, null);
         turno = new Turn(0,0,"Elije un turno", "");
 
         if(encuentro.getCampo() != null){

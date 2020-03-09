@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.detalle_competencias.InfoGeneralCompetenciaFragment">
+    tools:context=".fragments.competencias.detalle_competencias.InfoGeneralCompetenciaFragment">
 
     <ScrollView
         android:layout_width="match_parent"

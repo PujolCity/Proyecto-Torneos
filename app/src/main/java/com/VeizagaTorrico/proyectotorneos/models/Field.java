@@ -3,6 +3,7 @@ package com.VeizagaTorrico.proyectotorneos.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Field implements Serializable {
 
@@ -18,6 +19,7 @@ public class Field implements Serializable {
     @SerializedName("dimensiones")
     private int dimensiones;
 
+    @SerializedName("predio")
     private Ground predio;
 
 
@@ -67,6 +69,19 @@ public class Field implements Serializable {
 
     public void setPredio(Ground predio) {
         this.predio = predio;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Field)) return false;
+        Field field = (Field) o;
+        return id == field.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override

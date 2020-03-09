@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.detalle_competencias.DetalleCompetenciaFragment">
+    tools:context=".fragments.competencias.detalle_competencias.DetalleCompetenciaFragment">
 
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutCompetencias"

@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias;
+package com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -34,10 +34,7 @@ import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +42,6 @@ import java.util.StringTokenizer;
 
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
-import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 
 public class InfoGeneralCompetenciaFragment extends Fragment {
@@ -184,7 +180,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createLoginDialogo();
-
             }
         });
         return vista;
@@ -351,7 +346,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private void createLoginDialogo() {
         final Dialog builder = new Dialog(vista.getContext());
         builder.setContentView(R.layout.alias_form);
-
+        Log.d("anda","skdajsnd");
         Button confirmar = builder.findViewById(R.id.confirmar);
         Button cancelar =  builder.findViewById(R.id.cancelar);
         final EditText alias = builder.findViewById(R.id.etAlias);
@@ -393,7 +388,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private boolean comprobarAlias(String alia) {
         solicitud.clear();
-        solicitud.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        solicitud.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
         solicitud.put("idCompetencia", Integer.toString(competition.getId()));
         solicitud.put("alias",alia);
 

@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias;
+package com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias;
 
 import android.os.Bundle;
 
