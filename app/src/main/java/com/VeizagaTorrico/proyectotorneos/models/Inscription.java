@@ -4,10 +4,10 @@ import com.google.gson.annotations.SerializedName;
 
 public class Inscription {
 
-    @SerializedName("idCompetencia ")
-    private int idCompetencia;
+    @SerializedName("id ")
+    private int id;
 
-    @SerializedName("fechaInicio")
+    @SerializedName("fechaIni")
     private String fechaInicio;
 
     @SerializedName("fechaCierre")
@@ -20,7 +20,7 @@ public class Inscription {
     private int monto;
 
     public Inscription(int idCompetencia, String fechaInicio, String fechaCierre, String requisitos, int monto) {
-        this.idCompetencia = idCompetencia;
+        this.id = idCompetencia;
         this.fechaInicio = fechaInicio;
         this.fechaCierre = fechaCierre;
         this.requisitos = requisitos;
@@ -28,11 +28,11 @@ public class Inscription {
     }
 
     public int getIdCompetencia() {
-        return idCompetencia;
+        return id;
     }
 
     public void setIdCompetencia(int idCompetencia) {
-        this.idCompetencia = idCompetencia;
+        this.id = idCompetencia;
     }
 
     public String getFechaInicio() {
@@ -69,7 +69,7 @@ public class Inscription {
 
     @Override
     public String toString() {
-        return idCompetencia +
+        return id +
                 "\n" + fechaInicio +
                 "\n" + fechaCierre +
                 "\n" + requisitos +

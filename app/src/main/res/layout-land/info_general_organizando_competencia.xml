@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:fillViewport="true"
+    tools:context=".fragments.detalle_organizando.GeneralDetalleFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            android:id="@+id/btn_edit_competencia_organizando"
+            android:layout_width="55dp"
+            android:layout_height="37dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="52dp"
+            android:backgroundTint="#107683"
+            android:textColor="@color/cardview_light_background"
+            android:text="Editar"
+            app:layout_constraintEnd_toStartOf="@+id/btnFollow"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </Button>
+
+        <Button
+            android:id="@+id/generar_inscripcion_organizando"
+            android:layout_width="wrap_content"
+            android:layout_height="37dp"
+            android:layout_marginTop="52dp"
+            android:backgroundTint="#107683"
+            android:text="Crear Inscripcion"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/btn_edit_competencia_organizando"
+            app:layout_constraintTop_toTopOf="parent">
+        </Button>
+
+        <TextView
+            android:id="@+id/txtNmbCompDet_organizando"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="128dp"
+            android:text="Competencia"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtOrgCompDet_organizando"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/txtTipo"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtCatCompDet_organizando">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtCatCompDet_organizando"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/txtCategoria"
+            android:textSize="20sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtNmbCompDet_organizando">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtCityCompDet_organizando"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="20dp"
+            android:textSize="20sp"
+            android:text="@string/txtCiudad"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtOrgCompDet_organizando">
+        </TextView>
+
+        <TextView
+            android:id="@+id/txtGenderCompDet_organizando"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="20dp"
+            android:text="@string/txtGenero"
+            android:textSize="20sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtCityCompDet_organizando">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_estado_infograll_organizando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="20dp"
+            android:text="Estado"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtGenderCompDet_organizando" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

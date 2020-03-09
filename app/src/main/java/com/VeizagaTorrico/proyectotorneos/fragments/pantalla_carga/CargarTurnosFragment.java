@@ -116,6 +116,8 @@ public class CargarTurnosFragment extends Fragment {
                             datos.put("cantidad", cantidad);
                             if(duracion.compareTo(Integer.toString(competencia.getDuracion())) != 0){
                                 datos.put("duracion",duracion);
+                            } else {
+                                datos.put("duracion",Integer.toString(competencia.getDuracion()));
                             }
                             Log.d("DATOS", datos.toString());
                             Call<Success> call = turnSrv.createTurn(datos);

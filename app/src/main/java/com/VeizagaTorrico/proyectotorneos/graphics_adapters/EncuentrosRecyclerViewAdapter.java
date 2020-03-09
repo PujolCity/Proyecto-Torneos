@@ -50,7 +50,7 @@ public class EncuentrosRecyclerViewAdapter extends RecyclerView.Adapter<Encuentr
     @NonNull
     @Override
     public EncuentrosRecyclerViewAdapter.Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(this.context).inflate(R.layout.encuentro_layout,null);
+        View vista = LayoutInflater.from(this.context).inflate(R.layout.encuentro_layout,parent,false);
         vista.setOnClickListener(this);
         return new EncuentrosRecyclerViewAdapter.Holder(vista);
     }

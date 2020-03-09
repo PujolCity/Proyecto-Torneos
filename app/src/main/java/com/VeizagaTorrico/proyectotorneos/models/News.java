@@ -20,15 +20,15 @@ public class News implements Serializable {
     @SerializedName("descripcion")
     private String cuerpo;
 
-   // @SerializedName("uptime")
-  //  private Timestamp uptime;
+    @SerializedName("uptime")
+    private String uptime;
 
-    public News(String competencia, String titulo, String subtitulo, String cuerpo /*,Timestamp uptime*/) {
+    public News(String competencia, String titulo, String subtitulo, String cuerpo ,String uptime) {
         this.competencia = competencia;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.cuerpo = cuerpo;
-   //     this.uptime = uptime;
+        this.uptime = uptime;
     }
 
     public String getTitulo() {
@@ -62,15 +62,15 @@ public class News implements Serializable {
     public void setCompetencia(String competencia) {
         this.competencia = competencia;
     }
-/*
-    public Timestamp getUptime() {
+
+    public String getUptime() {
         return uptime;
     }
 
-    public void setUptime(Timestamp uptime) {
+    public void setUptime(String uptime) {
         this.uptime = uptime;
     }
-*/
+
     @Override
     public String toString() {
         return competencia + ' ' + titulo + ' '

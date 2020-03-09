@@ -18,9 +18,9 @@ import com.VeizagaTorrico.proyectotorneos.fragments.mis_competencias.MisCompeten
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia3Fragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.DetalleCompetenciaFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.EncuentrosFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.InfoGeneralCompetenciaFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.DetalleCompetenciaFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.EncuentrosFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.InfoGeneralCompetenciaFragment;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -28,7 +28,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.VeizagaTorrico.proyectotorneos.fragments.InicioFragment;
-import com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.PosicionesFragment;
+import com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.PosicionesFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CargasDetalleFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresDetalleFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment;
@@ -55,7 +55,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 

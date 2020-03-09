@@ -50,7 +50,7 @@ public class CompetenciasRecyclerViewAdapter extends RecyclerView.Adapter<Compet
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(this.context).inflate(R.layout.fragment_competencias,null);
+        View vista = LayoutInflater.from(this.context).inflate(R.layout.fragment_competencias,parent,false);
         vista.setOnClickListener(this);
         return new Holder(vista);
     }

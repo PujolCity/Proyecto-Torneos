@@ -11,14 +11,20 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:configChanges="screenSize|orientation"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ResetPassActivity">
+        <activity android:name=".ResetPassActivity"
+            android:configChanges="screenSize|orientation">
         </activity>
-        <activity android:name=".CodVerification" />
-        <activity android:name=".SinginActivity" />
-        <activity android:name=".NavigationMainActivity" /> <!-- <activity android:name=".HomeActivity"></activity> -->
-        <activity android:name=".UserRegisterActivity" /> <!-- android:name=".NavigationMainActivity" -->
+        <activity android:name=".CodVerification"
+            android:configChanges="screenSize|orientation"/>
+        <activity android:name=".SinginActivity"
+            android:configChanges="screenSize|orientation"/>
+        <activity android:name=".NavigationMainActivity"
+            android:configChanges="screenSize|orientation"/> <!-- <activity android:name=".HomeActivity"></activity> -->
+        <activity android:name=".UserRegisterActivity"
+            android:configChanges="screenSize|orientation"/> <!-- android:name=".NavigationMainActivity" -->
         <!-- android:label="@string/app_name" -->
         <!-- android:theme="@style/AppTheme.NoActionBar"> -->
         <!-- <intent-filter> -->
@@ -29,7 +35,8 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:configChanges="screenSize|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

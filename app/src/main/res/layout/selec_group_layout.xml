@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:background="@color/colorPrimaryDark">
 
-
     <Spinner
         android:id="@+id/spinnerGrupoTablaPosiciones"
         android:layout_width="150dp"

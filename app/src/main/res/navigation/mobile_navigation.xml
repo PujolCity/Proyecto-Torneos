@@ -73,7 +73,7 @@
     </fragment>
     <fragment
         android:id="@+id/detalleCompListFragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.InfoGeneralCompetenciaFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.InfoGeneralCompetenciaFragment"
         android:label="Detalle"
         tools:layout="@layout/fragment_info_general_competencia" />
     <fragment
@@ -151,9 +151,6 @@
             android:id="@+id/action_cargasDetalleFragment_to_encuentrosDetalleFragment"
             app:destination="@id/encuentrosDetalleFragment" />
         <action
-            android:id="@+id/action_cargasDetalleFragment_to_cargarPredioFragment"
-            app:destination="@id/cargarPredioFragment" />
-        <action
             android:id="@+id/action_cargasDetalleFragment_to_coOrganizadorFragment"
             app:destination="@id/coOrganizadorFragment" />
         <action
@@ -168,6 +165,9 @@
         <action
             android:id="@+id/action_cargasDetalleFragment_to_cargarNoticiaFragment"
             app:destination="@id/cargarNoticiaFragment" />
+        <action
+            android:id="@+id/action_cargasDetalleFragment_to_cargaPredioCompetenciaFragment"
+            app:destination="@id/cargaPredioCompetenciaFragment" />
     </fragment>
     <fragment
         android:id="@+id/competidoresDetalleFragment"
@@ -192,7 +192,7 @@
     </fragment>
     <fragment
         android:id="@+id/detalleCompetenciaFragment"
-        android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias.DetalleCompetenciaFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.DetalleCompetenciaFragment"
         android:label="Detalle"
         tools:layout="@layout/fragment_detalle_competencia" >
         <action
@@ -312,6 +312,20 @@
         <action
             android:id="@+id/action_generalDetalleFragment_to_crearInscripcionFragment2"
             app:destination="@id/crearInscripcionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/encuentrosFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.EncuentrosFragment"
+        android:label="fragment_encuentros"
+        tools:layout="@layout/fragment_encuentros" />
+    <fragment
+        android:id="@+id/cargaPredioCompetenciaFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaPredioCompetenciaFragment"
+        android:label=""
+        tools:layout="@layout/fragment_carga_predio_competencia" >
+        <action
+            android:id="@+id/action_cargaPredioCompetenciaFragment_to_cargarPredioFragment"
+            app:destination="@id/cargarPredioFragment" />
     </fragment>
 
 </navigation>

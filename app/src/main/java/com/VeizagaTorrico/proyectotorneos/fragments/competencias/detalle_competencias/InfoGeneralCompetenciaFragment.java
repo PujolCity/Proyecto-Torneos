@@ -1,4 +1,4 @@
-package com.VeizagaTorrico.proyectotorneos.fragments.detalle_competencias;
+package com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -18,24 +18,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.Inscription;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
-import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
 
 public class InfoGeneralCompetenciaFragment extends Fragment {
@@ -44,7 +50,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private CompetitionMin competition;
     private Map<String,Integer> compFollow;
-    private TextView nmb, cat, org, ciudad, genero, estado;
+    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
     private Button inscribirse;
@@ -52,10 +58,12 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private AlertDialog dialog;
     private Map<String,String> solicitud;
     private boolean comprobado;
+    private InscriptionSrv inscriptionSrv;
+    private Inscription inscription;
+    private LinearLayout linear;
 
 
     public InfoGeneralCompetenciaFragment() {
-        // Required empty public constructor
     }
 
     public static InfoGeneralCompetenciaFragment newInstance() {
@@ -77,7 +85,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
         initElements();
         ocultarBotones();
-        Log.d("Competencia recibida", competition.toString());
         try{
             nmb.setText(competition.getName());
             cat.setText(competition.getCategory());
@@ -172,7 +179,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 createLoginDialogo();
-
             }
         });
         return vista;
@@ -180,9 +186,16 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private void initElements() {
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+        inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
+
         compFollow = new HashMap<>();
         solicitud = new HashMap<>();
 
+        linear = vista.findViewById(R.id.layout_include);
+        monto = vista.findViewById(R.id.monto);
+        requisitos = vista.findViewById(R.id.requisitos);
+        fechaInicio = vista.findViewById(R.id.fecha_inicio);
+        fechaCierre = vista.findViewById(R.id.fecha_cierre);
         nmb = vista.findViewById(R.id.txtNmbCompDet);
         cat = vista.findViewById(R.id.txtCatCompDet);
         org = vista.findViewById(R.id.txtOrgCompDet);
@@ -192,7 +205,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
-
     }
 
     public void onButtonPressed(Uri uri) {
@@ -227,56 +239,112 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     }
 
     private void ocultarBotones(){
-        List<String> roles = this.competition.getRol();
-
-        // ocultamos el boton de inscripcion si la inscripcion no esta abierta
-        if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")){
-            inscribirse.setVisibility(View.VISIBLE);
+        try {
+            List<String> roles = this.competition.getRol();
+            for (int i = 0 ; i < roles.size(); i++) {
+                if (roles.get(i).contains("SOLICITANTE")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.INVISIBLE);
+                }
+                if (roles.get(i).contains("ORGANIZADOR")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.VISIBLE);
+                }
+                if (roles.get(i).contains("COMPETIDOR")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.INVISIBLE);
+                }
+                if (roles.get(i).contains("SEGUIDOR")) {
+                    follow.setVisibility(View.INVISIBLE);
+                    noFollow.setVisibility(View.VISIBLE);
+                    inscribirse.setVisibility(View.VISIBLE);
+                }
+                if (roles.get(i).contains("ESPECTADOR")) {
+                    follow.setVisibility(View.VISIBLE);
+                    noFollow.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.VISIBLE);
+                }
+                // ocultamos el boton de inscripcion si la inscripcion no esta abierta
+                if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
+                    inscribirse.setVisibility(View.VISIBLE);
+                    linear.setVisibility(View.VISIBLE);
+                    llenarDatoInscripcion();
+                }
+                else{
+                    linear.setVisibility(View.INVISIBLE);
+                    inscribirse.setVisibility(View.INVISIBLE);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        else{
-            inscribirse.setVisibility(View.INVISIBLE);
-        }
-
-
-        for (int i = 0 ; i < roles.size(); i++) {
-            if (roles.get(i).contains("SOLICITANTE")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.INVISIBLE);
-            }
-            if (roles.get(i).contains("ORGANIZADOR")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.VISIBLE);
-            }
-            if (roles.get(i).contains("COMPETIDOR")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.INVISIBLE);
-            }
-            if (roles.get(i).contains("SEGUIDOR")) {
-                follow.setVisibility(View.INVISIBLE);
-                noFollow.setVisibility(View.VISIBLE);
-                inscribirse.setVisibility(View.VISIBLE);
-            }
-            if (roles.get(i).contains("ESPECTADOR")) {
-                follow.setVisibility(View.VISIBLE);
-                noFollow.setVisibility(View.INVISIBLE);
-                inscribirse.setVisibility(View.VISIBLE);
-            }
-        }
-
-
     }
 
+    private void llenarDatoInscripcion() {
+        Call<Inscription> call = inscriptionSrv.getInscripcion(competition.getId());
+        Log.d("URL INSCRIPTION", call.request().url().toString());
+        call.enqueue(new Callback<Inscription>() {
+            @Override
+            public void onResponse(Call<Inscription> call, Response<Inscription> response) {
+                if (response.code() == 200) {
+                    try {
+                        inscription = response.body();
+                        requisitos.setText(inscription.getRequisitos());
+                        monto.setText(Integer.toString(inscription.getMonto()));
+                        fechaInicio.setText(parsearFecha(inscription.getFechaInicio()));
+                        fechaCierre.setText(parsearFecha(inscription.getFechaCierre()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (response.code() == 400) {
+                    Log.d("RESP_GROUND_ERROR", "PETICION MAL FORMADA: " + response.errorBody());
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String message = jsonObject.getString("messaging");
+                        Log.d("RESP_GROUN_ERROR", "Msg de la repuesta: " + message);
+                        Toast.makeText(vista.getContext(), "No se pudo asignar el predio:  << " + message + " >>", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+            @Override
+            public void onFailure(Call<Inscription> call, Throwable t) {
+                try {
+                    Log.d("OnFailure SETPREDIO",t.getMessage());
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private String parsearFecha(String fechaServer) {
+        List<String> token = new ArrayList<>();
+        String fecha = fechaServer.substring(0,10);
+        StringTokenizer st = new StringTokenizer(fecha, "-");
+        while (st.hasMoreTokens()) {
+            token.add(st.nextToken());
+        }
+        return token.get(2)+"/"+ token.get(1)+"/"+token.get(0);
+    }
 
     private void createLoginDialogo() {
         final Dialog builder = new Dialog(vista.getContext());
         builder.setContentView(R.layout.alias_form);
-
+        Log.d("anda","skdajsnd");
         Button confirmar = builder.findViewById(R.id.confirmar);
         Button cancelar =  builder.findViewById(R.id.cancelar);
         final EditText alias = builder.findViewById(R.id.etAlias);
+        builder.show();
 
         confirmar.setOnClickListener(
                 new View.OnClickListener() {
@@ -294,11 +362,9 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                             }
                         }
                         builder.dismiss();
-
                     }
                 }
         );
-
         cancelar.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -307,15 +373,12 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                     builder.dismiss();
                     }
                 }
-
         );
-
-        builder.show();
     }
 
     private boolean comprobarAlias(String alia) {
         solicitud.clear();
-        solicitud.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        solicitud.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
         solicitud.put("idCompetencia", Integer.toString(competition.getId()));
         solicitud.put("alias",alia);
 
@@ -329,7 +392,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                try {
                    Log.d("response Dialog", Integer.toString(response.code()));
-
                    if(response.code() == 200){
                        MsgRequest msj = response.body();
                        Log.d("msj", msj.toString());
@@ -337,23 +399,21 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                        toast.show();
                        inscribirse.setVisibility(View.INVISIBLE);
                        comprobado =  true;
-
                    } else{
-
                        Toast toast = Toast.makeText(vista.getContext(), "Alias en Uso", Toast.LENGTH_SHORT);
                        toast.show();
                        comprobado = false;
                    }
-
                } catch (Exception e) {
                    e.printStackTrace();
                }
             }
-
             @Override
             public void onFailure(Call<MsgRequest> call, Throwable t) {
                 try {
-
+                    Log.d("OnFailure SETPREDIO",t.getMessage());
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

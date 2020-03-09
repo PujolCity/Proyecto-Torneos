@@ -32,7 +32,7 @@ public class Confrontation implements Serializable {
 
     private int idCompetencia;
 
-    public Confrontation(int id, String competidor1, String competidor2, int rdoc1, int rdoc2, Referee juez, Field campo) {
+    public Confrontation(int id, String competidor1, String competidor2, int rdoc1, int rdoc2, Referee juez, Field campo, Turn turno) {
         this.id = id;
         this.competidor1 = competidor1;
         this.competidor2 = competidor2;

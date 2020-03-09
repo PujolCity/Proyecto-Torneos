@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    tools:context=".fragments.pantalla_carga.CargaFaseFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="72dp"
+            android:text="Fase"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerFaseCarga"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spinnerFaseCarga"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:layout_marginEnd="76dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </Spinner>
+
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="144dp"
+            android:text="Seleccione un competidor"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
+
+        <Spinner
+            android:id="@+id/spinnerCompetidores"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="132dp"
+            android:layout_marginEnd="76dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </Spinner>
+
+        <EditText
+            android:id="@+id/etComp1"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="208dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:hint="Toque aqui"
+            android:gravity="center"
+            android:focusableInTouchMode="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </EditText>
+
+        <TextView
+            android:id="@+id/asd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="220dp"
+            android:text="Vs"
+            app:layout_constraintEnd_toStartOf="@+id/etComp2"
+            app:layout_constraintHorizontal_bias="0.475"
+            app:layout_constraintStart_toEndOf="@+id/etComp1"
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
+
+        <EditText
+            android:id="@+id/etComp2"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="208dp"
+            android:layout_marginEnd="32dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:hint="Toque aqui"
+            android:gravity="center"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </EditText>
+
+        <Button
+            android:id="@+id/guardarEncuentro"
+            android:layout_width="110dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="260dp"
+            android:layout_marginEnd="32dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Guardar Encuentro"
+            android:visibility="invisible"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </Button>
+
+        <ImageButton
+            android:id="@+id/deleteEncuentro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="272dp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintEnd_toStartOf="@+id/spinnerEncunetrosGenerados"
+            app:layout_constraintHorizontal_bias="0.676"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible">
+        </ImageButton>
+
+        <Spinner
+            android:id="@+id/spinnerEncunetrosGenerados"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="280dp"
+            android:gravity="right"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toStartOf="@+id/guardarEncuentro"
+            app:layout_constraintTop_toTopOf="parent">
+        </Spinner>
+
+        <Button
+            android:id="@+id/crearEncuentros"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="400dp"
+            android:text="Guardar Fase"
+            android:visibility="invisible"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </Button>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

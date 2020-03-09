@@ -116,12 +116,11 @@ public class NoticiasFragment extends Fragment {
                         sinNoticias();
                     }
             }
-
             @Override
             public void onFailure(Call<List<News>> call, Throwable t) {
                 try {
                     Log.d("onFailure", t.getMessage());
-                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestañá", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                     sinNoticias();
                 } catch (Exception e) {

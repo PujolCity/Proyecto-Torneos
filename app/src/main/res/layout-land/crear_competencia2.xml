@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nombre de Usuario"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+            </TextView>
+
+            <TextView
+                android:id="@+id/nombUsuario"
+                android:layout_width="110dp"
+                android:layout_height="wrap_content"
+                android:text="@string/txtNombreUsuario"
+                android:textAppearance="?attr/textAppearanceListItem"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView2">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="54dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="36dp"
+                android:text="Nombre"
+                app:layout_constraintStart_toEndOf="@+id/textView2"
+                app:layout_constraintTop_toTopOf="parent">
+            </TextView>
+
+            <TextView
+                android:id="@+id/nomb"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="44dp"
+                android:text="@string/txtNombre"
+                android:textAppearance="?attr/textAppearanceListItem"
+                app:layout_constraintStart_toEndOf="@+id/nombUsuario"
+                app:layout_constraintTop_toBottomOf="@+id/textView23">
+            </TextView>
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="36dp"
+                android:text="Apellido"
+                app:layout_constraintStart_toEndOf="@+id/textView23"
+                app:layout_constraintTop_toTopOf="parent">
+            </TextView>
+
+            <TextView
+                android:id="@+id/apelido"
+                android:layout_width="60dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:text="@string/txtApellido"
+                android:textAppearance="?attr/textAppearanceListItem"
+                app:layout_constraintStart_toEndOf="@+id/nomb"
+                app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+            <ImageButton
+                android:id="@+id/btnAceptar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_aceptar"
+                android:textColor="@color/cardview_light_background"
+                app:layout_constraintStart_toEndOf="@+id/apelido"
+                app:layout_constraintTop_toTopOf="parent">
+            </ImageButton>
+
+            <ImageButton
+                android:id="@+id/btnRechazar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:src="@drawable/ic_rechazar"
+                android:textColor="@color/cardview_light_background"
+                app:layout_constraintStart_toEndOf="@+id/btnAceptar"
+                app:layout_constraintTop_toTopOf="parent">
+            </ImageButton>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </HorizontalScrollView>
+</androidx.cardview.widget.CardView>

@@ -40,7 +40,7 @@ public class SolicitudesOrganizadorRecyclerViewAdapter extends RecyclerView.Adap
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(this.context).inflate(R.layout.card_invitaciones,null);
+        View vista = LayoutInflater.from(this.context).inflate(R.layout.card_invitaciones,parent,false);
         vista.setOnClickListener(this);
         return new ViewHolder(vista);
     }

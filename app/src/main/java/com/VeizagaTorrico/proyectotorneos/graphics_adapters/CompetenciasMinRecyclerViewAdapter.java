@@ -37,7 +37,7 @@ public class CompetenciasMinRecyclerViewAdapter extends RecyclerView.Adapter<Com
     @NonNull
     @Override
     public Holder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View vista = LayoutInflater.from(this.context).inflate(R.layout.card_competencias,null);
+        View vista = LayoutInflater.from(this.context).inflate(R.layout.card_competencias,parent,false);
         vista.setOnClickListener(this);
         return new Holder(vista);
     }

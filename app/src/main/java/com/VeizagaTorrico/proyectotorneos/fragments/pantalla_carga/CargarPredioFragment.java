@@ -57,7 +57,7 @@ public class CargarPredioFragment extends Fragment {
     private List<Ground> predios;
     private List<Field> campos;
     private ArrayAdapter<Field> adapterCampo;
-    private ImageButton btnDeletePredio,btnDeleteCampo;
+  //  private ImageButton btnDeletePredio,btnDeleteCampo;
 
     public CargarPredioFragment() {
         // Required empty public constructor
@@ -96,12 +96,9 @@ public class CargarPredioFragment extends Fragment {
                 }
                 if(validarPredio()){
                         predio.put("nombre", predioNombre);
-
-                        predio.put("idCompetencia",Integer.toString(competencia.getId()));
-
                         predio.put("direccion", predioDire);
-
                         predio.put("ciudad",predioCiudad);
+
                     Log.d("body predio", predio.toString());
 
                     Call<Success> call = predioSrv.createGround(predio);
@@ -185,60 +182,6 @@ public class CargarPredioFragment extends Fragment {
                 }
             }
         });
-
-        btnDeletePredio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog dialogo = new AlertDialog
-                        .Builder(vista.getContext()) // NombreDeTuActividad.this, o getActivity() si es dentro de un fragmento
-                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón positivo, así que la acción está confirmada
-                                eliminarPredio(competencia.getId(),predioSeleccionado.getId());
-                            }
-                        })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón negativo, no confirmaron
-                                // Simplemente descartamos el diálogo
-                                dialog.dismiss();
-                            }
-                        })
-                        .setTitle("Esta seguro?") // El título
-                        .setMessage("Si eliminas el Predio Tambien se eliminan todos los campos asociados") // El mensaje
-                        .create();// No olvides llamar a Create, ¡pues eso crea el AlertDialog!
-                dialogo.show();
-            }
-        });
-
-        btnDeleteCampo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog dialogo = new AlertDialog
-                        .Builder(vista.getContext()) // NombreDeTuActividad.this, o getActivity() si es dentro de un fragmento
-                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón positivo, así que la acción está confirmada
-                                eliminarCampo(predioSeleccionado.getId(),campoSeleccionado.getId());
-                            }
-                        })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón negativo, no confirmaron
-                                // Simplemente descartamos el diálogo
-                                dialog.dismiss();
-                            }
-                        })
-                        .setTitle("Esta seguro?") // El título
-                        .setMessage("Desea eliminar el campo seleccionado?") // El mensaje
-                        .create();// No olvides llamar a Create, ¡pues eso crea el AlertDialog!
-                dialogo.show();
-            }
-        });
         return vista;
     }
 
@@ -258,13 +201,11 @@ public class CargarPredioFragment extends Fragment {
                     toast.show();
                 }
             }
-
             @Override
             public void onFailure(Call<Success> call, Throwable t) {
 
             }
         });
-
     }
 
     private void eliminarPredio(int idCompetencia, int idPredio) {
@@ -294,7 +235,7 @@ public class CargarPredioFragment extends Fragment {
     }
 
     private void llenarSpinnerPredio() {
-        Call<List<Ground>> call = predioSrv.getGrounds(competencia.getId());
+        Call<List<Ground>> call = predioSrv.getGrounds();
         Log.d("call predio",call.request().url().toString());
         call.enqueue(new Callback<List<Ground>>() {
             @Override
@@ -304,8 +245,6 @@ public class CargarPredioFragment extends Fragment {
 
                     if(!response.body().isEmpty()) {
                         predios.clear();
-                        Ground predio = new Ground(0, "Elije un predio", "", "");
-                        predios.add(predio);
                         predios.addAll(response.body());
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -316,12 +255,12 @@ public class CargarPredioFragment extends Fragment {
                                 predioSeleccionado = (Ground) spinnerPredio.getSelectedItem();
                                 if (predioSeleccionado.getId() != 0) {
                                     llenarSpinnerCampo(predioSeleccionado.getId());
-                                    btnDeletePredio.setVisibility(View.VISIBLE);
+                   //                 btnDeletePredio.setVisibility(View.VISIBLE);
                                 } else {
                                     btnCampo.setVisibility(View.INVISIBLE);
                                     spinnerCampo.setVisibility(View.INVISIBLE);
-                                    btnDeletePredio.setVisibility(View.INVISIBLE);
-                                    btnDeleteCampo.setVisibility(View.INVISIBLE);
+                    //                btnDeletePredio.setVisibility(View.INVISIBLE);
+                    //                btnDeleteCampo.setVisibility(View.INVISIBLE);
                                     msjCampos();
                                 }
                             }
@@ -363,7 +302,7 @@ public class CargarPredioFragment extends Fragment {
                         if(!response.body().isEmpty()) {
                             campos.clear();
                             campos.addAll(response.body());
-                            btnDeleteCampo.setVisibility(View.VISIBLE);
+                    //        btnDeleteCampo.setVisibility(View.VISIBLE);
                             adapterCampo = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, campos);
                             adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerCampo.setAdapter(adapterCampo);
@@ -379,7 +318,6 @@ public class CargarPredioFragment extends Fragment {
                                 }
                             });
                         }else {
-
                             msjCampos();
                         }
                     } catch (Exception e) {
@@ -404,7 +342,6 @@ public class CargarPredioFragment extends Fragment {
                 return false;
         if(predioDire.isEmpty())
             return false;
-
         return true;
     }
 
@@ -415,8 +352,6 @@ public class CargarPredioFragment extends Fragment {
             return false;
         if(campoDimensiones.isEmpty())
             return false;
-
-
         return true;
     }
 
@@ -440,9 +375,9 @@ public class CargarPredioFragment extends Fragment {
 
         btnPredio = vista.findViewById(R.id.btnAgregarPredio);
         btnCampo = vista.findViewById(R.id.btnAgregarCampo);
-        btnDeletePredio = vista.findViewById(R.id.btnDeletePredio);
+    /*    btnDeletePredio = vista.findViewById(R.id.btnDeletePredio);
         btnDeleteCampo = vista.findViewById(R.id.btnDeleteCampo);
-
+*/
         spinnerPredio = vista.findViewById(R.id.spinnerCargaPredio);
         spinnerCampo = vista.findViewById(R.id.spinnerCargarCampo);
 
@@ -481,13 +416,11 @@ public class CargarPredioFragment extends Fragment {
 
     private void msjCampos() {
         Field campo = new Field(0,"Sin campos",0,0,null);
-        btnDeleteCampo.setVisibility(View.INVISIBLE);
+       // btnDeleteCampo.setVisibility(View.INVISIBLE);
         campos.clear();
         campos.add(campo);
         adapterCampo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,campos);
         adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCampo.setAdapter(adapterCampo);
-
     }
 }
-
