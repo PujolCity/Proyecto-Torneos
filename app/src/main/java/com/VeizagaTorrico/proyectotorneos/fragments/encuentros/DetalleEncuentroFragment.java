@@ -76,7 +76,6 @@ public class DetalleEncuentroFragment extends Fragment {
     private Turn turno;
 
     public DetalleEncuentroFragment() {
-        // Required empty public constructor
     }
 
     public static DetalleEncuentroFragment newInstance() {
@@ -94,7 +93,6 @@ public class DetalleEncuentroFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_detalle_encuentro, container, false);
         initElements();
 
@@ -178,10 +176,9 @@ public class DetalleEncuentroFragment extends Fragment {
         campos = new ArrayList<>();
         jueces = new ArrayList<>();
         turnos = new ArrayList<>();
-
         editEncuentro = new HashMap<>();
-        confirmarEdit = vista.findViewById(R.id.checConfirmar);
 
+        confirmarEdit = vista.findViewById(R.id.checConfirmar);
         comp1 = vista.findViewById(R.id.txtComp1Titulo);
         comp2 = vista.findViewById(R.id.txtComp2Titulo);
 
@@ -203,25 +200,38 @@ public class DetalleEncuentroFragment extends Fragment {
         turno = new Turn(0,0,"Elije un turno", "");
 
         if(encuentro.getCampo() != null){
-            txtCampo.setText(encuentro.getCampo().toString());
+            campos.clear();
+            campo = new Field(encuentro.getCampo().getId(), encuentro.getCampo().toString(), 0, 0, encuentro.getCampo().getPredio());
+            Log.d("INIT CAMPO", campo.toString());
+            //campos.add(campo);
+            //txtCampo.setText(encuentro.getCampo().toString());
             if(encuentro.getCampo().getPredio() != null){
-                txtPredio.setText(encuentro.getCampo().getPredio().toString());
+                predios.clear();
+                predio = new Ground(encuentro.getCampo().getPredio().getId(), encuentro.getCampo().getPredio().getNombre(), "", "");
+                Log.d("INIT PREDIO", campo.getPredio().toString());
+                //predios.add(predio);
+                //txtPredio.setText(encuentro.getCampo().getPredio().toString());
             }
+        } else {
+            msjCampos();
         }
         if(encuentro.getJuez() != null){
-            txtJuez.setText(encuentro.getJuez().toString());
+            jueces.clear();
+            referee = new Referee(encuentro.getJuez().getId(), encuentro.getJuez().getNombre(), encuentro.getJuez().getApellido(),0,null);
+            //jueces.add(referee);
+            //txtJuez.setText(encuentro.getJuez().toString());
         }
         if(encuentro.getTurno() != null){
             try {
+                turnos.clear();
                 Log.d("hora", encuentro.getTurno().toString());
-                txtTurno.setText(encuentro.getTurno().parsearHora());
-
+                //txtTurno.setText(encuentro.getTurno().parsearHora());
+                turno = new Turn(encuentro.getTurno().getId(),0,encuentro.getTurno().getHoraDesde(), encuentro.getTurno().getHoraHasta());
+                //turnos.add(turno);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-
         spinnerPredio = vista.findViewById(R.id.spinnerPredio);
         spinnerCampo = vista.findViewById(R.id.spinnerCampo);
         spinnerJuez = vista.findViewById(R.id.spinnerJuez);
@@ -235,11 +245,8 @@ public class DetalleEncuentroFragment extends Fragment {
         refereeSrv = new RetrofitAdapter().connectionEnable().create(RefereeSrv.class);
         turnoSrv = new RetrofitAdapter().connectionEnable().create(TurnSrv.class);
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
-        msjCampos();
-
         comp1.setText(encuentro.getCompetidor1());
         comp2.setText(encuentro.getCompetidor2());
-
     }
 
     private void msjCampos() {
@@ -249,7 +256,6 @@ public class DetalleEncuentroFragment extends Fragment {
         adapterCampo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,campos);
         adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerCampo.setAdapter(adapterCampo);
-
     }
 
     private void llenarSpinnerTurno() {
@@ -261,7 +267,6 @@ public class DetalleEncuentroFragment extends Fragment {
                     try {
                         if(!response.body().isEmpty()){
                             turnos.add(turno);
-
                             turnos.addAll(response.body());
                             ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -274,10 +279,8 @@ public class DetalleEncuentroFragment extends Fragment {
                                         turnoSeleccionado = Integer.toString(turnoSel.getId());
                                     }
                                 }
-
                                 @Override
                                 public void onNothingSelected(AdapterView<?> adapterView) {
-
                                 }
                             });
                         }else {
@@ -287,13 +290,11 @@ public class DetalleEncuentroFragment extends Fragment {
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerTurno.setAdapter(adapter);
                         }
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<List<Turn>> call, Throwable t) {
                 try {
@@ -307,7 +308,6 @@ public class DetalleEncuentroFragment extends Fragment {
     }
 
     private void llenarSpinnerJuez() {
-
         Call<List<Referee>> call = refereeSrv.getReferees(encuentro.getIdCompetencia());
         Log.d("Call Juez",call.request().url().toString());
         call.enqueue(new Callback<List<Referee>>() {
@@ -315,8 +315,13 @@ public class DetalleEncuentroFragment extends Fragment {
             public void onResponse(Call<List<Referee>> call, Response<List<Referee>> response) {
                 try{
                     if(!response.body().isEmpty()){
+                        List<Referee> aux = response.body();
                         jueces.add(referee);
-                        jueces.addAll(response.body());
+                        for(int i = 0; i < aux.size(); i++){
+                            if(!referee.equals(aux.get(i))){
+                                jueces.add(aux.get(i));
+                            }
+                        }
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerJuez.setAdapter(adapter);
@@ -341,7 +346,6 @@ public class DetalleEncuentroFragment extends Fragment {
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerJuez.setAdapter(adapter);
                     }
-
                 } catch (Exception e) {
                         e.printStackTrace();
                 }
@@ -368,10 +372,14 @@ public class DetalleEncuentroFragment extends Fragment {
             public void onResponse(Call<List<Ground>> call, Response<List<Ground>> response) {
                 try {
                     Log.d("encuentro response", Integer.toString(response.code()));
-
                     if(!response.body().isEmpty()) {
+                        List<Ground> aux = response.body();
                         predios.add(predio);
-                        predios.addAll(response.body());
+                        for(int i = 0; i < aux.size(); i++){
+                            if(!predio.equals(aux.get(i))){
+                                predios.add(aux.get(i));
+                            }
+                        }
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                         spinnerPredio.setAdapter(adapter);
@@ -410,7 +418,7 @@ public class DetalleEncuentroFragment extends Fragment {
         });
     }
 
-    private void llenarSpinnerCampos(int idPredio){
+    private void llenarSpinnerCampos(final int idPredio){
         if(idPredio != 0){
             Call<List<Field>> call = camposSrv.getFieldsByGround(idPredio);
             Log.d("calls campo",call.request().url().toString());
@@ -420,8 +428,18 @@ public class DetalleEncuentroFragment extends Fragment {
                     try {
                         if(!response.body().isEmpty()) {
                             campos.clear();
-                            campos.add(campo);
-                            campos.addAll(response.body());
+                            Log.d("idPREDIO", Integer.toString(idPredio));
+                            if(idPredio == campo.getPredio().getId()){
+                                campos.add(campo);
+                                List<Field> aux = response.body();
+                                for(int i = 0; i < aux.size(); i++){
+                                    if(!campo.equals(aux.get(i))){
+                                        campos.add(aux.get(i));
+                                    }
+                                }
+                            } else {
+                                campos.addAll(response.body());
+                            }
                             adapterCampo = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, campos);
                             adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerCampo.setAdapter(adapterCampo);

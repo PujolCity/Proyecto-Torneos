@@ -64,7 +64,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
 
     public InfoGeneralCompetenciaFragment() {
-        // Required empty public constructor
     }
 
     public static InfoGeneralCompetenciaFragment newInstance() {
@@ -186,12 +185,13 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     }
 
     private void initElements() {
-        linear = vista.findViewById(R.id.layout_include);
-
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+        inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
+
         compFollow = new HashMap<>();
         solicitud = new HashMap<>();
 
+        linear = vista.findViewById(R.id.layout_include);
         monto = vista.findViewById(R.id.monto);
         requisitos = vista.findViewById(R.id.requisitos);
         fechaInicio = vista.findViewById(R.id.fecha_inicio);
@@ -205,8 +205,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
-
-        inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -243,7 +241,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private void ocultarBotones(){
         try {
             List<String> roles = this.competition.getRol();
-
             for (int i = 0 ; i < roles.size(); i++) {
                 if (roles.get(i).contains("SOLICITANTE")) {
                     follow.setVisibility(View.INVISIBLE);
@@ -299,7 +296,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                         monto.setText(Integer.toString(inscription.getMonto()));
                         fechaInicio.setText(parsearFecha(inscription.getFechaInicio()));
                         fechaCierre.setText(parsearFecha(inscription.getFechaCierre()));
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -318,7 +314,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                     return;
                 }
             }
-
             @Override
             public void onFailure(Call<Inscription> call, Throwable t) {
                 try {
@@ -342,7 +337,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         return token.get(2)+"/"+ token.get(1)+"/"+token.get(0);
     }
 
-
     private void createLoginDialogo() {
         final Dialog builder = new Dialog(vista.getContext());
         builder.setContentView(R.layout.alias_form);
@@ -350,6 +344,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         Button confirmar = builder.findViewById(R.id.confirmar);
         Button cancelar =  builder.findViewById(R.id.cancelar);
         final EditText alias = builder.findViewById(R.id.etAlias);
+        builder.show();
 
         confirmar.setOnClickListener(
                 new View.OnClickListener() {
@@ -367,11 +362,9 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                             }
                         }
                         builder.dismiss();
-
                     }
                 }
         );
-
         cancelar.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -380,10 +373,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                     builder.dismiss();
                     }
                 }
-
         );
-
-        builder.show();
     }
 
     private boolean comprobarAlias(String alia) {
@@ -402,7 +392,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                try {
                    Log.d("response Dialog", Integer.toString(response.code()));
-
                    if(response.code() == 200){
                        MsgRequest msj = response.body();
                        Log.d("msj", msj.toString());
@@ -410,23 +399,21 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                        toast.show();
                        inscribirse.setVisibility(View.INVISIBLE);
                        comprobado =  true;
-
                    } else{
-
                        Toast toast = Toast.makeText(vista.getContext(), "Alias en Uso", Toast.LENGTH_SHORT);
                        toast.show();
                        comprobado = false;
                    }
-
                } catch (Exception e) {
                    e.printStackTrace();
                }
             }
-
             @Override
             public void onFailure(Call<MsgRequest> call, Throwable t) {
                 try {
-
+                    Log.d("OnFailure SETPREDIO",t.getMessage());
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
