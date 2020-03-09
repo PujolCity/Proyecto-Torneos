@@ -28,7 +28,11 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Inscription;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontation;
+import com.VeizagaTorrico.proyectotorneos.offline.model.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
@@ -53,15 +57,19 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
-    private Button inscribirse;
+    private Button inscribirse, downloadOff;
     private View vista;
     private AlertDialog dialog;
     private Map<String,String> solicitud;
     private boolean comprobado;
     private InscriptionSrv inscriptionSrv;
+    private ConfrontationSrv confrontationSrv;
     private Inscription inscription;
     private LinearLayout linear;
 
+    private List<Confrontation> encuentrosServer;
+    private AdminDataOff adminData;
+    private ManagerConfrontation adminEncuentro;
 
     public InfoGeneralCompetenciaFragment() {
     }
@@ -181,12 +189,62 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 createLoginDialogo();
             }
         });
+
+        downloadOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                downloadConfrontationServer();
+            }
+        });
+
         return vista;
     }
 
+    private void downloadConfrontationServer() {
+
+        Call<List<Confrontation>> call = confrontationSrv.confrontationsOffline(4);
+        Log.d("GET_DATA_OFF", call.request().url().toString());
+        call.enqueue(new Callback<List<Confrontation>>() {
+            @Override
+            public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
+                if (response.code() == 200) {
+                    encuentrosServer = response.body();
+                    Log.d("DATA_OFF", "cant de encuentros recuperados: "+encuentrosServer.size());
+
+                    // guardamos los datos en la DB local
+                    adminData.loadConfrontations(vista.getContext(), encuentrosServer);
+
+                    // vemos si se insertaron los datos correctamente en la DB
+                    adminEncuentro.getCantRows();
+                }
+                if (response.code() == 400) {
+                    Log.d("RESP_CONF_NOTIF", "PETICION MAL FORMADA: " + response.errorBody());
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String userMessage = jsonObject.getString("messaging");
+                        Log.d("RESP_CONF_NOTIF", "Msg de la repuesta: " + userMessage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Confrontation>> call, Throwable t) {
+                Log.d(" GET_DATA_OFF", t.getMessage());
+            }
+        });
+    }
+
     private void initElements() {
+        adminData = new AdminDataOff();
+        adminEncuentro = new ManagerConfrontation(vista.getContext());
+
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
+        confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
 
         compFollow = new HashMap<>();
         solicitud = new HashMap<>();
@@ -205,6 +263,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
+        downloadOff = vista.findViewById(R.id.btn_download_off);
     }
 
     public void onButtonPressed(Uri uri) {

@@ -7,6 +7,7 @@ import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.models.Classified;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.models.User;
+import com.VeizagaTorrico.proyectotorneos.offline.model.DataOffline;
 
 import java.util.List;
 import java.util.Map;
@@ -66,4 +67,6 @@ public interface UserSrv {
     @GET(Constants.BASE_URL + "user-notif/config")
     Call<ConfigNotification> getConfigNotification(@Query ("idUsuario") int idUsuario);
 
+    @POST(Constants.BASE_URL + "user/off")
+    Call<DataOffline> getDataOffline(@Body Map<String,String> userComp);
 }

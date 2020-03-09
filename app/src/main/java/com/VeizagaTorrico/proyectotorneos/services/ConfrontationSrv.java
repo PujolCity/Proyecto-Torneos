@@ -26,4 +26,6 @@ public interface ConfrontationSrv {
     @PUT(Constants.BASE_URL + "confrontation")
     Call<MsgRequest> editEncuentro(@Body Map<String,String> encuentro);
 
+    @GET(Constants.BASE_URL + "confrontations/competition-off")
+    Call<List<com.VeizagaTorrico.proyectotorneos.offline.model.Confrontation>> confrontationsOffline(@Query ("idCompetencia") int idCompetencia);
 }
