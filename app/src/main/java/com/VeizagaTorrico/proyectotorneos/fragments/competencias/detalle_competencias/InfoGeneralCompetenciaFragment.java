@@ -61,7 +61,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private Button inscribirse;
     private ImageButton downloadOff;
     private View vista;
-    private AlertDialog dialog;
     private Map<String,String> solicitud;
     private boolean comprobado;
     private InscriptionSrv inscriptionSrv;
@@ -415,14 +414,76 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     }
 
     private void createLoginDialogo() {
-        final Dialog builder = new Dialog(vista.getContext());
+        /*
+        LayoutInflater linf = LayoutInflater.from(this);
+        final View inflator = linf.inflate(R.layout.twoinputs, null);
+        AlertDialog.Builder alert = new AlertDialog.Builder(this);
+
+        alert.setTitle("Tilte");
+        alert.setMessage("Message");
+        alert.setView(inflator);
+
+        final EditText et1 = (EditText) inflator.findViewById(R.id.editText1);
+        final EditText et2 = (EditText) inflator.findViewById(R.id.editText2);
+
+        alert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton)
+           {
+                  String s1=et1.getText().toString();
+                  String s2=et2.getText().toString();
+                  //do operations using s1 and s2 here...
+           }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+           public void onClick(DialogInterface dialog, int whichButton) {
+                    dialog.cancel();
+           }
+        });
+
+        alert.show();
+         */
+        LayoutInflater linf = LayoutInflater.from(vista.getContext());
+        final View inflator = linf.inflate(R.layout.alias_form,null);
+        final AlertDialog.Builder alert = new AlertDialog.Builder(vista.getContext());
+        alert.setTitle("Ingrese nombre de Equipo o Participante!");
+        alert.setView(inflator);
+
+        final EditText alias = inflator.findViewById(R.id.etAlias);
+        alert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                String alia = alias.getText().toString();
+                if(alia.isEmpty()){
+                    Toast toast = Toast.makeText(inflator.getContext(), "Por favor agreagar un Alias", Toast.LENGTH_SHORT);
+                    toast.show();
+                }else {
+                    if(comprobarAlias(alia)){
+                        Toast toast = Toast.makeText(inflator.getContext(), "Solicitud registrada!!", Toast.LENGTH_SHORT);
+                        toast.show();
+                        dialog.dismiss();
+                    }
+                }
+                dialog.cancel();
+            }
+        });
+
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                dialog.cancel();
+            }
+        });
+
+
+
+        alert.show();
+
+        // viejo
+     /*   final Dialog builder = new Dialog(vista.getContext());
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
         builder.setContentView(R.layout.alias_form);
-        Log.d("anda","skdajsnd");
+
         Button confirmar = builder.findViewById(R.id.confirmar);
         Button cancelar =  builder.findViewById(R.id.cancelar);
-        final EditText alias = builder.findViewById(R.id.etAlias);
-        builder.show();
-
         confirmar.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -451,6 +512,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                     }
                 }
         );
+        builder.show();*/
     }
 
     private boolean comprobarAlias(String alia) {
