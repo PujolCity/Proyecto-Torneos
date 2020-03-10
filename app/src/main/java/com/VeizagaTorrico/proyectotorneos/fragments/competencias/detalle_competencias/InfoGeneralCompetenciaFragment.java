@@ -3,6 +3,7 @@ package com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_compet
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -57,7 +58,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
-    private Button inscribirse, downloadOff;
+    private Button inscribirse;
+    private ImageButton downloadOff;
     private View vista;
     private AlertDialog dialog;
     private Map<String,String> solicitud;
@@ -193,7 +195,23 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         downloadOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                downloadConfrontationServer();
+                AlertDialog.Builder builder =new AlertDialog.Builder(vista.getContext());
+                builder.setTitle("Descargar Datos de la Competencia?");
+                builder.setMessage("Si acepta se descargaran los datos de esta competencia." +
+                        "\n Esta seguro?");
+
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        downloadConfrontationServer();
+                        //downloadOff.setVisibility(View.INVISIBLE);
+                    }
+                });
+
+                builder.setNegativeButton("Rechazar", null);
+
+                Dialog dialog = builder.create();
+                dialog.show();
             }
         });
 
