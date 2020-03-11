@@ -6,6 +6,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,13 +16,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
+import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.Inscription;
+import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class GeneralDetalleFragment extends Fragment {
 
@@ -28,8 +39,11 @@ public class GeneralDetalleFragment extends Fragment {
     private View vista;
     private CompetitionMin competencia;
     private Button btnEditar,btnInscripcion;
+    private InscriptionSrv inscriptionSrv;
+    private LinearLayout linear;
+    private Inscription inscription;
 
-    private TextView nmb, cat, org, ciudad, genero, estado;
+    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
 
     public GeneralDetalleFragment() {
     }
@@ -73,6 +87,13 @@ public class GeneralDetalleFragment extends Fragment {
     }
 
     private void initElements() {
+        inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
+        linear = vista.findViewById(R.id.layout_include_organizando);
+        monto = vista.findViewById(R.id.monto);
+        requisitos = vista.findViewById(R.id.requisitos);
+        fechaInicio = vista.findViewById(R.id.fecha_inicio);
+        fechaCierre = vista.findViewById(R.id.fecha_cierre);
+
         nmb = vista.findViewById(R.id.txtNmbCompDet_organizando);
         cat = vista.findViewById(R.id.txtCatCompDet_organizando);
         org = vista.findViewById(R.id.txtOrgCompDet_organizando);
@@ -109,7 +130,16 @@ public class GeneralDetalleFragment extends Fragment {
                 btnInscripcion.setVisibility(View.INVISIBLE);
                 btnEditar.setVisibility(View.INVISIBLE);
             }
-            } catch (Exception e) {
+            if(this.competencia.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
+                //inscribirse.setVisibility(View.VISIBLE);
+                linear.setVisibility(View.VISIBLE);
+                llenarDatoInscripcion();
+            }
+            else{
+                linear.setVisibility(View.INVISIBLE);
+            }
+
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -175,5 +205,59 @@ public class GeneralDetalleFragment extends Fragment {
 
     public void setCompetencia(CompetitionMin competencia) {
         this.competencia = competencia;
+    }
+
+    private void llenarDatoInscripcion() {
+        Call<Inscription> call = inscriptionSrv.getInscripcion(competencia.getId());
+        Log.d("URL INSCRIPTION", call.request().url().toString());
+        call.enqueue(new Callback<Inscription>() {
+            @Override
+            public void onResponse(Call<Inscription> call, Response<Inscription> response) {
+                if (response.code() == 200) {
+                    try {
+                        inscription = response.body();
+                        requisitos.setText(inscription.getRequisitos());
+                        monto.setText(Integer.toString(inscription.getMonto()));
+                        fechaInicio.setText(parsearFecha(inscription.getFechaInicio()));
+                        fechaCierre.setText(parsearFecha(inscription.getFechaCierre()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (response.code() == 400) {
+                    Log.d("RESP_GROUND_ERROR", "PETICION MAL FORMADA: " + response.errorBody());
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String message = jsonObject.getString("messaging");
+                        Log.d("RESP_GROUN_ERROR", "Msg de la repuesta: " + message);
+                        Toast.makeText(vista.getContext(), "No se pudo asignar el predio:  << " + message + " >>", Toast.LENGTH_SHORT).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+            @Override
+            public void onFailure(Call<Inscription> call, Throwable t) {
+                try {
+                    Log.d("OnFailure SETPREDIO",t.getMessage());
+                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    private String parsearFecha(String fechaServer) {
+        List<String> token = new ArrayList<>();
+        String fecha = fechaServer.substring(0,10);
+        StringTokenizer st = new StringTokenizer(fecha, "-");
+        while (st.hasMoreTokens()) {
+            token.add(st.nextToken());
+        }
+        return token.get(2)+"/"+ token.get(1)+"/"+token.get(0);
     }
 }

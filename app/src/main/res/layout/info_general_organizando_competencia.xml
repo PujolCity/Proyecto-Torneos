@@ -15,11 +15,11 @@
             android:id="@+id/btn_edit_competencia_organizando"
             android:layout_width="55dp"
             android:layout_height="37dp"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="#107683"
-            android:textColor="@color/cardview_light_background"
             android:text="Editar"
+            android:textColor="@color/cardview_light_background"
             app:layout_constraintEnd_toStartOf="@+id/btnFollow"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,7 +30,7 @@
             android:id="@+id/generar_inscripcion_organizando"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginTop="52dp"
+            android:layout_marginTop="16dp"
             android:backgroundTint="#107683"
             android:text="Crear Inscripcion"
             android:textColor="@color/cardview_light_background"
@@ -45,13 +45,12 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="128dp"
             android:text="Competencia"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/generar_inscripcion_organizando">
         </TextView>
 
         <TextView
@@ -59,9 +58,9 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="4dp"
             android:text="@string/txtTipo"
-            android:textSize="20sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -73,9 +72,9 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="4dp"
             android:text="@string/txtCategoria"
-            android:textSize="20sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -87,8 +86,8 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
-            android:textSize="20sp"
+            android:layout_marginTop="4dp"
+            android:textSize="12sp"
             android:text="@string/txtCiudad"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtOrgCompDet_organizando">
@@ -99,9 +98,9 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="4dp"
             android:text="@string/txtGenero"
-            android:textSize="20sp"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtCityCompDet_organizando">
         </TextView>
@@ -111,10 +110,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="4dp"
             android:text="Estado"
+            android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txtGenderCompDet_organizando" />
+
+        <LinearLayout
+            android:id="@+id/layout_include_organizando"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_estado_infograll_organizando">
+
+            <include
+                android:id="@+id/include"
+                layout="@layout/fragment_inscripcion_detalle"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:layout_editor_absoluteX="-10dp"
+                tools:layout_editor_absoluteY="391dp">
+            </include>
+        </LinearLayout>
+
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
