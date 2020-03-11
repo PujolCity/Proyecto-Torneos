@@ -70,7 +70,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private ImageButton downloadOff;
     private View vista;
     private Map<String,String> solicitud;
-    private boolean comprobado;
+    private boolean comprobado, isOtherFragment;
     private InscriptionSrv inscriptionSrv;
     private ConfrontationSrv confrontationSrv;
     private Inscription inscription;
@@ -403,6 +403,14 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         this.competition = competition;
     }
 
+    public void setOtherFragment(boolean otherFragment) {
+        isOtherFragment = otherFragment;
+    }
+
+    public boolean isOtherFragment() {
+        return isOtherFragment;
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
@@ -454,6 +462,11 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             else{
                 linear.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
+            }
+            if(isOtherFragment()){
+                downloadOff.setVisibility(View.VISIBLE);
+            }else {
+                downloadOff.setVisibility(View.INVISIBLE);
             }
 
         } catch (Exception e) {
