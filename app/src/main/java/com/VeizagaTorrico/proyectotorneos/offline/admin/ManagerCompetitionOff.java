@@ -97,19 +97,6 @@ public class ManagerCompetitionOff {
                 Log.d("DB_LOCAL_COMP!", "Roles competencia "+rolesString);
                 if(rolesString.contains(rol)){
                     String[] roles = rolesString.split(" ");
-//                    CompetitionOff aux = new CompetitionOff(1,)
-//                    CompetitionOff competitionAux = new CompetitionOff(
-//                            Integer.valueOf(cursor.getString(0)),
-//                            cursor.getString(1),
-//                            cursor.getString(2),
-//                            cursor.getString(3),
-//                            cursor.getString(4),
-//                            cursor.getString(5),
-//                            cursor.getString(6),
-//                            cursor.getString(7),
-//                            cursor.getString(8),
-//                            roles
-//                    );
                     CompetitionMin competition = new CompetitionMin(
                             Integer.valueOf(cursor.getString(0)),
                             cursor.getString(1),
@@ -132,6 +119,46 @@ public class ManagerCompetitionOff {
         Log.d("DB_LOCAL_READ", "Cant de competencias "+rol+" => "+competencias.size());
 
         return competencias;
+    }
+
+    // devuelve una lista de las copetencias en las que se cuenta con el rol recibido
+    public int cantGroupByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor cursor = instanceDb.rawQuery("select max(grupo) as grupo from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompetition, null);
+        //List<CompetitionMin> competencias = new ArrayList<>();
+
+        int cantGrupos = -1;
+        //String ngrupo = cursor.getString(cursor.getColumnIndex("grupo"));
+        //Log.d("DB_LOCAL_READ", "Ngrupos de la competencia "+ngrupo);
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // traemos los datos de la competencia
+            cantGrupos = Integer.valueOf(cursor.getString(0));
+        }
+
+        Log.d("DB_LOCAL_READ", "Cant de grupos de la competencia "+cantGrupos);
+
+        return cantGrupos;
+    }
+
+    // devuelve una lista de las copetencias en las que se cuenta con el rol recibido
+    public int cantJornadaByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor cursor = instanceDb.rawQuery("select MAX(jornada) from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompetition, null);
+        //List<CompetitionMin> competencias = new ArrayList<>();
+
+        int cantJornadas = -1;
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // traemos los datos de la competencia
+            cantJornadas = Integer.valueOf(cursor.getString(0));
+        }
+
+        Log.d("DB_LOCAL_READ", "Cant de jornadas de la competencia "+cantJornadas);
+
+        return cantJornadas;
     }
 
     public int getCantRows(){
