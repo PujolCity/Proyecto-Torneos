@@ -68,14 +68,12 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
                 @Override
                 public void onClick(View view) {
                     solicitud = new HashMap<>();
-                    Log.d("idUsuario", Integer.toString(usuario.getId()));
-                    Log.d("idCompetencia",Integer.toString(idComptencia));
-                    Log.d("position", Integer.toString(position));
                     solicitud.put("idUsuario",Integer.toString(usuario.getId()));
                     solicitud.put("idCompetencia",Integer.toString(idComptencia));
+                    Log.d("BODY RECHAZO", solicitud.toString());
+
                     Call<Success> call = userSrv.refusePetitionerUser(solicitud);
                     Log.d("URL", call.request().url().toString());
-                    Log.d("Body", call.request().body().toString());
                     call.enqueue(new Callback<Success>() {
                         @Override
                         public void onResponse(Call<Success> call, Response<Success> response) {
