@@ -170,6 +170,7 @@ public class SiguiendoFragment extends Fragment {
                        CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
                        Bundle bundle = new Bundle();
                        bundle.putSerializable("competencia", competition);
+                       bundle.putBoolean("OtherFragment", true);
                        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                        Navigation.findNavController(vista).navigate(R.id.detalleCompetenciaFragment, bundle);
                    }

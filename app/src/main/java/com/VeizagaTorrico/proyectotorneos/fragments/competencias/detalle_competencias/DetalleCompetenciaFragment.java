@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,6 +95,16 @@ public class DetalleCompetenciaFragment extends Fragment {
         PosicionesFragment posicionesFragment = new PosicionesFragment();
         EncuentrosFragment encuentrosFragment = new EncuentrosFragment();
 
+        try {
+            boolean otherFragment = getArguments().getBoolean("OtherFragment");
+            if(otherFragment){
+                infoGeneral.setOtherFragment(otherFragment);
+            }else {
+                infoGeneral.setOtherFragment(false);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         adapter = new ViewPagerAdapter(getChildFragmentManager());
 
         // le pasamos la competencia a cada fragment
