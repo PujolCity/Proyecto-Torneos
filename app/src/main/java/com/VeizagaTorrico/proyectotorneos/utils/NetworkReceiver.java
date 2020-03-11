@@ -29,4 +29,12 @@ public class NetworkReceiver extends BroadcastReceiver {
 
         return (networkInfo!= null && networkInfo.isConnected());
     }
+
+    public static boolean existConnection(Context context){
+        ConnectivityManager connectivityManager = (ConnectivityManager)
+                context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        return (networkInfo!= null && networkInfo.isConnected());
+    }
 }

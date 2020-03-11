@@ -7,57 +7,57 @@ import java.util.List;
 public class DataOffline {
 
     @SerializedName("competencia")
-    Competition competencia;
+    CompetitionOff competencia;
 
     @SerializedName("competidores")
-    List<Competitor> competidores;
+    List<CompetitorOff> competidores;
 
     @SerializedName("fields")
-    List<Field> campos;
+    List<FieldOff> campos;
 
     @SerializedName("judges")
-    List<Judge> jueces;
+    List<JudgeOff> jueces;
 
     @SerializedName("inscription")
-    Inscription inscripcion;
+    InscriptionOff inscripcion;
 
-    public Competition getCompetencia() {
+    public CompetitionOff getCompetencia() {
         return competencia;
     }
 
-    public void setCompetencia(Competition competencia) {
+    public void setCompetencia(CompetitionOff competencia) {
         this.competencia = competencia;
     }
 
-    public List<Competitor> getCompetidores() {
+    public List<CompetitorOff> getCompetidores() {
         return competidores;
     }
 
-    public void setCompetidores(List<Competitor> competidores) {
+    public void setCompetidores(List<CompetitorOff> competidores) {
         this.competidores = competidores;
     }
 
-    public List<Field> getCampos() {
+    public List<FieldOff> getCampos() {
         return campos;
     }
 
-    public void setCampos(List<Field> campos) {
+    public void setCampos(List<FieldOff> campos) {
         this.campos = campos;
     }
 
-    public List<Judge> getJueces() {
+    public List<JudgeOff> getJueces() {
         return jueces;
     }
 
-    public void setJueces(List<Judge> jueces) {
+    public void setJueces(List<JudgeOff> jueces) {
         this.jueces = jueces;
     }
 
-    public Inscription getInscripcion() {
+    public InscriptionOff getInscripcion() {
         return inscripcion;
     }
 
-    public void setInscripcion(Inscription inscripcion) {
+    public void setInscripcion(InscriptionOff inscripcion) {
         this.inscripcion = inscripcion;
     }
 

@@ -2,26 +2,23 @@ package com.VeizagaTorrico.proyectotorneos.offline.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Judge {
+public class FieldOff {
 
     @SerializedName("id")
     int id;
-    @SerializedName("nombre")
+    @SerializedName("campo")
     String nombre;
-    @SerializedName("apellido")
-    String apellido;
-    @SerializedName("dni")
-    String dni;
+    @SerializedName("predio")
+    String predio;
 
     int competencia;
 
-    public Judge(){}
+    public FieldOff(){}
 
-    public Judge(int id, String nombre, String apellido, String dni, int competencia) {
+    public FieldOff(int id, String nombre, String predio, int competencia) {
         this.id = id;
         this.nombre = nombre;
-        this.apellido = apellido;
-        this.dni = dni;
+        this.predio = predio;
         this.competencia = competencia;
     }
 
@@ -41,20 +38,12 @@ public class Judge {
         this.nombre = nombre;
     }
 
-    public String getApellido() {
-        return apellido;
+    public String getPredio() {
+        return predio;
     }
 
-    public void setApellido(String apellido) {
-        this.apellido = apellido;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
+    public void setPredio(String predio) {
+        this.predio = predio;
     }
 
     public int getCompetencia() {

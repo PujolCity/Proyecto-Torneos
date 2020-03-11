@@ -30,11 +30,18 @@ import com.VeizagaTorrico.proyectotorneos.models.Inscription;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontation;
-import com.VeizagaTorrico.proyectotorneos.offline.model.Confrontation;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitorOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerFieldOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerInscriptionOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerJudgeOff;
+import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
+import com.VeizagaTorrico.proyectotorneos.offline.model.DataOffline;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
+import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import org.json.JSONObject;
@@ -58,6 +65,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
+    private UserSrv usersSrv;
     private Button inscribirse;
     private ImageButton downloadOff;
     private View vista;
@@ -68,9 +76,16 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private Inscription inscription;
     private LinearLayout linear;
 
-    private List<Confrontation> encuentrosServer;
+    private List<ConfrontationOff> encuentrosServer;
     private AdminDataOff adminData;
-    private ManagerConfrontation adminEncuentro;
+    private ManagerCompetitionOff adminCompetenciasOff;
+    private ManagerCompetitorOff adminCompetitorsOff;
+    private ManagerJudgeOff adminJuecesOff;
+    private ManagerFieldOff adminCamposOff;
+    private ManagerInscriptionOff adminInscripcionOff;
+    private ManagerConfrontationOff adminEncuentroOff;
+    private Map<String,String> userComp = new HashMap<>();
+    private DataOffline dataServer;
 
     public InfoGeneralCompetenciaFragment() {
     }
@@ -149,7 +164,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         noFollow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                compFollow.put("idUsuario", 2);
                 int idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
                 compFollow.put("idUsuario", idUsuario);
                 compFollow.put("idCompetencia",competition.getId());
@@ -203,7 +217,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         downloadConfrontationServer();
-                        //downloadOff.setVisibility(View.INVISIBLE);
+                        dowloadDataCompettition();
                     }
                 });
 
@@ -217,13 +231,14 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         return vista;
     }
 
+    // realiza la descarga de los encuentros de la competencia
     private void downloadConfrontationServer() {
 
-        Call<List<Confrontation>> call = confrontationSrv.confrontationsOffline(4);
+        Call<List<ConfrontationOff>> call = confrontationSrv.confrontationsOffline(competition.getId());
         Log.d("GET_DATA_OFF", call.request().url().toString());
-        call.enqueue(new Callback<List<Confrontation>>() {
+        call.enqueue(new Callback<List<ConfrontationOff>>() {
             @Override
-            public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
+            public void onResponse(Call<List<ConfrontationOff>> call, Response<List<ConfrontationOff>> response) {
                 if (response.code() == 200) {
                     encuentrosServer = response.body();
                     Log.d("DATA_OFF", "cant de encuentros recuperados: "+encuentrosServer.size());
@@ -232,7 +247,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                     adminData.loadConfrontations(vista.getContext(), encuentrosServer);
 
                     // vemos si se insertaron los datos correctamente en la DB
-                    adminEncuentro.getCantRows();
+                    adminEncuentroOff.getCantRows();
+                    Toast.makeText(vista.getContext(), "La descarga y almacenamiento de datos de los encuentros de la competencia se ha realizado.", Toast.LENGTH_LONG).show();
                 }
                 if (response.code() == 400) {
                     Log.d("RESP_CONF_NOTIF", "PETICION MAL FORMADA: " + response.errorBody());
@@ -249,7 +265,91 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Confrontation>> call, Throwable t) {
+            public void onFailure(Call<List<ConfrontationOff>> call, Throwable t) {
+                Log.d(" GET_DATA_OFF", t.getMessage());
+            }
+        });
+    }
+
+    private void dowloadDataCompettition(){
+        adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
+        adminCompetitorsOff = new ManagerCompetitorOff(vista.getContext());
+        adminCamposOff = new ManagerFieldOff(vista.getContext());
+        adminJuecesOff = new ManagerJudgeOff(vista.getContext());
+        adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
+
+        usersSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
+
+        userComp.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        userComp.put("idCompetencia", String.valueOf(competition.getId()));
+
+        Log.d("GET_DATA_OFF", "Body peticion: "+userComp);
+
+        Call<DataOffline> call = usersSrv.getDataOffline(userComp);
+        Log.d("GET_DATA_OFF", call.request().url().toString());
+        call.enqueue(new Callback<DataOffline>() {
+            @Override
+            public void onResponse(Call<DataOffline> call, Response<DataOffline> response) {
+                if (response.code() == 200) {
+                    dataServer = response.body();
+                    Log.d("DATA_OFF", "Nombre comp: "+dataServer.getCompetencia().getNombre());
+                    // guardamos los datos en la DB local
+                    adminData.loadCompetition(vista.getContext(), dataServer.getCompetencia());
+
+                    // controlamos que existan datos antes de guardarlos en la DB local
+                    if(dataServer.getCompetidores() != null){
+                        adminData.loadCompetitors(vista.getContext(), dataServer.getCompetidores());
+                        Log.d("DATA_OFF", "Cant comp: "+dataServer.getCompetidores().size());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con competidores ");
+                    }
+                    if(dataServer.getCampos() != null){
+                        adminData.loadFields(vista.getContext(), dataServer.getCampos());
+                        Log.d("DATA_OFF", "Cant campos: "+dataServer.getCampos().size());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con campos ");
+                    }
+                    if(dataServer.getJueces() != null){
+                        adminData.loadJudges(vista.getContext(), dataServer.getJueces());
+                        Log.d("DATA_OFF", "Cant Jueces: "+dataServer.getJueces().size());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con jueces ");
+                    }
+                    if(dataServer.getInscripcion() != null){
+                        adminData.loadInscription(vista.getContext(), dataServer.getInscripcion());
+                        Log.d("DATA_OFF", "Inicio inscripcion: "+dataServer.getInscripcion().getFinicio());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con una inscripcion ");
+                    }
+
+                    // vemos si se insertaron los datos correctamente en la DB
+                    adminCompetenciasOff.getCantRows();
+                    adminCompetitorsOff.getCantRows();
+                    adminCamposOff.getCantRows();
+                    adminJuecesOff.getCantRows();
+                    adminInscripcionOff.getCantRows();
+                    Toast.makeText(vista.getContext(), "La descarga y almacenamiento de la competencia(competidores, campos, jueces, inscripcion) se ha realizado.", Toast.LENGTH_LONG).show();
+                }
+                if (response.code() == 400) {
+                    Log.d("RESP_CONF_NOTIF", "PETICION MAL FORMADA: " + response.errorBody());
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String userMessage = jsonObject.getString("messaging");
+                        Log.d("RESP_CONF_NOTIF", "Msg de la repuesta: " + userMessage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataOffline> call, Throwable t) {
                 Log.d(" GET_DATA_OFF", t.getMessage());
             }
         });
@@ -257,7 +357,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
     private void initElements() {
         adminData = new AdminDataOff();
-        adminEncuentro = new ManagerConfrontation(vista.getContext());
+        adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
 
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);

@@ -6,19 +6,19 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.VeizagaTorrico.proyectotorneos.offline.model.Inscription;
+import com.VeizagaTorrico.proyectotorneos.offline.model.InscriptionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbContract;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
 
-public class ManagerInscription {
+public class ManagerInscriptionOff {
 
     private DbHelper adminDB;
 
-    public ManagerInscription(Context context) {
+    public ManagerInscriptionOff(Context context) {
         adminDB = new DbHelper(context, null, null, 1);
     }
 
-    public void addRowInscriptionFromObject(Inscription inscripcion){
+    public void addRowInscriptionFromObject(InscriptionOff inscripcion){
         Log.d("DB_LOCAL_INSERT_INSC", "Inscripcion: "+inscripcion);
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
@@ -39,15 +39,15 @@ public class ManagerInscription {
         instanceDb.close();
     }
 
-    public Inscription getObjectInscription(int idInscription){
+    public InscriptionOff getObjectInscription(int idInscription){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
         Cursor filaCompUser = instanceDb.rawQuery("select * from "+ DbContract.TABLE_INSCRIPCION+" where id="+idInscription, null);
-        Inscription inscripcion = null;
+        InscriptionOff inscripcion = null;
         if(filaCompUser.moveToFirst()){
             Log.d("DB_LOCAL_GET: ", filaCompUser.getString(5));
             // traemos los datos de la competencia
-            inscripcion = new Inscription(
+            inscripcion = new InscriptionOff(
                     Integer.valueOf(filaCompUser.getString(0)),
                     filaCompUser.getString(1),
                     filaCompUser.getString(2),

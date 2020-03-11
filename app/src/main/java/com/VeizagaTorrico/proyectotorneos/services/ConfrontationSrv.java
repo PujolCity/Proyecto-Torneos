@@ -4,6 +4,7 @@ import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
+import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
 
 import java.util.List;
 import java.util.Map;
@@ -27,5 +28,5 @@ public interface ConfrontationSrv {
     Call<MsgRequest> editEncuentro(@Body Map<String,String> encuentro);
 
     @GET(Constants.BASE_URL + "confrontations/competition-off")
-    Call<List<com.VeizagaTorrico.proyectotorneos.offline.model.Confrontation>> confrontationsOffline(@Query ("idCompetencia") int idCompetencia);
+    Call<List<ConfrontationOff>> confrontationsOffline(@Query ("idCompetencia") int idCompetencia);
 }

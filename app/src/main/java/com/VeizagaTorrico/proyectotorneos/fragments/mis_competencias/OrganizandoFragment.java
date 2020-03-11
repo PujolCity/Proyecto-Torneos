@@ -23,8 +23,10 @@ import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetenciasMinRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +44,8 @@ public class OrganizandoFragment extends Fragment {
     private RecyclerView recycleComp;
     private RecyclerView.LayoutManager manager;
     private TextView sinCompetenciasTv;
+
+    private ManagerCompetitionOff adminCompetenciasOff;
 
     public OrganizandoFragment() {
         // Required empty public constructor
@@ -118,62 +122,64 @@ public class OrganizandoFragment extends Fragment {
 
     private void inflarRecycler() {
         int idUsuarioregistrado = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
-        Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(idUsuarioregistrado);
-        Log.d("request retrofit", call.request().url().toString());
-        call.enqueue(new Callback<List<CompetitionMin>>() {
-            @Override
-            public void onResponse(Call<List<CompetitionMin>> call, Response<List<CompetitionMin>> response) {
-                Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
-                //codigo 200 si salio tdo bien
-                if (response.code() == 200) {
-                    //asigno a deportes lo que traje del servidor
-                    try {
+
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            Call<List<CompetitionMin>> call = competitionSrv.getCompetitionsOrganize(idUsuarioregistrado);
+            Log.d("request retrofit", call.request().url().toString());
+            call.enqueue(new Callback<List<CompetitionMin>>() {
+                @Override
+                public void onResponse(Call<List<CompetitionMin>> call, Response<List<CompetitionMin>> response) {
+                    Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
+                    //codigo 200 si salio tdo bien
+                    if (response.code() == 200) {
                         competitions = response.body();
-                        if(competitions.size() != 0){
-                            try {
-                                adapter.setCompetencias(competitions);
-                                //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
-                                recycleComp.setAdapter(adapter);
-                                //LISTENER PARA EL ELEMENTO SELECCIONADO
-                                adapter.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
-                                        Bundle bundle = new Bundle();
-                                        bundle.putSerializable("competencia", competition);
-                                        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                                        Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
-                                    }
-                                });
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            sinCompetencias();
-                        }
+                        mostrarCompetencias();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
+                    try {
+                        Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                        toast.show();
+                        Log.d("onFailure", t.getMessage());
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                if(competitions != null){
+            });
+        }
+        else{
+            adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
+            competitions = adminCompetenciasOff.competitionByRol("ORGANIZADOR");
+            mostrarCompetencias();
+        }
+    }
 
-                }else {
-                    Toast toast = Toast.makeText(vista.getContext(), "No hay competencias para mostrar", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
+    private void mostrarCompetencias(){
+        if (competitions.size() != 0) {
+            try {
+                adapter.setCompetencias(competitions);
+                //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
+                recycleComp.setAdapter(adapter);
+                //LISTENER PARA EL ELEMENTO SELECCIONADO
+                adapter.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("competencia", competition);
+                        // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                        Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
+                    }
+                });
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-
-            @Override
-            public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
-                try{
-                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                    toast.show();
-                    Log.d("onFailure", t.getMessage());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }}
-        });
+        } else {
+            sinCompetencias();
+        }
     }
 
     private void sinCompetencias() {

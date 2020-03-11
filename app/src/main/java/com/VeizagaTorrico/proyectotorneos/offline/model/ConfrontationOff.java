@@ -2,18 +2,20 @@ package com.VeizagaTorrico.proyectotorneos.offline.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Confrontation {
+public class ConfrontationOff {
 
     @SerializedName("id")
     int id;
     @SerializedName("grupo")
-    String grupo;
+    int grupo;
     @SerializedName("rdoComp1")
     int rdo1;
     @SerializedName("rdoComp2")
     int rdo2;
     @SerializedName("jornada")
-    String jornada;
+    int jornada;
+    @SerializedName("fase")
+    int fase;
     @SerializedName("juez")
     int idJuez;
     @SerializedName("campo")
@@ -24,16 +26,14 @@ public class Confrontation {
     String comp1;
     @SerializedName("competidor2")
     String comp2;
-    @SerializedName("fase")
-    int fase;
     @SerializedName("fecha")
     String fecha;
     @SerializedName("idCompetencia")
     int competencia;
 
-    public Confrontation(){}
+    public ConfrontationOff(){}
 
-    public Confrontation(int id, String grupo, int rdo1, int rdo2, String jornada, int idJuez, int idCampo, String turno, String comp1, String comp2, int fase, String fecha, int competencia) {
+    public ConfrontationOff(int id, int grupo, int rdo1, int rdo2, int jornada, int fase, int idJuez, int idCampo, String turno, String comp1, String comp2, String fecha, int competencia) {
         this.id = id;
         this.grupo = grupo;
         this.rdo1 = rdo1;
@@ -57,11 +57,11 @@ public class Confrontation {
         this.id = id;
     }
 
-    public String getGrupo() {
+    public int getGrupo() {
         return grupo;
     }
 
-    public void setGrupo(String grupo) {
+    public void setGrupo(int grupo) {
         this.grupo = grupo;
     }
 
@@ -81,11 +81,11 @@ public class Confrontation {
         this.rdo2 = rdo2;
     }
 
-    public String getJornada() {
+    public int getJornada() {
         return jornada;
     }
 
-    public void setJornada(String jornada) {
+    public void setJornada(int jornada) {
         this.jornada = jornada;
     }
 

@@ -6,64 +6,63 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.VeizagaTorrico.proyectotorneos.offline.model.Judge;
+
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbContract;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
+import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitorOff;
 
-public class ManagerJudge {
+public class ManagerCompetitorOff {
 
     private DbHelper adminDB;
 
-    public ManagerJudge(Context context) {
+    public ManagerCompetitorOff(Context context) {
         adminDB = new DbHelper(context, null, null, 1);
     }
 
-    public void addRowJudgeFromObject(Judge judge){
-        Log.d("DB_LOCAL_INSERT_INSC", "Juez: "+judge);
+    public void addRowCompetitorFromObject(CompetitorOff competitor){
+        Log.d("DB_LOCAL_INSERT_INSC", "Competidor: "+competitor);
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
         // insertamos datos en la tabla competencia
         ContentValues registro = new ContentValues();
-        registro.put("id", judge.getId());
-        registro.put("nombre", judge.getNombre());
-        registro.put("apellido", judge.getApellido());
-        registro.put("dni", judge.getDni());
-        registro.put("competencia", judge.getCompetencia());
+        registro.put("id", competitor.getId());
+        registro.put("alias", competitor.getAlias());
+        registro.put("usuario", competitor.getUsuario());
+        registro.put("competencia", competitor.getCompetencia());
 
-        Log.d("DB_LOCAL_INSERT", "Agrega un registro en Juez");
+        Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competidor");
 
-        instanceDb.insert(DbContract.TABLE_JUEZ, null, registro);
+        instanceDb.insert(DbContract.TABLE_COMPETIDOR, null, registro);
 
         instanceDb.close();
     }
 
-    public Judge getObjectJudge(int idJudge){
+    public CompetitorOff getObjectCompetitor(int idCompetitor){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
-        Cursor filaCompUser = instanceDb.rawQuery("select * from "+ DbContract.TABLE_JUEZ+" where id="+idJudge, null);
-        Judge juez = null;
+        Cursor filaCompUser = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR+" where id="+idCompetitor, null);
+        CompetitorOff competitor = null;
         if(filaCompUser.moveToFirst()){
             Log.d("DB_LOCAL_GET: ", filaCompUser.getString(1));
             // traemos los datos de la competencia
-            juez = new Judge(
+            competitor = new CompetitorOff(
                     Integer.valueOf(filaCompUser.getString(0)),
                     filaCompUser.getString(1),
                     filaCompUser.getString(2),
-                    filaCompUser.getString(3),
                     Integer.valueOf(filaCompUser.getString(3))
             );
         }
-        Log.d("DB_LOCAL_READ", "Juez: "+juez.getNombre());
+        Log.d("DB_LOCAL_READ", "Competitor: "+competitor.getAlias());
 
-        return juez;
+        return competitor;
     }
 
     public int getCantRows(){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
-        Cursor filaComp = instanceDb.rawQuery("select * from "+ DbContract.TABLE_JUEZ, null);
+        Cursor filaComp = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR, null);
         int cantRows = filaComp.getCount();
-        Log.d("ROWS_LOCAL_DB", "Cant de jueces:"+cantRows);
+        Log.d("ROWS_LOCAL_DB", "Cant de competidores:"+cantRows);
         instanceDb.close();
 
         return cantRows;

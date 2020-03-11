@@ -30,8 +30,11 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.EncuentrosRecyclerVi
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
+import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -58,6 +61,8 @@ public class EncuentrosFragment extends Fragment {
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv;
 
+    private ManagerConfrontationOff adminEncuentrosLocal;
+
     public EncuentrosFragment() {
         // Required empty public constructor
     }
@@ -79,13 +84,13 @@ public class EncuentrosFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_encuentros_detalle, container, false);
-        initElements();
+        initElements(vista);
 
         return vista;
     }
 
 
-    private void initElements() {
+    private void initElements(View view) {
         try {
             fecha_grupo = new HashMap<>();
             sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
@@ -102,7 +107,13 @@ public class EncuentrosFragment extends Fragment {
             spinnerGrupo = vista.findViewById(R.id.spinnerGrupo);
             btnBuscar = vista.findViewById(R.id.btnBuscar);
             cargarSpinnerFiltroEncuentros(competencia.getId());
-            getEncuentros(fecha_grupo);
+            if(NetworkReceiver.existConnection(view.getContext())){
+                getEncuentros(fecha_grupo);
+            }
+            else{
+                getEncuentrosOffline(fecha_grupo, view.getContext());
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -120,28 +131,7 @@ public class EncuentrosFragment extends Fragment {
                     try {
                         Log.d("ENCUENTROS_FG response", Integer.toString(response.code()));
                         encuentros = response.body();
-                        if(encuentros.size() != 0 ){
-                            try {
-                                adapter.setEncuentros(encuentros);
-                                recycleCon.setAdapter(adapter);
-                                if(competencia.getRol().contains("ORGANIZADOR")){
-                                    adapter.setOnClickListener(new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View view) {
-                                            Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                                            Bundle bundle = new Bundle();
-                                            encuentro.setIdCompetencia(competencia.getId());
-                                            bundle.putSerializable("encuentro", encuentro);
-                                            Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-                                        }
-                                    });
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        } else {
-                            sinEncuentros();
-                        }
+                        mostrarEncuentros();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -159,6 +149,40 @@ public class EncuentrosFragment extends Fragment {
                 }
             }
         });
+    }
+
+    // recupera los datos almacenados en la DB local
+    private void getEncuentrosOffline(Map<String, String> fechaGrupo, Context context){
+        adminEncuentrosLocal = new ManagerConfrontationOff(context);
+        encuentros = adminEncuentrosLocal.confrontationByCompetition(competencia.getId());
+        Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
+
+        mostrarEncuentros();
+    }
+
+    private void mostrarEncuentros(){
+        if(encuentros.size() != 0 ){
+            try {
+                adapter.setEncuentros(encuentros);
+                recycleCon.setAdapter(adapter);
+                if(competencia.getRol().contains("ORGANIZADOR")){
+                    adapter.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                            Bundle bundle = new Bundle();
+                            encuentro.setIdCompetencia(competencia.getId());
+                            bundle.putSerializable("encuentro", encuentro);
+                            Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                        }
+                    });
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            sinEncuentros();
+        }
     }
 
     public void onButtonPressed(Uri uri) {

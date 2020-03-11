@@ -2,7 +2,7 @@ package com.VeizagaTorrico.proyectotorneos.offline.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Inscription {
+public class InscriptionOff {
 
     @SerializedName("id")
     int id;
@@ -17,9 +17,9 @@ public class Inscription {
 //    Competition competencia;
     int competencia;
 
-    public Inscription(){}
+    public InscriptionOff(){}
 
-    public Inscription(int id, String finicio, String fcierre, int monto, String requisitos, int competencia) {
+    public InscriptionOff(int id, String finicio, String fcierre, int monto, String requisitos, int competencia) {
         this.id = id;
         this.finicio = finicio;
         this.fcierre = fcierre;

@@ -64,23 +64,21 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_ENCUENTROS =
             "CREATE TABLE IF NOT EXISTS "+DbContract.TABLE_ENCUENTRO+
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-                    "jornada INTEGER, "+
-                    "fase INTEGER, "+
-                    "turno TEXT, "+
                     "grupo INTEGER, "+
                     "rdo1 INTEGER, "+
                     "rdo2 INTEGER, "+
-                    "fecha TEXT, "+
-                    "competencia INTEGER, "+
+                    "jornada INTEGER, "+
+                    "fase INTEGER, "+
                     "juez INTEGER, "+
                     "campo INTEGER, "+
-                    "competidor1 INTEGER, "+
-                    "competidor2 INTEGER, "+
+                    "turno TEXT, "+
+                    "competidor1 TEXT, "+
+                    "competidor2 TEXT, "+
+                    "fecha TEXT, "+
+                    "competencia INTEGER, "+
                     "FOREIGN KEY(competencia) REFERENCES "+DbContract.TABLE_COMPETENCIA+"(id), "+
                     "FOREIGN KEY(juez) REFERENCES "+DbContract.TABLE_JUEZ+"(id), "+
-                    "FOREIGN KEY(campo) REFERENCES "+DbContract.TABLE_CAMPO+"(id), "+
-                    "FOREIGN KEY(competidor1) REFERENCES "+DbContract.TABLE_COMPETIDOR+"(id), "+
-                    "FOREIGN KEY(competidor2) REFERENCES "+DbContract.TABLE_COMPETIDOR+"(id)"+
+                    "FOREIGN KEY(campo) REFERENCES "+DbContract.TABLE_CAMPO+"(id)"+
                     ")";
 
     public DbHelper(@Nullable Context context, @Nullable String name, @Nullable SQLiteDatabase.CursorFactory factory, int version) {
@@ -90,30 +88,7 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        // creaos la tabla de usuario
-//        db.execSQL("CREATE TABLE IF NOT EXISTS user("+
-//                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-//                "nombre TEXT, "+
-//                "apellido TEXT, "+
-//                "correo TEXT, "+
-//                "nombreUsuario TEXT, "+
-//                "username TEXT, "+
-//                "sincronizado TEXT, "+
-//                "competencia INTEGER, "+
-//                "FOREIGN KEY(competencia) REFERENCES competition(competencia_id)"+
-//                ")");
-
-//        db.execSQL("CREATE TABLE IF NOT EXISTS competition("+
-//                "id INTEGER PRIMARY KEY AUTOINCREMENT, "+
-//                "nombre TEXT, "+
-//                "categoria TEXT, "+
-//                "organizacion TEXT, "+
-//                "fecha_ini TEXT, "+
-//                "genero TEXT, "+
-//                "frecuencia TEXT, "+
-//                "estado TEXT, "+
-//                "rol TEXT"+
-//                ")");
+        // creaos las tablas de la DB
         db.execSQL(CREATE_TABLE_COMPETENCIA);
         db.execSQL(CREATE_TABLE_INSCRIPCION);
         db.execSQL(CREATE_TABLE_CAMPO);
