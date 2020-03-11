@@ -142,8 +142,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                                 Toast toast = Toast.makeText(vista.getContext(), "Siguiendo", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
-                        }
-
+                        } 
                         @Override
                         public void onFailure(Call<Success> call, Throwable t) {
                             try {
@@ -417,18 +416,21 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private void ocultarBotones(){
         try {
             List<String> roles = this.competition.getRol();
+            Log.d("ROLES", roles.toString());
             for (int i = 0 ; i < roles.size(); i++) {
+                Log.d("ROL EN FOR: ", roles.get(i));
+                // ocultamos el boton de inscripcion si la inscripcion no esta abierta
                 if (roles.get(i).contains("SOLICITANTE")) {
                     follow.setVisibility(View.INVISIBLE);
                     noFollow.setVisibility(View.INVISIBLE);
                     inscribirse.setVisibility(View.INVISIBLE);
                 }
-                if (roles.get(i).contains("ORGANIZADOR")) {
+                if (roles.contains("ORGANIZADOR")) {
                     follow.setVisibility(View.INVISIBLE);
                     noFollow.setVisibility(View.INVISIBLE);
                     inscribirse.setVisibility(View.VISIBLE);
                 }
-                if (roles.get(i).contains("COMPETIDOR")) {
+                if (roles.contains("COMPETIDOR")) {
                     follow.setVisibility(View.INVISIBLE);
                     noFollow.setVisibility(View.INVISIBLE);
                     inscribirse.setVisibility(View.INVISIBLE);
@@ -443,17 +445,17 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                     noFollow.setVisibility(View.INVISIBLE);
                     inscribirse.setVisibility(View.VISIBLE);
                 }
-                // ocultamos el boton de inscripcion si la inscripcion no esta abierta
-                if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
-                    inscribirse.setVisibility(View.VISIBLE);
-                    linear.setVisibility(View.VISIBLE);
-                    llenarDatoInscripcion();
-                }
-                else{
-                    linear.setVisibility(View.INVISIBLE);
-                    inscribirse.setVisibility(View.INVISIBLE);
-                }
             }
+            if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
+                //inscribirse.setVisibility(View.VISIBLE);
+                linear.setVisibility(View.VISIBLE);
+                llenarDatoInscripcion();
+            }
+            else{
+                linear.setVisibility(View.INVISIBLE);
+                inscribirse.setVisibility(View.INVISIBLE);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -514,35 +516,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     }
 
     private void createLoginDialogo() {
-        /*
-        LayoutInflater linf = LayoutInflater.from(this);
-        final View inflator = linf.inflate(R.layout.twoinputs, null);
-        AlertDialog.Builder alert = new AlertDialog.Builder(this);
-
-        alert.setTitle("Tilte");
-        alert.setMessage("Message");
-        alert.setView(inflator);
-
-        final EditText et1 = (EditText) inflator.findViewById(R.id.editText1);
-        final EditText et2 = (EditText) inflator.findViewById(R.id.editText2);
-
-        alert.setPositiveButton("ok", new DialogInterface.OnClickListener() {
-           public void onClick(DialogInterface dialog, int whichButton)
-           {
-                  String s1=et1.getText().toString();
-                  String s2=et2.getText().toString();
-                  //do operations using s1 and s2 here...
-           }
-        });
-
-        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-           public void onClick(DialogInterface dialog, int whichButton) {
-                    dialog.cancel();
-           }
-        });
-
-        alert.show();
-         */
         LayoutInflater linf = LayoutInflater.from(vista.getContext());
         final View inflator = linf.inflate(R.layout.alias_form,null);
         final AlertDialog.Builder alert = new AlertDialog.Builder(vista.getContext());
@@ -576,43 +549,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
 
         alert.show();
-
-        // viejo
-     /*   final Dialog builder = new Dialog(vista.getContext());
-        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        builder.setContentView(R.layout.alias_form);
-
-        Button confirmar = builder.findViewById(R.id.confirmar);
-        Button cancelar =  builder.findViewById(R.id.cancelar);
-        confirmar.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String alia = alias.getText().toString();
-                        if(alia.isEmpty()){
-                            Toast toast = Toast.makeText(builder.getContext(), "Por favor agreagar un Alias", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }else {
-                            if(comprobarAlias(alia)){
-                                Toast toast = Toast.makeText(builder.getContext(), "Solicitud registrada!!", Toast.LENGTH_SHORT);
-                                toast.show();
-                                builder.dismiss();
-                            }
-                        }
-                        builder.dismiss();
-                    }
-                }
-        );
-        cancelar.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // Loguear...
-                    builder.dismiss();
-                    }
-                }
-        );
-        builder.show();*/
     }
 
     private boolean comprobarAlias(String alia) {
