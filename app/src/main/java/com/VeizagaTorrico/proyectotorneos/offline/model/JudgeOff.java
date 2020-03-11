@@ -12,7 +12,7 @@ public class JudgeOff {
     String apellido;
     @SerializedName("dni")
     String dni;
-
+    @SerializedName("idCompetencia")
     int competencia;
 
     public JudgeOff(){}

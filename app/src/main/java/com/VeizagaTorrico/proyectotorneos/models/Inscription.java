@@ -19,20 +19,20 @@ public class Inscription {
     @SerializedName("monto")
     private int monto;
 
-    public Inscription(int idCompetencia, String fechaInicio, String fechaCierre, String requisitos, int monto) {
-        this.id = idCompetencia;
+    public Inscription(int id, String fechaInicio, String fechaCierre, String requisitos, int monto) {
+        this.id = id;
         this.fechaInicio = fechaInicio;
         this.fechaCierre = fechaCierre;
         this.requisitos = requisitos;
         this.monto = monto;
     }
 
-    public int getIdCompetencia() {
+    public int getId() {
         return id;
     }
 
-    public void setIdCompetencia(int idCompetencia) {
-        this.id = idCompetencia;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getFechaInicio() {

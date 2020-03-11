@@ -10,7 +10,7 @@ public class FieldOff {
     String nombre;
     @SerializedName("predio")
     String predio;
-
+    @SerializedName("idCompetencia")
     int competencia;
 
     public FieldOff(){}

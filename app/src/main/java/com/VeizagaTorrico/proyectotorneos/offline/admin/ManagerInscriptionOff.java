@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.VeizagaTorrico.proyectotorneos.models.Inscription;
 import com.VeizagaTorrico.proyectotorneos.offline.model.InscriptionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbContract;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
@@ -30,7 +31,6 @@ public class ManagerInscriptionOff {
         registro.put("monto", inscripcion.getMonto());
         registro.put("requisitos", inscripcion.getRequisitos());
         registro.put("competencia", inscripcion.getCompetencia());
-//        registro.put("competencia", inscripcion.getCompetencia().getId());
 
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Inscripcion");
 
@@ -58,6 +58,29 @@ public class ManagerInscriptionOff {
             );
         }
         Log.d("DB_LOCAL_READ", "Competencia: "+inscripcion.getFinicio());
+
+        return inscripcion;
+    }
+
+    // recupera la inscripcion de una competencia
+    public Inscription inscriptionByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor filaCompUser = instanceDb.rawQuery("select * from "+ DbContract.TABLE_INSCRIPCION+" where competencia="+idCompetition, null);
+        Inscription inscripcion = null;
+        if(filaCompUser.moveToFirst()){
+            Log.d("DB_LOCAL_GET: ", filaCompUser.getString(5));
+            // traemos los datos de la competencia
+            inscripcion = new Inscription(
+                    Integer.valueOf(filaCompUser.getString(0)),
+                    filaCompUser.getString(1),
+                    filaCompUser.getString(2),
+                    filaCompUser.getString(4),
+                    Integer.valueOf(filaCompUser.getString(3))
+            );
+
+        }
+        Log.d("DB_LOCAL_READ", "Inicio inscripcion: "+inscripcion.getFechaInicio());
 
         return inscripcion;
     }

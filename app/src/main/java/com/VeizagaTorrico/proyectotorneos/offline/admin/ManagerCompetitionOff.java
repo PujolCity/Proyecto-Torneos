@@ -126,11 +126,9 @@ public class ManagerCompetitionOff {
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
         Cursor cursor = instanceDb.rawQuery("select max(grupo) as grupo from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompetition, null);
-        //List<CompetitionMin> competencias = new ArrayList<>();
 
         int cantGrupos = -1;
-        //String ngrupo = cursor.getString(cursor.getColumnIndex("grupo"));
-        //Log.d("DB_LOCAL_READ", "Ngrupos de la competencia "+ngrupo);
+
         if(cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
             // traemos los datos de la competencia
@@ -147,7 +145,6 @@ public class ManagerCompetitionOff {
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
         Cursor cursor = instanceDb.rawQuery("select MAX(jornada) from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompetition, null);
-        //List<CompetitionMin> competencias = new ArrayList<>();
 
         int cantJornadas = -1;
         if(cursor != null && cursor.getCount() != 0) {

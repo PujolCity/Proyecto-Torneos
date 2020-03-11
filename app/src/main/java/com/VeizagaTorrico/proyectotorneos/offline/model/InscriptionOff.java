@@ -14,7 +14,7 @@ public class InscriptionOff {
     int monto;
     @SerializedName("requisitos")
     String requisitos;
-//    Competition competencia;
+    @SerializedName("idCompetencia")
     int competencia;
 
     public InscriptionOff(){}

@@ -43,6 +43,7 @@ import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
@@ -449,7 +450,12 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             if(this.competition.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
                 //inscribirse.setVisibility(View.VISIBLE);
                 linear.setVisibility(View.VISIBLE);
-                llenarDatoInscripcion();
+                if(NetworkReceiver.existConnection(vista.getContext())){
+                    llenarDatoInscripcion();
+                }
+                else{
+                    llenarDatosInscripcionOffline();
+                }
             }
             else{
                 linear.setVisibility(View.INVISIBLE);
@@ -503,6 +509,15 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void llenarDatosInscripcionOffline(){
+        adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
+        Inscription iniscripcionLocal = adminInscripcionOff.inscriptionByCompetition(competition.getId());
+        requisitos.setText(iniscripcionLocal.getRequisitos());
+        monto.setText(Integer.toString(iniscripcionLocal.getMonto()));
+        fechaInicio.setText(parsearFecha(iniscripcionLocal.getFechaInicio()));
+        fechaCierre.setText(parsearFecha(iniscripcionLocal.getFechaCierre()));
     }
 
     private String parsearFecha(String fechaServer) {
