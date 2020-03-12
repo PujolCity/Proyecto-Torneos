@@ -76,6 +76,7 @@ public class ManagerConfrontationOff {
             );
         }
         Log.d("DB_LOCAL_READ", "Fecha del encuentro: "+encuentro.getFecha());
+        instanceDb.close();
 
         return encuentro;
     }

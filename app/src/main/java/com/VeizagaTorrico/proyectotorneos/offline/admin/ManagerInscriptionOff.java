@@ -58,6 +58,7 @@ public class ManagerInscriptionOff {
             );
         }
         Log.d("DB_LOCAL_READ", "Competencia: "+inscripcion.getFinicio());
+        instanceDb.close();
 
         return inscripcion;
     }
@@ -81,6 +82,7 @@ public class ManagerInscriptionOff {
 
         }
         Log.d("DB_LOCAL_READ", "Inicio inscripcion: "+inscripcion.getFechaInicio());
+        instanceDb.close();
 
         return inscripcion;
     }

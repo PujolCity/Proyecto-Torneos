@@ -53,6 +53,7 @@ public class ManagerJudgeOff {
                     Integer.valueOf(filaCompUser.getString(3))
             );
         }
+        instanceDb.close();
         Log.d("DB_LOCAL_READ", "Juez: "+juez.getNombre());
 
         return juez;

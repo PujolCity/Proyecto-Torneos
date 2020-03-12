@@ -51,6 +51,7 @@ public class ManagerCompetitionOff {
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competencia");
 
         instanceDb.insert(DbContract.TABLE_COMPETENCIA, null, registroComp);
+        // instanceDb.update(DbContract.TABLE_COMPETENCIA, registroComp,"id=" + id, null);
 
         instanceDb.close();
     }
@@ -77,6 +78,7 @@ public class ManagerCompetitionOff {
                     roles
             );
         }
+        instanceDb.close();
         Log.d("DB_LOCAL_READ", "Competencia: "+competition.getNombre());
 
         return competition;
@@ -116,6 +118,7 @@ public class ManagerCompetitionOff {
 
             } while (cursor.moveToNext());
         }
+        instanceDb.close();
         Log.d("DB_LOCAL_READ", "Cant de competencias "+rol+" => "+competencias.size());
 
         return competencias;
@@ -135,6 +138,7 @@ public class ManagerCompetitionOff {
             cantGrupos = Integer.valueOf(cursor.getString(0));
         }
 
+        instanceDb.close();
         Log.d("DB_LOCAL_READ", "Cant de grupos de la competencia "+cantGrupos);
 
         return cantGrupos;
@@ -152,7 +156,7 @@ public class ManagerCompetitionOff {
             // traemos los datos de la competencia
             cantJornadas = Integer.valueOf(cursor.getString(0));
         }
-
+        instanceDb.close();
         Log.d("DB_LOCAL_READ", "Cant de jornadas de la competencia "+cantJornadas);
 
         return cantJornadas;

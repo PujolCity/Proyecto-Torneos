@@ -52,6 +52,7 @@ public class ManagerCompetitorOff {
                     Integer.valueOf(filaCompUser.getString(3))
             );
         }
+        instanceDb.close();
         Log.d("DB_LOCAL_READ", "Competitor: "+competitor.getAlias());
 
         return competitor;

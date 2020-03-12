@@ -51,6 +51,7 @@ public class ManagerFieldOff {
                     Integer.valueOf(filaCompUser.getString(3))
             );
         }
+        instanceDb.close();
         Log.d("DB_LOCAL_READ", "Campo: "+campo.getNombre());
 
         return campo;
