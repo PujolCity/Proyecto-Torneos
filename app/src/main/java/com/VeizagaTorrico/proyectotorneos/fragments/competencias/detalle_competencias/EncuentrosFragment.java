@@ -119,7 +119,7 @@ public class EncuentrosFragment extends Fragment {
                 getEncuentros(fecha_grupo);
             }
             else{
-                getEncuentrosOffline(fecha_grupo, vista.getContext());
+                getEncuentrosOffline(fecha_grupo);
             }
 
         } catch (Exception e) {
@@ -160,9 +160,9 @@ public class EncuentrosFragment extends Fragment {
     }
 
     // recupera los datos almacenados en la DB local
-    private void getEncuentrosOffline(Map<String, String> fechaGrupo, Context context){
-        adminEncuentrosLocal = new ManagerConfrontationOff(context);
-        encuentros = adminEncuentrosLocal.confrontationByCompetition(competencia.getId());
+    private void getEncuentrosOffline(Map<String, String> fechaGrupo){
+        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
+        encuentros = adminEncuentrosLocal.confrontationByCompetition(competencia.getId(), fecha_grupo);
         Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
 
         mostrarEncuentros();
@@ -342,12 +342,12 @@ public class EncuentrosFragment extends Fragment {
                     if(spinnerJornada.getSelectedItemPosition() == 0){
                         nroJornada = null;
                         fecha_grupo.put("fase", nroJornada);
-                        //getEncuentros(fecha_grupo);
+                        getEncuentrosOffline(fecha_grupo);
                     }
                     else{
                         nroJornada = (String) spinnerJornada.getSelectedItem();
                         fecha_grupo.put("fase", nroJornada);
-                        //getEncuentros(fecha_grupo);
+                        getEncuentrosOffline(fecha_grupo);
                     }
                 }
                 @Override

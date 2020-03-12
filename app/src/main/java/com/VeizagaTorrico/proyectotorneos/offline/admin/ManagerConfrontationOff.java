@@ -13,6 +13,7 @@ import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class ManagerConfrontationOff {
 
@@ -80,14 +81,24 @@ public class ManagerConfrontationOff {
     }
 
     // recupera los encuentros almacenados localmente de la competencia recibida
-    public List<Confrontation> confrontationByCompetition(int idCompeition){
+    public List<Confrontation> confrontationByCompetition(int idCompeition, Map<String,String> fecha_grupo){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
-//        Cursor cursorAux = instanceDb.rawQuery("select * from "+ DbContract.TABLE_ENCUENTRO, null);
-//        Log.d("DB_LOCAL_READ", "Cant de encuentros DB_LOCAL: "+cursorAux.getCount());
+        String jornada = fecha_grupo.get("fase");
+        String grupo = fecha_grupo.get("grupo");
 
-        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompeition, null);
-        //Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_ENCUENTRO, null);
+        String queryBase = "select * from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompeition;
+        if(jornada != null){
+            // agregamos la condicion a la query
+            queryBase += " AND jornada="+jornada;
+        }
+        if(grupo != null){
+            // agregamos la condicion a la query
+            queryBase += " AND grupo="+grupo;
+        }
+
+//        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompeition, null);
+        Cursor cursor = instanceDb.rawQuery(queryBase, null);
         List<Confrontation> encuentros = new ArrayList<>();
 
         if(cursor != null && cursor.getCount() != 0) {
