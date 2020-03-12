@@ -67,4 +67,41 @@ public class ManagerFieldOff {
 
         return cantRows;
     }
+
+    public void deleteByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+        // recuperamos los competidores de la competencia
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_CAMPO+" where competencia="+idCompetition, null);
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                String idCampo = cursor.getString(0);
+                if(!haveForeignKey(instanceDb, Integer.valueOf(idCampo), idCompetition)){
+                    instanceDb.delete(DbContract.TABLE_CAMPO, "id="+idCampo, null);
+                }
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("ROWS_DEL_DB", "Cant de campos eliminados: "+cursor.getCount());
+        instanceDb.close();
+
+        return;
+    }
+
+    private boolean haveForeignKey(SQLiteDatabase instanceDb, int idCampo, int idCompetition){
+        // recuperamos los competidores de la competencia
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_CAMPO+
+                        " where id=" + idCampo +
+                        " AND competencia!=" + idCompetition,
+                null);
+
+        Log.d("ROWS_DEL_DB", "Cant de campos con FK: "+cursor.getCount());
+        //instanceDb.close();
+
+        if(cursor.getCount() > 0){
+            return true;
+        }
+
+        return false;
+    }
 }

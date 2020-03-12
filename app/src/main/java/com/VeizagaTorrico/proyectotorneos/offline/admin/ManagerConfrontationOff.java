@@ -132,4 +132,22 @@ public class ManagerConfrontationOff {
 
         return cantRows;
     }
+
+    public void deleteByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+        // recuperamos los competidores de la competencia
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompetition, null);
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                String idEncuentro = cursor.getString(0);
+                instanceDb.delete(DbContract.TABLE_ENCUENTRO, "id="+idEncuentro, null);
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("ROWS_DEL_DB", "Cant de encuentros eliminados: "+cursor.getCount());
+        instanceDb.close();
+
+        return;
+    }
 }

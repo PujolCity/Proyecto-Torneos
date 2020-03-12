@@ -172,4 +172,27 @@ public class ManagerCompetitionOff {
 
         return cantRows;
     }
+
+    public boolean existCompetition(int idcompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETENCIA +" where id="+idcompetition, null);
+        int cantRows = cursor.getCount();
+        Log.d("ROWS_LOCAL_DB", "Cant de competencias encontradas:"+cantRows);
+        instanceDb.close();
+
+        if(cantRows > 0){
+            return true;
+        }
+        return false;
+    }
+
+    public void deleteCompetition(int idcompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+        instanceDb.delete(DbContract.TABLE_COMPETENCIA, "id="+idcompetition, null);
+        Log.d("ROWS_DEL_DB", "Competencia eliminada: "+idcompetition);
+        instanceDb.close();
+
+        return;
+    }
 }

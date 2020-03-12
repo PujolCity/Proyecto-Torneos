@@ -97,4 +97,23 @@ public class ManagerInscriptionOff {
 
         return cantRows;
     }
+
+    // eliminamos la inscripcion de la competencia
+    public void deleteByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+        // recuperamos los competidores de la competencia
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_INSCRIPCION+" where competencia="+idCompetition, null);
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                String idInscripcion = cursor.getString(0);
+                instanceDb.delete(DbContract.TABLE_INSCRIPCION, "id="+idInscripcion, null);
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("ROWS_DEL_DB", "Cant de inscripciones eliminadas: "+cursor.getCount());
+        instanceDb.close();
+
+        return;
+    }
 }

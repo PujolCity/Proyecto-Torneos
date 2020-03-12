@@ -68,4 +68,41 @@ public class ManagerCompetitorOff {
 
         return cantRows;
     }
+
+    public void deleteByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+        // recuperamos los competidores de la competencia
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR+" where competencia="+idCompetition, null);
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                String idCompetidor = cursor.getString(0);
+                if(!haveForeignKey(instanceDb, Integer.valueOf(idCompetidor), idCompetition)){
+                    instanceDb.delete(DbContract.TABLE_COMPETIDOR, "id="+idCompetidor, null);
+                }
+
+            } while (cursor.moveToNext());
+        }
+
+        Log.d("ROWS_DEL_DB", "Cant de competidores eliminados: "+cursor.getCount());
+        instanceDb.close();
+
+        return;
+    }
+
+    private boolean haveForeignKey(SQLiteDatabase instanceDb, int idCompetidor, int idCompetition){
+        // recuperamos los competidores de la competencia
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR+
+                        " where id=" + idCompetidor +
+                        " AND competencia!=" + idCompetition,
+                null);
+
+        Log.d("ROWS_DEL_DB", "Cant de competidores con FK: "+cursor.getCount());
+
+        if(cursor.getCount() > 0){
+            return true;
+        }
+
+        return false;
+    }
 }

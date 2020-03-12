@@ -216,6 +216,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        deleteDataOldDBLocal();
                         downloadConfrontationServer();
                         dowloadDataCompettition();
                     }
@@ -229,6 +230,26 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         });
 
         return vista;
+    }
+
+    // controlamos que no existan datos viejos en la DB local, los borramos si los hay
+    private void deleteDataOldDBLocal(){
+        adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
+
+        if(adminCompetenciasOff.existCompetition(competition.getId())){
+            adminCompetitorsOff = new ManagerCompetitorOff(vista.getContext());
+            adminCamposOff = new ManagerFieldOff(vista.getContext());
+            adminJuecesOff = new ManagerJudgeOff(vista.getContext());
+            adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
+            adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
+
+            adminInscripcionOff.deleteByCompetition(dataServer.getCompetencia().getId());
+            adminJuecesOff.deleteByCompetition(dataServer.getCompetencia().getId());
+            adminCamposOff.deleteByCompetition(dataServer.getCompetencia().getId());
+            adminCompetitorsOff.deleteByCompetition(dataServer.getCompetencia().getId());
+            adminCompetenciasOff.deleteCompetition(dataServer.getCompetencia().getId());
+            adminEncuentroOff.deleteByCompetition(dataServer.getCompetencia().getId());
+        }
     }
 
     // realiza la descarga de los encuentros de la competencia
