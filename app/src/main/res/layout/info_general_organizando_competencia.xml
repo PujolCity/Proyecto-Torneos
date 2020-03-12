@@ -11,18 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
+        <ImageButton
+            android:id="@+id/btn_download_off_organizando"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_download"
+            android:text="Descragar"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.121"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+        </ImageButton>
+
         <Button
             android:id="@+id/btn_edit_competencia_organizando"
             android:layout_width="55dp"
             android:layout_height="37dp"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="12dp"
             android:backgroundTint="#107683"
             android:text="Editar"
             android:textColor="@color/cardview_light_background"
             app:layout_constraintEnd_toStartOf="@+id/btnFollow"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btn_download_off_organizando"
             app:layout_constraintTop_toTopOf="parent">
         </Button>
 
@@ -30,7 +45,7 @@
             android:id="@+id/generar_inscripcion_organizando"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="12dp"
             android:backgroundTint="#107683"
             android:text="Crear Inscripcion"
             android:textColor="@color/cardview_light_background"
@@ -45,6 +60,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="44dp"
+            android:layout_marginTop="12dp"
             android:text="Competencia"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"

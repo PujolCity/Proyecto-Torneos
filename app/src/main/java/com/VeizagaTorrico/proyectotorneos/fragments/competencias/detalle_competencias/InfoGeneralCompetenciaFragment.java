@@ -66,6 +66,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
+    private ConfrontationSrv confrontationSrv;
     private UserSrv usersSrv;
     private Button inscribirse;
     private ImageButton downloadOff;
@@ -73,7 +74,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     private Map<String,String> solicitud;
     private boolean comprobado, isOtherFragment;
     private InscriptionSrv inscriptionSrv;
-    private ConfrontationSrv confrontationSrv;
     private Inscription inscription;
     private LinearLayout linear;
 

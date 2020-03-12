@@ -26,7 +26,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.014"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/inscribirse"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/inscribirse">
+            </TextView>
 
             <TextView
                 android:id="@+id/txtOrgCompDet"
@@ -164,7 +165,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/inscribirse"
                 app:layout_constraintHorizontal_bias="0.365"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageButton>
+                app:layout_constraintTop_toTopOf="parent">
+            </ImageButton>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
