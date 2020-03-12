@@ -1,6 +1,9 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,13 +27,31 @@ import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Inscription;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitorOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerFieldOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerInscriptionOff;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerJudgeOff;
+import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
+import com.VeizagaTorrico.proyectotorneos.offline.model.DataOffline;
+import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
+import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.StringTokenizer;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 public class GeneralDetalleFragment extends Fragment {
 
@@ -42,8 +63,22 @@ public class GeneralDetalleFragment extends Fragment {
     private InscriptionSrv inscriptionSrv;
     private LinearLayout linear;
     private Inscription inscription;
-
+    private ImageButton downloadOff;
     private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
+
+    private CompetitionSrv competitionSrv;
+    private ConfrontationSrv confrontationSrv;
+    private UserSrv usersSrv;
+    private List<ConfrontationOff> encuentrosServer;
+    private AdminDataOff adminData;
+    private ManagerCompetitionOff adminCompetenciasOff;
+    private ManagerCompetitorOff adminCompetitorsOff;
+    private ManagerJudgeOff adminJuecesOff;
+    private ManagerFieldOff adminCamposOff;
+    private ManagerInscriptionOff adminInscripcionOff;
+    private ManagerConfrontationOff adminEncuentroOff;
+    private Map<String,String> userComp = new HashMap<>();
+    private DataOffline dataServer;
 
     public GeneralDetalleFragment() {
     }
@@ -68,6 +103,7 @@ public class GeneralDetalleFragment extends Fragment {
 
         initElements();
         ocultarBotones();
+        listenerDownload();
         listenButtonEdit();
         listenButtonInscripcion();
 
@@ -86,8 +122,167 @@ public class GeneralDetalleFragment extends Fragment {
         return vista;
     }
 
+    private void listenerDownload() {
+        downloadOff.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder =new AlertDialog.Builder(vista.getContext());
+                builder.setTitle("Descargar Datos de la Competencia?");
+                builder.setMessage("Si acepta se descargaran los datos de esta competencia." +
+                        "\n Esta seguro?");
+
+                builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        downloadConfrontationServer();
+                        dowloadDataCompettition();
+                    }
+                });
+
+                builder.setNegativeButton("Rechazar", null);
+
+                Dialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
+    }
+
+
+    // realiza la descarga de los encuentros de la competencia
+    private void downloadConfrontationServer() {
+
+        Call<List<ConfrontationOff>> call = confrontationSrv.confrontationsOffline(competencia.getId());
+        Log.d("GET_DATA_OFF", call.request().url().toString());
+        call.enqueue(new Callback<List<ConfrontationOff>>() {
+            @Override
+            public void onResponse(Call<List<ConfrontationOff>> call, Response<List<ConfrontationOff>> response) {
+                if (response.code() == 200) {
+                    encuentrosServer = response.body();
+                    Log.d("DATA_OFF", "cant de encuentros recuperados: "+encuentrosServer.size());
+
+                    // guardamos los datos en la DB local
+                    adminData.loadConfrontations(vista.getContext(), encuentrosServer);
+
+                    // vemos si se insertaron los datos correctamente en la DB
+                    adminEncuentroOff.getCantRows();
+                    Toast.makeText(vista.getContext(), "La descarga y almacenamiento de datos de los encuentros de la competencia se ha realizado.", Toast.LENGTH_LONG).show();
+                }
+                if (response.code() == 400) {
+                    Log.d("RESP_CONF_NOTIF", "PETICION MAL FORMADA: " + response.errorBody());
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String userMessage = jsonObject.getString("messaging");
+                        Log.d("RESP_CONF_NOTIF", "Msg de la repuesta: " + userMessage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<ConfrontationOff>> call, Throwable t) {
+                Log.d(" GET_DATA_OFF", t.getMessage());
+            }
+        });
+    }
+
+    private void dowloadDataCompettition(){
+        adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
+        adminCompetitorsOff = new ManagerCompetitorOff(vista.getContext());
+        adminCamposOff = new ManagerFieldOff(vista.getContext());
+        adminJuecesOff = new ManagerJudgeOff(vista.getContext());
+        adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
+
+        usersSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
+
+        userComp.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        userComp.put("idCompetencia", String.valueOf(competencia.getId()));
+
+        Log.d("GET_DATA_OFF", "Body peticion: "+userComp);
+
+        Call<DataOffline> call = usersSrv.getDataOffline(userComp);
+        Log.d("GET_DATA_OFF", call.request().url().toString());
+        call.enqueue(new Callback<DataOffline>() {
+            @Override
+            public void onResponse(Call<DataOffline> call, Response<DataOffline> response) {
+                if (response.code() == 200) {
+                    dataServer = response.body();
+                    Log.d("DATA_OFF", "Nombre comp: "+dataServer.getCompetencia().getNombre());
+                    // guardamos los datos en la DB local
+                    adminData.loadCompetition(vista.getContext(), dataServer.getCompetencia());
+
+                    // controlamos que existan datos antes de guardarlos en la DB local
+                    if(dataServer.getCompetidores() != null){
+                        adminData.loadCompetitors(vista.getContext(), dataServer.getCompetidores());
+                        Log.d("DATA_OFF", "Cant comp: "+dataServer.getCompetidores().size());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con competidores ");
+                    }
+                    if(dataServer.getCampos() != null){
+                        adminData.loadFields(vista.getContext(), dataServer.getCampos());
+                        Log.d("DATA_OFF", "Cant campos: "+dataServer.getCampos().size());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con campos ");
+                    }
+                    if(dataServer.getJueces() != null){
+                        adminData.loadJudges(vista.getContext(), dataServer.getJueces());
+                        Log.d("DATA_OFF", "Cant Jueces: "+dataServer.getJueces().size());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con jueces ");
+                    }
+                    if(dataServer.getInscripcion() != null){
+                        adminData.loadInscription(vista.getContext(), dataServer.getInscripcion());
+                        Log.d("DATA_OFF", "Inicio inscripcion: "+dataServer.getInscripcion().getFinicio());
+                    }
+                    else{
+                        Log.d("DATA_OFF", "La comp aun no cuenta con una inscripcion ");
+                    }
+
+                    // vemos si se insertaron los datos correctamente en la DB
+                    adminCompetenciasOff.getCantRows();
+                    adminCompetitorsOff.getCantRows();
+                    adminCamposOff.getCantRows();
+                    adminJuecesOff.getCantRows();
+                    adminInscripcionOff.getCantRows();
+                    Toast.makeText(vista.getContext(), "La descarga y almacenamiento de la competencia(competidores, campos, jueces, inscripcion) se ha realizado.", Toast.LENGTH_LONG).show();
+                }
+                if (response.code() == 400) {
+                    Log.d("RESP_CONF_NOTIF", "PETICION MAL FORMADA: " + response.errorBody());
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String userMessage = jsonObject.getString("messaging");
+                        Log.d("RESP_CONF_NOTIF", "Msg de la repuesta: " + userMessage);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<DataOffline> call, Throwable t) {
+                Log.d(" GET_DATA_OFF", t.getMessage());
+            }
+        });
+    }
+
+
     private void initElements() {
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
+        adminData = new AdminDataOff();
+        adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
+
+        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+        inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
+        confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
+
         linear = vista.findViewById(R.id.layout_include_organizando);
         monto = vista.findViewById(R.id.monto);
         requisitos = vista.findViewById(R.id.requisitos);
@@ -102,6 +297,8 @@ public class GeneralDetalleFragment extends Fragment {
         estado = vista.findViewById(R.id.tv_estado_infograll_organizando);
         btnEditar = vista.findViewById(R.id.btn_edit_competencia_organizando);
         btnInscripcion = vista.findViewById(R.id.generar_inscripcion_organizando);
+        downloadOff = vista.findViewById(R.id.btn_download_off_organizando);
+
     }
 
     private void listenButtonInscripcion() {
