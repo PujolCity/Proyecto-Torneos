@@ -195,7 +195,7 @@ public class EncuentrosDetalleFragment extends Fragment {
     }
 
     // recupera los datos almacenados en la DB local
-    private void getEncuentrosOffline(Map<String, String> fechaGrupo){
+    private void getEncuentrosOffline(Map<String, String> fecha_grupo){
         adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
         encuentros = adminEncuentrosLocal.confrontationByCompetition(competencia.getId(), fecha_grupo);
         Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
@@ -205,10 +205,14 @@ public class EncuentrosDetalleFragment extends Fragment {
 
 
     private void mostrarEncuentros(){
+        Log.d("MOSTRAR ENCUENTROS", "MOSTRANDO ENCUENTROS MOSTRO");
+        Log.d("ROL COMPETENCIA", competencia.getRol().toString());
+
         if(encuentros.size() != 0 ){
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
+
                 if(competencia.getRol().contains("ORGANIZADOR")){
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override

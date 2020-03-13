@@ -41,6 +41,37 @@ public class ManagerSharedPreferences {
         return  sharedPref.getBoolean(keyData,false);
     }
 
+   public int getCountConfrontation(Context context, String nameFileShared, String keyData) {
+       // abrimos el archivo o lo creamos si no lo esta
+       SharedPreferences sharedPref = context.getSharedPreferences(nameFileShared, Context.MODE_PRIVATE);
+       int dataSaved = sharedPref.getInt(keyData,0);
 
+       return dataSaved;
+   }
+
+    public void setCountConfrontation(Context context, String nameFileShared, String keyData, int newData){
+        // abrimos el archivo o lo creamos si no lo esta
+        SharedPreferences sharedPref = context.getSharedPreferences(nameFileShared, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(keyData, newData);
+        editor.commit();
+    }
+
+    public String getConfrontationFromSharedPreferences(Context context, String nameFileShared, String keyData){
+        // abrimos el archivo o lo creamos si no lo esta
+        SharedPreferences sharedPref = context.getSharedPreferences(nameFileShared, Context.MODE_PRIVATE);
+
+        String dataSaved = sharedPref.getString(keyData, null);
+
+        return dataSaved;
+    }
+
+    public void setConfrontationFromSharedPreferences(Context context, String nameFileShared, String keyData, String newData){
+        // abrimos el archivo o lo creamos si no lo esta
+        SharedPreferences sharedPref = context.getSharedPreferences(nameFileShared, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(keyData, newData);
+        editor.commit();
+    }
 
 }

@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,12 +31,16 @@ import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.models.Turn;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
 import com.VeizagaTorrico.proyectotorneos.services.RefereeSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TurnSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
@@ -46,6 +51,11 @@ import java.util.Map;
 
 import javax.crypto.MacSpi;
 
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_CONFRONTATION;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_COUNT;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
+
 public class DetalleEncuentroFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -55,7 +65,7 @@ public class DetalleEncuentroFragment extends Fragment {
     private TextView comp1, comp2,txtCampo,txtPredio,txtJuez,txtTurno;
     private ImageButton confirmarEdit;
     private Spinner spinnerPredio,spinnerCampo,spinnerJuez,spinnerTurno;
-    private Confrontation encuentro;
+    private Confrontation encuentro, confrontation;
     private ConfrontationSrv confrontationSrv;
 
     private GroundSrv prediosSrv;
@@ -74,6 +84,9 @@ public class DetalleEncuentroFragment extends Fragment {
     private Referee referee;
     private Field campo;
     private Turn turno;
+
+    private ManagerConfrontationOff adminEncuentrosLocal;
+    private Gson gson;
 
     public DetalleEncuentroFragment() {
     }
@@ -95,16 +108,51 @@ public class DetalleEncuentroFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_detalle_encuentro, container, false);
         initElements();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            llenarSpinnerJuez();
+            llenarSpinnerPredio();
+            llenarSpinnerTurno();
+            listenerEditar();
+        }
+        else{
+            editarOffLine();
+        }
+        return vista;
+    }
 
-        llenarSpinnerJuez();
-        llenarSpinnerPredio();
-        llenarSpinnerTurno();
+    private void editarOffLine() {
+        confirmarEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String json;
+                editEncuentro.clear();
+                rdo_1 = r1.getText().toString();
+                rdo_2 = r2.getText().toString();
+                editEncuentro.put("idCompetencia", Integer.toString(encuentro.getIdCompetencia()));
+                editEncuentro.put("idEncuentro", Integer.toString(encuentro.getId()));
+                if(validar()){
+                    editEncuentro.put("rdo_comp1", rdo_1);
+                    editEncuentro.put("rdo_comp2",rdo_2);
+                    json = gson.toJson(editEncuentro);
+                    ManagerSharedPreferences.getInstance().setConfrontationFromSharedPreferences(vista.getContext(),FILE_SHARED_DATA_USER,KEY_CONFRONTATION,json);
+                    String guardado = ManagerSharedPreferences.getInstance().getConfrontationFromSharedPreferences(vista.getContext(),FILE_SHARED_DATA_USER, KEY_CONFRONTATION);
+                    Log.d("CONTADOR DENUEVO", "ELEMENTO GUARDADO"+ guardado);
+                    adminEncuentrosLocal.updateByCompetition(encuentro.getId(),encuentro.getIdCompetencia(), Integer.valueOf(rdo_1),Integer.valueOf(rdo_2));
+                }
+
+                int contador = ManagerSharedPreferences.getInstance().getCountConfrontation(vista.getContext(),FILE_SHARED_DATA_USER, KEY_COUNT);
+                Log.d("CONTADOR", Integer.toString(contador));
+                ManagerSharedPreferences.getInstance().setCountConfrontation(vista.getContext(),FILE_SHARED_DATA_USER,KEY_COUNT,contador+1);
+            }
+        });
+    }
+
+    private void listenerEditar() {
 
         confirmarEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 editEncuentro.clear();
-
                 rdo_1 = r1.getText().toString();
                 rdo_2 = r2.getText().toString();
                 editEncuentro.put("idCompetencia", Integer.toString(encuentro.getIdCompetencia()));
@@ -156,7 +204,6 @@ public class DetalleEncuentroFragment extends Fragment {
                 });
             }
         });
-        return vista;
     }
 
     private boolean validar() {
@@ -171,13 +218,19 @@ public class DetalleEncuentroFragment extends Fragment {
 
 
     private void initElements(){
+        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
+        confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
+        prediosSrv = new RetrofitAdapter().connectionEnable().create(GroundSrv.class);
+        camposSrv = new RetrofitAdapter().connectionEnable().create(FieldSrv.class);
+        refereeSrv = new RetrofitAdapter().connectionEnable().create(RefereeSrv.class);
+        turnoSrv = new RetrofitAdapter().connectionEnable().create(TurnSrv.class);
+
         this.encuentro = (Confrontation) getArguments().getSerializable("encuentro");
         predios = new ArrayList<>();
         campos = new ArrayList<>();
         jueces = new ArrayList<>();
         turnos = new ArrayList<>();
         editEncuentro = new HashMap<>();
-
         confirmarEdit = vista.findViewById(R.id.checConfirmar);
         comp1 = vista.findViewById(R.id.txtComp1Titulo);
         comp2 = vista.findViewById(R.id.txtComp2Titulo);
@@ -190,10 +243,24 @@ public class DetalleEncuentroFragment extends Fragment {
         r1 = vista.findViewById(R.id.resultadoComp1);
         r2 = vista.findViewById(R.id.resultadoComp2);
 
+        spinnerPredio = vista.findViewById(R.id.spinnerPredio);
+        spinnerCampo = vista.findViewById(R.id.spinnerCampo);
+        spinnerJuez = vista.findViewById(R.id.spinnerJuez);
+        spinnerTurno = vista.findViewById(R.id.spinnerTurno);
+
+        juezSeleccionado = "";
+        campoSeleccionado = "";
+        turnoSeleccionado= "";
+        comp1.setText(encuentro.getCompetidor1());
+        comp2.setText(encuentro.getCompetidor2());
+
+        gson = new Gson();  //Instancia Gson.
+
         if(encuentro.getRdoc1() != -1 && encuentro.getRdoc2() != -1){
             r1.setText(Integer.toString(encuentro.getRdoc1()));
             r2.setText(Integer.toString(encuentro.getRdoc2()));
         }
+
         referee = new Referee(0, "Elija un juez", " ",0,null);
         predio = new Ground(0, "Elije un predio", "", "");
         campo = new Field(0, "Elije un campo de Juego", 0, 0, null);
@@ -212,8 +279,6 @@ public class DetalleEncuentroFragment extends Fragment {
                 //predios.add(predio);
                 //txtPredio.setText(encuentro.getCampo().getPredio().toString());
             }
-        } else {
-            msjCampos();
         }
         if(encuentro.getJuez() != null){
             jueces.clear();
@@ -232,21 +297,6 @@ public class DetalleEncuentroFragment extends Fragment {
                 e.printStackTrace();
             }
         }
-        spinnerPredio = vista.findViewById(R.id.spinnerPredio);
-        spinnerCampo = vista.findViewById(R.id.spinnerCampo);
-        spinnerJuez = vista.findViewById(R.id.spinnerJuez);
-        spinnerTurno = vista.findViewById(R.id.spinnerTurno);
-
-        juezSeleccionado = "";
-        campoSeleccionado = "";
-        turnoSeleccionado= "";
-        prediosSrv = new RetrofitAdapter().connectionEnable().create(GroundSrv.class);
-        camposSrv = new RetrofitAdapter().connectionEnable().create(FieldSrv.class);
-        refereeSrv = new RetrofitAdapter().connectionEnable().create(RefereeSrv.class);
-        turnoSrv = new RetrofitAdapter().connectionEnable().create(TurnSrv.class);
-        confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
-        comp1.setText(encuentro.getCompetidor1());
-        comp2.setText(encuentro.getCompetidor2());
     }
 
     private void msjCampos() {
@@ -333,10 +383,8 @@ public class DetalleEncuentroFragment extends Fragment {
                                     juezSeleccionado = Integer.toString(juezSel.getId());
                                 }
                             }
-
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
-
                             }
                         });
                     }else {

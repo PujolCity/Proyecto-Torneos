@@ -150,4 +150,14 @@ public class ManagerConfrontationOff {
 
         return;
     }
+
+    public void updateByCompetition(int idConfrontation, int idCompetition, int rdo1, int rdo2){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("rdo1", rdo1);
+        contentValues.put("rdo2", rdo2);
+        instanceDb.update(DbContract.TABLE_ENCUENTRO,contentValues, "id="+idConfrontation +" and competencia="+idCompetition,null);
+
+        instanceDb.close();
+    }
 }

@@ -18,5 +18,10 @@ public class Constants {
     public static final String KEY_EMAIL = "email";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_SESSION = "session";
+    public static final String KEY_COUNT = "countConfrontation";
+    public static final String KEY_CONFRONTATION = "confrontation";
+
+
+
 
 }
