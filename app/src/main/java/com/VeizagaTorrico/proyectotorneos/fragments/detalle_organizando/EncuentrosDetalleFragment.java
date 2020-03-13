@@ -142,44 +142,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
-                if(encuentros.size() != 0){
-                    if (encuentros != null) {
-                        try {
-                            adapter.setEncuentros(encuentros);
-                            recycleCon.setAdapter(adapter);
-
-                            adapter.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                                    Log.d("ENCUENTRO SELECCIONADO", encuentro.toString());
-                                    Bundle bundle = new Bundle();
-                                    encuentro.setIdCompetencia(competencia.getId());
-                                    bundle.putSerializable("encuentro", encuentro);
-                                    Navigation.findNavController(vista).navigate(R.id.detalleEncuentroFragment, bundle);
-                                }
-                            });
-
-                            if (competencia.getRol().contains("ORGANIZADOR")) {
-                                adapter.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                                        Bundle bundle = new Bundle();
-                                        Log.d("ENCUENTRO SELECCIONADO", encuentro.toString());
-                                        encuentro.setIdCompetencia(competencia.getId());
-                                        bundle.putSerializable("encuentro", encuentro);
-                                        Navigation.findNavController(vista).navigate(R.id.detalleEncuentroFragment, bundle);
-                                    }
-                                });
-                            }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                } else {
-                    sinEncuentros();
-                }
+                mostrarEncuentros();
             }
             @Override
             public void onFailure(Call<List<Confrontation>> call, Throwable t) {
@@ -205,10 +168,9 @@ public class EncuentrosDetalleFragment extends Fragment {
 
 
     private void mostrarEncuentros(){
-        Log.d("MOSTRAR ENCUENTROS", "MOSTRANDO ENCUENTROS MOSTRO");
         Log.d("ROL COMPETENCIA", competencia.getRol().toString());
 
-        if(encuentros.size() != 0 ){
+        if((encuentros != null) && (encuentros.size() != 0)){
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
@@ -287,12 +249,12 @@ public class EncuentrosDetalleFragment extends Fragment {
                     if(spinnerGrupo.getSelectedItemPosition() == 0){
                         nroGrupo = null;
                         fecha_grupo.put("grupo", nroGrupo);
-                        //getEncuentros(fecha_grupo);
+                        getEncuentrosOffline(fecha_grupo);
                     }
                     else{
                         nroGrupo = (String) spinnerGrupo.getSelectedItem();
                         fecha_grupo.put("grupo", nroGrupo);
-                        //getEncuentros(fecha_grupo);
+                        getEncuentrosOffline(fecha_grupo);
                     }
                 }
                 @Override

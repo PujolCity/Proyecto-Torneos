@@ -10,6 +10,9 @@ import com.VeizagaTorrico.proyectotorneos.offline.model.FieldOff;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbContract;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class ManagerFieldOff {
 
     private DbHelper adminDB;
@@ -27,11 +30,24 @@ public class ManagerFieldOff {
         registro.put("id", field.getId());
         registro.put("nombre", field.getNombre());
         registro.put("predio", field.getPredio());
-        registro.put("competencia", field.getCompetencia());
 
-        Log.d("DB_LOCAL_INSERT", "Agrega un registro en Campo");
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_CAMPO+" where id="+field.getId(), null);
+        // si existe el campo lo actualizamos con los nuevos valores
+        if(cursor.getCount() > 0){
+            // insertamos datos en la tabla competencia
+            ContentValues camposUpdate = new ContentValues();
+            camposUpdate.put("nombre", field.getNombre());
+            camposUpdate.put("predio", field.getPredio());
+            instanceDb.update(DbContract.TABLE_CAMPO, camposUpdate, "id="+field.getId(),null);
+            Log.d("DB_LOCAL_INSERT", "Actualiza un registro en Campo");
+        }
+        else{
+            instanceDb.insert(DbContract.TABLE_CAMPO, null, registro);
+            Log.d("DB_LOCAL_INSERT", "Agrega un registro en Campo");
+        }
 
-        instanceDb.insert(DbContract.TABLE_CAMPO, null, registro);
+        // actualizamos los ids de campos de la competencia
+        updateFields(instanceDb, field.getCompetencia(), field.getId());
 
         instanceDb.close();
     }
@@ -68,40 +84,37 @@ public class ManagerFieldOff {
         return cantRows;
     }
 
-    public void deleteByCompetition(int idCompetition){
-        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
-        // recuperamos los competidores de la competencia
-        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_CAMPO+" where competencia="+idCompetition, null);
-        if(cursor != null && cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            do {
-                String idCampo = cursor.getString(0);
-                if(!haveForeignKey(instanceDb, Integer.valueOf(idCampo), idCompetition)){
-                    instanceDb.delete(DbContract.TABLE_CAMPO, "id="+idCampo, null);
-                }
-            } while (cursor.moveToNext());
+    // actualiza la lista de campos de la competencia
+    private void updateFields(SQLiteDatabase instanceDb, int idCompetition, int idField){
+
+        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETENCIA+" where id="+idCompetition, null);
+
+        if(cursor.moveToFirst()){
+            String idCampos = cursor.getString(10);
+            // traemos los datos de la competencia
+            if(!existField(idCampos, idField)){
+                // agregamos el id a la lista de la competencia y persistimos el cambio
+                idCampos += " "+idField;
+                ContentValues newValues = new ContentValues();
+                newValues.put("campos", idCampos);
+                instanceDb.update(DbContract.TABLE_COMPETENCIA, newValues, "id="+idCompetition,null);
+                Log.d("UPD_LOCAL_DB", "Id campos de competencia actualizada: "+idCompetition);
+            }
         }
 
-        Log.d("ROWS_DEL_DB", "Cant de campos eliminados: "+cursor.getCount());
         instanceDb.close();
 
         return;
     }
 
-    private boolean haveForeignKey(SQLiteDatabase instanceDb, int idCampo, int idCompetition){
-        // recuperamos los competidores de la competencia
-        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_CAMPO+
-                        " where id=" + idCampo +
-                        " AND competencia!=" + idCompetition,
-                null);
-
-        Log.d("ROWS_DEL_DB", "Cant de campos con FK: "+cursor.getCount());
-        //instanceDb.close();
-
-        if(cursor.getCount() > 0){
+    // actualiza la lista de ids de campos de la competencia junto al id de un nuevo campo
+    private boolean existField(String idCampos, int idField){
+        String[] arrayCamposId = idCampos.split("\\s+");
+        // vemos si el campo ya se encuentra en la lista de los campos de la competencia
+        List<String> listCamposId = Arrays.asList(arrayCamposId);
+        if(listCamposId.contains(String.valueOf(idField))){
             return true;
         }
-
         return false;
     }
 }

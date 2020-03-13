@@ -45,8 +45,8 @@ public class ManagerCompetitionOff {
         registroComp.put("ciudad", competition.getCiudad());
         registroComp.put("frecuencia", competition.getFrecuencia());
         registroComp.put("estado", competition.getEstado());
-//        registroComp.put("rol", competition.getRol());
         registroComp.put("rol", rolesString);
+        registroComp.put("campos", "");
 
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competencia");
 

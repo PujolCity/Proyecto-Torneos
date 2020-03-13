@@ -238,14 +238,12 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
 
         if(adminCompetenciasOff.existCompetition(competition.getId())){
             adminCompetitorsOff = new ManagerCompetitorOff(vista.getContext());
-            adminCamposOff = new ManagerFieldOff(vista.getContext());
             adminJuecesOff = new ManagerJudgeOff(vista.getContext());
             adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
             adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
 
             adminInscripcionOff.deleteByCompetition(dataServer.getCompetencia().getId());
             adminJuecesOff.deleteByCompetition(dataServer.getCompetencia().getId());
-            adminCamposOff.deleteByCompetition(dataServer.getCompetencia().getId());
             adminCompetitorsOff.deleteByCompetition(dataServer.getCompetencia().getId());
             adminCompetenciasOff.deleteCompetition(dataServer.getCompetencia().getId());
             adminEncuentroOff.deleteByCompetition(dataServer.getCompetencia().getId());
