@@ -49,12 +49,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.crypto.MacSpi;
 
-import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
-import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_CONFRONTATION;
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_CONFRONTATION_OFF;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_COUNT;
-import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 public class DetalleEncuentroFragment extends Fragment {
 
@@ -128,21 +125,25 @@ public class DetalleEncuentroFragment extends Fragment {
                 editEncuentro.clear();
                 rdo_1 = r1.getText().toString();
                 rdo_2 = r2.getText().toString();
-                editEncuentro.put("idCompetencia", Integer.toString(encuentro.getIdCompetencia()));
+//                editEncuentro.put("idCompetencia", Integer.toString(encuentro.getIdCompetencia()));
                 editEncuentro.put("idEncuentro", Integer.toString(encuentro.getId()));
                 if(validar()){
                     editEncuentro.put("rdo_comp1", rdo_1);
                     editEncuentro.put("rdo_comp2",rdo_2);
                     json = gson.toJson(editEncuentro);
-                    ManagerSharedPreferences.getInstance().setConfrontationFromSharedPreferences(vista.getContext(),FILE_SHARED_DATA_USER,KEY_CONFRONTATION,json);
-                    String guardado = ManagerSharedPreferences.getInstance().getConfrontationFromSharedPreferences(vista.getContext(),FILE_SHARED_DATA_USER, KEY_CONFRONTATION);
-                    Log.d("CONTADOR DENUEVO", "ELEMENTO GUARDADO"+ guardado);
+                    // persisttimos un registro de la edicion del encuentro usando la cant de registro como clave
+                    int cantRegistrosEncuentros = ManagerSharedPreferences.getInstance().getCountConfrontation(vista.getContext(), FILE_SHARED_CONFRONTATION_OFF, KEY_COUNT);
+                    Log.d("ENC_OFF_CONTADOR", "Cant de registros: "+Integer.toString(cantRegistrosEncuentros));
+                    String keyNuevoResgitro = String.valueOf(cantRegistrosEncuentros + 1);
+                    ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(vista.getContext(),FILE_SHARED_CONFRONTATION_OFF ,keyNuevoResgitro ,json);
+                    String guardado = ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(),FILE_SHARED_CONFRONTATION_OFF, keyNuevoResgitro);
+                    Log.d("ENC_OFF_SAVE", "Elemento guardado"+ guardado);
+                    // actualizamos el encuentro localmente, en la DB local
                     adminEncuentrosLocal.updateByCompetition(encuentro.getId(),encuentro.getIdCompetencia(), Integer.valueOf(rdo_1),Integer.valueOf(rdo_2));
+                    // actualizamos la cant de registros editados
+                    ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(vista.getContext(),FILE_SHARED_CONFRONTATION_OFF, KEY_COUNT,(cantRegistrosEncuentros + 1));
+                    Toast.makeText(vista.getContext(), "Edicion local realizada", Toast.LENGTH_SHORT).show();
                 }
-
-                int contador = ManagerSharedPreferences.getInstance().getCountConfrontation(vista.getContext(),FILE_SHARED_DATA_USER, KEY_COUNT);
-                Log.d("CONTADOR", Integer.toString(contador));
-                ManagerSharedPreferences.getInstance().setCountConfrontation(vista.getContext(),FILE_SHARED_DATA_USER,KEY_COUNT,contador+1);
             }
         });
     }
@@ -199,7 +200,7 @@ public class DetalleEncuentroFragment extends Fragment {
 
                     @Override
                     public void onFailure(Call<MsgRequest> call, Throwable t) {
-
+                        Log.d("SERVER_ERROR: ", t.getMessage());
                     }
                 });
             }
