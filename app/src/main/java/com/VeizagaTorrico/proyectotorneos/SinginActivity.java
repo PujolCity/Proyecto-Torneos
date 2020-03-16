@@ -127,11 +127,9 @@ public class SinginActivity extends AppCompatActivity {
 
     private boolean formCorrect(){
         if(Validations.isEmpty(edtUsuario)){
-            //Log.d("VALIDACIONES",  "Nombre de usuario vacio");
             return false;
         }
         if(Validations.isEmpty(edtPass)){
-            //Log.d("VALIDACIONES",  "Correo vacio");
             return false;
         }
 
@@ -141,8 +139,6 @@ public class SinginActivity extends AppCompatActivity {
     private void getValuesFields() {
         usuario = edtUsuario.getText().toString();
         pass = edtPass.getText().toString();
-
-        //Toast.makeText(getApplicationContext(), nombre+" - "+apellido+" - "+usuario+" - "+correo+" - "+pass+" - "+confPass, Toast.LENGTH_SHORT).show();
     }
 
     private void login() {
@@ -160,7 +156,7 @@ public class SinginActivity extends AppCompatActivity {
                     //Log.d("RESP_SIGNIN_ERROR", "EXITO: "+response.body().getMsg());
                     respSrvRegister = response.body();
                     Log.d("RESP_SIGNIN_ERROR", "EXITO - usuario: "+respSrvRegister);
-                    // TODO: guardar datos del usuario localmente
+                    // guardamos los datos del usuario localmente
                     saveDataUserLocally(respSrvRegister);
                     reportTokenFirebase();
                     Toast.makeText(getApplicationContext(), "Sesion iniciada con exito ", Toast.LENGTH_SHORT).show();
@@ -168,7 +164,6 @@ public class SinginActivity extends AppCompatActivity {
                     return;
                 }
                 if (response.code() == 400) {
-                    Log.d("RESP_SIGNIN_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
                     JSONObject jsonObject = null;
                     try {
                         jsonObject = new JSONObject(response.errorBody().string());
@@ -186,7 +181,7 @@ public class SinginActivity extends AppCompatActivity {
             public void onFailure(Call<RespSrvUser> call, Throwable t) {
                 try{
                     Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
-                    Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Problemas de conexion con el servidor ", Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -200,17 +195,14 @@ public class SinginActivity extends AppCompatActivity {
         bodyRequest = new HashMap<>();
         bodyRequest.put("nombreUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
         bodyRequest.put("token", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
-//        Log.d("MANAGER_SHARED singin", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_TOKEN_FIREBASE, KEY_TOKEN));
         Call<MsgRequest> call = notificationSrv.reportChangeTokenToServer(bodyRequest);
         Log.d("Req updateToken", call.request().toString());
-        Log.d("Req updateToken", bodyRequest.toString());
+//        Log.d("Req updateToken", bodyRequest.toString());
         call.enqueue(new Callback<MsgRequest>() {
             @Override
             public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                 if(response.code() == 200){
-                    Log.d("response code", Integer.toString(response.code()));
-                    Toast toast = Toast.makeText(getApplicationContext(), "Token actualizado correctamente.: ", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Log.d("UPDATE_TOKEN", Integer.toString(response.code()));
                 }
             }
             @Override
@@ -239,7 +231,6 @@ public class SinginActivity extends AppCompatActivity {
                     return;
                 }
                 if (response.code() == 400) {
-                    Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
                     JSONObject jsonObject = null;
                     try {
                         jsonObject = new JSONObject(response.errorBody().string());
@@ -256,7 +247,7 @@ public class SinginActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<MsgRequest> call, Throwable t) {
                 Log.d("RESP_RECOVERY_ERROR", "error: "+t.getMessage());
-                Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Problemas de conexion con el servidor ", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -270,12 +261,11 @@ public class SinginActivity extends AppCompatActivity {
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME, respSrvRegister.getUsuario());
         ManagerSharedPreferences.getInstance().setSessionFromSharedPreferences(this.getApplicationContext(),FILE_SHARED_DATA_USER, KEY_SESSION, isActivated);
 
-
-        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_ID));
-        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_NAME));
-        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_LASTNAME));
-        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_EMAIL));
-        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
+//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_ID));
+//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_NAME));
+//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_LASTNAME));
+//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_EMAIL));
+//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
     }
 
 
@@ -288,8 +278,6 @@ public class SinginActivity extends AppCompatActivity {
     }
 
     private void passToVerification(String user) {
-//        Intent mIntent = new Intent(this, Example.class);
-//        mIntent.putExtra(key, value);
         Intent toVerification = new Intent(this, CodVerification.class);
         toVerification.putExtra("usuario", user);
         startActivity(toVerification);

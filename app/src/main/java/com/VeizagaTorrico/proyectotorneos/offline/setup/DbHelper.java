@@ -56,6 +56,9 @@ public class DbHelper extends SQLiteOpenHelper {
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     "alias TEXT, "+
                     "usuario TEXT, "+
+                    "nombre TEXT, "+
+                    "apellido TEXT, "+
+                    "correo TEXT, "+
                     "competencia INTEGER, "+
                     "FOREIGN KEY(competencia) REFERENCES "+DbContract.TABLE_COMPETENCIA+"(competencia_id)"+
                     ")";

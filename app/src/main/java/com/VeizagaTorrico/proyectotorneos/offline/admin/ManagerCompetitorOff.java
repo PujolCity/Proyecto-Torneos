@@ -7,9 +7,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 
+import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbContract;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitorOff;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ManagerCompetitorOff {
 
@@ -28,6 +32,9 @@ public class ManagerCompetitorOff {
         registro.put("id", competitor.getId());
         registro.put("alias", competitor.getAlias());
         registro.put("usuario", competitor.getUsuario());
+        registro.put("nombre", competitor.getNombre());
+        registro.put("apellido", competitor.getApellido());
+        registro.put("correo", competitor.getCorreo());
         registro.put("competencia", competitor.getCompetencia());
 
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competidor");
@@ -49,7 +56,10 @@ public class ManagerCompetitorOff {
                     Integer.valueOf(filaCompUser.getString(0)),
                     filaCompUser.getString(1),
                     filaCompUser.getString(2),
-                    Integer.valueOf(filaCompUser.getString(3))
+                    filaCompUser.getString(3),
+                    filaCompUser.getString(4),
+                    filaCompUser.getString(5),
+                    Integer.valueOf(filaCompUser.getString(6))
             );
         }
         instanceDb.close();
@@ -77,10 +87,7 @@ public class ManagerCompetitorOff {
             cursor.moveToFirst();
             do {
                 String idCompetidor = cursor.getString(0);
-                if(!haveForeignKey(instanceDb, Integer.valueOf(idCompetidor), idCompetition)){
-                    instanceDb.delete(DbContract.TABLE_COMPETIDOR, "id="+idCompetidor, null);
-                }
-
+                instanceDb.delete(DbContract.TABLE_COMPETIDOR, "id="+idCompetidor, null);
             } while (cursor.moveToNext());
         }
 
@@ -90,19 +97,33 @@ public class ManagerCompetitorOff {
         return;
     }
 
-    private boolean haveForeignKey(SQLiteDatabase instanceDb, int idCompetidor, int idCompetition){
-        // recuperamos los competidores de la competencia
-        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR+
-                        " where id=" + idCompetidor +
-                        " AND competencia!=" + idCompetition,
-                null);
+    // recupera los competidores de una competencia
+    public List<User> getCompetitorsByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
-        Log.d("ROWS_DEL_DB", "Cant de competidores con FK: "+cursor.getCount());
+        Cursor filaCompUser = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR+" where competencia="+idCompetition, null);
+        List<User> competitors = new ArrayList<>();
 
-        if(cursor.getCount() > 0){
-            return true;
+        if(filaCompUser != null && filaCompUser.getCount() != 0) {
+            filaCompUser.moveToFirst();
+            Log.d("DB_LOCAL_GET: ", "Alias comp DB local: "+filaCompUser.getString(1));
+            do {
+                // traemos los datos de la competencia
+                User competitor = new User(
+                        Integer.valueOf(filaCompUser.getString(0)),
+                        filaCompUser.getString(2),
+                        filaCompUser.getString(3),
+                        filaCompUser.getString(4),
+                        filaCompUser.getString(1),
+                        filaCompUser.getString(5),
+                        ""
+                );
+                competitors.add(competitor);
+            } while (filaCompUser.moveToNext());
         }
+        instanceDb.close();
+        Log.d("DB_LOCAL_READ", "Cant competitores de la competencia: "+competitors.size());
 
-        return false;
+        return competitors;
     }
 }

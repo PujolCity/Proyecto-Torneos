@@ -34,7 +34,7 @@ public class ManagerFieldOff {
         Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_CAMPO+" where id="+field.getId(), null);
         // si existe el campo lo actualizamos con los nuevos valores
         if(cursor.getCount() > 0){
-            // insertamos datos en la tabla competencia
+            // actualizamos el campo
             ContentValues camposUpdate = new ContentValues();
             camposUpdate.put("nombre", field.getNombre());
             camposUpdate.put("predio", field.getPredio());

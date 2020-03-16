@@ -26,7 +26,9 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetidoresRecycler
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.User;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitorOff;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class CompetidoresDetalleFragment extends Fragment {
     private ImageButton solicitudes;
     private TextView sinCompetidores;
     private CompetidoresRecyclerViewAdapter adapter;
+    private ManagerCompetitorOff adminCompetidores;
 
     public CompetidoresDetalleFragment() {
         // Required empty public constructor
@@ -86,6 +89,49 @@ public class CompetidoresDetalleFragment extends Fragment {
     }
 
     private void inflarRecycler() {
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            getCompetitors();
+        }
+        else{
+            getCompetitiorsOffline();
+        }
+//        Call<List<User>> call = userSrv.getCompetidoresByCompetencia(competencia.getId());
+//        Log.d("call competencia",call.request().url().toString());
+//        call.enqueue(new Callback<List<User>>() {
+//            @Override
+//            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+//                Log.d("RESPONSE CODE USERS", Integer.toString(response.code()));
+//                if(response.code() == 200){
+//                    try {
+//                        competidores = response.body();
+//                        if(competidores.size() != 0){
+//                            Log.d("COMPETIDORES",competidores.toString());
+//                            adapter.setCompetidores(competidores);
+//                            recycle.setAdapter(adapter);
+//                        } else {
+//                            sinCompetidores();
+//                        }
+//                    } catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<List<User>> call, Throwable t) {
+//                try {
+//                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                    Log.d("onFailure", t.getMessage());
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//            }
+//        });
+    }
+
+    private void getCompetitors(){
         Call<List<User>> call = userSrv.getCompetidoresByCompetencia(competencia.getId());
         Log.d("call competencia",call.request().url().toString());
         call.enqueue(new Callback<List<User>>() {
@@ -120,7 +166,19 @@ public class CompetidoresDetalleFragment extends Fragment {
 
             }
         });
+    }
 
+    // recupera los competidores de la competencia almacenados localmente
+    private void getCompetitiorsOffline(){
+        adminCompetidores = new ManagerCompetitorOff(vista.getContext());
+        competidores = adminCompetidores.getCompetitorsByCompetition(competencia.getId());
+        if(competidores.size() > 0){
+            Log.d("COMPETIDORES",competidores.toString());
+            adapter.setCompetidores(competidores);
+            recycle.setAdapter(adapter);
+        } else {
+            sinCompetidores();
+        }
     }
 
     private void sinCompetidores() {

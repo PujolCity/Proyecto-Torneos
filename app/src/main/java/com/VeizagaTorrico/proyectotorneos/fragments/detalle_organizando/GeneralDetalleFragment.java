@@ -184,7 +184,7 @@ public class GeneralDetalleFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<ConfrontationOff>> call, Throwable t) {
-                Log.d(" GET_DATA_OFF", t.getMessage());
+                Log.d("SERVER_ERROR", "Problemas de conecion con el servidor");
             }
         });
     }

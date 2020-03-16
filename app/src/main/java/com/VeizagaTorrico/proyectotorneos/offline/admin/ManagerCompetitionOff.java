@@ -28,11 +28,12 @@ public class ManagerCompetitionOff {
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
         String[] rolesComp = competition.getRol();
-        StringBuilder stringBuilder = new StringBuilder();
+        // StringBuilder stringBuilder = new StringBuilder();
+        String rolesString = "";
         for (int i = 0; i < rolesComp.length; i++) {
-            stringBuilder.append(rolesComp[i]);
+            rolesString += rolesComp[i]+" ";
         }
-        String rolesString = stringBuilder.toString();
+//        String rolesString = stringBuilder.toString();
 
         // insertamos datos en la tabla competencia
         ContentValues registroComp = new ContentValues();
@@ -49,6 +50,7 @@ public class ManagerCompetitionOff {
         registroComp.put("campos", "");
 
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competencia");
+        Log.d("DB_LOCAL_INSERT", "Roles guardados: "+rolesString);
 
         instanceDb.insert(DbContract.TABLE_COMPETENCIA, null, registroComp);
         // instanceDb.update(DbContract.TABLE_COMPETENCIA, registroComp,"id=" + id, null);
@@ -63,7 +65,8 @@ public class ManagerCompetitionOff {
         CompetitionOff competition = null;
         if(filaCompUser.moveToFirst()){
             String rolesString = filaCompUser.getString(9);
-            String[] roles = rolesString.split(" ");
+            //String[] roles = rolesString.split(" ");
+            String[] roles = rolesString.split("\\s+");
             // traemos los datos de la competencia
             competition = new CompetitionOff(
                     Integer.valueOf(filaCompUser.getString(0)),
@@ -96,9 +99,10 @@ public class ManagerCompetitionOff {
             do {
                 // analizamos la lista de roles
                 String rolesString = cursor.getString(9);
-                Log.d("DB_LOCAL_COMP!", "Roles competencia "+rolesString);
+                Log.d("DB_LOCAL_COMP!", "Roles competencia leidos local:  "+rolesString);
                 if(rolesString.contains(rol)){
-                    String[] roles = rolesString.split(" ");
+                    //String[] roles = rolesString.split(" ");
+                    String[] roles = rolesString.split("\\s+");
                     CompetitionMin competition = new CompetitionMin(
                             Integer.valueOf(cursor.getString(0)),
                             cursor.getString(1),

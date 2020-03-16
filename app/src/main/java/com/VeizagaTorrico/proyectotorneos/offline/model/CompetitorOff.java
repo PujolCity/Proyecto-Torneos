@@ -10,15 +10,24 @@ public class CompetitorOff {
     String alias;
     @SerializedName("nombreUsuario")
     String usuario;
+    @SerializedName("nombre")
+    String nombre;
+    @SerializedName("apellido")
+    String apellido;
+    @SerializedName("correo")
+    String correo;
     @SerializedName("idCompetencia")
     int competencia;
 
     public CompetitorOff(){}
 
-    public CompetitorOff(int id, String alias, String usuario, int competencia) {
+    public CompetitorOff(int id, String alias, String usuario, String nombre, String apellido, String correo, int competencia) {
         this.id = id;
         this.alias = alias;
         this.usuario = usuario;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.correo = correo;
         this.competencia = competencia;
     }
 
@@ -52,5 +61,29 @@ public class CompetitorOff {
 
     public void setCompetencia(int competencia) {
         this.competencia = competencia;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
     }
 }
