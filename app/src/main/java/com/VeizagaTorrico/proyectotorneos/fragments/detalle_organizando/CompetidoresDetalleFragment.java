@@ -95,40 +95,6 @@ public class CompetidoresDetalleFragment extends Fragment {
         else{
             getCompetitiorsOffline();
         }
-//        Call<List<User>> call = userSrv.getCompetidoresByCompetencia(competencia.getId());
-//        Log.d("call competencia",call.request().url().toString());
-//        call.enqueue(new Callback<List<User>>() {
-//            @Override
-//            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-//                Log.d("RESPONSE CODE USERS", Integer.toString(response.code()));
-//                if(response.code() == 200){
-//                    try {
-//                        competidores = response.body();
-//                        if(competidores.size() != 0){
-//                            Log.d("COMPETIDORES",competidores.toString());
-//                            adapter.setCompetidores(competidores);
-//                            recycle.setAdapter(adapter);
-//                        } else {
-//                            sinCompetidores();
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<List<User>> call, Throwable t) {
-//                try {
-//                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-//                    toast.show();
-//                    Log.d("onFailure", t.getMessage());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//        });
     }
 
     private void getCompetitors(){
