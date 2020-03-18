@@ -47,6 +47,7 @@ import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -614,17 +615,25 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
             public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                try {
                    Log.d("response Dialog", Integer.toString(response.code()));
-                   if(response.code() == 200){
+                   if(response.code() == HttpURLConnection.HTTP_OK){
                        MsgRequest msj = response.body();
                        Log.d("msj", msj.toString());
                        Toast toast = Toast.makeText(vista.getContext(),msj.toString() , Toast.LENGTH_SHORT);
                        toast.show();
                        inscribirse.setVisibility(View.INVISIBLE);
                        comprobado =  true;
-                   } else{
-                       Toast toast = Toast.makeText(vista.getContext(), "Alias en Uso", Toast.LENGTH_SHORT);
-                       toast.show();
-                       comprobado = false;
+                   }
+                   if(response.code() == HttpURLConnection.HTTP_BAD_REQUEST){
+                       try {
+                           JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                           String userMessage = jsonObject.getString("messaging");
+                           Log.d("RESP_SOLIC_ERROR", "Msg de la repuesta: "+userMessage);
+                           Toast toast = Toast.makeText(vista.getContext(), "Error: "+userMessage, Toast.LENGTH_LONG);
+                           toast.show();
+                           comprobado = false;
+                       } catch (Exception e) {
+                           e.printStackTrace();
+                       }
                    }
                } catch (Exception e) {
                    e.printStackTrace();
