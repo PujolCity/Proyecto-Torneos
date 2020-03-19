@@ -49,7 +49,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.123"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_ciudad_predio"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/tv_ciudad_predio">
+            </TextView>
 
             <Spinner
                 android:id="@+id/spinner_campos_predio"
@@ -59,7 +60,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.099"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView31"></Spinner>
+                app:layout_constraintTop_toBottomOf="@+id/textView31">
+            </Spinner>
 
             <TextView
                 android:id="@+id/tv_capacidad_predio"
@@ -145,7 +147,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.17"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView27"></Spinner>
+                app:layout_constraintTop_toBottomOf="@+id/textView27">
+            </Spinner>
 
             <ImageButton
                 android:id="@+id/btn_delete_predio"
@@ -158,7 +161,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/spinner_misPredios_predio"
-                app:layout_constraintTop_toBottomOf="@+id/textView27"></ImageButton>
+                app:layout_constraintTop_toBottomOf="@+id/textView27">
+            </ImageButton>
 
             <TextView
                 android:id="@+id/textView27"
