@@ -95,7 +95,7 @@ public class Turn implements Serializable {
     }
 
     public String parsearHora() {
-        return "Desde : " + horaDesde.substring(11,16) + " - " +
-                " Hasta : " + horaHasta.substring(11,16) ;
+        return "Desde : " + horaDesde + " - " +
+                " Hasta : " + horaHasta ;
     }
 }
