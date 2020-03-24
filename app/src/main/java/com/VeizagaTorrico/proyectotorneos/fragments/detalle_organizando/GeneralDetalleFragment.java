@@ -41,6 +41,8 @@ import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
@@ -53,7 +55,7 @@ import java.util.StringTokenizer;
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
-public class GeneralDetalleFragment extends Fragment {
+public class GeneralDetalleFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -99,14 +101,6 @@ public class GeneralDetalleFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.info_general_organizando_competencia, container, false);
-
-        initElements();
-        ocultarBotones();
-        listenerDownload();
-        listenButtonEdit();
-        listenButtonInscripcion();
-
         Log.d("competencia",this.competencia.toString());
         try{
             nmb.setText(competencia.getName());
@@ -119,7 +113,28 @@ public class GeneralDetalleFragment extends Fragment {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        vista = inflater.inflate(R.layout.info_general_organizando_competencia, container, false);
+        initElements();
+
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            ocultarBotones();
+            listenerDownload();
+            listenButtonEdit();
+            listenButtonInscripcion();
+        } else {
+            elementosSinConexion();
+            sinInternet();
+        }
+
         return vista;
+    }
+
+    private void elementosSinConexion() {
+        btnInscripcion.setVisibility(View.INVISIBLE);
+        btnEditar.setVisibility(View.INVISIBLE);
+        downloadOff.setVisibility(View.INVISIBLE);
+        linear.setVisibility(View.INVISIBLE);
     }
 
     private void listenerDownload() {
@@ -275,6 +290,7 @@ public class GeneralDetalleFragment extends Fragment {
 
 
     private void initElements() {
+
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
         adminData = new AdminDataOff();
         adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
@@ -394,6 +410,12 @@ public class GeneralDetalleFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, algunas funciones no estaran disponibles por el momento", Toast.LENGTH_LONG);
+        toast.show();
     }
 
     public interface OnFragmentInteractionListener {

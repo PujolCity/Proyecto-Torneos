@@ -43,6 +43,7 @@ import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.InscriptionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
@@ -58,7 +59,7 @@ import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 
-public class InfoGeneralCompetenciaFragment extends Fragment {
+public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -108,21 +109,28 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_info_general_competencia, container, false);
-
         initElements();
-        ocultarBotones();
-        try{
-            nmb.setText(competition.getName());
-            cat.setText(competition.getCategory());
-            org.setText(competition.getTypesOrganization());
-            ciudad.setText(competition.getCiudad());
-            genero.setText(competition.getGenero());
-            estado.setText(competition.getEstado());
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            ocultarBotones();
+            listeners();
+        } else {
+            sinInternet();
+            elementosSinConexion();
         }
 
+        return vista;
+    }
+
+    private void elementosSinConexion() {
+        follow.setVisibility(View.INVISIBLE);
+        noFollow.setVisibility(View.INVISIBLE);
+        inscribirse.setVisibility(View.INVISIBLE);
+        downloadOff.setVisibility(View.INVISIBLE);
+        linear.setVisibility(View.INVISIBLE);
+    }
+
+    private void listeners() {
         follow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -144,7 +152,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                                 Toast toast = Toast.makeText(vista.getContext(), "Siguiendo", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
-                        } 
+                        }
                         @Override
                         public void onFailure(Call<Success> call, Throwable t) {
                             try {
@@ -229,8 +237,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
                 dialog.show();
             }
         });
-
-        return vista;
     }
 
     // controlamos que no existan datos viejos en la DB local, los borramos si los hay
@@ -401,6 +407,17 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
         downloadOff = vista.findViewById(R.id.btn_download_off);
+        try{
+            nmb.setText(competition.getName());
+            cat.setText(competition.getCategory());
+            org.setText(competition.getTypesOrganization());
+            ciudad.setText(competition.getCiudad());
+            genero.setText(competition.getGenero());
+            estado.setText(competition.getEstado());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void onButtonPressed(Uri uri) {
@@ -436,6 +453,12 @@ public class InfoGeneralCompetenciaFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, algunas funciones no estaran disponibles por el momento", Toast.LENGTH_LONG);
+        toast.show();
     }
 
     public interface OnFragmentInteractionListener {

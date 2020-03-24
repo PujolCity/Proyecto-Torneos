@@ -26,6 +26,7 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import java.util.Map;
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
-public class ParticipandoFragment extends Fragment {
+public class ParticipandoFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -98,6 +99,12 @@ public class ParticipandoFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, se utilizaran datos descargados previamente", Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
@@ -136,7 +143,7 @@ public class ParticipandoFragment extends Fragment {
                 @Override
                 public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
                     try {
-                        Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                         toast.show();
                         Log.d("onFailure", t.getMessage());
 
@@ -147,6 +154,7 @@ public class ParticipandoFragment extends Fragment {
             });
         }
         else{
+            sinInternet();
             adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
             competitions = adminCompetenciasOff.competitionByRol("COMPETIDOR");
             mostrarCompetencias();

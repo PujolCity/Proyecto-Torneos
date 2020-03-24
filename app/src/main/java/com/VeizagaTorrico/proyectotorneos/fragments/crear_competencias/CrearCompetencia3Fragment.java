@@ -31,6 +31,8 @@ import com.VeizagaTorrico.proyectotorneos.models.TypesOrganization;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -40,7 +42,7 @@ import java.util.Map;
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
-public class CrearCompetencia3Fragment extends Fragment {
+public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -81,35 +83,44 @@ public class CrearCompetencia3Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         hayGrupo = false;
-
         vista = inflater.inflate(R.layout.fragment_crear_competencia3, container, false);
         initElements();
-        llenarSpinnerOrg();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            llenarSpinnerOrg();
+            listeners();
+        } else {
+            sinInternet();
+        }
+
+        return vista;
+    }
+
+    private void listeners() {
         //LISTENER BOTONES
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-             try{
-                 competencia.put("nombre",competition.getName());
-                 competencia.put("fecha_ini",competition.getFechaInicio());
-                 competencia.put("fecha_fin",competition.getFechaFin());
-                 competencia.put("ciudad",competition.getCiudad());
-                 competencia.put("genero",competition.getGenero());
-                 competencia.put("max_comp","32");
-                 competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
-                 competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
-                 competencia.put("user_id",Integer.toString(usuario));
-                 competencia.put("frecuencia",Integer.toString(competition.getFrecuencia()));
+                try{
+                    competencia.put("nombre",competition.getName());
+                    competencia.put("fecha_ini",competition.getFechaInicio());
+                    competencia.put("fecha_fin",competition.getFechaFin());
+                    competencia.put("ciudad",competition.getCiudad());
+                    competencia.put("genero",competition.getGenero());
+                    competencia.put("max_comp","32");
+                    competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
+                    competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
+                    competencia.put("user_id",Integer.toString(usuario));
+                    competencia.put("frecuencia",Integer.toString(competition.getFrecuencia()));
 
-                 Log.d("BODY" , competencia.toString());
+                    Log.d("BODY" , competencia.toString());
 
-             } catch (Exception e) {
-                 e.printStackTrace();
-             }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if(hayGrupo) {
                     cantGrupos = etGrupo.getText().toString();
                     if(validarGrupo()){
-                    competencia.put("cant_grupos", cantGrupos);
+                        competencia.put("cant_grupos", cantGrupos);
                     }else{
                         Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
                         toast.show();
@@ -128,28 +139,27 @@ public class CrearCompetencia3Fragment extends Fragment {
                 Log.d("Url",call.request().url().toString());
 
                 call.enqueue(new Callback<Competition>() {
-                 @Override
-                 public void onResponse(Call<Competition> call, Response<Competition> response) {
-                     Log.d("Response code",Integer.toString(response.code()));
+                    @Override
+                    public void onResponse(Call<Competition> call, Response<Competition> response) {
+                        Log.d("Response code",Integer.toString(response.code()));
 
-                     if(response.code() == 201){
-                         Log.d("COMPETENCIA CREADA", competencia.toString());
-                         // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                         Toast toast = Toast.makeText(vista.getContext(), "Competencia Creada!", Toast.LENGTH_SHORT);
-                         toast.show();
-                         Navigation.findNavController(vista).navigate(R.id.misCompetencias);
-                     }
-                 }
-                 @Override
-                 public void onFailure(Call<Competition> call, Throwable t) {
-                     Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                     toast.show();
-                 }
-             });
+                        if(response.code() == 201){
+                            Log.d("COMPETENCIA CREADA", competencia.toString());
+                            // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                            Toast toast = Toast.makeText(vista.getContext(), "Competencia Creada!", Toast.LENGTH_SHORT);
+                            toast.show();
+                            Navigation.findNavController(vista).navigate(R.id.misCompetencias);
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Competition> call, Throwable t) {
+                        Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                });
             }
         });
 
-        return vista;
     }
 
     public void onButtonPressed(Uri uri) {
@@ -173,6 +183,13 @@ public class CrearCompetencia3Fragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento no se podran crear competencias.", Toast.LENGTH_LONG);
+        toast.show();
+        btnCrear.setVisibility(View.INVISIBLE);
     }
 
     public interface OnFragmentInteractionListener {

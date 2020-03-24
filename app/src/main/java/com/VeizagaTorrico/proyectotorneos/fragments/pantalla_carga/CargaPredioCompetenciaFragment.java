@@ -42,7 +42,6 @@ public class CargaPredioCompetenciaFragment extends Fragment {
     private View vista;
     private CompetitionMin competencia;
     private GroundSrv groundSrv;
-    private String predioDire, predioCiudad,campoCapacidad, campoDimension;
     private Spinner spnnrPredio, spnnrCampo,spnnrPredioAsignado;
     private TextView tvPredioDire, tvPredioCiudad, tvCampoCapacidad, tvCampoDimension;
     private Button btnPredio;
@@ -56,7 +55,6 @@ public class CargaPredioCompetenciaFragment extends Fragment {
     private Map<String,String> data;
 
     public CargaPredioCompetenciaFragment() {
-        // Required empty public constructor
     }
 
     public static CargaPredioCompetenciaFragment newInstance() {

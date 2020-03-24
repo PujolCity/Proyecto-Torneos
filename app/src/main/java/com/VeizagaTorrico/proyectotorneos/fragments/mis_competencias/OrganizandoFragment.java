@@ -26,6 +26,7 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ import java.util.List;
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
-public class OrganizandoFragment extends Fragment {
+public class OrganizandoFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
     private CompetitionSrv competitionSrv;
@@ -48,7 +49,6 @@ public class OrganizandoFragment extends Fragment {
     private ManagerCompetitionOff adminCompetenciasOff;
 
     public OrganizandoFragment() {
-        // Required empty public constructor
     }
 
     public static OrganizandoFragment newInstance() {
@@ -101,11 +101,15 @@ public class OrganizandoFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, se utilizaran datos descargados previamente", Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
-
-
 
     private void initAdapter(){
         sinCompetenciasTv = vista.findViewById(R.id.tv_Organizando);
@@ -140,7 +144,7 @@ public class OrganizandoFragment extends Fragment {
                 @Override
                 public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
                     try {
-                        Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                         toast.show();
                         Log.d("onFailure", t.getMessage());
 
@@ -154,6 +158,7 @@ public class OrganizandoFragment extends Fragment {
             adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
             competitions = adminCompetenciasOff.competitionByRol("ORGANIZADOR");
             mostrarCompetencias();
+            sinInternet();
         }
     }
 
@@ -170,6 +175,7 @@ public class OrganizandoFragment extends Fragment {
                         CompetitionMin competition = competitions.get(recycleComp.getChildAdapterPosition(view));
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("competencia", competition);
+                        Log.d("COMPENTENCIA SC", competition.toString());
                         // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                         Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
                     }

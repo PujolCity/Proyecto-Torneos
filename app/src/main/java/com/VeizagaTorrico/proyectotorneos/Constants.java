@@ -2,13 +2,9 @@ package com.VeizagaTorrico.proyectotorneos;
 
 public class Constants {
     // URL BASE del servidor
-<<<<<<< Updated upstream
-    //public static final String BASE_URL = "http://132.255.7.152:20203/api/";
-    public static final String BASE_URL = "http://192.168.1.47:8000/api/";
-=======
+
     public static final String BASE_URL = "http://132.255.7.152:20203/api/";
     //public static final String BASE_URL = "http://192.168.1.47:8000/api/";
->>>>>>> Stashed changes
 
     // nombre del archivo donde se guardan los datos del token de firebase de manera local
     public static final String FILE_SHARED_TOKEN_FIREBASE = "TokenFirebase";
