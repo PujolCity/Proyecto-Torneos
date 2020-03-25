@@ -6,6 +6,7 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
+import com.VeizagaTorrico.proyectotorneos.models.MsgResponse;
 import com.VeizagaTorrico.proyectotorneos.models.Phase;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 
@@ -59,7 +60,7 @@ public interface CompetitionSrv {
     @PUT(Constants.BASE_URL + "usercomp-delfollow")
     Call<Success> noFollowCompetition(@Body Map<String,Integer> noSeguir);
 
-    @POST(Constants.BASE_URL + "competition/org")
+    @GET(Constants.BASE_URL + "competition/org")
     Call<CompetitionOrg> getFaseGrupoCompetition(@Query("idCompetencia") int idCompetencia);
 
     @POST( Constants.BASE_URL + "usercomp" )
@@ -73,5 +74,8 @@ public interface CompetitionSrv {
 
     @GET(Constants.BASE_URL + "competition/phases")
     Call<Phase> getFase(@Query("idCompetencia") int idCompetencia);
+
+    @GET(Constants.BASE_URL + "competition/phase-completed")
+    Call<MsgResponse> faseCompleta(@Query("idCompetencia") int idCompetencia);
 
 }

@@ -198,7 +198,7 @@ public class PosicionesFragment extends Fragment {
 
 
                         // List<Integer> grupos = getAllIntegerRange(1 , datosSpinner.getN_grupos());
-                        List<String> grupos = getItemGrupos(datosSpinner.getN_grupos());
+                        List<String> grupos = getItemGrupos(datosSpinner.getCantGrupos());
                         // creo el adapter para el spinnerJornada y asigno el origen de los datos para el adaptador del spinner
                         ArrayAdapter<String> adapterGrupo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, grupos);
                         adapterGrupo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

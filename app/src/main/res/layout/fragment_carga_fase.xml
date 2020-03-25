@@ -20,17 +20,17 @@
 
     <Spinner
         android:id="@+id/spinnerFaseCarga"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginEnd="46dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </Spinner>
 
     <TextView
         android:id="@+id/textView16"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="144dp"
@@ -41,10 +41,10 @@
 
     <Spinner
         android:id="@+id/spinnerCompetidores"
-        android:layout_width="100dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="132dp"
-        android:layout_marginEnd="76dp"
+        android:layout_marginEnd="46dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </Spinner>

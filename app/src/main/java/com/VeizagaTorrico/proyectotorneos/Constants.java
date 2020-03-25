@@ -26,4 +26,12 @@ public class Constants {
     public static final String FILE_SHARED_CONFRONTATION_OFF = "EncuentrosOffline";
     public static final String KEY_COUNT = "counter";
 
+    // posibles fases de las competencias
+    public static final String FASE_GRUPOS = "0";
+
+    public static final String TIPO_ELIMINATORIAS = "Eliminatorias";
+    public static final String TIPO_ELIMINATORIAS_DOBLE = "Eliminatorias Double";
+    public static final String TIPO_LIGA = "Liga Single";
+    public static final String TIPO_LIGA_DOBLE = "Liga Double";
+    public static final String TIPO_GRUPOS = "Fase de grupo";
 }

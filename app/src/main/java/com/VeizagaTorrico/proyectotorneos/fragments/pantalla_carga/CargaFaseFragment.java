@@ -186,21 +186,18 @@ public class CargaFaseFragment extends Fragment {
             public void onClick(View view) {
                 if(encuentros.size() == cantEncuentros){
                     try {
-                        Log.d("A VER GaSTON", Integer.toString(cantEncuentros));
                         body = armarBody();
                         Call<MsgRequest> call = competitionSrv.generarSiguienteFase(body);
-                        Log.d("a ver", Integer.toString(cantEncuentros));
+//                        Log.d("a ver", Integer.toString(cantEncuentros));
                         Log.d("URL Generar Fase", call.request().url().toString());
                         call.enqueue(new Callback<MsgRequest>() {
                             @Override
                             public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                                 try {
                                     if(response.code() == 200){
-                                        Log.d("generador code", Integer.toString(response.code()));
                                         encuentros.clear();
                                         llenarSpinnerEncuentros();
-                                        Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
-                                        toast.show();
+                                        Toast.makeText(vista.getContext(), "Encuentros guardados", Toast.LENGTH_SHORT).show();
                                         visibleBtn();
                                     }
                                 } catch (Exception e) {

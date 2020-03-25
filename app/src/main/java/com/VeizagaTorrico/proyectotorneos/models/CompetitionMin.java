@@ -32,6 +32,9 @@ public class CompetitionMin implements Serializable {
         @SerializedName("estado")
         private String estado;
 
+        @SerializedName("fase_actual")
+        private String faseActual;
+
         @SerializedName("rol")
         private List<String> rol;
 
@@ -105,9 +108,17 @@ public class CompetitionMin implements Serializable {
             this.id = id;
         }
 
-        public String getDeporte() {
-            return deporte;
+        public String getFaseActual() {
+            return faseActual;
         }
+
+        public void setFaseActual(String faseActual) {
+            this.faseActual = faseActual;
+        }
+
+        public String getDeporte() {
+                return deporte;
+            }
 
         public void setDeporte(String deporte) {
             this.deporte = deporte;

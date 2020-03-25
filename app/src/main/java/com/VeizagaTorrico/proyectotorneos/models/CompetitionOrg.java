@@ -3,38 +3,60 @@ package com.VeizagaTorrico.proyectotorneos.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class CompetitionOrg implements Serializable{
 
-        @SerializedName("cant_grupo")
-        private int n_grupos;
+    @SerializedName("cant_grupo")
+    private int cantGrupos;
 
-        @SerializedName("cant_jornada")
-        private int n_jornadas;
+    @SerializedName("cant_jornada")
+    private int cantJornadas;
 
-        @SerializedName("messaging")
-        private String msg;
+    @SerializedName("fases")
+    private String[] cantFases;
 
-        public CompetitionOrg(int grupos , int jornadas, String msg) {
-            this.n_grupos = grupos;
-            this.n_jornadas = jornadas;
-            this.msg = msg;
-        }
+    @SerializedName("messaging")
+    private String msg;
 
-    public int getN_grupos() {
-        return n_grupos;
+    public CompetitionOrg(int grupos , int jornadas, String[] fases, String msg) {
+        this.cantGrupos = grupos;
+        this.cantJornadas = jornadas;
+        this.cantFases = fases;
+        this.msg = msg;
     }
 
-    public void setN_grupos(int n_grupos) {
-        this.n_grupos = n_grupos;
+    public int getCantGrupos() {
+        return cantGrupos;
     }
 
-    public int getN_jornadas() {
-        return n_jornadas;
+    public void setCantGrupos(int cantGrupos) {
+        this.cantGrupos = cantGrupos;
     }
 
-    public void setN_jornadas(int n_jornadas) {
-        this.n_jornadas = n_jornadas;
+    public int getCantJornadas() {
+        return cantJornadas;
+    }
+
+    public void setCantJornadas(int cantJornadas) {
+        this.cantJornadas = cantJornadas;
+    }
+
+//    public List<String> getCantFases() {
+//        return cantFases;
+//    }
+//
+//    public void setCantFases(List<String> cantFases) {
+//        this.cantFases = cantFases;
+//    }
+
+
+    public String[] getCantFases() {
+        return cantFases;
+    }
+
+    public void setCantFases(String[] cantFases) {
+        this.cantFases = cantFases;
     }
 
     public String getMsg() {
@@ -47,6 +69,6 @@ public class CompetitionOrg implements Serializable{
 
     @Override
     public String toString() {
-        return "Cant grupos: " + n_grupos +" - Cant jornada: "+ n_jornadas +" Mje: "+  msg;
+        return "Cant grupos: " + cantGrupos +" - Cant jornada: "+ cantJornadas + " - Cant de fase: "+cantFases.length+" Mje: "+  msg;
     }
 }

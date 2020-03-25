@@ -22,6 +22,7 @@ import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
+import com.VeizagaTorrico.proyectotorneos.models.MsgResponse;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 
 import org.json.JSONObject;
@@ -182,9 +183,42 @@ public class CargasDetalleFragment extends Fragment {
         btnSigFase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competencia", competencia);
-                Navigation.findNavController(vista).navigate(R.id.cargaFaseFragment, bundle);
+                Call<MsgResponse> call = competenciaSrv.faseCompleta(competencia.getId());
+                Log.d("Url Call", call.request().url().toString());
+                try {
+                    call.enqueue(new Callback<MsgResponse>() {
+                        @Override
+                        public void onResponse(Call<MsgResponse> call, Response<MsgResponse> response) {
+                            Log.d("response",Integer.toString(response.code()));
+                            if(response.code() == 200) {
+                                Bundle bundle = new Bundle();
+                                bundle.putSerializable("competencia", competencia);
+                                Navigation.findNavController(vista).navigate(R.id.cargaFaseFragment, bundle);
+                            }
+                            if (response.code() == 400) {
+                                Log.d("BTN_SIG_FASE_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                JSONObject jsonObject = null;
+                                try {
+                                    jsonObject = new JSONObject(response.errorBody().string());
+                                    String userMessage = jsonObject.getString("messaging");
+                                    Log.d("BTN_SIG_FASE", "Msg de la repuesta: "+userMessage);
+                                    Toast.makeText(vista.getContext(), "No es posible esta opcion:  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                return;
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<MsgResponse> call, Throwable t) {
+                            Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    });
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
     }
