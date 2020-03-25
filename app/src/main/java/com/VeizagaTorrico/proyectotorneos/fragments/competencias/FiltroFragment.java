@@ -33,6 +33,8 @@ import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
 import com.VeizagaTorrico.proyectotorneos.services.StatusSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,7 +45,7 @@ import java.util.Map;
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
-public class FiltroFragment extends Fragment {
+public class FiltroFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -83,23 +85,30 @@ public class FiltroFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_filtro, container, false);
 
         initElements();
-        llenarSpinnerDeporte();
-        llenarSpinnerCategoriaByServer(0);
-        llenarSpinnerOrganizacion();
-        llenarSpinnerGeneros();
-        llenarSpinnerEstado();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            llenarSpinnerDeporte();
+            llenarSpinnerCategoriaByServer(0);
+            llenarSpinnerOrganizacion();
+            llenarSpinnerGeneros();
+            llenarSpinnerEstado();
+            listeners();
+        } else {
+            sinInternet();
+        }
+        return vista;
+    }
 
-
+    private void listeners() {
         btnSiguiente.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    try {
-                        nombreCompetencia = etNombre.getText().toString();
-                        if(!nombreCompetencia.isEmpty())
-                            filtros.put("competencia",nombreCompetencia);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                try {
+                    nombreCompetencia = etNombre.getText().toString();
+                    if(!nombreCompetencia.isEmpty())
+                        filtros.put("competencia",nombreCompetencia);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 try {
                     if(!deporte.isEmpty()){
                         filtros.put("deporte",deporte);
@@ -119,9 +128,9 @@ public class FiltroFragment extends Fragment {
                     ciudad = etCiudad.getText().toString();
                     if(!ciudad.isEmpty())
                         filtros.put("ciudad",ciudad);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 try {
                     if(!organizacion.isEmpty()){
                         filtros.put("tipo_organizacion",organizacion);
@@ -149,7 +158,6 @@ public class FiltroFragment extends Fragment {
                 Navigation.findNavController(vista).navigate(R.id.competenciasListFragment, bundle);
             }
         });
-        return vista;
     }
 
 
@@ -174,6 +182,13 @@ public class FiltroFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento no se podran filtrar ni ver las competencias. Por favor intente mas tarde", Toast.LENGTH_LONG);
+        toast.show();
+        btnSiguiente.setVisibility(View.INVISIBLE);
     }
 
     public interface OnFragmentInteractionListener {

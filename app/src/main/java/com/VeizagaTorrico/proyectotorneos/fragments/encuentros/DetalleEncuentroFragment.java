@@ -262,7 +262,7 @@ public class DetalleEncuentroFragment extends Fragment {
             r2.setText(Integer.toString(encuentro.getRdoc2()));
         }
 
-        referee = new Referee(0, "Elija un juez", " ",0,null);
+        referee = new Referee(0, "Elija un juez", " ",0);
         predio = new Ground(0, "Elije un predio", "", "");
         campo = new Field(0, "Elije un campo de Juego", 0, 0, null);
         turno = new Turn(0,0,"Elije un turno", "");
@@ -283,7 +283,7 @@ public class DetalleEncuentroFragment extends Fragment {
         }
         if(encuentro.getJuez() != null){
             jueces.clear();
-            referee = new Referee(encuentro.getJuez().getId(), encuentro.getJuez().getNombre(), encuentro.getJuez().getApellido(),0,null);
+            referee = new Referee(encuentro.getJuez().getId(), encuentro.getJuez().getNombre(), encuentro.getJuez().getApellido(),0);
             //jueces.add(referee);
             //txtJuez.setText(encuentro.getJuez().toString());
         }
@@ -359,7 +359,7 @@ public class DetalleEncuentroFragment extends Fragment {
     }
 
     private void llenarSpinnerJuez() {
-        Call<List<Referee>> call = refereeSrv.getReferees(encuentro.getIdCompetencia());
+        Call<List<Referee>> call = refereeSrv.getJuecesAsignados(encuentro.getIdCompetencia());
         Log.d("Call Juez",call.request().url().toString());
         call.enqueue(new Callback<List<Referee>>() {
             @Override
@@ -389,7 +389,7 @@ public class DetalleEncuentroFragment extends Fragment {
                             }
                         });
                     }else {
-                        referee = new Referee(0, "Por favor agregar jueces en la pantalla de carga", " ",0,null);
+                        referee = new Referee(0, "Por favor agregar jueces en la pantalla de carga", " ",0);
                         jueces.add(referee);
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

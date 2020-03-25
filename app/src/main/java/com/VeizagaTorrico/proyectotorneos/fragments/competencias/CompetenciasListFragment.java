@@ -24,12 +24,14 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetenciasMinRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-public class CompetenciasListFragment extends Fragment {
+public class CompetenciasListFragment extends Fragment implements MensajeSinInternet{
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,11 +67,11 @@ public class CompetenciasListFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competencias_list, container, false);
         initAdapter();
-
-        filtros = (Map<String, String>) getArguments().getSerializable("filtros");
-
-        Log.d("Filtros recibidos",filtros.toString());
-        inflarRecycler();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            inflarRecycler();
+        } else {
+            sinInternet();
+        }
         return vista;
     }
 
@@ -96,11 +98,23 @@ public class CompetenciasListFragment extends Fragment {
         super.onDetach();
         mListener = null;
     }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento no se podran ver las competencias. Por favor intente mas tarde", Toast.LENGTH_LONG);
+        toast.show();
+        sinCompetencias();
+        sinCompetencias.setText("SIN CONEXION A INTERNET");
+    }
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
 
     private void initAdapter(){
+        filtros = (Map<String, String>) getArguments().getSerializable("filtros");
+        Log.d("Filtros recibidos",filtros.toString());
+
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         sinCompetencias = vista.findViewById(R.id.tv_sinCompetencias);
         // COSAS PARA LLENAR El RECYCLERVIEW
@@ -158,7 +172,7 @@ public class CompetenciasListFragment extends Fragment {
             @Override
             public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
                 try{
-                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_LONG);
+                    Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_LONG);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
                     sinCompetencias();
@@ -174,6 +188,4 @@ public class CompetenciasListFragment extends Fragment {
         sinCompetencias.setVisibility(View.VISIBLE);
 
     }
-
-
 }

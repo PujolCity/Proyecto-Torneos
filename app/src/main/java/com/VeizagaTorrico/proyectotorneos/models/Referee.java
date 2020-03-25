@@ -19,15 +19,11 @@ public class Referee implements Serializable {
     @SerializedName("dni")
     private int dni;
 
-    private CompetitionMin competencia;
-
-
-    public Referee(int id, String nombre, String apellido, int dni, CompetitionMin competencia) {
+    public Referee(int id, String nombre, String apellido, int dni) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.dni = dni;
-        this.competencia = competencia;
     }
 
     public int getId() {
@@ -60,14 +56,6 @@ public class Referee implements Serializable {
 
     public void setDni(int dni) {
         this.dni = dni;
-    }
-
-    public CompetitionMin getCompetencia() {
-        return competencia;
-    }
-
-    public void setCompetencia(CompetitionMin competencia) {
-        this.competencia = competencia;
     }
 
     @Override

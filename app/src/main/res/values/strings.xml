@@ -62,4 +62,5 @@
     <string name="action_settings">Settings</string>
     <!-- STRING PANTALLAS -->
     <string name="txtPantallaPredioCompetencia"> Asigne predios a su competencia!</string>
+    <string name="txtPantallaJuezCompetencia"> Asigne Jueces a su competencia!</string>
 </resources>

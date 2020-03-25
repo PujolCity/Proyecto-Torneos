@@ -25,6 +25,8 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.NoticiasRecyclerView
 import com.VeizagaTorrico.proyectotorneos.models.News;
 import com.VeizagaTorrico.proyectotorneos.services.NewsSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
@@ -35,7 +37,7 @@ import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 
-public class NoticiasFragment extends Fragment {
+public class NoticiasFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -69,7 +71,11 @@ public class NoticiasFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_noticias, container, false);
         initElement();
-        inflarRecycler();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            inflarRecycler();
+        } else {
+            sinInternet();
+        }
         return vista;
     }
 
@@ -120,7 +126,7 @@ public class NoticiasFragment extends Fragment {
             public void onFailure(Call<List<News>> call, Throwable t) {
                 try {
                     Log.d("onFailure", t.getMessage());
-                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                     toast.show();
                     sinNoticias();
                 } catch (Exception e) {
@@ -169,6 +175,14 @@ public class NoticiasFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento no se podran ver las noticias. Por favor intente mas tarde", Toast.LENGTH_LONG);
+        toast.show();
+        sinNoticias();
+        textNoticias.setText("Sin conexion a internet");
     }
 
     public interface OnFragmentInteractionListener {

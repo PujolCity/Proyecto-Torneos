@@ -33,11 +33,13 @@ import com.VeizagaTorrico.proyectotorneos.models.Gender;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GenderSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class CrearCompetencia1Fragment extends Fragment {
+public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -91,12 +93,17 @@ public class CrearCompetencia1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_crear_competencia1, container, false);
-
-        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         initElements();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            llenarSpinnerGeneros();
+            listeners();
+        }else {
+            sinInternet();
+        }
+        return vista;
+    }
 
-        llenarSpinnerGeneros();
-
+    private void listeners() {
         ibObtenerFecha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -135,14 +142,14 @@ public class CrearCompetencia1Fragment extends Fragment {
                                                           Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
                                                           toast.show();
                                                       }
-                                                      }else {
+                                                  }else {
                                                       Toast toast = Toast.makeText(getContext(), "Competencia Existente", Toast.LENGTH_SHORT);
                                                       toast.show();
                                                   }
                                               }
                                               @Override
                                               public void onFailure(Call<Success> call, Throwable t) {
-                                                  Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                                                  Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                                                   toast.show();
                                                   Log.d("onFailure", t.getMessage());
 
@@ -151,7 +158,6 @@ public class CrearCompetencia1Fragment extends Fragment {
                                       }
                                   }
         );
-        return vista;
     }
 
     private boolean validar() {
@@ -164,6 +170,8 @@ public class CrearCompetencia1Fragment extends Fragment {
     }
 
     private void initElements(){
+        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+
         competition =  new Competition();
         genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
 
@@ -203,6 +211,13 @@ public class CrearCompetencia1Fragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento no se podran crear competencias.", Toast.LENGTH_LONG);
+        toast.show();
+        btnSig.setVisibility(View.INVISIBLE);
     }
 
     public interface OnFragmentInteractionListener {
@@ -275,7 +290,7 @@ public class CrearCompetencia1Fragment extends Fragment {
             }
             @Override
             public void onFailure(Call<List<Gender>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                 toast.show();
                 Log.d("onFailure", t.getMessage());
             }

@@ -29,6 +29,8 @@ import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
@@ -37,12 +39,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CargaPredioCompetenciaFragment extends Fragment {
+public class CargaPredioCompetenciaFragment extends Fragment implements MensajeSinInternet {
 
     private View vista;
     private CompetitionMin competencia;
     private GroundSrv groundSrv;
-    private String predioDire, predioCiudad,campoCapacidad, campoDimension;
     private Spinner spnnrPredio, spnnrCampo,spnnrPredioAsignado;
     private TextView tvPredioDire, tvPredioCiudad, tvCampoCapacidad, tvCampoDimension;
     private Button btnPredio;
@@ -56,7 +57,6 @@ public class CargaPredioCompetenciaFragment extends Fragment {
     private Map<String,String> data;
 
     public CargaPredioCompetenciaFragment() {
-        // Required empty public constructor
     }
 
     public static CargaPredioCompetenciaFragment newInstance() {
@@ -77,10 +77,12 @@ public class CargaPredioCompetenciaFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_carga_predio_competencia, container, false);
         initElement();
-        listeners();
-        llenarSpinners();
-
-
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            listeners();
+            llenarSpinners();
+        } else {
+            sinInternet();
+        }
         return vista;
     }
 
@@ -208,7 +210,7 @@ public class CargaPredioCompetenciaFragment extends Fragment {
                 public void onFailure(Call<Success> call, Throwable t) {
                     try {
                         Log.d("OnFailure SETPREDIO",t.getMessage());
-                        Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                        Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                         toast.show();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -271,7 +273,7 @@ public class CargaPredioCompetenciaFragment extends Fragment {
             @Override
             public void onFailure(Call<List<Ground>> call, Throwable t) {
                 try{
-                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                     toast.show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -287,9 +289,10 @@ public class CargaPredioCompetenciaFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Ground>> call, Response<List<Ground>> response) {
                 try {
-                    Log.d("encuentro response", Integer.toString(response.code()));
+                    Log.d("predioComp resp", Integer.toString(response.code()));
 
                     if(!response.body().isEmpty()) {
+                        iBAgregar.setVisibility(View.VISIBLE);
                         predios.clear();
                         predios.addAll(response.body());
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
@@ -311,6 +314,7 @@ public class CargaPredioCompetenciaFragment extends Fragment {
                             }
                         });
                     }else {
+                        iBAgregar.setVisibility(View.INVISIBLE);
                         Ground predio = new Ground(0, "Sin Predios", "", "");
                         predios.add(predio);
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
@@ -324,7 +328,7 @@ public class CargaPredioCompetenciaFragment extends Fragment {
             @Override
             public void onFailure(Call<List<Ground>> call, Throwable t) {
                 try{
-                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                    Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_LONG);
                     toast.show();
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -380,4 +384,10 @@ public class CargaPredioCompetenciaFragment extends Fragment {
 
     }
 
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento quedaran deshabilitadas algunas funciones.", Toast.LENGTH_LONG);
+        toast.show();
+        btnPredio.setVisibility(View.INVISIBLE);
+    }
 }

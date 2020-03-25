@@ -157,9 +157,6 @@
             android:id="@+id/action_cargasDetalleFragment_to_cargarTurnoFragment"
             app:destination="@id/cargarTurnoFragment" />
         <action
-            android:id="@+id/action_cargasDetalleFragment_to_cargarJuezFragment"
-            app:destination="@id/cargarJuezFragment" />
-        <action
             android:id="@+id/action_cargasDetalleFragment_to_cargaFaseFragment"
             app:destination="@id/cargaFaseFragment" />
         <action
@@ -168,6 +165,9 @@
         <action
             android:id="@+id/action_cargasDetalleFragment_to_cargaPredioCompetenciaFragment"
             app:destination="@id/cargaPredioCompetenciaFragment" />
+        <action
+            android:id="@+id/action_cargasDetalleFragment_to_cargaJuezCompetenciaFragment"
+            app:destination="@id/cargaJuezCompetenciaFragment" />
     </fragment>
     <fragment
         android:id="@+id/competidoresDetalleFragment"
@@ -326,6 +326,15 @@
         <action
             android:id="@+id/action_cargaPredioCompetenciaFragment_to_cargarPredioFragment"
             app:destination="@id/cargarPredioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cargaJuezCompetenciaFragment"
+        android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaJuezCompetenciaFragment"
+        android:label=""
+        tools:layout="@layout/fragment_carga_juez_competencia" >
+        <action
+            android:id="@+id/action_cargaJuezCompetenciaFragment_to_cargarJuezFragment"
+            app:destination="@id/cargarJuezFragment" />
     </fragment>
 
 </navigation>

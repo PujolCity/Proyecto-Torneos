@@ -30,13 +30,15 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.RefereeSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CargarJuezFragment extends Fragment {
+public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -74,9 +76,16 @@ public class CargarJuezFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_cargar_juez, container, false);
         initElements();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            llenarSpinnerJuez();
+            listeners();
+        } else {
+            sinInternet();
+        }
+        return vista;
+    }
 
-        llenarSpinnerJuez();
-
+    private void listeners() {
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,7 +102,7 @@ public class CargarJuezFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Success> call, Response<Success> response) {
                             if(response.code() == 201){
-                                Log.d("Predio Cargado", "exito");
+                                Log.d("Juez Cargado", "exito");
                                 // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                                 Toast toast = Toast.makeText(vista.getContext(), "Juez Cargado!", Toast.LENGTH_SHORT);
                                 toast.show();
@@ -102,7 +111,7 @@ public class CargarJuezFragment extends Fragment {
                         }
                         @Override
                         public void onFailure(Call<Success> call, Throwable t) {
-                            Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                             toast.show();
                         }
                     });
@@ -139,7 +148,25 @@ public class CargarJuezFragment extends Fragment {
                 dialogo.show();
             }
         });
-        return vista;
+
+        etNombre.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etNombre.setText(null);
+            }
+        });
+        etApellido.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etApellido.setText(null);
+            }
+        });
+        etDNI.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                etDNI.setText(null);
+            }
+        });
     }
 
     private void eliminarJuez(int idJuez) {
@@ -157,7 +184,7 @@ public class CargarJuezFragment extends Fragment {
             }
             @Override
             public void onFailure(Call<Success> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
@@ -165,14 +192,13 @@ public class CargarJuezFragment extends Fragment {
 
     private void llenarSpinnerJuez() {
         jueces.clear();
-        Call<List<Referee>> call = refereeSrv.getReferees(competencia.getId());
+        Call<List<Referee>> call = refereeSrv.getReferees();
         Log.d("Call Juez",call.request().url().toString());
         call.enqueue(new Callback<List<Referee>>() {
             @Override
             public void onResponse(Call<List<Referee>> call, Response<List<Referee>> response) {
                 try{
                     if(!response.body().isEmpty()){
-                        delete.setVisibility(View.VISIBLE);
                         jueces = response.body();
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -181,6 +207,7 @@ public class CargarJuezFragment extends Fragment {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 juezSeleccionado = (Referee) spinnerJuez.getSelectedItem();
+                                actualizarDatos(juezSeleccionado);
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -189,7 +216,7 @@ public class CargarJuezFragment extends Fragment {
                         });
                     }else {
                         delete.setVisibility(View.INVISIBLE);
-                        Referee referee = new Referee(0, "Sin Jueces", " ",0,null);
+                        Referee referee = new Referee(0, "Sin Jueces", " ",0);
                         jueces.add(referee);
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -207,6 +234,17 @@ public class CargarJuezFragment extends Fragment {
                 toast.show();
             }
         });
+    }
+
+    private void actualizarDatos(Referee juez) {
+        try {
+            etNombre.setText(juez.getNombre());
+            etApellido.setText(juez.getApellido());
+            etDNI.setText(Integer.toString(juez.getDni()));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private boolean validar() {
@@ -257,6 +295,13 @@ public class CargarJuezFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento quedaran deshabilitadas algunas funciones.", Toast.LENGTH_LONG);
+        toast.show();
+        btnCrear.setVisibility(View.INVISIBLE);
     }
 
     public interface OnFragmentInteractionListener {

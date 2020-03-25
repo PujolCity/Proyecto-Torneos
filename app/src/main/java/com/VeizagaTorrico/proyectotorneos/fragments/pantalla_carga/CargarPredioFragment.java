@@ -31,13 +31,15 @@ import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CargarPredioFragment extends Fragment {
+public class CargarPredioFragment extends Fragment implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,6 +60,7 @@ public class CargarPredioFragment extends Fragment {
     private List<Field> campos;
     private ArrayAdapter<Field> adapterCampo;
   //  private ImageButton btnDeletePredio,btnDeleteCampo;
+    private ImageButton btnDeleteCampo;
 
     public CargarPredioFragment() {
         // Required empty public constructor
@@ -80,9 +83,16 @@ public class CargarPredioFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_cargar_predio, container, false);
         initElements();
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            llenarSpinnerPredio();
+            listeners();
+        }else {
+            sinInternet();
+        }
+        return vista;
+    }
 
-        llenarSpinnerPredio();
-
+    private void listeners() {
         btnPredio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -95,9 +105,9 @@ public class CargarPredioFragment extends Fragment {
                     e.printStackTrace();
                 }
                 if(validarPredio()){
-                        predio.put("nombre", predioNombre);
-                        predio.put("direccion", predioDire);
-                        predio.put("ciudad",predioCiudad);
+                    predio.put("nombre", predioNombre);
+                    predio.put("direccion", predioDire);
+                    predio.put("ciudad",predioCiudad);
 
                     Log.d("body predio", predio.toString());
 
@@ -182,7 +192,48 @@ public class CargarPredioFragment extends Fragment {
                 }
             }
         });
-        return vista;
+        btnDeleteCampo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        nombrePred.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nombrePred.setText(null);
+            }
+        });
+        ciudadPred.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ciudadPred.setText(null);
+            }
+        });
+        direPred.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                direPred.setText(null);
+            }
+        });
+        nombreCampo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                nombreCampo.setText(null);
+            }
+        });
+        dimensionesCampo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dimensionesCampo.setText(null);
+            }
+        });
+        capacidadCampo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                capacidadCampo.setText(null);
+            }
+        });
     }
 
     private void eliminarCampo(final int idPredio, int idCampo) {
@@ -255,12 +306,13 @@ public class CargarPredioFragment extends Fragment {
                                 predioSeleccionado = (Ground) spinnerPredio.getSelectedItem();
                                 if (predioSeleccionado.getId() != 0) {
                                     llenarSpinnerCampo(predioSeleccionado.getId());
+                                    actualizarDatosPredio(predioSeleccionado);
                    //                 btnDeletePredio.setVisibility(View.VISIBLE);
                                 } else {
                                     btnCampo.setVisibility(View.INVISIBLE);
                                     spinnerCampo.setVisibility(View.INVISIBLE);
                     //                btnDeletePredio.setVisibility(View.INVISIBLE);
-                    //                btnDeleteCampo.setVisibility(View.INVISIBLE);
+                                    btnDeleteCampo.setVisibility(View.INVISIBLE);
                                     msjCampos();
                                 }
                             }
@@ -288,6 +340,16 @@ public class CargarPredioFragment extends Fragment {
         });
     }
 
+    private void actualizarDatosPredio(Ground predio) {
+        try {
+            nombrePred.setText(predio.getNombre());
+            direPred.setText(predio.getDireccion());
+            ciudadPred.setText(predio.getCiudad());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void llenarSpinnerCampo(int idPredio) {
         if(idPredio != 0){
@@ -302,7 +364,7 @@ public class CargarPredioFragment extends Fragment {
                         if(!response.body().isEmpty()) {
                             campos.clear();
                             campos.addAll(response.body());
-                    //        btnDeleteCampo.setVisibility(View.VISIBLE);
+                            btnDeleteCampo.setVisibility(View.VISIBLE);
                             adapterCampo = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, campos);
                             adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                             spinnerCampo.setAdapter(adapterCampo);
@@ -310,6 +372,7 @@ public class CargarPredioFragment extends Fragment {
                                 @Override
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     campoSeleccionado = (Field) spinnerCampo.getSelectedItem();
+                                    actualizarDatosCampo(campoSeleccionado);
                                 }
 
                                 @Override
@@ -333,6 +396,17 @@ public class CargarPredioFragment extends Fragment {
         }else {
            msjCampos();
         }
+    }
+
+    private void actualizarDatosCampo(Field campo) {
+        try {
+            nombreCampo.setText(campo.getNombre());
+            capacidadCampo.setText(Integer.toString(campo.getCapacidad()));
+            dimensionesCampo.setText(Integer.toString(campo.getDimensiones()) + " mts2");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     private boolean validarPredio() {
@@ -378,6 +452,7 @@ public class CargarPredioFragment extends Fragment {
     /*    btnDeletePredio = vista.findViewById(R.id.btnDeletePredio);
         btnDeleteCampo = vista.findViewById(R.id.btnDeleteCampo);
 */
+        btnDeleteCampo = vista.findViewById(R.id.btnDeleteCampo);
         spinnerPredio = vista.findViewById(R.id.spinnerCargaPredio);
         spinnerCampo = vista.findViewById(R.id.spinnerCargarCampo);
 
@@ -410,13 +485,21 @@ public class CargarPredioFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento quedaran deshabilitadas algunas funciones.", Toast.LENGTH_LONG);
+        toast.show();
+        btnPredio.setVisibility(View.INVISIBLE);
+        btnCampo.setVisibility(View.INVISIBLE);
+    }
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
 
     private void msjCampos() {
         Field campo = new Field(0,"Sin campos",0,0,null);
-       // btnDeleteCampo.setVisibility(View.INVISIBLE);
+        btnDeleteCampo.setVisibility(View.INVISIBLE);
         campos.clear();
         campos.add(campo);
         adapterCampo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,campos);
