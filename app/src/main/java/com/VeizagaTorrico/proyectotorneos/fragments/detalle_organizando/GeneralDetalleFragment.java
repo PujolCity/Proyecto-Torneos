@@ -100,7 +100,9 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        vista = inflater.inflate(R.layout.info_general_organizando_competencia, container, false);
+        initElements();
+
         Log.d("competencia",this.competencia.toString());
         try{
             nmb.setText(competencia.getName());
@@ -113,9 +115,6 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        vista = inflater.inflate(R.layout.info_general_organizando_competencia, container, false);
-        initElements();
 
         if(NetworkReceiver.existConnection(vista.getContext())) {
             ocultarBotones();

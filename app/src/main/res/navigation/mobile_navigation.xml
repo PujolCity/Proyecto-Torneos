@@ -330,7 +330,7 @@
     <fragment
         android:id="@+id/cargaJuezCompetenciaFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaJuezCompetenciaFragment"
-        android:label="fragment_carga_juez_competencia"
+        android:label=""
         tools:layout="@layout/fragment_carga_juez_competencia" >
         <action
             android:id="@+id/action_cargaJuezCompetenciaFragment_to_cargarJuezFragment"

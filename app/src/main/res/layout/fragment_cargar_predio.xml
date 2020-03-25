@@ -57,19 +57,20 @@
         android:visibility="invisible">
     </ImageButton>
 -->
-    <!--
+
+
     <ImageButton
         android:id="@+id/btnDeleteCampo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:src="@drawable/ic_delete"
         android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/spinnerCargarCampo"
-        app:layout_constraintHorizontal_bias="0.8"
+        app:layout_constraintHorizontal_bias="0.932"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnDeletePredio">
+        app:layout_constraintTop_toBottomOf="@+id/etCampoNombre">
     </ImageButton>
-    -->
 
     <Button
         android:id="@+id/btnAgregarPredio"
@@ -151,15 +152,14 @@
         android:id="@+id/btnAgregarCampo"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="112dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/txtBtnAgregarCampo"
         android:textColor="@color/cardview_light_background"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.582"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCargarCampo">
-    </Button>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCargarCampo"></Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
