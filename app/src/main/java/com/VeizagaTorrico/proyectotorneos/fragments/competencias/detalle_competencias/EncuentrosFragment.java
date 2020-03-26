@@ -149,12 +149,11 @@ public class EncuentrosFragment extends Fragment {
                     try {
                         Log.d("REQ_ENCUENTROS_RESP", Integer.toString(response.code()));
                         encuentros = response.body();
-                        mostrarEncuentros();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-
+                mostrarEncuentros();
             }
             @Override
             public void onFailure(Call<List<Confrontation>> call, Throwable t) {
@@ -184,18 +183,18 @@ public class EncuentrosFragment extends Fragment {
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
-                if(competencia.getRol().contains("ORGANIZADOR")){
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                            Bundle bundle = new Bundle();
-                            encuentro.setIdCompetencia(competencia.getId());
-                            bundle.putSerializable("encuentro", encuentro);
-                            Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-                        }
-                    });
-                }
+//                if(competencia.getRol().contains("ORGANIZADOR")){
+//                    adapter.setOnClickListener(new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View view) {
+//                            Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+//                            Bundle bundle = new Bundle();
+//                            encuentro.setIdCompetencia(competencia.getId());
+//                            bundle.putSerializable("encuentro", encuentro);
+//                            Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+//                        }
+//                    });
+//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }

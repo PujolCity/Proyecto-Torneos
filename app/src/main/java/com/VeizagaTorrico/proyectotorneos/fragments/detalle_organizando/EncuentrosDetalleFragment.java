@@ -184,6 +184,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
 
+                // redireccion a la edicion del encuentro
                 if((competencia.getRol().contains("ORGANIZADOR")) || (competencia.getRol().contains("CO-ORGANIZADOR") && NetworkReceiver.existConnection(vista.getContext()))){
                     adapter.setOnClickListener(new View.OnClickListener() {
                         @Override

@@ -60,15 +60,17 @@ public class EncuentrosRecyclerViewAdapter extends RecyclerView.Adapter<Encuentr
         try {
             Confrontation encuentro = this.encuentros.get(position);
 
-            Log.d("encuentro dentr",encuentro.toString());
+            Log.d("DATA_ENC",encuentro.toString());
             holder.comp1.setText(encuentro.getCompetidor1());
             holder.comp2.setText(encuentro.getCompetidor2());
-            Log.d("RESULTADO ENC1", Integer.toString(encuentro.getRdoc1()));
-            Log.d("RESULTADO ENC 2", Integer.toString(encuentro.getRdoc2()));
+            Log.d("DATA_ENC_RDO", "( "+Integer.toString(encuentro.getRdoc1())+" - "+Integer.toString(encuentro.getRdoc2())+" )");
+
             if(encuentro.getRdoc1() != -1 && encuentro.getRdoc2() != -1){
+                Log.d("DATA_ENC_SHOW"," Rdo != null");
                 holder.edComp1.setText(Integer.toString(encuentro.getRdoc1()));
                 holder.edComp2.setText(Integer.toString(encuentro.getRdoc2()));
             } else {
+                Log.d("DATA_ENC_SHOW"," Rdo == null");
                 holder.edComp1.setText(" - ");
                 holder.edComp2.setText(" - ");
 
