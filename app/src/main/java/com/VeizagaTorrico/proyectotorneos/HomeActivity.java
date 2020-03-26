@@ -59,11 +59,13 @@ public class HomeActivity extends AppCompatActivity {
     private void passToSingin(){
         Intent toInitApp = new Intent(this, SinginActivity.class);
         toInitApp.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        toInitApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(toInitApp);
     }
 
     private void passToRegister(){
         Intent toRegisterUser= new Intent(this, UserRegisterActivity.class);
+        toRegisterUser.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(toRegisterUser);
     }
 

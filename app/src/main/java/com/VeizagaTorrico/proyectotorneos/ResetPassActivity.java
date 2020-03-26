@@ -125,6 +125,7 @@ public class ResetPassActivity extends AppCompatActivity {
 
     private void passToInitAccount() {
         Intent toInitApp = new Intent(this, SinginActivity.class);
+        toInitApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(toInitApp);
     }
 }

@@ -174,6 +174,7 @@ public class UserRegisterActivity extends AppCompatActivity {
 
     private void passToInit(){
         Intent toInitApp = new Intent(this, HomeActivity.class);
+        toInitApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(toInitApp);
     }
 }

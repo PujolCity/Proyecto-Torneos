@@ -149,11 +149,11 @@ public class EncuentrosFragment extends Fragment {
                     try {
                         Log.d("REQ_ENCUENTROS_RESP", Integer.toString(response.code()));
                         encuentros = response.body();
+                        mostrarEncuentros();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                mostrarEncuentros();
             }
             @Override
             public void onFailure(Call<List<Confrontation>> call, Throwable t) {

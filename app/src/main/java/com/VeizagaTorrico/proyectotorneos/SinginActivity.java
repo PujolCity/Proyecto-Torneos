@@ -279,6 +279,7 @@ public class SinginActivity extends AppCompatActivity {
 
     private void passToVerification(String user) {
         Intent toVerification = new Intent(this, CodVerification.class);
+        toVerification.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         toVerification.putExtra("usuario", user);
         startActivity(toVerification);
     }
