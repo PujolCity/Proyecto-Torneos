@@ -179,6 +179,7 @@ public class EncuentrosDetalleFragment extends Fragment {
         Log.d("ROL COMPETENCIA", competencia.getRol().toString());
 
         if((encuentros != null) && (encuentros.size() != 0)){
+            Log.d("MOST_ENC", "Enc != null y vacio");
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
@@ -507,7 +508,6 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     // le agrega un cjto de valores a una lista segun el numero recibido
     private void loadItemsFaseElim(String[] arrayItems, List<String> items){
-//        Log.d("LOAD_ITEM_ELEM", "Entro a cagar: "+arrayItems.length);
         if(arrayItems.length == 0){
             return;
         }
@@ -515,16 +515,13 @@ public class EncuentrosDetalleFragment extends Fragment {
         // viene ordenado de la DB
         if((arrayItems[arrayItems.length - 1]).equals("0")){
             items.add(getFaseElim("0"));
-
             cantItems = arrayItems.length -1;
-//            Log.d("LOAD_ITEM_0", "Encontro el cero ");
         }
         else{
             cantItems = arrayItems.length;
         }
         // agregamos los items
         for (int i = 0; i < cantItems ; i++) {
-//            Log.d("LOAD_ITEM_ADD", "Agrega fase:  "+arrayItems[i]);
             items.add(getFaseElim(arrayItems[i]));
         }
         return;
@@ -607,6 +604,17 @@ public class EncuentrosDetalleFragment extends Fragment {
                         nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas()/2);
                     }
                 }
+                // analizamos en el caso de un GRUPO
+                if(competencia.getTypesOrganization().contains("grupo")){
+                    if(nroFase.equals("0")){
+                        spinnerJornada.setVisibility(View.VISIBLE);
+                        spinnerGrupo.setVisibility(View.VISIBLE);
+                    }
+                    else{
+                        spinnerJornada.setVisibility(View.GONE);
+                        spinnerGrupo.setVisibility(View.GONE);
+                    }
+                }
                 fecha_grupo.put("fase", nroFase);
                 getEncuentros(fecha_grupo);
             }
@@ -634,26 +642,20 @@ public class EncuentrosDetalleFragment extends Fragment {
                     return;
                 }
                 else{
-                    if(competencia.getTypesOrganization().equals(Constants.TIPO_LIGA_DOBLE)){
-                        nroJornada = String.valueOf((int) spinnerJornada.getSelectedItem() + dataOrgCompetition.getCantJornadas()/2);
-                    }
-                    else{
-                        nroJornada = (String) spinnerJornada.getSelectedItem();
-                    }
+                    nroJornada = (String) spinnerJornada.getSelectedItem();
                 }
-                // vemos si es una LIGA
+                // recuperamos los datos para una liga (jornada 1, 2, 3 ...)
                 if(competencia.getTypesOrganization().contains("Liga")){
-                    fecha_grupo.put("jornada", nroJornada);
-                    // vemos si selecciono la vuel
+                    // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
-                        nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas()/2);
+                        nroJornada = String.valueOf(Integer.valueOf((String) spinnerJornada.getSelectedItem()) + dataOrgCompetition.getCantJornadas()/2);
                     }
                 }
-                // vemos si es una ELIMINATORIA
+                // recuperamos los datos para una eliminatoria (IDA/VUELTA)
                 if(competencia.getTypesOrganization().contains("Eliminatoria")){
                     nroJornada = getNroFaseElim((String) spinnerJornada.getSelectedItem());
-                    fecha_grupo.put("jornada", nroJornada);
                 }
+                fecha_grupo.put("jornada", nroJornada);
                 getEncuentros(fecha_grupo);
             }
             @Override
