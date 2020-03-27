@@ -145,7 +145,8 @@ public class EncuentrosDetalleFragment extends Fragment {
                 if (response.code() == 200) {
                     try {
                         Log.d("REQ_ENCUENTROS_RESP", response.body().toString());
-                        encuentros = response.body();
+                        encuentros.clear();
+                        encuentros.addAll(response.body());
                         mostrarEncuentros();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -179,6 +180,7 @@ public class EncuentrosDetalleFragment extends Fragment {
         Log.d("ROL COMPETENCIA", competencia.getRol().toString());
 
         if((encuentros != null) && (encuentros.size() != 0)){
+            conEncuentros();
             Log.d("MOST_ENC", "Enc != null y vacio");
             try {
                 adapter.setEncuentros(encuentros);
@@ -275,8 +277,14 @@ public class EncuentrosDetalleFragment extends Fragment {
     }
 
     private void sinEncuentros() {
+        Log.d("SIN_ENC", "Entra");
         recycleCon.setVisibility(View.INVISIBLE);
         sinEncuentrosTv.setVisibility(View.VISIBLE);
+    }
+    private void conEncuentros() {
+        Log.d("CON_ENC", "Entra");
+        recycleCon.setVisibility(View.VISIBLE);
+        sinEncuentrosTv.setVisibility(View.INVISIBLE);
     }
 
     public void onButtonPressed(Uri uri) {
@@ -488,12 +496,12 @@ public class EncuentrosDetalleFragment extends Fragment {
             if(dataOrgCompetition.getCantFases().length != 0) {
                 enableSpinFase = true;
                 loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
-                Log.d("LOAD_ITEM_ACT", "fase actual: ");
+                Log.d("LOAD_ITEM_ACT", "fase actual: "+competencia.getFaseActual());
+                loadItems(dataOrgCompetition.getCantJornadas(), itemsJornada);
+                loadItems(dataOrgCompetition.getCantGrupos(), itemsGrupo);
                 if(competencia.getFaseActual().equals(Constants.FASE_GRUPOS)){
                     enableSpinJornada = true;
-                    loadItems(dataOrgCompetition.getCantJornadas(), itemsJornada);
                     enableSpinGrupo = true;
-                    loadItems(dataOrgCompetition.getCantGrupos(), itemsGrupo);
                 }
             }
         }
@@ -612,6 +620,8 @@ public class EncuentrosDetalleFragment extends Fragment {
                     if(nroFase.equals("0")){
                         spinnerJornada.setVisibility(View.VISIBLE);
                         spinnerGrupo.setVisibility(View.VISIBLE);
+                        loadSpinnerJornada();
+                        loadSpinnerGrupo();
                     }
                     else{
                         spinnerJornada.setVisibility(View.GONE);
@@ -727,7 +737,7 @@ public class EncuentrosDetalleFragment extends Fragment {
     }
 
     private String getNroFaseElim(String f){
-        Log.d("SPIN_SEL_FASE", "Opcion elegida: "+f);
+//        Log.d("SPIN_SEL_FASE", "Opcion elegida: "+f);
         String fase = null;
         if(f == "Grupos"){
             fase = "0";
@@ -751,7 +761,7 @@ public class EncuentrosDetalleFragment extends Fragment {
             fase = "6";
         }
 
-        Log.d("SPIN_SEL_FASE", "Opcion elegida nro: "+fase);
+//        Log.d("SPIN_SEL_FASE", "Opcion elegida nro: "+fase);
         return fase;
     }
 }

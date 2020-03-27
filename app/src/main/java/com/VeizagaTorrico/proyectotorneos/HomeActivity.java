@@ -72,4 +72,9 @@ public class HomeActivity extends AppCompatActivity {
     private boolean obtenerEstadoButton() {
         return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
 }
