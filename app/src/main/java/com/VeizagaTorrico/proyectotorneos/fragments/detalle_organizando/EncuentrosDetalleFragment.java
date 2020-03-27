@@ -603,7 +603,9 @@ public class EncuentrosDetalleFragment extends Fragment {
                     // vemos si selecciono la vuel
                     if((nroFase != null) && (nroFase.equals("2"))){
                         nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas()/2);
+                        fecha_grupo.put("jornada", nroJornada);
                     }
+                    nroFase = null;
                 }
                 // analizamos en el caso de un GRUPO
                 if(competencia.getTypesOrganization().contains("grupo")){
@@ -647,6 +649,9 @@ public class EncuentrosDetalleFragment extends Fragment {
                 }
                 // recuperamos los datos para una liga (jornada 1, 2, 3 ...)
                 if(competencia.getTypesOrganization().contains("Liga")){
+                    if(competencia.getTypesOrganization().contains("Single")){
+                        nroFase = null;
+                    }
                     // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
                         nroJornada = String.valueOf(Integer.valueOf((String) spinnerJornada.getSelectedItem()) + dataOrgCompetition.getCantJornadas()/2);
