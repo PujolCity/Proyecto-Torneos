@@ -122,11 +122,11 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
                     if(validarGrupo()){
                         competencia.put("cant_grupos", cantGrupos);
                     }else{
-                        Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
-                        toast.show();
+                        Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
                     }
-                } else {
-                    competencia.put("cant_grupos", "1");
+                }
+                else {
+                    competencia.put("cant_grupos", null);
                 }
                 if(hayFase){
                     competencia.put("fase", Integer.toString(fase));

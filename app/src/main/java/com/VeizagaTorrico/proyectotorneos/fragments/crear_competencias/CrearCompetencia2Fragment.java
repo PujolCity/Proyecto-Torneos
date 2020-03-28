@@ -163,7 +163,7 @@ public class CrearCompetencia2Fragment extends Fragment implements MensajeSinInt
 
     private void llenarSpinnerFrecuencia() {
         List<Integer> frecuencia = new ArrayList<>();
-        for(int i = 1 ; i <= 7 ; i++){
+        for(int i = 1 ; i <= 14 ; i++){
             frecuencia.add(i);
         }
         ArrayAdapter<Integer> adapterFrecuencia = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, frecuencia);
