@@ -24,16 +24,21 @@ public class ManagerCompetitionOff {
         adminDB = new DbHelper(context, null, null, 1);
     }
 
-    public void addRowCompetitionFromObject(CompetitionOff competition){
+    public void addRowCompetitionFromObject(CompetitionOff competition, String[] fasesCompetition){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
+        // pasamos los roles a un string para poder persistirlo
         String[] rolesComp = competition.getRol();
-        // StringBuilder stringBuilder = new StringBuilder();
         String rolesString = "";
         for (int i = 0; i < rolesComp.length; i++) {
             rolesString += rolesComp[i]+" ";
         }
-//        String rolesString = stringBuilder.toString();
+
+        // pasamos las fases a un string para poder persistirlo
+        String fasesString = "";
+        for (int i = 0; i < fasesCompetition.length; i++) {
+            fasesString += fasesCompetition[i]+" ";
+        }
 
         // insertamos datos en la tabla competencia
         ContentValues registroComp = new ContentValues();
@@ -48,9 +53,10 @@ public class ManagerCompetitionOff {
         registroComp.put("estado", competition.getEstado());
         registroComp.put("rol", rolesString);
         registroComp.put("campos", "");
+        registroComp.put("fases", fasesString);
 
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competencia");
-        Log.d("DB_LOCAL_INSERT", "Roles guardados: "+rolesString);
+        Log.d("DB_LOCAL_INSERT", "Fases guardadas: "+fasesString);
 
         instanceDb.insert(DbContract.TABLE_COMPETENCIA, null, registroComp);
         // instanceDb.update(DbContract.TABLE_COMPETENCIA, registroComp,"id=" + id, null);
@@ -65,8 +71,9 @@ public class ManagerCompetitionOff {
         CompetitionOff competition = null;
         if(filaCompUser.moveToFirst()){
             String rolesString = filaCompUser.getString(9);
-            //String[] roles = rolesString.split(" ");
             String[] roles = rolesString.split("\\s+");
+            String fasesString = filaCompUser.getString(11);
+            String[] fases = fasesString.split("\\s+");
             // traemos los datos de la competencia
             competition = new CompetitionOff(
                     Integer.valueOf(filaCompUser.getString(0)),
@@ -78,7 +85,8 @@ public class ManagerCompetitionOff {
                     filaCompUser.getString(6),
                     filaCompUser.getString(7),
                     filaCompUser.getString(8),
-                    roles
+                    roles,
+                    fases
             );
         }
         instanceDb.close();
@@ -138,7 +146,7 @@ public class ManagerCompetitionOff {
 
         if(cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
-            // traemos los datos de la competencia
+            // traemos la cant de grupos de la competencia
             cantGrupos = Integer.valueOf(cursor.getString(0));
         }
 
@@ -157,13 +165,34 @@ public class ManagerCompetitionOff {
         int cantJornadas = -1;
         if(cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
-            // traemos los datos de la competencia
+            // traemos la cant de jornadas de la competencia
             cantJornadas = Integer.valueOf(cursor.getString(0));
         }
         instanceDb.close();
         Log.d("DB_LOCAL_READ", "Cant de jornadas de la competencia "+cantJornadas);
 
         return cantJornadas;
+    }
+
+    // devuelve una lista de las copetencias en las que se cuenta con el rol recibido
+    public String[] phasesByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor cursor = instanceDb.rawQuery("select fases from "+ DbContract.TABLE_COMPETENCIA+" where id="+idCompetition, null);
+
+
+        String[] fases = null;
+
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // traemos las fases de la competencia
+            String fasesStringDb = cursor.getString(0);
+            fases = fasesStringDb.split("\\s+");
+        }
+        instanceDb.close();
+        Log.d("DB_LOCAL_READ", "Fases de la competencia "+fases);
+
+        return fases;
     }
 
     public int getCantRows(){

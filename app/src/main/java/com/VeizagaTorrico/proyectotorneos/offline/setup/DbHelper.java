@@ -20,7 +20,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 "frecuencia TEXT, "+
                 "estado TEXT, "+
                 "rol TEXT, "+
-                    "campos TEXT"+
+                    "campos TEXT, "+
+                    "fases TEXT"+
                 ")";
 
     private static final String CREATE_TABLE_INSCRIPCION =

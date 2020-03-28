@@ -38,6 +38,8 @@ import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,11 +56,7 @@ public class EncuentrosFragment extends Fragment {
     private RecyclerView recycleCon;
     private RecyclerView.LayoutManager manager;
     private CompetitionMin competencia;
-//    private Spinner spinnerJornada;
-//    private Spinner spinnerGrupo;
     private CompetitionSrv competitionSrv;
-//    private String nroJornada;
-//    private String nroGrupo;
     private Spinner spinnerJornada, spinnerGrupo, spinnerFase;
     private boolean enableSpinJornada, enableSpinFase, enableSpinGrupo;
     private CompetitionOrg dataOrgCompetition;
@@ -67,9 +65,6 @@ public class EncuentrosFragment extends Fragment {
     private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv;
-
-    private ManagerConfrontationOff adminEncuentrosLocal;
-    private ManagerCompetitionOff adminCopeteitionLocal;
 
     public EncuentrosFragment() {
         // Required empty public constructor
@@ -119,12 +114,7 @@ public class EncuentrosFragment extends Fragment {
             itemsGrupo = new ArrayList<>();
             btnBuscar = vista.findViewById(R.id.btnBuscar);
 
-            if(NetworkReceiver.existConnection(vista.getContext())) {
-                cargarSpinnerFiltroEncuentros();
-            }
-            else{
-                cargarSpinnerFiltroEncuentrosOffline();
-            }
+            cargarSpinnerFiltroEncuentros();
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -163,15 +153,6 @@ public class EncuentrosFragment extends Fragment {
         });
     }
 
-    // recupera los datos almacenados en la DB local
-    private void getEncuentrosOffline(Map<String, String> fechaGrupo){
-        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
-        encuentros = adminEncuentrosLocal.confrontationByCompetition(competencia.getId(), fecha_grupo);
-        Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
-
-        mostrarEncuentros();
-    }
-
     private void mostrarEncuentros(){
         if((encuentros != null) && (encuentros.size() != 0)){
             conEncuentros();
@@ -179,19 +160,6 @@ public class EncuentrosFragment extends Fragment {
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
-//                recycleCon.invalidate();
-//                if(competencia.getRol().contains("ORGANIZADOR")){
-//                    adapter.setOnClickListener(new View.OnClickListener() {
-//                        @Override
-//                        public void onClick(View view) {
-//                            Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-//                            Bundle bundle = new Bundle();
-//                            encuentro.setIdCompetencia(competencia.getId());
-//                            bundle.putSerializable("encuentro", encuentro);
-//                            Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-//                        }
-//                    });
-//                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -229,209 +197,6 @@ public class EncuentrosFragment extends Fragment {
 
     public void setCompetencia(CompetitionMin competencia) {
         this.competencia = competencia;
-    }
-
-//    private void cargarSpinnerFiltroEncuentros() {
-//        //En call viene el tipo de dato que espero del servidor
-//        Call<CompetitionOrg> call = competitionSrv.getFaseGrupoCompetition(competencia.getId());
-//        Log.d("Request Encuentros", call.request().url().toString());
-//        call.enqueue(new Callback<CompetitionOrg>() {
-//            @Override
-//            public void onResponse(Call<CompetitionOrg> call, Response<CompetitionOrg> response) {
-//                CompetitionOrg datosSpinner;
-//                //codigo 200 si salio tdo bien
-//                if (response.code() == 200) {
-//                    try{
-//                        fecha_grupo.clear();
-//                        Log.d("RESPONSE FILTER CODE",  Integer.toString(response.code()));
-//                        //asigno a deportes lo que traje del servidor
-//                        datosSpinner = response.body();
-//                        Log.d("datosSpinner",response.body().toString());
-//                        if(contieneJornadas(datosSpinner.getCantJornadas())){
-//                            //List<Integer> jornadas = getAllIntegerRange(1 , datosSpinner.getN_jornadas());
-//                            List<String> jornadas = getItemJornadas(datosSpinner.getCantJornadas());
-//                            // creo el adapter para el spinnerJornada y asigno el origen de los datos para el adaptador del spinner
-//                            ArrayAdapter<String> adapterJornada = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, jornadas);
-//                            //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
-//                            adapterJornada.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                            spinnerJornada.setAdapter(adapterJornada);
-//
-//                            // manejador del evento OnItemSelectedn del spinner de jornada
-//                            spinnerJornada.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                                @Override
-//                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                                    // controlamos que no se elija el primer elemento
-//                                    if(spinnerJornada.getSelectedItemPosition() == 0){
-//                                        nroJornada = null;
-//                                        fecha_grupo.put("fase", nroJornada);
-//                                        getEncuentros(fecha_grupo);
-//                                    }
-//                                    else{
-//                                        nroJornada = (String) spinnerJornada.getSelectedItem();
-//                                        fecha_grupo.put("fase", nroJornada);
-//                                        getEncuentros(fecha_grupo);
-//                                    }
-//                                }
-//                                @Override
-//                                public void onNothingSelected(AdapterView<?> adapterView) {
-//                                }
-//                            });
-//                        }
-//
-//                        if(contieneGrupos(datosSpinner.getCantGrupos(), datosSpinner.getCantJornadas())){
-//                            // List<Integer> grupos = getAllIntegerRange(1 , datosSpinner.getN_grupos());
-//                            List<String> grupos = getItemGrupos(datosSpinner.getCantGrupos());
-//                            // creo el adapter para el spinnerJornada y asigno el origen de los datos para el adaptador del spinner
-//                            ArrayAdapter<String> adapterGrupo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, grupos);
-//                            adapterGrupo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                            // seteo los adapter de cada spinner
-//                            spinnerGrupo.setAdapter(adapterGrupo);
-//
-//                            // manejador del evento OnItemSelectedn del spinner de grupo
-//                            spinnerGrupo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-//                                @Override
-//                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                                    // controlamos que no se elija el primer elemento
-//                                    if(spinnerGrupo.getSelectedItemPosition() == 0){
-//                                        nroGrupo = null;
-//                                        fecha_grupo.put("grupo", nroGrupo);
-//                                        getEncuentros(fecha_grupo);
-//                                    }
-//                                    else{
-//                                        nroGrupo = (String) spinnerGrupo.getSelectedItem();
-//                                        fecha_grupo.put("grupo", nroGrupo);
-//                                        getEncuentros(fecha_grupo);
-//                                    }
-//                                }
-//                                @Override
-//                                public void onNothingSelected(AdapterView<?> adapterView) {
-//                                }
-//                            });
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onFailure(Call<CompetitionOrg> call, Throwable t) {
-//                try {
-//                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-//                    toast.show();
-//                    Log.d("onFailure", t.getMessage());
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        });
-//    }
-
-    private void cargarSpinnerFiltroEncuentrosOffline(){
-        // controlamos que la competencia se encuentre almacenada localmente
-        adminCopeteitionLocal = new ManagerCompetitionOff(vista.getContext());
-        // recuperamos el nro de grupo y fase de la competencia
-        int cantGrupos = adminCopeteitionLocal.cantGroupByCompetition(competencia.getId());
-        int cantJornadas = adminCopeteitionLocal.cantJornadaByCompetition(competencia.getId());
-
-        if(contieneJornadas(cantJornadas)){
-            List<String> jornadas = getItemJornadas(cantJornadas);
-            // creo el adapter para el spinnerJornada y asigno el origen de los datos para el adaptador del spinner
-            ArrayAdapter<String> adapterJornada = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, jornadas);
-            //Asigno el layout a inflar para cada elemento al momento de desplegar la lista
-            adapterJornada.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerJornada.setAdapter(adapterJornada);
-
-            // manejador del evento OnItemSelectedn del spinner de jornada
-            spinnerJornada.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    // controlamos que no se elija el primer elemento
-                    if(spinnerJornada.getSelectedItemPosition() == 0){
-                        nroJornada = null;
-                        fecha_grupo.put("fase", nroJornada);
-                        getEncuentrosOffline(fecha_grupo);
-                    }
-                    else{
-                        nroJornada = (String) spinnerJornada.getSelectedItem();
-                        fecha_grupo.put("fase", nroJornada);
-                        getEncuentrosOffline(fecha_grupo);
-                    }
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
-        }
-
-        if(contieneGrupos(cantGrupos, cantJornadas)){
-            List<String> grupos = getItemGrupos(cantGrupos);
-            // creo el adapter para el spinnerJornada y asigno el origen de los datos para el adaptador del spinner
-            ArrayAdapter<String> adapterGrupo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, grupos);
-            adapterGrupo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            // seteo los adapter de cada spinner
-            spinnerGrupo.setAdapter(adapterGrupo);
-
-            // manejador del evento OnItemSelectedn del spinner de grupo
-            spinnerGrupo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    // controlamos que no se elija el primer elemento
-                    if(spinnerGrupo.getSelectedItemPosition() == 0){
-                        nroGrupo = null;
-                        fecha_grupo.put("grupo", nroGrupo);
-                        //getEncuentros(fecha_grupo);
-                    }
-                    else{
-                        nroGrupo = (String) spinnerGrupo.getSelectedItem();
-                        fecha_grupo.put("grupo", nroGrupo);
-                        //getEncuentros(fecha_grupo);
-                    }
-                }
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
-        }
-    }
-
-    private  List<String> getItemJornadas(int nroJornadas){
-        List<String> itemJornadas = new ArrayList<>();
-        itemJornadas.add("Jornada");
-        if(contieneJornadas(nroJornadas)){
-            for (int i = 1; i <= nroJornadas ; i++) {
-                itemJornadas.add(String.valueOf(i));
-            }
-        }
-        return itemJornadas;
-    }
-
-    private List<String> getItemGrupos(int nroGrupos){
-        List<String> itemGrupos = new ArrayList<>();
-        itemGrupos.add("Grupo ");
-        if(contieneJornadas(nroGrupos)){
-            for (int i = 1; i <= nroGrupos ; i++) {
-                itemGrupos.add(String.valueOf(i));
-            }
-        }
-        return itemGrupos;
-    }
-
-    private boolean contieneJornadas(int nroJornadas) {
-        if(nroJornadas <= 0){
-            spinnerJornada.setEnabled(false);
-            Toast.makeText(getContext(), "La competencia aun no contiene jornadas", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
-    }
-
-    private boolean contieneGrupos(int nroGrupos, int nroJornada) {
-        if ((nroGrupos <= 0) || (nroJornada <= 0)) {
-            spinnerGrupo.setEnabled(false);
-            Toast.makeText(getContext(), "La competencia aun no contiene grupos", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
     }
 
     private void sinEncuentros() {
@@ -576,11 +341,26 @@ public class EncuentrosFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                if (response.code() == 400) {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String userMessage = jsonObject.getString("messaging");
+                        Log.d("REC_ENC", "Msg de la repuesta: "+userMessage);
+                        Toast.makeText(vista.getContext(), "Error en la peticion: "+userMessage+" >>", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+                if (response.code() == 500) {
+                    Log.d("CREATE_COMP_ERROR", "Problemas en el servidor.");
+                    Toast.makeText(vista.getContext(), "Problemas en el servidor ", Toast.LENGTH_LONG).show();
+                }
             }
             @Override
             public void onFailure(Call<CompetitionOrg> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
+                Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
                 Log.d("onFailure", t.getMessage());
             }
         });
@@ -610,8 +390,13 @@ public class EncuentrosFragment extends Fragment {
                     // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
                         nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas()/2);
-                        fecha_grupo.put("jornada", nroJornada);
                     }
+                    if(nroJornada != null){
+                        if((nroFase.equals("1")) && (Integer.valueOf(nroJornada) > dataOrgCompetition.getCantJornadas()/2)){
+                            nroJornada = String.valueOf(Integer.valueOf(nroJornada) - dataOrgCompetition.getCantJornadas()/2);
+                        }
+                    }
+                    fecha_grupo.put("jornada", nroJornada);
                     nroFase = null;
                 }
                 // analizamos en el caso de un GRUPO

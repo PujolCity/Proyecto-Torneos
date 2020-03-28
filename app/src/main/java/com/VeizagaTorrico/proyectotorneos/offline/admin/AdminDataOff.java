@@ -24,10 +24,10 @@ public class AdminDataOff {
     public AdminDataOff() {
     }
 
-    public void loadCompetition(Context context, CompetitionOff competencia){
+    public void loadCompetition(Context context, CompetitionOff competencia, String[] fases){
         adminCompetencia = new ManagerCompetitionOff(context);
 
-        adminCompetencia.addRowCompetitionFromObject(competencia);
+        adminCompetencia.addRowCompetitionFromObject(competencia, fases);
     }
 
     public void loadCompetitors(Context context, List<CompetitorOff> competidores){

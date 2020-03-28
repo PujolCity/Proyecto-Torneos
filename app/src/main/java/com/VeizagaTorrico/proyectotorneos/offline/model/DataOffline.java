@@ -21,6 +21,9 @@ public class DataOffline {
     @SerializedName("inscription")
     InscriptionOff inscripcion;
 
+    @SerializedName("fases")
+    String[] fases;
+
     public CompetitionOff getCompetencia() {
         return competencia;
     }
@@ -59,6 +62,14 @@ public class DataOffline {
 
     public void setInscripcion(InscriptionOff inscripcion) {
         this.inscripcion = inscripcion;
+    }
+
+    public String[] getFases() {
+        return fases;
+    }
+
+    public void setFases(String[] fases) {
+        this.fases = fases;
     }
 
     @Override

@@ -81,43 +81,13 @@ public class ManagerConfrontationOff {
         return encuentro;
     }
 
-    // recupera los encuentros almacenados localmente de la competencia recibida
-    public List<Confrontation> confrontationByCompetition(int idCompeition, Map<String,String> fecha_grupo){
-        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+    public List<Confrontation> confrontationsByCompetition(int idCompeition, String typeOrg, Map<String,String> fecha_grupo){
 
-        String jornada = fecha_grupo.get("fase");
-        String grupo = fecha_grupo.get("grupo");
+        List<Confrontation> encuentros = null;
 
-        String queryBase = "select * from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompeition;
-        if(jornada != null){
-            // agregamos la condicion a la query
-            queryBase += " AND jornada="+jornada;
+        if(typeOrg.contains("Liga")){
+            encuentros = confrontationsLeagueByCompetition(idCompeition, fecha_grupo);
         }
-        if(grupo != null){
-            // agregamos la condicion a la query
-            queryBase += " AND grupo="+grupo;
-        }
-
-//        Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompeition, null);
-        Cursor cursor = instanceDb.rawQuery(queryBase, null);
-        List<Confrontation> encuentros = new ArrayList<>();
-
-        if(cursor != null && cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            do {
-                Confrontation encuentro = new Confrontation(
-                        Integer.valueOf(cursor.getString(0)),
-                        cursor.getString(9),
-                        cursor.getString(10),
-                        Integer.valueOf(cursor.getString(2)),
-                        Integer.valueOf(cursor.getString(3)),
-                        null, null, null);
-                Log.d("DB_LOCAL_READ_!", "Comp1: "+encuentro.getCompetidor1());
-                encuentros.add(encuentro);
-            } while (cursor.moveToNext());
-        }
-        instanceDb.close();
-        Log.d("DB_LOCAL_READ", "Cant de encuentros recuperados: "+encuentros.size());
 
         return encuentros;
     }
@@ -159,5 +129,39 @@ public class ManagerConfrontationOff {
         instanceDb.update(DbContract.TABLE_ENCUENTRO,contentValues, "id="+idConfrontation +" and competencia="+idCompetition,null);
 
         instanceDb.close();
+    }
+
+    // #############################################################################################
+    // ################################# QUERY ENCUENTROS POR TIPO #################################
+    public List<Confrontation> confrontationsLeagueByCompetition(int idCompeition, Map<String,String> fecha_grupo){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        String jornada = fecha_grupo.get("jornada");
+
+        String queryBase = "select * from "+ DbContract.TABLE_ENCUENTRO
+                            +" where competencia="+idCompeition
+                            +" AND jornada="+jornada;
+
+        Cursor cursor = instanceDb.rawQuery(queryBase, null);
+        List<Confrontation> encuentros = new ArrayList<>();
+
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                Confrontation encuentro = new Confrontation(
+                        Integer.valueOf(cursor.getString(0)),
+                        cursor.getString(9),
+                        cursor.getString(10),
+                        Integer.valueOf(cursor.getString(2)),
+                        Integer.valueOf(cursor.getString(3)),
+                        null, null, null);
+                Log.d("DB_LOCAL_READ_!", "Comp1: "+encuentro.getCompetidor1());
+                encuentros.add(encuentro);
+            } while (cursor.moveToNext());
+        }
+        instanceDb.close();
+        Log.d("DB_LOCAL_READ", "Cant de encuentros recuperados: "+encuentros.size());
+
+        return encuentros;
     }
 }

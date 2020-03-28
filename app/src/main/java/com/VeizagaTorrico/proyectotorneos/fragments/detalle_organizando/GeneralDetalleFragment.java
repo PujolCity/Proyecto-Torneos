@@ -226,7 +226,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
                     dataServer = response.body();
                     Log.d("DATA_OFF", "Nombre comp: "+dataServer.getCompetencia().getNombre());
                     // guardamos los datos en la DB local
-                    adminData.loadCompetition(vista.getContext(), dataServer.getCompetencia());
+                    adminData.loadCompetition(vista.getContext(), dataServer.getCompetencia(), dataServer.getFases());
 
                     // controlamos que existan datos antes de guardarlos en la DB local
                     if(dataServer.getCompetidores() != null){

@@ -34,6 +34,8 @@ import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -149,6 +151,22 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
                             Toast toast = Toast.makeText(vista.getContext(), "Competencia Creada!", Toast.LENGTH_SHORT);
                             toast.show();
                             Navigation.findNavController(vista).navigate(R.id.misCompetencias);
+                        }
+                        if (response.code() == 400) {
+                            JSONObject jsonObject = null;
+                            try {
+                                jsonObject = new JSONObject(response.errorBody().string());
+                                String userMessage = jsonObject.getString("messaging");
+                                Log.d("CREATE_COMP", "Msg de la repuesta: "+userMessage);
+                                Toast.makeText(vista.getContext(), "Error en la peticion: "+userMessage+" >>", Toast.LENGTH_LONG).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            return;
+                        }
+                        if (response.code() == 500) {
+                            Log.d("CREATE_COMP_ERROR", "Problemas en el servidor.");
+                            Toast.makeText(vista.getContext(), "Problemas en el servidor ", Toast.LENGTH_LONG).show();
                         }
                     }
                     @Override

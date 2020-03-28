@@ -24,10 +24,12 @@ public class CompetitionOff {
     String estado;
     @SerializedName("rol")
     String[] rol;
+    @SerializedName("fases")
+    String[] fases;
 
     public CompetitionOff(){}
 
-    public CompetitionOff(int id, String nombre, String categoria, String organizacion, String fecha_ini, String genero, String frecuencia, String ciudad, String estado, String[] rol) {
+    public CompetitionOff(int id, String nombre, String categoria, String organizacion, String fecha_ini, String genero, String frecuencia, String ciudad, String estado, String[] rol, String[] fases) {
         this.id = id;
         this.nombre = nombre;
         this.categoria = categoria;
@@ -38,6 +40,7 @@ public class CompetitionOff {
         this.ciudad = ciudad;
         this.estado = estado;
         this.rol = rol;
+        this.fases = fases;
     }
 
     public int getId() {
@@ -118,5 +121,13 @@ public class CompetitionOff {
 
     public void setRol(String[] rol) {
         this.rol = rol;
+    }
+
+    public String[] getFases() {
+        return fases;
+    }
+
+    public void setFases(String[] fases) {
+        this.fases = fases;
     }
 }

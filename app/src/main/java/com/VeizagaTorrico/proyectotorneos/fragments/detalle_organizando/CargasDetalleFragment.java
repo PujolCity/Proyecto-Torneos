@@ -212,8 +212,8 @@ public class CargasDetalleFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<MsgResponse> call, Throwable t) {
-                            Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                            toast.show();
+                            Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
+                            Log.d("onFailure", t.getMessage());
                         }
                     });
                 } catch (Exception e) {

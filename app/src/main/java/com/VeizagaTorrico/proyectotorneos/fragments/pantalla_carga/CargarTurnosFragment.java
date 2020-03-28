@@ -137,7 +137,7 @@ public class CargarTurnosFragment extends Fragment {
                                         try {
                                             jsonObject = new JSONObject(response.errorBody().string());
                                             String userMessage = jsonObject.getString("messaging");
-                                            Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
+                                            Log.d("CVREATE_TURN", "Msg de la repuesta: "+userMessage);
                                             Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
                                         } catch (Exception e) {
                                             e.printStackTrace();
