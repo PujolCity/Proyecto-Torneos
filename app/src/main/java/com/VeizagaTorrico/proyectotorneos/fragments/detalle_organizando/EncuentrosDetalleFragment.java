@@ -35,6 +35,7 @@ import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
+import com.VeizagaTorrico.proyectotorneos.utils.Support;
 
 import org.json.JSONObject;
 
@@ -161,7 +162,7 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     // recupera los datos almacenados en la DB local
     private void getEncuentrosOffline(Map<String, String> fecha_grupo){
-        Log.d("ENC_LOCAL", "datos spiner: "+fecha_grupo.toString());
+//        Log.d("ENC_LOCAL", "datos spiner: "+fecha_grupo.toString());
         adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
         encuentros = adminEncuentrosLocal.confrontationsByCompetition(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
         Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
@@ -175,7 +176,6 @@ public class EncuentrosDetalleFragment extends Fragment {
 
         if((encuentros != null) && (encuentros.size() != 0)){
             conEncuentros();
-            Log.d("MOST_ENC", "Enc != null y vacio");
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
@@ -201,135 +201,6 @@ public class EncuentrosDetalleFragment extends Fragment {
         }
     }
 
-    private void sinEncuentros() {
-//        Log.d("SIN_ENC", "Entra");
-        recycleCon.setVisibility(View.INVISIBLE);
-        sinEncuentrosTv.setVisibility(View.VISIBLE);
-    }
-    private void conEncuentros() {
-//        Log.d("CON_ENC", "Entra");
-        recycleCon.setVisibility(View.VISIBLE);
-        sinEncuentrosTv.setVisibility(View.INVISIBLE);
-    }
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
-
-    public void setCompetencia(CompetitionMin competencia) {
-        this.competencia = competencia;
-    }
-
-    // ###########################################################################################
-    // ####################################### EL REFACTOR #######################################
-
-    // actualizamos la barra de busqueda segun el tipo y la fase actual de la competencia
-    // llenamos los spinnersen base a la misma info
-    private void updateDataSpinners(){
-        spinnerJornada.setVisibility(View.GONE);
-        spinnerGrupo.setVisibility(View.GONE);
-        spinnerFase.setVisibility(View.GONE);
-        itemsJornada.clear();
-        itemsGrupo.clear();
-        itemsFase.clear();
-        itemsJornada.add("Jornada");
-        itemsFase.add("Fase");
-        itemsGrupo.add("Grupo");
-
-        if(competencia.getTypesOrganization().contains("Liga")){
-            if(dataOrgCompetition.getCantJornadas() != 0){
-                enableSpinJornada = true;
-                enableSpinFase = true;
-                itemsFase.add("Ida");
-                int cantJornadas;
-                if (competencia.getTypesOrganization().equals(Constants.TIPO_LIGA_DOBLE)) {
-                    itemsFase.add("Vuelta");
-                    cantJornadas = dataOrgCompetition.getCantJornadas()/2;
-                }else{
-                    cantJornadas = dataOrgCompetition.getCantJornadas();
-                }
-                loadItems(cantJornadas, itemsJornada);
-            }
-        }
-        if(competencia.getTypesOrganization().contains("Eliminatoria")){
-            if(dataOrgCompetition.getCantFases().length != 0) {
-                enableSpinFase = true;
-                loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
-
-                enableSpinJornada = true;
-                itemsJornada.add("Ida");
-                if(competencia.getTypesOrganization().contains("Double")){
-                    itemsJornada.add("Vuelta");
-                }
-            }
-        }
-        if(competencia.getTypesOrganization().equals(Constants.TIPO_GRUPOS)){
-            if(dataOrgCompetition.getCantFases().length != 0) {
-                enableSpinFase = true;
-                loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
-                Log.d("LOAD_ITEM_ACT", "fase actual: "+competencia.getFaseActual());
-                loadItems(dataOrgCompetition.getCantJornadas(), itemsJornada);
-                loadItems(dataOrgCompetition.getCantGrupos(), itemsGrupo);
-                if(competencia.getFaseActual().equals(Constants.FASE_GRUPOS)){
-                    enableSpinJornada = true;
-                    enableSpinGrupo = true;
-                }
-            }
-        }
-    }
-
-    // le agrega un cjto de valores a una lista segun el numero recibido
-    private void loadItems(int numbers, List<String> items){
-        for (int i = 1; i <= numbers ; i++) {
-            items.add(String.valueOf(i));
-        }
-        return;
-    }
-
-    // le agrega un cjto de valores a una lista segun el numero recibido
-    private void loadItemsFaseElim(String[] arrayItems, List<String> items){
-        if(arrayItems.length == 0){
-            return;
-        }
-        int cantItems;
-        // viene ordenado de la DB
-        if((arrayItems[arrayItems.length - 1]).equals("0")){
-            items.add(getFaseElim("0"));
-            cantItems = arrayItems.length -1;
-        }
-        else{
-            cantItems = arrayItems.length;
-        }
-        // agregamos los items
-        for (int i = 0; i < cantItems ; i++) {
-            items.add(getFaseElim(arrayItems[i]));
-        }
-        return;
-    }
-
     // cuando llega la info con los datos de la competencia actualizamos los spiners
     private void cargarSpinnerFiltroEncuentros() {
         //En call viene el tipo de dato que espero del servidor
@@ -338,7 +209,6 @@ public class EncuentrosDetalleFragment extends Fragment {
         call.enqueue(new Callback<CompetitionOrg>() {
             @Override
             public void onResponse(Call<CompetitionOrg> call, Response<CompetitionOrg> response) {
-//                Log.d("SPIN_ENC_RESP", response.body().toString());
                 if (response.code() == 200) {
                     try{
                         fecha_grupo.clear();
@@ -346,28 +216,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                         dataOrgCompetition = response.body();
                         // actualizamos la vissualizacion de los spiners y sus datos
                         updateDataSpinners();
-                        if(enableSpinFase){
-                            spinnerFase.setVisibility(View.VISIBLE);
-                            loadSpinnerFase();
-                        }
-                        else{
-                            spinnerFase.setVisibility(View.GONE);
-                        }
-                        if(enableSpinJornada){
-                            spinnerJornada.setVisibility(View.VISIBLE);
-                            loadSpinnerJornada();
-                        }
-                        else{
-                            spinnerJornada.setVisibility(View.GONE);
-                        }
-                        if(enableSpinGrupo) {
-                            spinnerGrupo.setVisibility(View.VISIBLE);
-                            loadSpinnerGrupo();
-                        }
-                        else{
-                            spinnerGrupo.setVisibility(View.GONE);
-                        }
-
+                        updateViewSpinners();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -409,27 +258,101 @@ public class EncuentrosDetalleFragment extends Fragment {
         //asigno a deportes lo que traje del servidor
         dataOrgCompetition = new CompetitionOrg(cantGrupos,cantJornadas,fases,"Creado desde la DB local");
         updateDataSpinners();
-        if(enableSpinFase){
-            spinnerFase.setVisibility(View.VISIBLE);
-            loadSpinnerFase();
+        updateViewSpinners();
+    }
+
+    private void sinEncuentros() {
+        recycleCon.setVisibility(View.INVISIBLE);
+        sinEncuentrosTv.setVisibility(View.VISIBLE);
+    }
+    private void conEncuentros() {
+        recycleCon.setVisibility(View.VISIBLE);
+        sinEncuentrosTv.setVisibility(View.INVISIBLE);
+    }
+
+    // actualizamos la barra de busqueda segun el tipo y la fase actual de la competencia
+    // llenamos los spinnersen base a la misma info
+    private void updateDataSpinners(){
+        spinnerJornada.setVisibility(View.GONE);
+        spinnerGrupo.setVisibility(View.GONE);
+        spinnerFase.setVisibility(View.GONE);
+        itemsJornada.clear();
+        itemsGrupo.clear();
+        itemsFase.clear();
+        itemsJornada.add("Jornada");
+        itemsFase.add("Fase");
+        itemsGrupo.add("Grupo");
+
+        if(competencia.getTypesOrganization().contains("Liga")){
+            if(dataOrgCompetition.getCantJornadas() != 0){
+                enableSpinJornada = true;
+                enableSpinFase = true;
+                itemsFase.add("Ida");
+                int cantJornadas;
+                if (competencia.getTypesOrganization().equals(Constants.TIPO_LIGA_DOBLE)) {
+                    itemsFase.add("Vuelta");
+                    cantJornadas = dataOrgCompetition.getCantJornadas()/2;
+                }else{
+                    cantJornadas = dataOrgCompetition.getCantJornadas();
+                }
+                loadItems(cantJornadas, itemsJornada);
+            }
+        }
+        if(competencia.getTypesOrganization().contains("Eliminatoria")){
+            if(dataOrgCompetition.getCantFases().length != 0) {
+                enableSpinFase = true;
+//                Log.d("LOAD_ITEM_ACT", "Cant de fases a cargar: "+dataOrgCompetition.getCantFases().length);
+                loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
+
+                enableSpinJornada = true;
+                itemsJornada.add("Ida");
+                if(competencia.getTypesOrganization().contains("Double")){
+                    itemsJornada.add("Vuelta");
+                }
+            }
+        }
+        if(competencia.getTypesOrganization().equals(Constants.TIPO_GRUPOS)){
+            if(dataOrgCompetition.getCantFases().length != 0) {
+                enableSpinFase = true;
+                loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
+                loadItems(dataOrgCompetition.getCantJornadas(), itemsJornada);
+                loadItems(dataOrgCompetition.getCantGrupos(), itemsGrupo);
+                Log.d("LOAD_ITEM_ACT", "Fase actual db local comp: "+competencia.getFaseActual());
+                if(competencia.getFaseActual().equals(Constants.FASE_GRUPOS)){
+                    enableSpinJornada = true;
+                    enableSpinGrupo = true;
+                }
+            }
+        }
+    }
+
+    // le agrega un cjto de valores a una lista segun el numero recibido
+    private void loadItems(int numbers, List<String> items){
+        for (int i = 1; i <= numbers ; i++) {
+            items.add(String.valueOf(i));
+        }
+        return;
+    }
+
+    // le agrega un cjto de valores a una lista segun el numero recibido
+    private void loadItemsFaseElim(String[] arrayItems, List<String> items){
+        if(arrayItems.length == 0){
+            return;
+        }
+        int cantItems;
+        // viene ordenado de la DB
+        if((arrayItems[arrayItems.length - 1]).equals("0")){
+            items.add(Support.spinnerGetFaseElim("0"));
+            cantItems = arrayItems.length -1;
         }
         else{
-            spinnerFase.setVisibility(View.GONE);
+            cantItems = arrayItems.length;
         }
-        if(enableSpinJornada){
-            spinnerJornada.setVisibility(View.VISIBLE);
-            loadSpinnerJornada();
+        // agregamos los items
+        for (int i = 0; i < cantItems ; i++) {
+            items.add(Support.spinnerGetFaseElim(arrayItems[i]));
         }
-        else{
-            spinnerJornada.setVisibility(View.GONE);
-        }
-        if(enableSpinGrupo) {
-            spinnerGrupo.setVisibility(View.VISIBLE);
-            loadSpinnerGrupo();
-        }
-        else{
-            spinnerGrupo.setVisibility(View.GONE);
-        }
+        return;
     }
 
     private void loadSpinnerFase(){
@@ -450,7 +373,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                 }
                 else{
                     String itemSelected = (String) spinnerFase.getSelectedItem();
-                    nroFase = getNroFaseElim(itemSelected);
+                    nroFase = Support.spinnerGetNroFaseElim(itemSelected);
                 }
                 if(competencia.getTypesOrganization().contains("Liga")){
                     // vemos si selecciono la vuelta
@@ -485,7 +408,6 @@ public class EncuentrosDetalleFragment extends Fragment {
                 else{
                     getEncuentrosOffline(fecha_grupo);
                 }
-                //getEncuentros(fecha_grupo);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -525,7 +447,7 @@ public class EncuentrosDetalleFragment extends Fragment {
                 }
                 // recuperamos los datos para una eliminatoria (IDA/VUELTA)
                 if(competencia.getTypesOrganization().contains("Eliminatoria")){
-                    nroJornada = getNroFaseElim((String) spinnerJornada.getSelectedItem());
+                    nroJornada = Support.spinnerGetNroFaseElim((String) spinnerJornada.getSelectedItem());
                 }
                 fecha_grupo.put("jornada", nroJornada);
                 if(NetworkReceiver.existConnection(vista.getContext())){
@@ -534,7 +456,6 @@ public class EncuentrosDetalleFragment extends Fragment {
                 else{
                     getEncuentrosOffline(fecha_grupo);
                 }
-                //getEncuentros(fecha_grupo);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -569,7 +490,6 @@ public class EncuentrosDetalleFragment extends Fragment {
                 else{
                     getEncuentrosOffline(fecha_grupo);
                 }
-                //getEncuentros(fecha_grupo);
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -577,59 +497,61 @@ public class EncuentrosDetalleFragment extends Fragment {
         });
     }
 
-    private String getFaseElim(String f){
-        String fase = null;
-        if(f == "0"){
-            fase = "Grupos";
+    private void updateViewSpinners(){
+        if(enableSpinFase){
+            spinnerFase.setVisibility(View.VISIBLE);
+            loadSpinnerFase();
         }
-        if(f == "1"){
-            fase = "Final";
+        else{
+            spinnerFase.setVisibility(View.GONE);
         }
-        if(f == "2"){
-            fase = "Semi";
+        if(enableSpinJornada){
+            spinnerJornada.setVisibility(View.VISIBLE);
+            loadSpinnerJornada();
         }
-        if(f == "3"){
-            fase = "4º final";
+        else{
+            spinnerJornada.setVisibility(View.GONE);
         }
-        if(f == "4"){
-            fase = "8º final";
+        if(enableSpinGrupo) {
+            spinnerGrupo.setVisibility(View.VISIBLE);
+            loadSpinnerGrupo();
         }
-        if(f == "5"){
-            fase = "16º final";
-        }
-        if(f == "6"){
-            fase = "32º final";
+        else{
+            spinnerGrupo.setVisibility(View.GONE);
         }
 
-        return fase;
+        return;
     }
 
-    private String getNroFaseElim(String f){
-//        Log.d("SPIN_SEL_FASE", "Opcion elegida: "+f);
-        String fase = null;
-        if(f == "Grupos"){
-            fase = "0";
-        }
-        if((f == "Final") || f == "Ida"){
-            fase = "1";
-        }
-        if((f == "Semi") || (f == "Vuelta")){
-            fase = "2";
-        }
-        if(f == "4º final"){
-            fase = "3";
-        }
-        if(f == "8º final"){
-            fase = "4";
-        }
-        if(f == "16º final"){
-            fase = "5";
-        }
-        if(f == "32º final"){
-            fase = "6";
-        }
 
-//        Log.d("SPIN_SEL_FASE", "Opcion elegida nro: "+fase);
-        return fase;
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+    }
+
+    public void setCompetencia(CompetitionMin competencia) {
+        this.competencia = competencia;
     }
 }

@@ -86,7 +86,13 @@ public class ManagerConfrontationOff {
         List<Confrontation> encuentros = null;
 
         if(typeOrg.contains("Liga")){
-            encuentros = confrontationsLeagueByCompetition(idCompeition, fecha_grupo);
+            encuentros = confrontationsLeagueByCompetition(idCompeition, fecha_grupo.get("jornada"));
+        }
+        if(typeOrg.contains("Eliminatoria")){
+            encuentros = confrontationsElimByCompetition(idCompeition, fecha_grupo.get("fase"), fecha_grupo.get("jornada"));
+        }
+        if(typeOrg.contains("grupo")){
+            encuentros = confrontationsGroupByCompetition(idCompeition, fecha_grupo.get("fase"), fecha_grupo.get("jornada"), fecha_grupo.get("grupo"));
         }
 
         return encuentros;
@@ -133,14 +139,81 @@ public class ManagerConfrontationOff {
 
     // #############################################################################################
     // ################################# QUERY ENCUENTROS POR TIPO #################################
-    public List<Confrontation> confrontationsLeagueByCompetition(int idCompeition, Map<String,String> fecha_grupo){
+    public List<Confrontation> confrontationsLeagueByCompetition(int idCompeition, String jornada){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
-
-        String jornada = fecha_grupo.get("jornada");
 
         String queryBase = "select * from "+ DbContract.TABLE_ENCUENTRO
                             +" where competencia="+idCompeition
                             +" AND jornada="+jornada;
+
+        Cursor cursor = instanceDb.rawQuery(queryBase, null);
+        List<Confrontation> encuentros = new ArrayList<>();
+
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                Confrontation encuentro = new Confrontation(
+                        Integer.valueOf(cursor.getString(0)),
+                        cursor.getString(9),
+                        cursor.getString(10),
+                        Integer.valueOf(cursor.getString(2)),
+                        Integer.valueOf(cursor.getString(3)),
+                        null, null, null);
+                Log.d("DB_LOCAL_READ_!", "Comp1: "+encuentro.getCompetidor1());
+                encuentros.add(encuentro);
+            } while (cursor.moveToNext());
+        }
+        instanceDb.close();
+        Log.d("DB_LOCAL_READ", "Cant de encuentros recuperados: "+encuentros.size());
+
+        return encuentros;
+    }
+
+    public List<Confrontation> confrontationsElimByCompetition(int idCompeition, String fase, String jornada){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        String queryBase = "select * from "+ DbContract.TABLE_ENCUENTRO
+                +" where competencia="+idCompeition
+                +" AND fase="+fase
+                +" AND jornada="+jornada;
+
+        Cursor cursor = instanceDb.rawQuery(queryBase, null);
+        List<Confrontation> encuentros = new ArrayList<>();
+
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            do {
+                Confrontation encuentro = new Confrontation(
+                        Integer.valueOf(cursor.getString(0)),
+                        cursor.getString(9),
+                        cursor.getString(10),
+                        Integer.valueOf(cursor.getString(2)),
+                        Integer.valueOf(cursor.getString(3)),
+                        null, null, null);
+                Log.d("DB_LOCAL_READ_!", "Comp1: "+encuentro.getCompetidor1());
+                encuentros.add(encuentro);
+            } while (cursor.moveToNext());
+        }
+        instanceDb.close();
+        Log.d("DB_LOCAL_READ", "Cant de encuentros recuperados: "+encuentros.size());
+
+        return encuentros;
+    }
+
+    public List<Confrontation> confrontationsGroupByCompetition(int idCompeition, String fase, String jornada, String grupo){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        String queryBase = "select * from "+ DbContract.TABLE_ENCUENTRO
+                +" where competencia="+idCompeition;
+
+        // si es fase de grupos buscamos por jornada y grupo
+        if(fase.equals("0")){
+            queryBase += " AND jornada="+jornada
+                    +" AND grupo="+grupo;
+        }
+        else{   // si es fase eliminatoria solo buscamos por fase
+            queryBase += " AND fase="+fase;
+        }
 
         Cursor cursor = instanceDb.rawQuery(queryBase, null);
         List<Confrontation> encuentros = new ArrayList<>();

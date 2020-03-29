@@ -31,12 +31,9 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.EncuentrosRecyclerVi
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
-import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
-import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
+import com.VeizagaTorrico.proyectotorneos.utils.Support;
 
 import org.json.JSONObject;
 
@@ -156,7 +153,6 @@ public class EncuentrosFragment extends Fragment {
     private void mostrarEncuentros(){
         if((encuentros != null) && (encuentros.size() != 0)){
             conEncuentros();
-            Log.d("MOST_ENC", "Enc != null y vacio");
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
@@ -168,51 +164,62 @@ public class EncuentrosFragment extends Fragment {
         }
     }
 
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
+    // cuando llega la info con los datos de la competencia actualizamos los spiners
+    private void cargarSpinnerFiltroEncuentros() {
+        //En call viene el tipo de dato que espero del servidor
+        Call<CompetitionOrg> call = competitionSrv.getFaseGrupoCompetition(competencia.getId());
+//        Log.d("SPIN_ENC_REQ", call.request().url().toString());
+        call.enqueue(new Callback<CompetitionOrg>() {
+            @Override
+            public void onResponse(Call<CompetitionOrg> call, Response<CompetitionOrg> response) {
+                Log.d("SPIN_ENC_RESP", response.body().toString());
+                if (response.code() == 200) {
+                    try{
+                        fecha_grupo.clear();
+                        //asigno a deportes lo que traje del servidor
+                        dataOrgCompetition = response.body();
+                        // actualizamos la vissualizacion de los spiners y sus datos
+                        updateDataSpinners();
+                        updateViewSpinners();
 
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof EncuentrosDetalleFragment.OnFragmentInteractionListener) {
-            mListener = (EncuentrosDetalleFragment.OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
-
-    public interface OnFragmentInteractionListener {
-        void onFragmentInteraction(Uri uri);
-    }
-
-    public void setCompetencia(CompetitionMin competencia) {
-        this.competencia = competencia;
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                if (response.code() == 400) {
+                    JSONObject jsonObject = null;
+                    try {
+                        jsonObject = new JSONObject(response.errorBody().string());
+                        String userMessage = jsonObject.getString("messaging");
+                        Log.d("REC_ENC", "Msg de la repuesta: "+userMessage);
+                        Toast.makeText(vista.getContext(), "Error en la peticion: "+userMessage+" >>", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
+                if (response.code() == 500) {
+                    Log.d("CREATE_COMP_ERROR", "Problemas en el servidor.");
+                    Toast.makeText(vista.getContext(), "Problemas en el servidor ", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Call<CompetitionOrg> call, Throwable t) {
+                Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
+                Log.d("onFailure", t.getMessage());
+            }
+        });
     }
 
     private void sinEncuentros() {
-//        Log.d("SIN_ENC", "Entra");
         recycleCon.setVisibility(View.INVISIBLE);
         sinEncuentrosTv.setVisibility(View.VISIBLE);
     }
 
     private void conEncuentros() {
-//        Log.d("CON_ENC", "Entra");
         recycleCon.setVisibility(View.VISIBLE);
         sinEncuentrosTv.setVisibility(View.INVISIBLE);
     }
-
-    // ###########################################################################################
-    // ####################################### EL REFACTOR #######################################
 
     // actualizamos la barra de busqueda segun el tipo y la fase actual de la competencia
     // llenamos los spinnersen base a la misma info
@@ -249,7 +256,6 @@ public class EncuentrosFragment extends Fragment {
 
                 enableSpinJornada = true;
                 itemsJornada.add("Ida");
-                Log.d("LOAD_ITEM_JORN", "tipo: "+competencia.getTypesOrganization());
                 if(competencia.getTypesOrganization().contains(Constants.TIPO_ELIMINATORIAS_DOBLE)){
                     itemsJornada.add("Vuelta");
                 }
@@ -259,7 +265,6 @@ public class EncuentrosFragment extends Fragment {
             if(dataOrgCompetition.getCantFases().length != 0) {
                 enableSpinFase = true;
                 loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
-                Log.d("LOAD_ITEM_ACT", "fase actual: "+competencia.getFaseActual());
                 loadItems(dataOrgCompetition.getCantJornadas(), itemsJornada);
                 loadItems(dataOrgCompetition.getCantGrupos(), itemsGrupo);
                 if(competencia.getFaseActual().equals(Constants.FASE_GRUPOS)){
@@ -286,7 +291,7 @@ public class EncuentrosFragment extends Fragment {
         int cantItems;
         // viene ordenado de la DB
         if((arrayItems[arrayItems.length - 1]).equals("0")){
-            items.add(getFaseElim("0"));
+            items.add(Support.spinnerGetFaseElim("0"));
             cantItems = arrayItems.length -1;
         }
         else{
@@ -294,76 +299,9 @@ public class EncuentrosFragment extends Fragment {
         }
         // agregamos los items
         for (int i = 0; i < cantItems ; i++) {
-            items.add(getFaseElim(arrayItems[i]));
+            items.add(Support.spinnerGetFaseElim(arrayItems[i]));
         }
         return;
-    }
-
-    // cuando llega la info con los datos de la competencia actualizamos los spiners
-    private void cargarSpinnerFiltroEncuentros() {
-        //En call viene el tipo de dato que espero del servidor
-        Call<CompetitionOrg> call = competitionSrv.getFaseGrupoCompetition(competencia.getId());
-//        Log.d("SPIN_ENC_REQ", call.request().url().toString());
-        call.enqueue(new Callback<CompetitionOrg>() {
-            @Override
-            public void onResponse(Call<CompetitionOrg> call, Response<CompetitionOrg> response) {
-                Log.d("SPIN_ENC_RESP", response.body().toString());
-                if (response.code() == 200) {
-                    try{
-                        fecha_grupo.clear();
-                        //asigno a deportes lo que traje del servidor
-                        dataOrgCompetition = response.body();
-                        // actualizamos la vissualizacion de los spiners y sus datos
-                        updateDataSpinners();
-                        if(enableSpinFase){
-                            spinnerFase.setVisibility(View.VISIBLE);
-                            loadSpinnerFase();
-                        }
-                        else{
-                            spinnerFase.setVisibility(View.GONE);
-                        }
-                        if(enableSpinJornada){
-                            spinnerJornada.setVisibility(View.VISIBLE);
-                            loadSpinnerJornada();
-                        }
-                        else{
-                            spinnerJornada.setVisibility(View.GONE);
-                        }
-                        if(enableSpinGrupo) {
-                            spinnerGrupo.setVisibility(View.VISIBLE);
-                            loadSpinnerGrupo();
-                        }
-                        else{
-                            spinnerGrupo.setVisibility(View.GONE);
-                        }
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                if (response.code() == 400) {
-                    JSONObject jsonObject = null;
-                    try {
-                        jsonObject = new JSONObject(response.errorBody().string());
-                        String userMessage = jsonObject.getString("messaging");
-                        Log.d("REC_ENC", "Msg de la repuesta: "+userMessage);
-                        Toast.makeText(vista.getContext(), "Error en la peticion: "+userMessage+" >>", Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return;
-                }
-                if (response.code() == 500) {
-                    Log.d("CREATE_COMP_ERROR", "Problemas en el servidor.");
-                    Toast.makeText(vista.getContext(), "Problemas en el servidor ", Toast.LENGTH_LONG).show();
-                }
-            }
-            @Override
-            public void onFailure(Call<CompetitionOrg> call, Throwable t) {
-                Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
-                Log.d("onFailure", t.getMessage());
-            }
-        });
     }
 
     private void loadSpinnerFase(){
@@ -384,8 +322,9 @@ public class EncuentrosFragment extends Fragment {
                 }
                 else{
                     String itemSelected = (String) spinnerFase.getSelectedItem();
-                    nroFase = getNroFaseElim(itemSelected);
+                    nroFase = Support.spinnerGetNroFaseElim(itemSelected);
                 }
+                // analizamos en el caso de una LIGA
                 if(competencia.getTypesOrganization().contains("Liga")){
                     // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
@@ -453,7 +392,7 @@ public class EncuentrosFragment extends Fragment {
                 }
                 // recuperamos los datos para una eliminatoria (IDA/VUELTA)
                 if(competencia.getTypesOrganization().contains("Eliminatoria")){
-                    nroJornada = getNroFaseElim((String) spinnerJornada.getSelectedItem());
+                    nroJornada = Support.spinnerGetNroFaseElim((String) spinnerJornada.getSelectedItem());
                 }
                 fecha_grupo.put("jornada", nroJornada);
                 getEncuentros(fecha_grupo);
@@ -493,59 +432,61 @@ public class EncuentrosFragment extends Fragment {
         });
     }
 
-    private String getFaseElim(String f){
-        String fase = null;
-        if(f == "0"){
-            fase = "Grupos";
+    private void updateViewSpinners(){
+        if(enableSpinFase){
+            spinnerFase.setVisibility(View.VISIBLE);
+            loadSpinnerFase();
         }
-        if(f == "1"){
-            fase = "Final";
+        else{
+            spinnerFase.setVisibility(View.GONE);
         }
-        if(f == "2"){
-            fase = "Semi";
+        if(enableSpinJornada){
+            spinnerJornada.setVisibility(View.VISIBLE);
+            loadSpinnerJornada();
         }
-        if(f == "3"){
-            fase = "4º final";
+        else{
+            spinnerJornada.setVisibility(View.GONE);
         }
-        if(f == "4"){
-            fase = "8º final";
+        if(enableSpinGrupo) {
+            spinnerGrupo.setVisibility(View.VISIBLE);
+            loadSpinnerGrupo();
         }
-        if(f == "5"){
-            fase = "16º final";
-        }
-        if(f == "6"){
-            fase = "32º final";
+        else{
+            spinnerGrupo.setVisibility(View.GONE);
         }
 
-        return fase;
+        return;
     }
 
-    private String getNroFaseElim(String f){
-        Log.d("SPIN_SEL_FASE", "Opcion elegida: "+f);
-        String fase = null;
-        if(f == "Grupos"){
-            fase = "0";
+    public void onButtonPressed(Uri uri) {
+        if (mListener != null) {
+            mListener.onFragmentInteraction(uri);
         }
-        if((f == "Final") || f == "Ida"){
-            fase = "1";
-        }
-        if((f == "Semi") || (f == "Vuelta")){
-            fase = "2";
-        }
-        if(f == "4º final"){
-            fase = "3";
-        }
-        if(f == "8º final"){
-            fase = "4";
-        }
-        if(f == "16º final"){
-            fase = "5";
-        }
-        if(f == "32º final"){
-            fase = "6";
-        }
-        Log.d("SPIN_SEL_FASE", "Opcion elegida nro: "+fase);
-
-        return fase;
     }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof EncuentrosDetalleFragment.OnFragmentInteractionListener) {
+            mListener = (EncuentrosDetalleFragment.OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        mListener = null;
+    }
+
+    public interface OnFragmentInteractionListener {
+        void onFragmentInteraction(Uri uri);
+    }
+
+    public void setCompetencia(CompetitionMin competencia) {
+        this.competencia = competencia;
+    }
+
 }

@@ -54,6 +54,7 @@ public class ManagerCompetitionOff {
         registroComp.put("rol", rolesString);
         registroComp.put("campos", "");
         registroComp.put("fases", fasesString);
+        registroComp.put("fase_actual", competition.getFase_actual());
 
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competencia");
         Log.d("DB_LOCAL_INSERT", "Fases guardadas: "+fasesString);
@@ -123,6 +124,7 @@ public class ManagerCompetitionOff {
                             Arrays.asList(roles),
                             0
                             );
+                    competition.setFaseActual(cursor.getString(11));
 
                     Log.d("DB_LOCAL_READ_!", "Nombre competencia: "+competition.getName());
                     competencias.add(competition);
@@ -181,16 +183,17 @@ public class ManagerCompetitionOff {
         Cursor cursor = instanceDb.rawQuery("select fases from "+ DbContract.TABLE_COMPETENCIA+" where id="+idCompetition, null);
 
 
-        String[] fases = null;
+        String[] fases = {};
 
         if(cursor != null && cursor.getCount() != 0) {
             cursor.moveToFirst();
             // traemos las fases de la competencia
             String fasesStringDb = cursor.getString(0);
+            Log.d("DB_LOCAL_READ", "Fases string leidas "+fasesStringDb);
             fases = fasesStringDb.split("\\s+");
         }
         instanceDb.close();
-        Log.d("DB_LOCAL_READ", "Fases de la competencia "+fases);
+        Log.d("DB_LOCAL_READ", "Cant d fases de la competencia "+fases.length);
 
         return fases;
     }

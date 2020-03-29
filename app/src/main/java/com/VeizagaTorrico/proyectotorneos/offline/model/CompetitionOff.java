@@ -26,6 +26,8 @@ public class CompetitionOff {
     String[] rol;
     @SerializedName("fases")
     String[] fases;
+    @SerializedName("fase_actual")
+    String fase_actual;
 
     public CompetitionOff(){}
 
@@ -129,5 +131,13 @@ public class CompetitionOff {
 
     public void setFases(String[] fases) {
         this.fases = fases;
+    }
+
+    public String getFase_actual() {
+        return fase_actual;
+    }
+
+    public void setFase_actual(String fase_actual) {
+        this.fase_actual = fase_actual;
     }
 }

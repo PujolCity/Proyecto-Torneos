@@ -42,15 +42,6 @@ public class CompetitionOrg implements Serializable{
         this.cantJornadas = cantJornadas;
     }
 
-//    public List<String> getCantFases() {
-//        return cantFases;
-//    }
-//
-//    public void setCantFases(List<String> cantFases) {
-//        this.cantFases = cantFases;
-//    }
-
-
     public String[] getCantFases() {
         return cantFases;
     }
