@@ -109,6 +109,24 @@ public class ManagerConfrontationOff {
         return cantRows;
     }
 
+    // determina si existen encuentros en ls db de una competencia
+    public boolean existByCompetition(int idCompetition) {
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+        // recuperamos los competidores de la competencia
+        Cursor cursor = instanceDb.rawQuery("select * from " + DbContract.TABLE_ENCUENTRO + " where competencia=" + idCompetition, null);
+
+        int cantRows = cursor.getCount();
+        Log.d("ROWS_LOCAL_DB", "Cant de encuentros encontrados:"+cantRows);
+        instanceDb.close();
+
+        if(cantRows > 0){
+            return true;
+        }
+
+        return false;
+    }
+
+    // elimina los encuentros de una competencia
     public void deleteByCompetition(int idCompetition){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
         // recuperamos los competidores de la competencia
@@ -127,6 +145,7 @@ public class ManagerConfrontationOff {
         return;
     }
 
+    // actualiza el resultadode un encuentro
     public void updateByCompetition(int idConfrontation, int idCompetition, int rdo1, int rdo2){
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
         ContentValues contentValues = new ContentValues();

@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.offline.admin;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitorOff;
@@ -26,6 +27,20 @@ public class AdminDataOff {
 
     public void loadCompetition(Context context, CompetitionOff competencia, String[] fases){
         adminCompetencia = new ManagerCompetitionOff(context);
+
+        // vemos si existen datos anteriores de la competencia, si los hay los borramos
+        // los campos al ser globales no los borramos solo los actualizamos(a la hora de insertar)
+        if(adminCompetencia.existCompetition(competencia.getId())){
+            adminInscripcion = new ManagerInscriptionOff(context);
+//            adminJuez = new ManagerJudgeOff(context);
+            adminCompetidor = new ManagerCompetitorOff(context);
+
+            adminInscripcion.deleteByCompetition(competencia.getId());
+            // los jueces son globales tmpoco se deberian borrar
+//            adminJuez.deleteByCompetition(competencia.getId());
+            adminCompetidor.deleteByCompetition(competencia.getId());
+            adminCompetencia.deleteCompetition(competencia.getId());
+        }
 
         adminCompetencia.addRowCompetitionFromObject(competencia, fases);
     }
@@ -64,9 +79,21 @@ public class AdminDataOff {
     }
 
     public void loadConfrontations(Context context, List<ConfrontationOff> encuentros){
+
+        if(encuentros.size() == 0){
+            Log.d("ENC_LOCAL_DB", "Competencias sin encuentros");
+            return;
+        }
         adminEncuentro = new ManagerConfrontationOff(context);
 
-        // insertamos los competiodres en la app
+        // recuperamos el id de la competencia
+        int idCompetencia = encuentros.get(0).getCompetencia();
+
+        // si existian encuentros, los borrramos
+        if(adminEncuentro.existByCompetition(idCompetencia)){
+            adminEncuentro.deleteByCompetition(idCompetencia);
+        }
+        // insertamos los encuentros en la db local
         for (ConfrontationOff encuentro : encuentros) {
             adminEncuentro.addRowConfrontationFromObject(encuentro);
         }

@@ -55,6 +55,7 @@ public class ManagerCompetitionOff {
         registroComp.put("campos", "");
         registroComp.put("fases", fasesString);
         registroComp.put("fase_actual", competition.getFase_actual());
+        registroComp.put("jueces", "");
 
         Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competencia");
         Log.d("DB_LOCAL_INSERT", "Fases guardadas: "+fasesString);

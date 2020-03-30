@@ -22,7 +22,8 @@ public class DbHelper extends SQLiteOpenHelper {
                 "rol TEXT, "+
                     "campos TEXT, "+
                     "fases TEXT, "+
-                    "fase_actual TEXT"+
+                    "fase_actual TEXT, "+
+                    "jueces TEXT"+
                 ")";
 
     private static final String CREATE_TABLE_INSCRIPCION =
@@ -48,9 +49,7 @@ public class DbHelper extends SQLiteOpenHelper {
                     "(id INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     "nombre TEXT, "+
                     "apellido TEXT, "+
-                    "dni TEXT, "+
-                    "competencia INTEGER, "+
-                    "FOREIGN KEY(competencia) REFERENCES "+DbContract.TABLE_COMPETENCIA+"(competencia_id)"+
+                    "dni TEXT"+
                     ")";
 
     private static final String CREATE_TABLE_COMPETIDORES =

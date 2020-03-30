@@ -47,7 +47,7 @@ public class ManagerFieldOff {
         }
 
         // actualizamos los ids de campos de la competencia
-        updateFields(instanceDb, field.getCompetencia(), field.getId());
+        updateFieldsOfCompetetion(instanceDb, field.getCompetencia(), field.getId());
 
         instanceDb.close();
     }
@@ -85,7 +85,7 @@ public class ManagerFieldOff {
     }
 
     // actualiza la lista de campos de la competencia
-    private void updateFields(SQLiteDatabase instanceDb, int idCompetition, int idField){
+    private void updateFieldsOfCompetetion(SQLiteDatabase instanceDb, int idCompetition, int idField){
 
         Cursor cursor = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETENCIA+" where id="+idCompetition, null);
 
@@ -107,7 +107,7 @@ public class ManagerFieldOff {
         return;
     }
 
-    // actualiza la lista de ids de campos de la competencia junto al id de un nuevo campo
+    // determina si el 2do parametro se encuentra en el string recibido
     private boolean existField(String idCampos, int idField){
         String[] arrayCamposId = idCampos.split("\\s+");
         // vemos si el campo ya se encuentra en la lista de los campos de la competencia

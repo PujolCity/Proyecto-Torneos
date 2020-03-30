@@ -118,10 +118,12 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
 
         if(NetworkReceiver.existConnection(vista.getContext())) {
             ocultarBotones();
+            llenarDatoInscripcion();
             listenerDownload();
             listenButtonEdit();
             listenButtonInscripcion();
         } else {
+            llenarDatosInscripcionOffline();
             elementosSinConexion();
             sinInternet();
         }
@@ -133,7 +135,6 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
         btnInscripcion.setVisibility(View.INVISIBLE);
         btnEditar.setVisibility(View.INVISIBLE);
         downloadOff.setVisibility(View.INVISIBLE);
-        linear.setVisibility(View.INVISIBLE);
     }
 
     private void listenerDownload() {
@@ -215,7 +216,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
         userComp.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
         userComp.put("idCompetencia", String.valueOf(competencia.getId()));
 
-        Log.d("GET_DATA_OFF", "Body peticion: "+userComp);
+//        Log.d("GET_DATA_OFF", "Body peticion: "+userComp);
 
         Call<DataOffline> call = usersSrv.getDataOffline(userComp);
         Log.d("GET_DATA_OFF", call.request().url().toString());
@@ -224,46 +225,39 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
             public void onResponse(Call<DataOffline> call, Response<DataOffline> response) {
                 if (response.code() == 200) {
                     dataServer = response.body();
-                    Log.d("DATA_OFF", "Nombre comp: "+dataServer.getCompetencia().getNombre());
+                    Log.d("GRAL_DET_OFF", "Nombre comp: "+dataServer.getCompetencia().getNombre());
                     // guardamos los datos en la DB local
                     adminData.loadCompetition(vista.getContext(), dataServer.getCompetencia(), dataServer.getFases());
 
                     // controlamos que existan datos antes de guardarlos en la DB local
                     if(dataServer.getCompetidores() != null){
                         adminData.loadCompetitors(vista.getContext(), dataServer.getCompetidores());
-                        Log.d("DATA_OFF", "Cant comp: "+dataServer.getCompetidores().size());
+                        Log.d("GRAL_DET_OFF", "Cant comp: "+dataServer.getCompetidores().size());
                     }
                     else{
-                        Log.d("DATA_OFF", "La comp aun no cuenta con competidores ");
+                        Log.d("GRAL_DET_OFF", "La comp aun no cuenta con competidores ");
                     }
                     if(dataServer.getCampos() != null){
                         adminData.loadFields(vista.getContext(), dataServer.getCampos());
-                        Log.d("DATA_OFF", "Cant campos: "+dataServer.getCampos().size());
+                        Log.d("GRAL_DET_OFF", "Cant campos: "+dataServer.getCampos().size());
                     }
                     else{
-                        Log.d("DATA_OFF", "La comp aun no cuenta con campos ");
+                        Log.d("GRAL_DET_OFF", "La comp aun no cuenta con campos ");
                     }
                     if(dataServer.getJueces() != null){
                         adminData.loadJudges(vista.getContext(), dataServer.getJueces());
-                        Log.d("DATA_OFF", "Cant Jueces: "+dataServer.getJueces().size());
+                        Log.d("GRAL_DET_OFF", "Cant Jueces: "+dataServer.getJueces().size());
                     }
                     else{
-                        Log.d("DATA_OFF", "La comp aun no cuenta con jueces ");
+                        Log.d("GRAL_DET_OFF", "La comp aun no cuenta con jueces ");
                     }
                     if(dataServer.getInscripcion() != null){
                         adminData.loadInscription(vista.getContext(), dataServer.getInscripcion());
-                        Log.d("DATA_OFF", "Inicio inscripcion: "+dataServer.getInscripcion().getFinicio());
+                        Log.d("GRAL_DET_OFF", "Inicio inscripcion: "+dataServer.getInscripcion().getFinicio());
                     }
                     else{
-                        Log.d("DATA_OFF", "La comp aun no cuenta con una inscripcion ");
+                        Log.d("GRAL_DET_OFF", "La comp aun no cuenta con una inscripcion ");
                     }
-
-                    // vemos si se insertaron los datos correctamente en la DB
-                    adminCompetenciasOff.getCantRows();
-                    adminCompetitorsOff.getCantRows();
-                    adminCamposOff.getCantRows();
-                    adminJuecesOff.getCantRows();
-                    adminInscripcionOff.getCantRows();
                     Toast.makeText(vista.getContext(), "La descarga y almacenamiento de la competencia(competidores, campos, jueces, inscripcion) se ha realizado.", Toast.LENGTH_LONG).show();
                 }
                 if (response.code() == 400) {
@@ -342,14 +336,6 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
                 btnInscripcion.setVisibility(View.INVISIBLE);
                 btnEditar.setVisibility(View.INVISIBLE);
             }
-            if(this.competencia.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA")) {
-                //inscribirse.setVisibility(View.VISIBLE);
-                linear.setVisibility(View.VISIBLE);
-                llenarDatoInscripcion();
-            }
-            else{
-                linear.setVisibility(View.INVISIBLE);
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -426,47 +412,70 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     }
 
     private void llenarDatoInscripcion() {
-        Call<Inscription> call = inscriptionSrv.getInscripcion(competencia.getId());
-        Log.d("URL INSCRIPTION", call.request().url().toString());
-        call.enqueue(new Callback<Inscription>() {
-            @Override
-            public void onResponse(Call<Inscription> call, Response<Inscription> response) {
-                if (response.code() == 200) {
+        if(this.competencia.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA") || this.competencia.getEstado().contains("CON_INSCRIPCION")) {
+            linear.setVisibility(View.VISIBLE);
+            Call<Inscription> call = inscriptionSrv.getInscripcion(competencia.getId());
+            Log.d("URL INSCRIPTION", call.request().url().toString());
+            call.enqueue(new Callback<Inscription>() {
+                @Override
+                public void onResponse(Call<Inscription> call, Response<Inscription> response) {
+                    if (response.code() == 200) {
+                        try {
+                            inscription = response.body();
+                            requisitos.setText(inscription.getRequisitos());
+                            monto.setText(Integer.toString(inscription.getMonto()));
+                            fechaInicio.setText(parsearFecha(inscription.getFechaInicio()));
+                            fechaCierre.setText(parsearFecha(inscription.getFechaCierre()));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    if (response.code() == 400) {
+                        Log.d("RESP_GROUND_ERROR", "PETICION MAL FORMADA: " + response.errorBody());
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.errorBody().string());
+                            String message = jsonObject.getString("messaging");
+                            Log.d("RESP_GROUN_ERROR", "Msg de la repuesta: " + message);
+                            Toast.makeText(vista.getContext(), "No se pudo asignar el predio:  << " + message + " >>", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return;
+                    }
+                }
+                @Override
+                public void onFailure(Call<Inscription> call, Throwable t) {
                     try {
-                        inscription = response.body();
-                        requisitos.setText(inscription.getRequisitos());
-                        monto.setText(Integer.toString(inscription.getMonto()));
-                        fechaInicio.setText(parsearFecha(inscription.getFechaInicio()));
-                        fechaCierre.setText(parsearFecha(inscription.getFechaCierre()));
+                        Log.d("OnFailure SETPREDIO",t.getMessage());
+                        Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
+                        toast.show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
-                if (response.code() == 400) {
-                    Log.d("RESP_GROUND_ERROR", "PETICION MAL FORMADA: " + response.errorBody());
-                    JSONObject jsonObject = null;
-                    try {
-                        jsonObject = new JSONObject(response.errorBody().string());
-                        String message = jsonObject.getString("messaging");
-                        Log.d("RESP_GROUN_ERROR", "Msg de la repuesta: " + message);
-                        Toast.makeText(vista.getContext(), "No se pudo asignar el predio:  << " + message + " >>", Toast.LENGTH_SHORT).show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return;
-                }
-            }
-            @Override
-            public void onFailure(Call<Inscription> call, Throwable t) {
-                try {
-                    Log.d("OnFailure SETPREDIO",t.getMessage());
-                    Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                    toast.show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
+            });
+        }
+        else{
+            linear.setVisibility(View.INVISIBLE);
+        }
+    }
+
+     private void llenarDatosInscripcionOffline(){
+         Log.d("INSC_OFF_SHOW","Entra");
+         if(this.competencia.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA") || this.competencia.getEstado().contains("CON_INSCRIPCION")) {
+             linear.setVisibility(View.VISIBLE);
+             adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
+             Inscription inscripcionLocal = adminInscripcionOff.inscriptionByCompetition(competencia.getId());
+//             Log.d("INSC_OFF_SHOW", inscripcionLocal.toString());
+             requisitos.setText(inscripcionLocal.getRequisitos());
+             monto.setText(Integer.toString(inscripcionLocal.getMonto()));
+             fechaInicio.setText(parsearFecha(inscripcionLocal.getFechaInicio()));
+             fechaCierre.setText(parsearFecha(inscripcionLocal.getFechaCierre()));
+         }
+         else{
+             linear.setVisibility(View.INVISIBLE);
+         }
     }
 
     private String parsearFecha(String fechaServer) {

@@ -249,16 +249,22 @@ public class EncuentrosDetalleFragment extends Fragment {
     private void cargarSpinnerFiltroEncuentrosOffline(){
         // controlamos que la competencia se encuentre almacenada localmente
         adminCopeteitionLocal = new ManagerCompetitionOff(vista.getContext());
+        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
         // recuperamos el nro de grupo y fase de la competencia
-        int cantGrupos = adminCopeteitionLocal.cantGroupByCompetition(competencia.getId());
-        int cantJornadas = adminCopeteitionLocal.cantJornadaByCompetition(competencia.getId());
-        String[] fases = adminCopeteitionLocal.phasesByCompetition(competencia.getId());
+        if(adminEncuentrosLocal.existByCompetition(competencia.getId())){
+            int cantGrupos = adminCopeteitionLocal.cantGroupByCompetition(competencia.getId());
+            int cantJornadas = adminCopeteitionLocal.cantJornadaByCompetition(competencia.getId());
+            String[] fases = adminCopeteitionLocal.phasesByCompetition(competencia.getId());
 
-        fecha_grupo.clear();
-        //asigno a deportes lo que traje del servidor
-        dataOrgCompetition = new CompetitionOrg(cantGrupos,cantJornadas,fases,"Creado desde la DB local");
-        updateDataSpinners();
-        updateViewSpinners();
+            fecha_grupo.clear();
+            //asigno a deportes lo que traje del servidor
+            dataOrgCompetition = new CompetitionOrg(cantGrupos,cantJornadas,fases,"Creado desde la DB local");
+            updateDataSpinners();
+            updateViewSpinners();
+        }
+        else{
+            sinEncuentros();
+        }
     }
 
     private void sinEncuentros() {
