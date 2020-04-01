@@ -5,6 +5,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -29,6 +30,8 @@ import com.VeizagaTorrico.proyectotorneos.models.PositionCompetitor;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.PositionCompetitorSrv;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -50,9 +53,10 @@ public class PosicionesFragment extends Fragment {
     private CompetitionMin competition;
     private List<PositionCompetitor> posiciones;
     private CompetitionSrv competitionSrv;
-    private Spinner spin_grupo;
-    private Spinner spin_jornada;
+    private Spinner spin_grupo, spin_jornada, spin_fase;
     private Integer nroGrupo;
+    private ConstraintLayout barSpinners;
+    private TextView tvSinTabla;
 
     public PosicionesFragment() {
         // Required empty public constructor
@@ -76,40 +80,49 @@ public class PosicionesFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_posiciones, container, false);
 
-        tablaPosiciones = vista.findViewById(R.id.TablaPosiciones);
-        //spin_grupo = vista.findViewById(R.id.spinnerGrupoTablaPosiciones);
-        spin_grupo = vista.findViewById(R.id.spinnerGrupo);
-        spin_jornada = vista.findViewById(R.id.spinnerJornada);
-        spin_jornada.setVisibility(View.GONE);
         initElements();
-        //callTablePosition(competition.getId());
         showTablePosotion();
         return vista;
     }
 
     private void initElements() {
+        tablaPosiciones = vista.findViewById(R.id.TablaPosiciones);
+        spin_grupo = vista.findViewById(R.id.spinnerGrupo);
+        // ocultamos los spinners que no necesitamos
+        spin_jornada = vista.findViewById(R.id.spinnerJornada);
+        spin_jornada.setVisibility(View.GONE);
+        spin_fase = vista.findViewById(R.id.spinnerFase);
+        spin_fase.setVisibility(View.GONE);
+        barSpinners = vista.findViewById(R.id.barGroup);
+        tvSinTabla = vista.findViewById(R.id.tv_sinTabla);
+
         positionSrv = new RetrofitAdapter().connectionEnable().create(PositionCompetitorSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
     }
 
     private void showTablePosotion(){
-        // analizamos el tipo de competencia
-        if(competition.getTypesOrganization().contains("Liga")){
-            callTablePosition(competition.getId());
-        }
-        if(competition.getTypesOrganization().contains("grupo")){
-            spin_grupo.setVisibility(View.VISIBLE);
-            // cargamos las opciones del spinner y ponemos los botones a la escucha para llamar el serv de tabla segun grupo y competencia
-            // determinar serv de tabla segun competencia y grupo
-            cargarSpinnerGrupo(competition.getId());
-        }
-        else{
-            spin_grupo.setVisibility(View.INVISIBLE);
-        }
         // vemos si es eliminatoria
         if(competition.getTypesOrganization().contains("Eliminatoria")){
-            Toast toast = Toast.makeText(vista.getContext(), "Las eliminatorias no cuentan con una tabla de posiciones. Podria dirigirse a la seccion de 'Encuentros' para ver el estado de la competencia.", Toast.LENGTH_SHORT);
-            toast.show();
+            barSpinners.setVisibility(View.GONE);
+            tvSinTabla.setVisibility(View.VISIBLE);
+            tablaPosiciones.setVisibility(View.GONE);
+        }
+        else{
+            // analizamos el tipo de competencia
+            if(competition.getTypesOrganization().contains("Liga")){
+                barSpinners.setVisibility(View.GONE);
+
+                tablaPosiciones.setVisibility(View.VISIBLE);
+                tvSinTabla.setVisibility(View.INVISIBLE);
+                callTablePosition(competition.getId());
+            }
+            if(competition.getTypesOrganization().contains("grupo")){
+                barSpinners.setVisibility(View.VISIBLE);
+
+                tablaPosiciones.setVisibility(View.VISIBLE);
+                tvSinTabla.setVisibility(View.INVISIBLE);
+                cargarSpinnerGrupo(competition.getId());
+            }
         }
     }
 
@@ -119,29 +132,44 @@ public class PosicionesFragment extends Fragment {
             tablaPosiciones.removeAllViews();
     }
 
+    // recupera la tabla de posiciones de una competencia del tipo LIGA
     private void callTablePosition(int idCompetencia){
         emptyScreenTable();
         Call<List<PositionCompetitor>> call = positionSrv.getTablePositions(idCompetencia);
+
         try{
             call.enqueue(new Callback<List<PositionCompetitor>>() {
                 @Override
                 public void onResponse(Call<List<PositionCompetitor>> call, Response<List<PositionCompetitor>> response) {
                     if(response.code() == 200){
                         posiciones = response.body();
+                        // si recibimos los resultados de las posiciones de los competidores
+                        if(posiciones != null){
+                            // sino es definitavamente una liga
+                            showTablePositions(posiciones);
+                        }
+                        else{
+                            Toast.makeText(vista.getContext(), "Aun no se han disputados encuentros de la competencia", Toast.LENGTH_SHORT).show();
+                        }
                     }
-
-                    // si recibimos los resultados de las posiciones de los competidores
-                    if(posiciones != null){
-                        // sino es definitavamente una liga
-                        showTablePositions(posiciones);
+                    if (response.code() == 400) {
+//                        Log.d("RESP_TABLE_ERROR", "No hay tabla: " + response.errorBody());
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.errorBody().string());
+                            String message = jsonObject.getString("msg");
+                            Toast.makeText(vista.getContext(), "No se puede mostrar la tabla:  << " + message + " >>", Toast.LENGTH_SHORT).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return;
                     }
                 }
 
                 @Override
                 public void onFailure(Call<List<PositionCompetitor>> call, Throwable t) {
                     Log.d("On failure", t.getMessage());
-                    Toast toast = Toast.makeText(vista.getContext(), "No se pudieron recuperar las posiciones de la competencia", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(vista.getContext(), "No se pudieron recuperar las posiciones de la competencia", Toast.LENGTH_SHORT).show();
                 }
             });
         } catch (Exception e) {
@@ -149,6 +177,7 @@ public class PosicionesFragment extends Fragment {
         }
     }
 
+    // recupera la tabla de posiciones de una competencia por grupo, para el tipo FASE_DE_GRUPOS
     private void callTablePositionByGroup(int idCompetencia, int grupo){
         emptyScreenTable();
         Call<List<PositionCompetitor>> call = positionSrv.getTablePositionsByGroup(idCompetencia, grupo);
@@ -158,12 +187,27 @@ public class PosicionesFragment extends Fragment {
                 public void onResponse(Call<List<PositionCompetitor>> call, Response<List<PositionCompetitor>> response) {
                     if(response.code() == 200){
                         posiciones = response.body();
+                        // si recibimos los resultados de las posiciones de los competidores
+                        if(posiciones != null){
+                            // sino es definitavamente una liga
+                            showTablePositions(posiciones);
+                        }
+                        else{
+                            Toast.makeText(vista.getContext(), "Aun no se han disputados encuentros de la competencia", Toast.LENGTH_SHORT).show();
+                        }
                     }
 
-                    // si recibimos los resultados de las posiciones de los competidores
-                    if(posiciones != null){
-                        // sino es definitavamente una liga
-                        showTablePositions(posiciones);
+                    if (response.code() == 400) {
+//                        Log.d("RESP_TABLE_ERROR", "No hay tabla: " + response.errorBody());
+                        JSONObject jsonObject = null;
+                        try {
+                            jsonObject = new JSONObject(response.errorBody().string());
+                            String message = jsonObject.getString("msg");
+                            Toast.makeText(vista.getContext(), "No se puede mostrar la tabla:  << " + message + " >>", Toast.LENGTH_LONG).show();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        return;
                     }
                 }
 
@@ -179,6 +223,7 @@ public class PosicionesFragment extends Fragment {
         }
     }
 
+    // cargamos los datos del spinner de grupo en las competencias que lo demanden
     private void cargarSpinnerGrupo(int idCompetencia) {
         //En call viene el tipo de dato que espero del servidor
         Call<CompetitionOrg> call = competitionSrv.getFaseGrupoCompetition(idCompetencia);
@@ -190,14 +235,10 @@ public class PosicionesFragment extends Fragment {
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     try{
-                        //fecha_grupo.clear();
-                        Log.d("RESPONSE FILTER CODE",  Integer.toString(response.code()));
-                        //asigno a deportes lo que traje del servidor
                         datosSpinner = response.body();
                         Log.d("datosSpinner",response.body().toString());
 
-
-                        // List<Integer> grupos = getAllIntegerRange(1 , datosSpinner.getN_grupos());
+                        // creamos la lista para el spinner de grupo
                         List<String> grupos = getItemGrupos(datosSpinner.getCantGrupos());
                         // creo el adapter para el spinnerJornada y asigno el origen de los datos para el adaptador del spinner
                         ArrayAdapter<String> adapterGrupo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, grupos);
@@ -212,10 +253,8 @@ public class PosicionesFragment extends Fragment {
                                     // controlamos que no se elija el primer elemento
                                     if(spin_grupo.getSelectedItemPosition() == 0){
                                         nroGrupo = null;
-                                        //fecha_grupo.put("grupo", nroGrupo);
                                     }
                                     else{
-                                        //nroGrupo = (Integer) spin_grupo.getSelectedItem();
                                         nroGrupo = Integer.valueOf((String)spin_grupo.getSelectedItem());
                                         callTablePositionByGroup(competition.getId(), nroGrupo);
                                     }
@@ -269,9 +308,7 @@ public class PosicionesFragment extends Fragment {
             TableRow resultadoCompetidor = getRowTable(posiciones.get(i));
             tablaPosiciones.addView(resultadoCompetidor);
         }
-
         Log.d("TABLA_POS", "entro a MostararTabla");
-
     }
 
     // crea una nueva fila para la tabla de resultados desde la info recuperada del servidor
@@ -284,31 +321,37 @@ public class PosicionesFragment extends Fragment {
         tvCompetidor.setText(posicionCompetidor.getCompetidor());
         tvCompetidor.setTextColor(Color.BLACK);
         tvCompetidor.setGravity(Gravity.LEFT);
+        tvCompetidor.setPadding(20,5,20,5);
         tbrow.addView(tvCompetidor);
         TextView tvPj = new TextView(vista.getContext());
         tvPj.setText(posicionCompetidor.getJugados());
         tvPj.setTextColor(Color.BLACK);
         tvPj.setGravity(Gravity.CENTER);
+        tvPj.setPadding(230,5,20,5);
         tbrow.addView(tvPj);
         TextView tvPg = new TextView(vista.getContext());
         tvPg.setText(posicionCompetidor.getGanados());
         tvPg.setTextColor(Color.BLACK);
         tvPg.setGravity(Gravity.CENTER);
+        tvPg.setPadding(20,5,20,5);
         tbrow.addView(tvPg);
         TextView tvPe = new TextView(vista.getContext());
         tvPe.setText(posicionCompetidor.getEmpatados());
         tvPe.setTextColor(Color.BLACK);
         tvPe.setGravity(Gravity.CENTER);
+        tvPe.setPadding(20,5,20,5);
         tbrow.addView(tvPe);
         TextView tvPp = new TextView(vista.getContext());
         tvPp.setText(posicionCompetidor.getPerdidos());
         tvPp.setTextColor(Color.BLACK);
         tvPp.setGravity(Gravity.CENTER);
+        tvPp.setPadding(20,5,20,5);
         tbrow.addView(tvPp);
         TextView tvPts = new TextView(vista.getContext());
         tvPts.setText(posicionCompetidor.getPuntos());
         tvPts.setTextColor(Color.BLACK);
         tvPts.setGravity(Gravity.CENTER);
+        tvPts.setPadding(20,5,20,5);
         tbrow.addView(tvPts);
 
         return tbrow;
@@ -323,39 +366,39 @@ public class PosicionesFragment extends Fragment {
         // agregamos los valores de las columnas
         TextView tvCompetidor = new TextView(vista.getContext());
         tvCompetidor.setText("COMPETIDOR");
-        //tvCompetidor.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         tvCompetidor.setTextColor(Color.GRAY);
         tvCompetidor.setGravity(Gravity.CENTER);
+        tvCompetidor.setPadding(20,5,20,5);
         tbrow.addView(tvCompetidor);
         TextView tvPj = new TextView(vista.getContext());
         tvPj.setText("PJ");
-        //tvPj.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         tvPj.setTextColor(Color.GRAY);
         tvPj.setGravity(Gravity.CENTER);
+        tvPj.setPadding(230,5,20,5);
         tbrow.addView(tvPj);
         TextView tvPg = new TextView(vista.getContext());
         tvPg.setText("PG");
-        //tvPg.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         tvPg.setTextColor(Color.GRAY);
         tvPg.setGravity(Gravity.CENTER);
+        tvPg.setPadding(20,5,20,5);
         tbrow.addView(tvPg);
         TextView tvPe = new TextView(vista.getContext());
         tvPe.setText("PE");
-        //tvPe.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         tvPe.setTextColor(Color.GRAY);
         tvPe.setGravity(Gravity.CENTER);
+        tvPe.setPadding(20,5,20,5);
         tbrow.addView(tvPe);
         TextView tvPp = new TextView(vista.getContext());
         tvPp.setText("PP");
-        //tvPp.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         tvPp.setTextColor(Color.GRAY);
         tvPp.setGravity(Gravity.CENTER);
+        tvPp.setPadding(20,5,20,5);
         tbrow.addView(tvPp);
         TextView tvPts = new TextView(vista.getContext());
         tvPts.setText("Pts");
-        //tvPts.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT));
         tvPts.setTextColor(Color.GRAY);
         tvPts.setGravity(Gravity.CENTER);
+        tvPts.setPadding(20,5,20,5);
         tbrow.addView(tvPts);
 
         tablaPosiciones.addView(tbrow);
@@ -366,7 +409,6 @@ public class PosicionesFragment extends Fragment {
 
         separator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, 2));
         separator.setBackgroundColor(Color.WHITE);
-
         tbrowsep.addView(separator);
 
         tablaPosiciones.addView(tbrowsep);
