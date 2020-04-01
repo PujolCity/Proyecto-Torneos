@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
+import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbContract;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
@@ -96,6 +97,54 @@ public class ManagerConfrontationOff {
         }
 
         return encuentros;
+    }
+
+    // recupera el juez del encuentro
+    public Referee getRefereeConfrontation(int idEncuentro){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor cursor = instanceDb.rawQuery("select juez.id, juez.nombre, juez.apellido, juez.dni"+
+                                                " from "+ DbContract.TABLE_JUEZ +
+                                                " INNER JOIN "+DbContract.TABLE_ENCUENTRO+" ON "+ DbContract.TABLE_JUEZ+".id = "+DbContract.TABLE_ENCUENTRO+".juez" +
+                                                " WHERE "+ DbContract.TABLE_ENCUENTRO+".id ="+idEncuentro,
+                                            null);
+        Referee juez = null;
+        if(cursor.moveToFirst()){
+            Log.d("DB_LOCAL_ENCJUEZ: ", cursor.getString(1));
+            // traemos los datos de la competencia
+            juez = new Referee(
+                    Integer.valueOf(cursor.getString(0)),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    Integer.valueOf(cursor.getString(3))
+            );
+        }
+        Log.d("JUEZ_LOCAL_DB", "Nombre juez del encuentro:"+juez.getNombre());
+        instanceDb.close();
+
+        return juez;
+    }
+
+    // devuelve una lista de las copetencias en las que se cuenta con el rol recibido
+    public String turnConfrontation(int idConfrontation){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor cursor = instanceDb.rawQuery("select turno" +
+                                                " from "+ DbContract.TABLE_ENCUENTRO+
+                                                " where id="+idConfrontation, null);
+
+        String turno = null;
+
+        if(cursor != null && cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            // traemos el turno del encuentro
+            turno = cursor.getString(0);
+        }
+
+        instanceDb.close();
+        Log.d("DB_LOCAL_READ", "Turno del encuentro: "+turno);
+
+        return turno;
     }
 
     public int getCantRows(){

@@ -31,6 +31,7 @@ import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.models.Turn;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
@@ -83,6 +84,7 @@ public class DetalleEncuentroFragment extends Fragment {
     private Turn turno;
 
     private ManagerConfrontationOff adminEncuentrosLocal;
+    private AdminDataOff adminDataOff;
     private Gson gson;
 
     public DetalleEncuentroFragment() {
@@ -112,6 +114,8 @@ public class DetalleEncuentroFragment extends Fragment {
             listenerEditar();
         }
         else{
+            adminDataOff = new AdminDataOff(vista.getContext());
+            llenarSpinersOffline();
             editarOffLine();
         }
         return vista;
@@ -146,6 +150,42 @@ public class DetalleEncuentroFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private void llenarSpinersOffline(){
+        // ocultamos el spin de predio
+        spinnerPredio.setVisibility(View.GONE);
+        // recuperamos los datos del juez y llenamos el spinner de JUEZ
+        Referee refereeDbLocal = adminDataOff.getRefereeConfrontation(encuentro.getId());
+        //Log.d("JUEZ_ENC_LOCAL"," Nombre y apellido: "+refereeDbLocal.getNombre()+" "+refereeDbLocal.getApellido());
+        if(refereeDbLocal != null){
+            jueces.add(refereeDbLocal);
+            ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerJuez.setAdapter(adapter);
+        }
+        // recuperamos los datos del juez y llenamos el spinner de CAMPO
+        Field fieldDbLocal = adminDataOff.getFieldConfrontation(encuentro.getId());
+        //Log.d("CAMPO_ENC_LOCAL"," Nombre: "+fieldDbLocal.getNombre());
+        if(fieldDbLocal != null){
+            campos.add(fieldDbLocal);
+            ArrayAdapter<Field> adapterCampos = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, campos);
+            adapterCampos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerCampo.setAdapter(adapterCampos);
+        }
+        // recuperamos los datos del turno y llenamos el spinner de TURNO
+        String stringTurn = adminDataOff.turnConfrontation(encuentro.getId());
+        if(stringTurn != null){
+            Log.d("TURNO_ENC_LOCAL"," Horario: "+stringTurn);
+            Turn turnDbLocal = new Turn();
+            turnDbLocal.setHora_desde(stringTurn.substring(0,5));
+            turnDbLocal.setHora_hasta(stringTurn.substring(8,13));
+            turnos.add(turnDbLocal);
+            ArrayAdapter<Turn> adapterTurnos = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, turnos);
+            adapterTurnos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spinnerTurno.setAdapter(adapterTurnos);
+        }
+
     }
 
     private void listenerEditar() {
@@ -310,6 +350,7 @@ public class DetalleEncuentroFragment extends Fragment {
     }
 
     private void llenarSpinnerTurno() {
+        spinnerPredio.setVisibility(View.VISIBLE);
         Call<List<Turn>> call = turnoSrv.getTurnsByCompetition(encuentro.getIdCompetencia());
         Log.d("URL TURNO!",call.request().url().toString());        call.enqueue(new Callback<List<Turn>>() {
             @Override

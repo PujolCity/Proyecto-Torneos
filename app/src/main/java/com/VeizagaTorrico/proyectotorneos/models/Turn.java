@@ -24,6 +24,10 @@ public class Turn implements Serializable {
     @SerializedName("hora_hasta")
     private String hora_hasta;
 
+    public Turn(){
+
+    }
+
     public Turn(int id, int idCompetencia, String horaDesde, String horaHasta) {
         this.id = id;
         this.idCompetencia = idCompetencia;

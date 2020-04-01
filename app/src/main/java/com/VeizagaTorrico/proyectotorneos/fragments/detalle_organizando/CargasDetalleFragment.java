@@ -183,41 +183,46 @@ public class CargasDetalleFragment extends Fragment {
         btnSigFase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<MsgResponse> call = competenciaSrv.faseCompleta(competencia.getId());
-                Log.d("Url Call", call.request().url().toString());
-                try {
-                    call.enqueue(new Callback<MsgResponse>() {
-                        @Override
-                        public void onResponse(Call<MsgResponse> call, Response<MsgResponse> response) {
-                            Log.d("response",Integer.toString(response.code()));
-                            if(response.code() == 200) {
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("competencia", competencia);
-                                Navigation.findNavController(vista).navigate(R.id.cargaFaseFragment, bundle);
-                            }
-                            if (response.code() == 400) {
-                                Log.d("BTN_SIG_FASE_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
-                                JSONObject jsonObject = null;
-                                try {
-                                    jsonObject = new JSONObject(response.errorBody().string());
-                                    String userMessage = jsonObject.getString("messaging");
-                                    Log.d("BTN_SIG_FASE", "Msg de la repuesta: "+userMessage);
-                                    Toast.makeText(vista.getContext(), "No es posible esta opcion:  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                if(competencia.getFaseActual().equals("1")){
+                    Toast.makeText(vista.getContext(), "La competencia ya se encuentra en su fase final", Toast.LENGTH_LONG).show();
+                }
+                else{
+                    Call<MsgResponse> call = competenciaSrv.faseCompleta(competencia.getId());
+                    Log.d("Url Call", call.request().url().toString());
+                    try {
+                        call.enqueue(new Callback<MsgResponse>() {
+                            @Override
+                            public void onResponse(Call<MsgResponse> call, Response<MsgResponse> response) {
+                                Log.d("response",Integer.toString(response.code()));
+                                if(response.code() == 200) {
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("competencia", competencia);
+                                    Navigation.findNavController(vista).navigate(R.id.cargaFaseFragment, bundle);
                                 }
-                                return;
+                                if (response.code() == 400) {
+                                    Log.d("BTN_SIG_FASE_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                    JSONObject jsonObject = null;
+                                    try {
+                                        jsonObject = new JSONObject(response.errorBody().string());
+                                        String userMessage = jsonObject.getString("messaging");
+                                        Log.d("BTN_SIG_FASE", "Msg de la repuesta: "+userMessage);
+                                        Toast.makeText(vista.getContext(), "No es posible esta opcion:  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                    return;
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<MsgResponse> call, Throwable t) {
-                            Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
-                            Log.d("onFailure", t.getMessage());
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
+                            @Override
+                            public void onFailure(Call<MsgResponse> call, Throwable t) {
+                                Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
+                                Log.d("onFailure", t.getMessage());
+                            }
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });

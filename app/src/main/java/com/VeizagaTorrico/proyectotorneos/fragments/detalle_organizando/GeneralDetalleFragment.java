@@ -177,7 +177,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
                     Log.d("DATA_OFF", "cant de encuentros recuperados: "+encuentrosServer.size());
 
                     // guardamos los datos en la DB local
-                    adminData.loadConfrontations(vista.getContext(), encuentrosServer);
+                    adminData.loadConfrontations(encuentrosServer);
 
                     // vemos si se insertaron los datos correctamente en la DB
                     adminEncuentroOff.getCantRows();
@@ -227,32 +227,32 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
                     dataServer = response.body();
                     Log.d("GRAL_DET_OFF", "Nombre comp: "+dataServer.getCompetencia().getNombre());
                     // guardamos los datos en la DB local
-                    adminData.loadCompetition(vista.getContext(), dataServer.getCompetencia(), dataServer.getFases());
+                    adminData.loadCompetition(dataServer.getCompetencia(), dataServer.getFases());
 
                     // controlamos que existan datos antes de guardarlos en la DB local
                     if(dataServer.getCompetidores() != null){
-                        adminData.loadCompetitors(vista.getContext(), dataServer.getCompetidores());
+                        adminData.loadCompetitors(dataServer.getCompetidores());
                         Log.d("GRAL_DET_OFF", "Cant comp: "+dataServer.getCompetidores().size());
                     }
                     else{
                         Log.d("GRAL_DET_OFF", "La comp aun no cuenta con competidores ");
                     }
                     if(dataServer.getCampos() != null){
-                        adminData.loadFields(vista.getContext(), dataServer.getCampos());
+                        adminData.loadFields(dataServer.getCampos());
                         Log.d("GRAL_DET_OFF", "Cant campos: "+dataServer.getCampos().size());
                     }
                     else{
                         Log.d("GRAL_DET_OFF", "La comp aun no cuenta con campos ");
                     }
                     if(dataServer.getJueces() != null){
-                        adminData.loadJudges(vista.getContext(), dataServer.getJueces());
+                        adminData.loadJudges(dataServer.getJueces());
                         Log.d("GRAL_DET_OFF", "Cant Jueces: "+dataServer.getJueces().size());
                     }
                     else{
                         Log.d("GRAL_DET_OFF", "La comp aun no cuenta con jueces ");
                     }
                     if(dataServer.getInscripcion() != null){
-                        adminData.loadInscription(vista.getContext(), dataServer.getInscripcion());
+                        adminData.loadInscription(dataServer.getInscripcion());
                         Log.d("GRAL_DET_OFF", "Inicio inscripcion: "+dataServer.getInscripcion().getFinicio());
                     }
                     else{
@@ -285,7 +285,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     private void initElements() {
 
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
-        adminData = new AdminDataOff();
+        adminData = new AdminDataOff(vista.getContext());
         adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
 
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);

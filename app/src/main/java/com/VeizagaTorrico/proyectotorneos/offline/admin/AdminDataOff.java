@@ -3,6 +3,8 @@ package com.VeizagaTorrico.proyectotorneos.offline.admin;
 import android.content.Context;
 import android.util.Log;
 
+import com.VeizagaTorrico.proyectotorneos.models.Field;
+import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitorOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
@@ -14,7 +16,7 @@ import java.util.List;
 
 public class AdminDataOff {
 
-    //private DbHelper adminDB;
+    private Context context;
     private ManagerCompetitionOff adminCompetencia;
     private ManagerCompetitorOff adminCompetidor;
     private ManagerFieldOff adminCampos;
@@ -22,10 +24,11 @@ public class AdminDataOff {
     private ManagerJudgeOff adminJuez;
     private ManagerConfrontationOff adminEncuentro;
 
-    public AdminDataOff() {
+    public AdminDataOff(Context context) {
+        this.context = context;
     }
 
-    public void loadCompetition(Context context, CompetitionOff competencia, String[] fases){
+    public void loadCompetition(CompetitionOff competencia, String[] fases){
         adminCompetencia = new ManagerCompetitionOff(context);
 
         // vemos si existen datos anteriores de la competencia, si los hay los borramos
@@ -45,7 +48,7 @@ public class AdminDataOff {
         adminCompetencia.addRowCompetitionFromObject(competencia, fases);
     }
 
-    public void loadCompetitors(Context context, List<CompetitorOff> competidores){
+    public void loadCompetitors(List<CompetitorOff> competidores){
         adminCompetidor = new ManagerCompetitorOff(context);
 
         // insertamos los competiodres en la app
@@ -54,7 +57,7 @@ public class AdminDataOff {
         }
     }
 
-    public void loadFields(Context context, List<FieldOff> campos){
+    public void loadFields(List<FieldOff> campos){
         adminCampos = new ManagerFieldOff(context);
 
         // insertamos los competiodres en la app
@@ -63,7 +66,7 @@ public class AdminDataOff {
         }
     }
 
-    public void loadJudges(Context context, List<JudgeOff> jueces){
+    public void loadJudges(List<JudgeOff> jueces){
         adminJuez = new ManagerJudgeOff(context);
 
         // insertamos los competiodres en la app
@@ -72,13 +75,13 @@ public class AdminDataOff {
         }
     }
 
-    public void loadInscription(Context context, InscriptionOff inscripcion){
+    public void loadInscription(InscriptionOff inscripcion){
         adminInscripcion = new ManagerInscriptionOff(context);
         // insertamos los competiodres en la app
         adminInscripcion.addRowInscriptionFromObject(inscripcion);
     }
 
-    public void loadConfrontations(Context context, List<ConfrontationOff> encuentros){
+    public void loadConfrontations(List<ConfrontationOff> encuentros){
 
         if(encuentros.size() == 0){
             Log.d("ENC_LOCAL_DB", "Competencias sin encuentros");
@@ -97,5 +100,26 @@ public class AdminDataOff {
         for (ConfrontationOff encuentro : encuentros) {
             adminEncuentro.addRowConfrontationFromObject(encuentro);
         }
+    }
+
+    // devuelve el juez de un encuentro
+    public Referee getRefereeConfrontation(int idEncuentro){
+        adminEncuentro = new ManagerConfrontationOff(context);
+
+        return adminEncuentro.getRefereeConfrontation(idEncuentro);
+    }
+
+    // devuelve el campo de un encuentro
+    public Field getFieldConfrontation(int idEncuentro){
+        adminCampos = new ManagerFieldOff(context);
+
+        return adminCampos.getFieldConfrontation(idEncuentro);
+    }
+
+    // devuelve el campo de un encuentro
+    public String turnConfrontation(int idConfrontation){
+        adminEncuentro = new ManagerConfrontationOff(context);
+
+        return adminEncuentro.turnConfrontation(idConfrontation);
     }
 }

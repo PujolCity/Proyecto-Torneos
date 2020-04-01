@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.offline.model.FieldOff;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbContract;
 import com.VeizagaTorrico.proyectotorneos.offline.setup.DbHelper;
@@ -82,6 +83,31 @@ public class ManagerFieldOff {
         instanceDb.close();
 
         return cantRows;
+    }
+
+    // recupera el juez del encuentro
+    public Field getFieldConfrontation(int idEncuentro){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor cursor = instanceDb.rawQuery("select campo.id, campo.nombre, campo.predio"+
+                        " from "+ DbContract.TABLE_CAMPO +
+                        " INNER JOIN "+DbContract.TABLE_ENCUENTRO+" ON "+ DbContract.TABLE_CAMPO+".id = "+DbContract.TABLE_ENCUENTRO+".campo" +
+                        " WHERE "+ DbContract.TABLE_ENCUENTRO+".id ="+idEncuentro,
+                null);
+        Field campo = null;
+        if(cursor.moveToFirst()){
+            Log.d("DB_LOCAL_ENCCAMPO: ", cursor.getString(1));
+            // traemos los datos de la competencia
+            campo = new Field(
+                    Integer.valueOf(cursor.getString(0)),
+                    cursor.getString(1),
+                    -1, -1, null
+            );
+        }
+        Log.d("CAMPO_LOCAL_DB", "Nombre campo del encuentro:"+campo.getNombre());
+        instanceDb.close();
+
+        return campo;
     }
 
     // actualiza la lista de campos de la competencia
