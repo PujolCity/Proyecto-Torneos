@@ -17,14 +17,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
-import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
@@ -33,7 +31,6 @@ import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.models.Turn;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
-import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
@@ -342,7 +339,7 @@ public class DetalleEncuentroFragment extends Fragment {
 
     private void msjCampos() {
         campos.clear();
-        campo = new Field(0,"Por favor agregar campos en la pantalla de carga",0,0,null);
+        campo = new Field(0,"Sin Campos",0,0,null);
         campos.add(campo);
         adapterCampo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,campos);
         adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -518,8 +515,9 @@ public class DetalleEncuentroFragment extends Fragment {
                     try {
                         if(!response.body().isEmpty()) {
                             campos.clear();
+                            Log.d("RESPONSE CAMPOS", response.body().toString());
                             Log.d("idPREDIO", Integer.toString(idPredio));
-                            if(idPredio == campo.getPredio().getId()){
+                            if(campo.getPredio() != null){
                                 campos.add(campo);
                                 List<Field> aux = response.body();
                                 for(int i = 0; i < aux.size(); i++){

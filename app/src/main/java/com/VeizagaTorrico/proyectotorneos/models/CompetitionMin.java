@@ -145,9 +145,10 @@ public class CompetitionMin implements Serializable {
         }
 
     @Override
-        public String toString() {
-            return id + name +  deporte +  category +  typesOrganization + ciudad + genero + rol + estado;
-        }
+    public String toString() {
+        return  id + " "+ name + " " + deporte + " " + category  + " " + typesOrganization + " " + ciudad + " " + genero + " " + estado
+                 + " FASE: "+ faseActual + " " + rol + " "+ duracion ;
     }
+}
 
 
