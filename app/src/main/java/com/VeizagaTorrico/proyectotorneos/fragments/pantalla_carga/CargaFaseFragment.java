@@ -51,7 +51,7 @@ public class CargaFaseFragment extends Fragment {
     private ImageButton delete;
     private TextView vs;
     private EditText comp1, comp2;
-    private Button btnCrear, btnEncuentro;
+    private Button btnCrear, btnEncuentro, btnAutomatico;
     private Spinner spinnerFase, spinnerCompetidor, spinnerEncuentro;
     private List<ConfrontationMin> encuentros;
     private Map<String,Object> body;
@@ -99,47 +99,34 @@ public class CargaFaseFragment extends Fragment {
     }
 
     private void llenarSpinnerFase() {
-        Call<Phase> call = competitionSrv.getFase(competencia.getId());
-        call.enqueue(new Callback<Phase>() {
+        int faseCompe = Integer.parseInt(competencia.getFaseActual());
+        faseCompe--;
+        List<String> fs = new ArrayList<>();
+        fs.add("Final");
+        fs.add("Semi Final");
+        fs.add("Cuartos");
+        fs.add("Octavos");
+        fs.add("16 avos");
+        fs.add("32 avos");
+        fases.add(fs.get(faseCompe));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,fases);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFase.setAdapter(adapter);
+        spinnerFase.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onResponse(Call<Phase> call, Response<Phase> response) {
-                List<String> fs = new ArrayList<>();
-                fs.add("Final");
-                fs.add("Semi Final");
-                fs.add("Cuartos");
-                fs.add("Octavos");
-                fs.add("16 avos");
-                fs.add("32 avos");
-                for(int i = 0; fases.size() < response.body().getFase(); i++){
-                    fases.add(fs.get(i));
-                }
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,fases);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerFase.setAdapter(adapter);
-                spinnerFase.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        fase = i+1;
-                        datos.put("idCompetencia",competencia.getId());
-                        datos.put("fase",fase);
-                        servidorUsers(datos);
-                        encuentros.clear();
-                        cantEncuentros = (int) Math.pow(2,(fase -1));
-                        llenarSpinnerEncuentros();
-                        visibleBtn();
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-
-
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                fase = i+1;
+                datos.put("idCompetencia",competencia.getId());
+                datos.put("fase",fase);
+                servidorUsers(datos);
+                encuentros.clear();
+                cantEncuentros = (int) Math.pow(2,(fase -1));
+                llenarSpinnerEncuentros();
+                visibleBtn();
             }
 
             @Override
-            public void onFailure(Call<Phase> call, Throwable t) {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
@@ -188,7 +175,6 @@ public class CargaFaseFragment extends Fragment {
                     try {
                         body = armarBody();
                         Call<MsgRequest> call = competitionSrv.generarSiguienteFase(body);
-//                        Log.d("a ver", Integer.toString(cantEncuentros));
                         Log.d("URL Generar Fase", call.request().url().toString());
                         call.enqueue(new Callback<MsgRequest>() {
                             @Override
@@ -237,9 +223,30 @@ public class CargaFaseFragment extends Fragment {
                 llenarSpinnerUsers(usuarios);
                 llenarSpinnerEncuentros();
                 visibleBtn();
+                if(encuentros.isEmpty()){
+                    llenarSpinnerFase();
+                    btnAutomatico.setVisibility(View.VISIBLE);
+                }
             }
         });
 
+        btnAutomatico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                while(!usuarios.isEmpty()){
+                    select1 = usuarios.get(0);
+                    select2 = usuarios.get(usuarios.size()-1);
+                    encuentros.add(new ConfrontationMin(select1,select2));
+                    usuarios.remove(select1);
+                    usuarios.remove(select2);
+                    llenarSpinnerUsers(usuarios);
+                    clearSeleccionados();
+                    llenarSpinnerEncuentros();
+                    visibleBtn();
+                }
+                btnAutomatico.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     private void visibleBtn() {
@@ -281,8 +288,8 @@ public class CargaFaseFragment extends Fragment {
     private void clearSeleccionados() {
         select1 = null;
         select2 = null;
-        comp1.setText(" ");
-        comp2.setText(" ");
+        comp1.setText(null);
+        comp2.setText(null);
     }
 
     private void llenarSpinnerEncuentros() {
@@ -320,7 +327,7 @@ public class CargaFaseFragment extends Fragment {
 
     private void initElements() {
         competencia = (CompetitionMin) getArguments().getSerializable("competencia");
-
+        Log.d("DATA COMPETENCIA",competencia.toString());
         datos = new HashMap<>();
         body = new HashMap<>();
 
@@ -338,7 +345,7 @@ public class CargaFaseFragment extends Fragment {
         btnEncuentro = vista.findViewById(R.id.guardarEncuentro);
         btnCrear = vista.findViewById(R.id.crearEncuentros);
         delete = vista.findViewById(R.id.deleteEncuentro);
-
+        btnAutomatico = vista.findViewById(R.id.btn_automatico_fase);
         userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
 

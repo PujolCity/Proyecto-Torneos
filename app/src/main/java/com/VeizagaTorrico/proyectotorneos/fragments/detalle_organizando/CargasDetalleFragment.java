@@ -184,7 +184,7 @@ public class CargasDetalleFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Call<MsgResponse> call = competenciaSrv.faseCompleta(competencia.getId());
-                Log.d("Url Call", call.request().url().toString());
+                Log.d("Url Call SIGFASE", call.request().url().toString());
                 try {
                     call.enqueue(new Callback<MsgResponse>() {
                         @Override
