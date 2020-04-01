@@ -12,6 +12,7 @@
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/textView34"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
@@ -25,128 +26,149 @@
 
         <Spinner
             android:id="@+id/spinnerFaseCarga"
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
-            android:layout_marginEnd="76dp"
+            android:layout_marginEnd="46dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent">
         </Spinner>
 
         <TextView
             android:id="@+id/textView16"
-            android:layout_width="150dp"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginTop="144dp"
+            android:layout_marginTop="28dp"
             android:text="Seleccione un competidor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/textView34">
         </TextView>
 
         <Spinner
             android:id="@+id/spinnerCompetidores"
-            android:layout_width="100dp"
+            android:layout_width="140dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="132dp"
-            android:layout_marginEnd="76dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="44dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/spinnerFaseCarga">
         </Spinner>
+
+        <Button
+            android:id="@+id/btn_automatico_fase"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="28dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Automatico"
+            android:textColor="@color/cardview_light_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView16">
+        </Button>
 
         <EditText
             android:id="@+id/etComp1"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="208dp"
+            android:layout_marginTop="36dp"
             android:clickable="true"
             android:focusable="true"
-            android:hint="Toque aqui"
-            android:gravity="center"
             android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:hint="Toque aqui"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.128"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/btn_automatico_fase">
         </EditText>
 
         <TextView
             android:id="@+id/asd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="220dp"
+            android:layout_marginTop="52dp"
             android:text="Vs"
-            app:layout_constraintEnd_toStartOf="@+id/etComp2"
-            app:layout_constraintHorizontal_bias="0.475"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.244"
             app:layout_constraintStart_toEndOf="@+id/etComp1"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/btn_automatico_fase">
         </TextView>
 
         <EditText
             android:id="@+id/etComp2"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="208dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginTop="36dp"
+            android:layout_marginEnd="28dp"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="false"
-            android:hint="Toque aqui"
             android:gravity="center"
+            android:hint="Toque aqui"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintHorizontal_bias="0.771"
+            app:layout_constraintStart_toEndOf="@+id/asd"
+            app:layout_constraintTop_toBottomOf="@+id/btn_automatico_fase">
         </EditText>
 
         <Button
             android:id="@+id/guardarEncuentro"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="260dp"
+            android:layout_marginTop="28dp"
             android:layout_marginEnd="32dp"
             android:backgroundTint="@color/colorPrimary"
             android:text="Guardar Encuentro"
-            android:visibility="invisible"
             android:textColor="@color/cardview_light_background"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintHorizontal_bias="0.333"
+            app:layout_constraintStart_toEndOf="@+id/spinnerEncunetrosGenerados"
+            app:layout_constraintTop_toBottomOf="@+id/etComp2">
         </Button>
 
         <ImageButton
             android:id="@+id/deleteEncuentro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="272dp"
+            android:layout_marginTop="40dp"
             android:src="@drawable/ic_delete"
-            app:layout_constraintEnd_toStartOf="@+id/spinnerEncunetrosGenerados"
-            app:layout_constraintHorizontal_bias="0.676"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.132"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:visibility="invisible">
+            app:layout_constraintTop_toBottomOf="@+id/etComp1">
         </ImageButton>
 
         <Spinner
             android:id="@+id/spinnerEncunetrosGenerados"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="280dp"
+            android:layout_marginTop="48dp"
             android:gravity="right"
             android:visibility="invisible"
-            app:layout_constraintEnd_toStartOf="@+id/guardarEncuentro"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.03"
+            app:layout_constraintStart_toEndOf="@+id/deleteEncuentro"
+            app:layout_constraintTop_toBottomOf="@+id/etComp1">
         </Spinner>
 
         <Button
             android:id="@+id/crearEncuentros"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="400dp"
-            android:text="Guardar Fase"
-            android:visibility="invisible"
+            android:layout_marginTop="80dp"
             android:backgroundTint="@color/colorPrimary"
+            android:text="Guardar Fase"
             android:textColor="@color/cardview_light_background"
+            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/spinnerEncunetrosGenerados">
         </Button>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
