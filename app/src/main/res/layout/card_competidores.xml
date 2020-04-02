@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
+    app:cardBackgroundColor="#FFFFFF">
 
     <LinearLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        >
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="100dp"
-            >
+            android:layout_width="150dp"
+            android:layout_height="100dp">
+
             <TextView
                 android:id="@+id/usrAlias"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Alias"
                 android:gravity="center"
-                android:textSize="25sp">
+                android:text="Alias"
+                android:textSize="22sp">
 
             </TextView>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/usrNombreUsuario"
@@ -38,25 +38,24 @@
                 android:text="Nombre Usuario">
 
             </TextView>
+
             <TextView
                 android:id="@+id/usrNombre"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Nombre">
-            </TextView>
+                android:text="Nombre"></TextView>
+
             <TextView
                 android:id="@+id/usrApellido"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Apellido">
-            </TextView>
+                android:text="Apellido"></TextView>
 
             <TextView
                 android:id="@+id/usrCorreo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Correo">
-            </TextView>
+                android:text="Correo"></TextView>
         </LinearLayout>
 
     </LinearLayout>

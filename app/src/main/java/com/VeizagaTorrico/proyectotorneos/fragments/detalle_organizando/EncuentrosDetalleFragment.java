@@ -30,6 +30,7 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.EncuentrosRecyclerVi
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
+import com.VeizagaTorrico.proyectotorneos.models.ConfrontationsCompetition;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
@@ -40,8 +41,6 @@ import com.VeizagaTorrico.proyectotorneos.utils.Support;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,7 +64,7 @@ public class EncuentrosDetalleFragment extends Fragment {
     private String nroJornada, nroGrupo, nroFase;
     private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
-    private TextView sinEncuentrosTv;
+    private TextView sinEncuentrosTv, competidorLibre;
     private ManagerConfrontationOff adminEncuentrosLocal;
     private ManagerCompetitionOff adminCopeteitionLocal;
 
@@ -99,6 +98,9 @@ public class EncuentrosDetalleFragment extends Fragment {
         try {
             fecha_grupo = new HashMap<>();
             sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
+            sinEncuentrosTv.setVisibility(View.GONE);
+            competidorLibre = vista.findViewById(R.id.tv_comp_libre);
+            competidorLibre.setVisibility(View.GONE);
             confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
             competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
             encuentros = new ArrayList<>();
@@ -131,24 +133,26 @@ public class EncuentrosDetalleFragment extends Fragment {
     private void getEncuentros(Map<String, String> fechaGrupo) {
         Log.d("REQ_ENCUENTROS_BODY", fecha_grupo.toString());
 
-        Call<List<Confrontation>> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
+        Call<ConfrontationsCompetition> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
         Log.d("REQ_ENCUENTROS_URL",call.request().url().toString());
-        call.enqueue(new Callback<List<Confrontation>>() {
+        call.enqueue(new Callback<ConfrontationsCompetition>() {
             @Override
-            public void onResponse(Call<List<Confrontation>> call, Response<List<Confrontation>> response) {
+            public void onResponse(Call<ConfrontationsCompetition> call, Response<ConfrontationsCompetition> response) {
                 if (response.code() == 200) {
                     try {
                         Log.d("REQ_ENCUENTROS_RESP", response.body().toString());
+
                         encuentros.clear();
-                        encuentros.addAll(response.body());
+                        encuentros.addAll(response.body().getEncuentros());
                         mostrarEncuentros();
+                        mostrarCompetidorLibre(response.body().getCompetidorLibre());
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 }
             }
             @Override
-            public void onFailure(Call<List<Confrontation>> call, Throwable t) {
+            public void onFailure(Call<ConfrontationsCompetition> call, Throwable t) {
                 try {
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
@@ -198,6 +202,17 @@ public class EncuentrosDetalleFragment extends Fragment {
             }
         } else {
             sinEncuentros();
+        }
+    }
+
+    // mostramos el alias del competidor libre si es que lo hay
+    private void mostrarCompetidorLibre(String competidor){
+        if(competidor == null){
+            competidorLibre.setVisibility(View.GONE);
+        }
+        else{
+            competidorLibre.setVisibility(View.VISIBLE);
+            competidorLibre.setText("LIBRE: " + competidor);
         }
     }
 

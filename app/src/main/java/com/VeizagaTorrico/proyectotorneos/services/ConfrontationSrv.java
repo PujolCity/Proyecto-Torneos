@@ -3,6 +3,7 @@ package com.VeizagaTorrico.proyectotorneos.services;
 import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 
+import com.VeizagaTorrico.proyectotorneos.models.ConfrontationsCompetition;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationEdit;
 import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
@@ -23,7 +24,7 @@ public interface ConfrontationSrv {
     Call<List<Confrontation>> getConfrontation(@Query("idCompetencia") int idCompetencia);
 
     @POST(Constants.BASE_URL + "confrontations/competition")
-    Call<List<Confrontation>> getConfrontations(@Query("idCompetencia") int idCompetencia, @Body Map<String,String> fecha_grupo);
+    Call<ConfrontationsCompetition> getConfrontations(@Query("idCompetencia") int idCompetencia, @Body Map<String,String> fecha_grupo);
 
     @PUT(Constants.BASE_URL + "confrontation")
     Call<MsgRequest> editEncuentro(@Body Map<String,String> encuentro);

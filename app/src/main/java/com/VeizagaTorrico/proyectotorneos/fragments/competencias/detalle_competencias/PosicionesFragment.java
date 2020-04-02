@@ -29,6 +29,7 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.PositionCompetitor;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.PositionCompetitorSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
@@ -308,7 +309,7 @@ public class PosicionesFragment extends Fragment {
             TableRow resultadoCompetidor = getRowTable(posiciones.get(i));
             tablaPosiciones.addView(resultadoCompetidor);
         }
-        Log.d("TABLA_POS", "entro a MostararTabla");
+//        Log.d("TABLA_POS", "entro a MostararTabla");
     }
 
     // crea una nueva fila para la tabla de resultados desde la info recuperada del servidor
