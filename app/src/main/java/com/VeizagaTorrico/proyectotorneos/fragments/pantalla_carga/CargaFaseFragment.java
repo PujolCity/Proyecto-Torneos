@@ -92,16 +92,17 @@ public class CargaFaseFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_carga_fase, container, false);
         initElements();
         llenarSpinnerFase();
-
         btnListener();
-
         return vista;
     }
 
     private void llenarSpinnerFase() {
+        fases.clear();
         int faseCompe = Integer.parseInt(competencia.getFaseActual());
         faseCompe--;
+        Log.d("FASECOMPE", Integer.toString(faseCompe));
         List<String> fs = new ArrayList<>();
+        fs.add(" ");
         fs.add("Final");
         fs.add("Semi Final");
         fs.add("Cuartos");
@@ -112,15 +113,17 @@ public class CargaFaseFragment extends Fragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,fases);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFase.setAdapter(adapter);
+        final int finalFaseCompe = faseCompe ;
         spinnerFase.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                fase = i+1;
+                encuentros.clear();
+                fase = finalFaseCompe;
                 datos.put("idCompetencia",competencia.getId());
                 datos.put("fase",fase);
                 servidorUsers(datos);
-                encuentros.clear();
                 cantEncuentros = (int) Math.pow(2,(fase -1));
+                Log.d("CANT ENCUENTROS", Integer.toString(cantEncuentros));
                 llenarSpinnerEncuentros();
                 visibleBtn();
             }
@@ -234,29 +237,38 @@ public class CargaFaseFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 while(!usuarios.isEmpty()){
-                    select1 = usuarios.get(0);
-                    select2 = usuarios.get(usuarios.size()-1);
-                    encuentros.add(new ConfrontationMin(select1,select2));
-                    usuarios.remove(select1);
-                    usuarios.remove(select2);
-                    llenarSpinnerUsers(usuarios);
-                    clearSeleccionados();
-                    llenarSpinnerEncuentros();
-                    visibleBtn();
+                    crearEncuentros();
                 }
                 btnAutomatico.setVisibility(View.INVISIBLE);
             }
         });
     }
 
+    private void crearEncuentros() {
+        select1 = usuarios.get(0);
+        select2 = usuarios.get(usuarios.size()-1);
+        encuentros.add(new ConfrontationMin(select1,select2));
+        usuarios.remove(select1);
+        usuarios.remove(select2);
+        llenarSpinnerUsers(usuarios);
+        clearSeleccionados();
+        visibleBtn();
+        llenarSpinnerEncuentros();
+    }
+
     private void visibleBtn() {
         if((select1 != null && select2 != null) || !usuarios.isEmpty()){
             btnEncuentro.setVisibility(View.VISIBLE);
             spinnerEncuentro.setVisibility(View.VISIBLE);
+        }else {
+            btnEncuentro.setVisibility(View.INVISIBLE);
         }
         if(!encuentros.isEmpty()){
+            spinnerEncuentro.setVisibility(View.VISIBLE);
             delete.setVisibility(View.VISIBLE);
         }else {
+            spinnerEncuentro.setVisibility(View.INVISIBLE);
+            btnEncuentro.setVisibility(View.INVISIBLE);
             delete.setVisibility(View.INVISIBLE);
         }
         if(encuentros.size() == cantEncuentros){
