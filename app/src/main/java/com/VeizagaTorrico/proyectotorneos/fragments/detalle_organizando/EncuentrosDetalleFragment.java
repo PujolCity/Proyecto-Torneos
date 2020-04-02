@@ -31,6 +31,7 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.ConfrontationsCompetition;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
@@ -65,6 +66,7 @@ public class EncuentrosDetalleFragment extends Fragment {
     private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv, competidorLibre;
+    private AdminDataOff adminDataOff;
     private ManagerConfrontationOff adminEncuentrosLocal;
     private ManagerCompetitionOff adminCopeteitionLocal;
 
@@ -117,6 +119,7 @@ public class EncuentrosDetalleFragment extends Fragment {
             itemsFase = new ArrayList<>();
             itemsGrupo = new ArrayList<>();
             btnBuscar = vista.findViewById(R.id.btnBuscar);
+            adminDataOff = new AdminDataOff(vista.getContext());
 
             if(NetworkReceiver.existConnection(vista.getContext())) {
                 cargarSpinnerFiltroEncuentros();
@@ -172,8 +175,12 @@ public class EncuentrosDetalleFragment extends Fragment {
         Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
 
         mostrarEncuentros();
-    }
 
+        String competidorLibre = adminDataOff.competitorFreeByJornada(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
+        if(fecha_grupo.get("jornada") != null){
+            mostrarCompetidorLibre(competidorLibre);
+        }
+    }
 
     private void mostrarEncuentros(){
         Log.d("ROL COMPETENCIA", competencia.getRol().toString());
@@ -207,10 +214,12 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     // mostramos el alias del competidor libre si es que lo hay
     private void mostrarCompetidorLibre(String competidor){
+        Log.d("SHOW_FREE", "Competidor libre: "+competidor);
         if(competidor == null){
             competidorLibre.setVisibility(View.GONE);
         }
         else{
+            Log.d("SHOW_FREE", "Setea VISIBLE el tv: "+competidor);
             competidorLibre.setVisibility(View.VISIBLE);
             competidorLibre.setText("LIBRE: " + competidor);
         }
@@ -399,7 +408,9 @@ public class EncuentrosDetalleFragment extends Fragment {
                 if(competencia.getTypesOrganization().contains("Liga")){
                     // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
-                        nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas()/2);
+                        if(nroJornada != null) {
+                            nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas() / 2);
+                        }
                     }
                     if(nroJornada != null){
                         if((nroFase.equals("1")) && (Integer.valueOf(nroJornada) > dataOrgCompetition.getCantJornadas()/2)){

@@ -3,6 +3,7 @@ package com.VeizagaTorrico.proyectotorneos.offline.admin;
 import android.content.Context;
 import android.util.Log;
 
+import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitionOff;
@@ -11,8 +12,11 @@ import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.FieldOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.InscriptionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.JudgeOff;
+import com.google.android.gms.common.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class AdminDataOff {
 
@@ -35,12 +39,10 @@ public class AdminDataOff {
         // los campos al ser globales no los borramos solo los actualizamos(a la hora de insertar)
         if(adminCompetencia.existCompetition(competencia.getId())){
             adminInscripcion = new ManagerInscriptionOff(context);
-//            adminJuez = new ManagerJudgeOff(context);
             adminCompetidor = new ManagerCompetitorOff(context);
 
             adminInscripcion.deleteByCompetition(competencia.getId());
-            // los jueces son globales tmpoco se deberian borrar
-//            adminJuez.deleteByCompetition(competencia.getId());
+            // los jueces son globales no se deben borrar
             adminCompetidor.deleteByCompetition(competencia.getId());
             adminCompetencia.deleteCompetition(competencia.getId());
         }
@@ -121,5 +123,40 @@ public class AdminDataOff {
         adminEncuentro = new ManagerConfrontationOff(context);
 
         return adminEncuentro.turnConfrontation(idConfrontation);
+    }
+
+    public String competitorFreeByJornada(int idCompetencia, String typeOrg, Map<String,String> fecha_grupo){
+        adminEncuentro = new ManagerConfrontationOff(context);
+        adminCompetidor = new ManagerCompetitorOff(context);
+
+        List<Confrontation> encuentros =  adminEncuentro.confrontationsByCompetition(idCompetencia,typeOrg,fecha_grupo);
+        List<String> aliasCompEncuentros = new ArrayList<>();
+        for (int i=0; i < encuentros.size(); i++){
+            aliasCompEncuentros.add(encuentros.get(i).getCompetidor1());
+            aliasCompEncuentros.add(encuentros.get(i).getCompetidor2());
+        }
+        //Log.d("FREE_COMP_ENC", "Cant de alias de los encuentros: "+aliasCompEncuentros.size());
+
+        List<String> aliasCompetidores = new ArrayList<>();
+
+        if(typeOrg.contains("Eliminatoria")){
+            return null;
+        }
+        if(typeOrg.contains("Liga")){
+            aliasCompetidores.addAll(adminCompetidor.getAliasCompetitorsByCompetition(idCompetencia));
+        }
+        if(typeOrg.contains("grupo")){
+            aliasCompetidores.addAll(adminCompetidor.getAliasCompetitorsByGroupCompetition(idCompetencia, fecha_grupo.get("grupo")));
+        }
+        //Log.d("FREE_COMP_ALIAS_GR", "Cant competitores de la competencia: "+aliasCompetidores.size());
+        aliasCompetidores.removeAll(aliasCompEncuentros);
+
+        String competidorLibre = null;
+        if(aliasCompetidores.size() > 0){
+            competidorLibre = aliasCompetidores.get(0);
+        }
+        //Log.d("FREE_COMP_DIFF", "Cant competitores libres: "+aliasCompetidores.size());
+
+        return competidorLibre;
     }
 }

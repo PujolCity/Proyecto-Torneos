@@ -24,7 +24,7 @@ public class ManagerCompetitorOff {
     }
 
     public void addRowCompetitorFromObject(CompetitorOff competitor){
-        Log.d("DB_LOCAL_INSERT_INSC", "Competidor: "+competitor);
+//        Log.d("DB_LOCAL_INSERT_INSC", "Competidor: "+competitor);
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
 
         // insertamos datos en la tabla competencia
@@ -37,7 +37,7 @@ public class ManagerCompetitorOff {
         registro.put("correo", competitor.getCorreo());
         registro.put("competencia", competitor.getCompetencia());
 
-        Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competidor");
+//        Log.d("DB_LOCAL_INSERT", "Agrega un registro en Competidor");
 
         instanceDb.insert(DbContract.TABLE_COMPETIDOR, null, registro);
 
@@ -50,7 +50,7 @@ public class ManagerCompetitorOff {
         Cursor filaCompUser = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR+" where id="+idCompetitor, null);
         CompetitorOff competitor = null;
         if(filaCompUser.moveToFirst()){
-            Log.d("DB_LOCAL_GET: ", filaCompUser.getString(1));
+//            Log.d("DB_LOCAL_GET: ", filaCompUser.getString(1));
             // traemos los datos de la competencia
             competitor = new CompetitorOff(
                     Integer.valueOf(filaCompUser.getString(0)),
@@ -63,7 +63,7 @@ public class ManagerCompetitorOff {
             );
         }
         instanceDb.close();
-        Log.d("DB_LOCAL_READ", "Competitor: "+competitor.getAlias());
+//        Log.d("DB_LOCAL_READ", "Competitor: "+competitor.getAlias());
 
         return competitor;
     }
@@ -73,7 +73,7 @@ public class ManagerCompetitorOff {
 
         Cursor filaComp = instanceDb.rawQuery("select * from "+ DbContract.TABLE_COMPETIDOR, null);
         int cantRows = filaComp.getCount();
-        Log.d("ROWS_LOCAL_DB", "Cant de competidores:"+cantRows);
+//        Log.d("ROWS_LOCAL_DB", "Cant de competidores:"+cantRows);
         instanceDb.close();
 
         return cantRows;
@@ -91,7 +91,7 @@ public class ManagerCompetitorOff {
             } while (cursor.moveToNext());
         }
 
-        Log.d("ROWS_DEL_DB", "Cant de competidores eliminados: "+cursor.getCount());
+//        Log.d("ROWS_DEL_DB", "Cant de competidores eliminados: "+cursor.getCount());
         instanceDb.close();
 
         return;
@@ -106,7 +106,7 @@ public class ManagerCompetitorOff {
 
         if(filaCompUser != null && filaCompUser.getCount() != 0) {
             filaCompUser.moveToFirst();
-            Log.d("DB_LOCAL_GET: ", "Alias comp DB local: "+filaCompUser.getString(1));
+//            Log.d("DB_LOCAL_GET: ", "Alias comp DB local: "+filaCompUser.getString(1));
             do {
                 // traemos los datos de la competencia
                 User competitor = new User(
@@ -122,8 +122,57 @@ public class ManagerCompetitorOff {
             } while (filaCompUser.moveToNext());
         }
         instanceDb.close();
-        Log.d("DB_LOCAL_READ", "Cant competitores de la competencia: "+competitors.size());
+//        Log.d("DB_LOCAL_READ", "Cant competitores de la competencia: "+competitors.size());
 
         return competitors;
+    }
+
+    // recupera los alias de los competidores de una competencia
+    public List<String> getAliasCompetitorsByCompetition(int idCompetition){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        Cursor filaCompUser = instanceDb.rawQuery("select alias from "+ DbContract.TABLE_COMPETIDOR+" where competencia="+idCompetition, null);
+        List<String> aliasCompetitors = new ArrayList<>();
+
+        if(filaCompUser != null && filaCompUser.getCount() != 0) {
+            filaCompUser.moveToFirst();
+//            Log.d("DB_LOCAL_GET: ", "Alias comp DB local: "+filaCompUser.getString(0));
+            do {
+                aliasCompetitors.add(filaCompUser.getString(0));
+            } while (filaCompUser.moveToNext());
+        }
+        instanceDb.close();
+        //Log.d("DB_LOCAL_READ", "Cant competitores de la competencia: "+aliasCompetitors.size());
+
+        return aliasCompetitors;
+    }
+
+    // recupera los alias de los competidores de una competencia por grupo
+    public List<String> getAliasCompetitorsByGroupCompetition(int idCompetencia, String grupo){
+        SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
+
+        // recuperamos todos los encuentros del grupo
+        Cursor filaCompUser = instanceDb.rawQuery("select competidor1, competidor2 from "+ DbContract.TABLE_ENCUENTRO+" where competencia="+idCompetencia+ " AND grupo="+grupo, null);
+
+        List<String> aliasCompetitors = new ArrayList<>();
+
+        if(filaCompUser != null && filaCompUser.getCount() != 0) {
+            filaCompUser.moveToFirst();
+            //Log.d("DB_LOCAL_GET: ", "Alias comp DB local: "+filaCompUser.getString(0));
+            do {
+                String alias = filaCompUser.getString(0);
+                if(!aliasCompetitors.contains(alias)){
+                    aliasCompetitors.add(filaCompUser.getString(0));
+                }
+                alias = filaCompUser.getString(1);
+                if(!aliasCompetitors.contains(alias)){
+                    aliasCompetitors.add(filaCompUser.getString(1));
+                }
+            } while (filaCompUser.moveToNext());
+        }
+        instanceDb.close();
+        //Log.d("DB_LOCAL_READ", "Cant competitores de la competencia: "+aliasCompetitors.size());
+
+        return aliasCompetitors;
     }
 }

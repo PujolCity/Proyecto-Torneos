@@ -343,7 +343,9 @@ public class EncuentrosFragment extends Fragment {
                 if(competencia.getTypesOrganization().contains("Liga")){
                     // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
-                        nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas()/2);
+                        if(nroJornada != null) {
+                            nroJornada = String.valueOf(Integer.valueOf(nroJornada) + dataOrgCompetition.getCantJornadas() / 2);
+                        }
                     }
                     if(nroJornada != null){
                         if((nroFase.equals("1")) && (Integer.valueOf(nroJornada) > dataOrgCompetition.getCantJornadas()/2)){
