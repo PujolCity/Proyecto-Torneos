@@ -119,7 +119,6 @@ public class NavigationMainActivity extends AppCompatActivity
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-//                , R.id.miPerfilFragment,R.id.inicioFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.misInvitaciones)
                 R.id.noticiasFragment, R.id.crearCompetencia1Fragment, R.id.filtroFragment, R.id.misCompetencias, R.id.tabPerfilFragment, R.id.cerrarSesionFragment)
                 .setDrawerLayout(drawer)
                 .build();
@@ -128,8 +127,6 @@ public class NavigationMainActivity extends AppCompatActivity
         NavigationUI.setupWithNavController(navigationView, navController);
 
         updateDataNavMainMenu(navigationView);
-
-        onNewIntent(getIntent());
     }
 
     // actualizamos los datos que se mueatran en la barra principal
@@ -187,21 +184,22 @@ public class NavigationMainActivity extends AppCompatActivity
         startActivity(toInitApp);
         finish();
     }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-        Bundle extras = intent.getExtras();
-        if(extras != null){
-            if(extras.containsKey("misSolicitudes"))
-            {
-                String dataNotificationPush = extras.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
-                Log.d("NOTIF_FORGROUND", "Reconoce la clave recibida. IdComp recibido: "+dataNotificationPush);
-                Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
-                toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, dataNotificationPush);
-                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(toMisSolicitudes);
-            }
-        }
-    }
+//
+//    @Override
+//    protected void onNewIntent(Intent intent) {
+//        Bundle extras = intent.getExtras();
+//        if(extras != null){
+//            if(extras.containsKey("misSolicitudes"))
+//            {
+//                String dataNotificationPush = extras.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
+//                Log.d("NOTIF_FORGROUND", "Reconoce la clave recibida. IdComp recibido: "+dataNotificationPush);
+//                Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
+//                toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, dataNotificationPush);
+//                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(toMisSolicitudes);
+//            }
+//
+//        }
+//    }
 }

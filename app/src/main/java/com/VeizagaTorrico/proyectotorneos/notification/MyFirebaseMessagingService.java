@@ -55,19 +55,22 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         //super.onMessageReceived(remoteMessage);
 //        Log.d("MSG_NOTIF", "Datos recibidos: "+remoteMessage.getData().toString());
 
-        // TODO: poner afuera el showNotif
         if (remoteMessage.getNotification() != null) {
             Log.d("MSG_NOTIF", "Notificacion: " +remoteMessage.getNotification().getBody());
         }
 
-        String dataToFragment = null;
+        String idCompetencia = null;
+        String typeView = null;
         if (remoteMessage.getData().size() > 0) {
             Map<String, String> dataNotification = remoteMessage.getData();
-            dataToFragment = dataNotification.get(Constants.EXTRA_KEY_ID_COMPETENCIA);
-            Log.d("MSG_NOTIF", "Los datos de la notif: " + dataToFragment);
+            idCompetencia = dataNotification.get(Constants.EXTRA_KEY_ID_COMPETENCIA);
+            typeView = dataNotification.get(Constants.EXTRA_KEY_VIEW);
+//            Log.d("MSG_NOTIF", "IdCompetencia de la notif: " + idCompetencia);
+//            Log.d("MSG_NOTIF", "Pantalla de la notif: " + typeView);
         }
 
-        showNotificationPush(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle(), dataToFragment);
+        // mostramos la notificacion en el dispositivo
+        showNotificationPush(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle(), idCompetencia, typeView);
 
 //        if (remoteMessage.getData().size() > 0) {
 //            Log.d("MSG_NOTIF", "Los datos: " + remoteMessage.getData());
@@ -112,13 +115,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleNow() {
     }
 
-    private void showNotificationPush(String title, String body, String data) {
-        Intent i = new Intent(this, NavigationMainActivity.class);
+    private void showNotificationPush(String title, String body, String idCompetencia, String typeView) {
+        // el activity que vamos a abrir al recibir la notificacion
+        Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // esto para indicar que activity abrir
-        i.putExtra("misSolicitudes", "MyFragment");
-        // datos para el activity
-        i.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, data);
+        i.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
+        i.putExtra(Constants.EXTRA_KEY_VIEW, typeView);
 
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 

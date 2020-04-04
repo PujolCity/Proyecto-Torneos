@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -76,5 +77,31 @@ public class HomeActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        if(getIntent().getExtras() != null) {
+            Bundle bundle = getIntent().getExtras();
+            try {
+              showView(bundle);
+                //aquí va tu código en el cual validas el tipo de dato
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    // mostramos una pantalla distinta dependiendo de los datos recibidos
+    private void showView(Bundle dataNotification){
+//        Log.d("NOTIF_FORGROUND", "IdCompetencia: "+dataNotification.getString(Constants.EXTRA_KEY_ID_COMPETENCIA));
+//        Log.d("NOTIF_FORGROUND", "Tipo de pantalla: "+dataNotification.getString(Constants.EXTRA_KEY_VIEW));
+        String typeView = dataNotification.getString(Constants.EXTRA_KEY_VIEW);
+
+        if(typeView.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD)){
+            String idCompetencia = dataNotification.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
+            // vamos al activity creado
+            Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
+            toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
+            toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(toMisSolicitudes);
+        }
     }
 }
