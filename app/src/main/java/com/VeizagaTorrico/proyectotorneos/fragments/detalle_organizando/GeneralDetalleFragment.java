@@ -28,12 +28,7 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Inscription;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitorOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerFieldOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerInscriptionOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerJudgeOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.DataOffline;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
@@ -72,13 +67,13 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     private ConfrontationSrv confrontationSrv;
     private UserSrv usersSrv;
     private List<ConfrontationOff> encuentrosServer;
-    private AdminDataOff adminData;
-    private ManagerCompetitionOff adminCompetenciasOff;
-    private ManagerCompetitorOff adminCompetitorsOff;
-    private ManagerJudgeOff adminJuecesOff;
-    private ManagerFieldOff adminCamposOff;
-    private ManagerInscriptionOff adminInscripcionOff;
-    private ManagerConfrontationOff adminEncuentroOff;
+    private AdminDataOff adminDataOff;
+//    private ManagerCompetitionOff adminCompetenciasOff;
+//    private ManagerCompetitorOff adminCompetitorsOff;
+//    private ManagerJudgeOff adminJuecesOff;
+//    private ManagerFieldOff adminCamposOff;
+//    private ManagerInscriptionOff adminInscripcionOff;
+//    private ManagerConfrontationOff adminEncuentroOff;
     private Map<String,String> userComp = new HashMap<>();
     private DataOffline dataServer;
 
@@ -177,10 +172,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
                     Log.d("DATA_OFF", "cant de encuentros recuperados: "+encuentrosServer.size());
 
                     // guardamos los datos en la DB local
-                    adminData.loadConfrontations(encuentrosServer);
-
-                    // vemos si se insertaron los datos correctamente en la DB
-                    adminEncuentroOff.getCantRows();
+                    adminDataOff.loadConfrontations(encuentrosServer);
                     Toast.makeText(vista.getContext(), "La descarga y almacenamiento de datos de los encuentros de la competencia se ha realizado.", Toast.LENGTH_LONG).show();
                 }
                 if (response.code() == 400) {
@@ -205,11 +197,11 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     }
 
     private void dowloadDataCompettition(){
-        adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
-        adminCompetitorsOff = new ManagerCompetitorOff(vista.getContext());
-        adminCamposOff = new ManagerFieldOff(vista.getContext());
-        adminJuecesOff = new ManagerJudgeOff(vista.getContext());
-        adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
+//        adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
+//        adminCompetitorsOff = new ManagerCompetitorOff(vista.getContext());
+//        adminCamposOff = new ManagerFieldOff(vista.getContext());
+//        adminJuecesOff = new ManagerJudgeOff(vista.getContext());
+//        adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
 
         usersSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
 
@@ -227,32 +219,32 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
                     dataServer = response.body();
                     Log.d("GRAL_DET_OFF", "Nombre comp: "+dataServer.getCompetencia().getNombre());
                     // guardamos los datos en la DB local
-                    adminData.loadCompetition(dataServer.getCompetencia(), dataServer.getFases());
+                    adminDataOff.loadCompetition(dataServer.getCompetencia(), dataServer.getFases());
 
                     // controlamos que existan datos antes de guardarlos en la DB local
                     if(dataServer.getCompetidores() != null){
-                        adminData.loadCompetitors(dataServer.getCompetidores());
+                        adminDataOff.loadCompetitors(dataServer.getCompetidores());
                         Log.d("GRAL_DET_OFF", "Cant comp: "+dataServer.getCompetidores().size());
                     }
                     else{
                         Log.d("GRAL_DET_OFF", "La comp aun no cuenta con competidores ");
                     }
                     if(dataServer.getCampos() != null){
-                        adminData.loadFields(dataServer.getCampos());
+                        adminDataOff.loadFields(dataServer.getCampos());
                         Log.d("GRAL_DET_OFF", "Cant campos: "+dataServer.getCampos().size());
                     }
                     else{
                         Log.d("GRAL_DET_OFF", "La comp aun no cuenta con campos ");
                     }
                     if(dataServer.getJueces() != null){
-                        adminData.loadJudges(dataServer.getJueces());
+                        adminDataOff.loadJudges(dataServer.getJueces());
                         Log.d("GRAL_DET_OFF", "Cant Jueces: "+dataServer.getJueces().size());
                     }
                     else{
                         Log.d("GRAL_DET_OFF", "La comp aun no cuenta con jueces ");
                     }
                     if(dataServer.getInscripcion() != null){
-                        adminData.loadInscription(dataServer.getInscripcion());
+                        adminDataOff.loadInscription(dataServer.getInscripcion());
                         Log.d("GRAL_DET_OFF", "Inicio inscripcion: "+dataServer.getInscripcion().getFinicio());
                     }
                     else{
@@ -285,8 +277,8 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     private void initElements() {
 
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
-        adminData = new AdminDataOff(vista.getContext());
-        adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
+        adminDataOff = new AdminDataOff(vista.getContext());
+//        adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
 
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
@@ -465,8 +457,9 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
          Log.d("INSC_OFF_SHOW","Entra");
          if(this.competencia.getEstado().contains("COMPETENCIA_INSCRIPCION_ABIERTA") || this.competencia.getEstado().contains("CON_INSCRIPCION")) {
              linear.setVisibility(View.VISIBLE);
-             adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
-             Inscription inscripcionLocal = adminInscripcionOff.inscriptionByCompetition(competencia.getId());
+//             adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
+//             Inscription inscripcionLocal = adminInscripcionOff.inscriptionByCompetition(competencia.getId());
+             Inscription inscripcionLocal = adminDataOff.inscriptionByCompetition(competencia.getId());
 //             Log.d("INSC_OFF_SHOW", inscripcionLocal.toString());
              requisitos.setText(inscripcionLocal.getRequisitos());
              monto.setText(Integer.toString(inscripcionLocal.getMonto()));

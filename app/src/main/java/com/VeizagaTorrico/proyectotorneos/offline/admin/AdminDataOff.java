@@ -5,7 +5,9 @@ import android.util.Log;
 
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
+import com.VeizagaTorrico.proyectotorneos.models.Inscription;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
+import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.CompetitorOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
@@ -31,6 +33,9 @@ public class AdminDataOff {
     public AdminDataOff(Context context) {
         this.context = context;
     }
+
+    // ##########################################################################################
+    // ################################## CARGA DATOS DB ########################################
 
     public void loadCompetition(CompetitionOff competencia, String[] fases){
         adminCompetencia = new ManagerCompetitionOff(context);
@@ -104,6 +109,12 @@ public class AdminDataOff {
         }
     }
 
+    // ##########################################################################################
+    // ##########################################################################################
+
+    // ##########################################################################################
+    // ################################## DATOS ENCUENTROS ######################################
+
     // devuelve el juez de un encuentro
     public Referee getRefereeConfrontation(int idEncuentro){
         adminEncuentro = new ManagerConfrontationOff(context);
@@ -125,6 +136,33 @@ public class AdminDataOff {
         return adminEncuentro.turnConfrontation(idConfrontation);
     }
 
+    // ##########################################################################################
+    // ##########################################################################################
+
+    // ##########################################################################################
+    // ################################# DATOS COMPETENCIA ######################################
+
+    // devuelve los encuentros de una competencia por fase, jornada y/o grupo
+    public List<Confrontation> getConfrontationByCompetition(int idCompetencia, String tipoOrganizacion, Map<String, String> fechaGrupo){
+        adminEncuentro = new ManagerConfrontationOff(context);
+
+        return adminEncuentro.confrontationsByCompetition(idCompetencia, tipoOrganizacion, fechaGrupo);
+    }
+
+    // determina si la competencia cuenta con encuentros
+    public boolean competitionWtihConfrontation(int idCompetencia){
+        adminEncuentro = new ManagerConfrontationOff(context);
+
+        return adminEncuentro.existByCompetition(idCompetencia);
+    }
+
+    public List<User> competitorsByCompetition(int idCompetencia){
+        adminCompetidor = new ManagerCompetitorOff(context);
+
+        return adminCompetidor.getCompetitorsByCompetition(idCompetencia);
+    }
+
+    // devuelve el competidor libre de una jornada, si es que lo hay, sino null
     public String competitorFreeByJornada(int idCompetencia, String typeOrg, Map<String,String> fecha_grupo){
         adminEncuentro = new ManagerConfrontationOff(context);
         adminCompetidor = new ManagerCompetitorOff(context);
@@ -158,5 +196,33 @@ public class AdminDataOff {
         //Log.d("FREE_COMP_DIFF", "Cant competitores libres: "+aliasCompetidores.size());
 
         return competidorLibre;
+    }
+
+    // devuelve la cantidad de grupos que tiene una competencia
+    public int groupsByCompetition(int idCompetencia){
+        adminCompetencia = new ManagerCompetitionOff(context);
+
+        return adminCompetencia.cantGroupByCompetition(idCompetencia);
+    }
+
+    // devuelve la cantidad de jornadas que tiene una competencia
+    public int jornadaByCompetition(int idCompetencia){
+        adminCompetencia = new ManagerCompetitionOff(context);
+
+        return adminCompetencia.cantJornadaByCompetition(idCompetencia);
+    }
+
+    // devuelve un array con las fases con las que cuenta una competencia
+    public String[] phasesByCompetition(int idCompetencia){
+        adminCompetencia = new ManagerCompetitionOff(context);
+
+        return adminCompetencia.phasesByCompetition(idCompetencia);
+    }
+
+    // devuelve la cantidad de jornadas que tiene una competencia
+    public Inscription inscriptionByCompetition(int idCompetencia){
+        adminInscripcion = new ManagerInscriptionOff(context);
+
+        return adminInscripcion.inscriptionByCompetition(idCompetencia);
     }
 }

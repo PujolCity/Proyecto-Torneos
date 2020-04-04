@@ -158,7 +158,7 @@ public class ManagerConfrontationOff {
         return cantRows;
     }
 
-    // determina si existen encuentros en ls db de una competencia
+    // determina si existen encuentros en la db de una competencia
     public boolean existByCompetition(int idCompetition) {
         SQLiteDatabase instanceDb = adminDB.getWritableDatabase();
         // recuperamos los competidores de la competencia

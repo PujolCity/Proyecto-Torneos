@@ -22,6 +22,7 @@ import com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_compete
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.EncuentrosFragment;
 import com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.InfoGeneralCompetenciaFragment;
 
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -54,6 +55,7 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
@@ -114,7 +116,6 @@ public class NavigationMainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-     //   Log.d("Prob SHAREDPREFERENCES", ManagerToken.getInstance().getTokenInternal(this));
 
         //aca se declaran los elementos del menu desplegable
         mAppBarConfiguration = new AppBarConfiguration.Builder(
@@ -126,17 +127,9 @@ public class NavigationMainActivity extends AppCompatActivity
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // TODO: pasara esto a una funcion
         updateDataNavMainMenu(navigationView);
 
-        // seteamos los datos del usuario en la navbar principal
-//        View vistaNavMain = navigationView.getHeaderView(0);
-//        TextView tvTitle = vistaNavMain.findViewById(R.id.tv_user_navbar_main);
-//        TextView tvSubtitle = vistaNavMain.findViewById(R.id.tv_correo_navbar_main);
-//
-//        // actualizamos los datos
-//        tvTitle.setText(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this, FILE_SHARED_DATA_USER, KEY_USERNAME));
-//        tvSubtitle.setText(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this, FILE_SHARED_DATA_USER, KEY_EMAIL));
+        onNewIntent(getIntent());
     }
 
     // actualizamos los datos que se mueatran en la barra principal
@@ -193,5 +186,22 @@ public class NavigationMainActivity extends AppCompatActivity
         toInitApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(toInitApp);
         finish();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        Bundle extras = intent.getExtras();
+        if(extras != null){
+            if(extras.containsKey("misSolicitudes"))
+            {
+                String dataNotificationPush = extras.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
+                Log.d("NOTIF_FORGROUND", "Reconoce la clave recibida. IdComp recibido: "+dataNotificationPush);
+                Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
+                toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, dataNotificationPush);
+                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(toMisSolicitudes);
+            }
+        }
     }
 }

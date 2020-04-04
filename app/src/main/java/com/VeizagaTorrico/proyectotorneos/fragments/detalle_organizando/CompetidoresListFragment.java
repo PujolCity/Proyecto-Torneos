@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.SolicitudesRecyclerViewAdapter;
@@ -38,7 +40,7 @@ public class CompetidoresListFragment extends Fragment {
     private List<User> competidores;
     private View vista;
     private RecyclerView recycle;
-    private CompetitionMin competencia;
+    private int idCompetencia;
     private TextView sinSolicitudes;
 
 
@@ -66,23 +68,23 @@ public class CompetidoresListFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competidores_list, container, false);
         userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
-        this.competencia = (CompetitionMin) getArguments().getSerializable("competencia");
+        idCompetencia = Integer.valueOf(getArguments().getString(Constants.EXTRA_KEY_ID_COMPETENCIA));
         initAdapter();
 
 
         //En call viene el tipo de dato que espero del servidor
-        Call<List<User>> call = userSrv.getPetitionersByCompetition(competencia.getId());
+        Call<List<User>> call = userSrv.getPetitionersByCompetition(idCompetencia);
+        Log.d("CALL_SOLIC", call.request().url().toString());
+        Log.d("CALL_SOLIC_IDCOMP", String.valueOf(idCompetencia));
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
-                Log.d("RESPONSE CODE USERS", Integer.toString(response.code()));
-
                 if(response.code() == 200){
                     try {
                         competidores = response.body();
                         if(competidores.size() != 0){
                             adapter.setCompetidores(competidores);
-                            adapter.setIdComptencia(competencia.getId());
+                            adapter.setIdComptencia(idCompetencia);
                             recycle.setAdapter(adapter);
                         } else {
                             sinSolicitudes();
@@ -109,9 +111,9 @@ public class CompetidoresListFragment extends Fragment {
         sinSolicitudes.setVisibility(View.VISIBLE);
     }
 
-    public void setCompetencia(CompetitionMin competencia) {
-        this.competencia = competencia;
-    }
+    public void setCompetencia(int competencia) {
+    this.idCompetencia = idCompetencia;
+}
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

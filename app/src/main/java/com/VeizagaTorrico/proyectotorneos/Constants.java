@@ -3,8 +3,8 @@ package com.VeizagaTorrico.proyectotorneos;
 public class Constants {
     // URL BASE del servidor
 
-    public static final String BASE_URL = "http://132.255.7.152:20203/api/";
-    //public static final String BASE_URL = "http://192.168.1.47:8000/api/";
+    //public static final String BASE_URL = "http://132.255.7.152:20203/api/";
+    public static final String BASE_URL = "http://192.168.1.47:8000/api/";
 
     // nombre del archivo donde se guardan los datos del token de firebase de manera local
     public static final String FILE_SHARED_TOKEN_FIREBASE = "TokenFirebase";
@@ -35,4 +35,7 @@ public class Constants {
     public static final String TIPO_LIGA = "Liga Single";
     public static final String TIPO_LIGA_DOBLE = "Liga Double";
     public static final String TIPO_GRUPOS = "Fase de grupo";
+
+    // valores para pasar entre activities y fragments
+    public static final String EXTRA_KEY_ID_COMPETENCIA = "COMPETENCIA_ID";
 }

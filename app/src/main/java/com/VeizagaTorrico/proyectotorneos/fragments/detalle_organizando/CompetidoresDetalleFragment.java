@@ -20,12 +20,14 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetidoresRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.User;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitorOff;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
@@ -45,7 +47,7 @@ public class CompetidoresDetalleFragment extends Fragment {
     private ImageButton solicitudes;
     private TextView sinCompetidores;
     private CompetidoresRecyclerViewAdapter adapter;
-    private ManagerCompetitorOff adminCompetidores;
+    private AdminDataOff adminDataOff;
 
     public CompetidoresDetalleFragment() {
         // Required empty public constructor
@@ -71,13 +73,11 @@ public class CompetidoresDetalleFragment extends Fragment {
         initElement();
         inflarRecycler();
 
-//        Log.d("otr competencia",this.competencia.toString());
-
         solicitudes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
-                bundle.putSerializable("competencia", competencia);
+                bundle.putInt(Constants.EXTRA_KEY_ID_COMPETENCIA, competencia.getId());
 
                 // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                 Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
@@ -136,8 +136,7 @@ public class CompetidoresDetalleFragment extends Fragment {
 
     // recupera los competidores de la competencia almacenados localmente
     private void getCompetitiorsOffline(){
-        adminCompetidores = new ManagerCompetitorOff(vista.getContext());
-        competidores = adminCompetidores.getCompetitorsByCompetition(competencia.getId());
+        competidores = adminDataOff.competitorsByCompetition(competencia.getId());
         if(competidores.size() > 0){
             Log.d("COMPETIDORES",competidores.toString());
             adapter.setCompetidores(competidores);
@@ -163,6 +162,7 @@ public class CompetidoresDetalleFragment extends Fragment {
         recycle.setHasFixedSize(true);
         adapter = new CompetidoresRecyclerViewAdapter(vista.getContext());
         recycle.setAdapter(adapter);
+        adminDataOff = new AdminDataOff(vista.getContext());
     }
 
     public void setCompetencia(CompetitionMin competencia) {

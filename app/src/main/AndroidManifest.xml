@@ -22,9 +22,11 @@
         <activity android:name=".SinginActivity"
             android:configChanges="screenSize|orientation"/>
         <activity android:name=".NavigationMainActivity"
-            android:configChanges="screenSize|orientation"/> <!-- <activity android:name=".HomeActivity"></activity> -->
+            android:configChanges="screenSize|orientation"/>
         <activity android:name=".UserRegisterActivity"
-            android:configChanges="screenSize|orientation"/> <!-- android:name=".NavigationMainActivity" -->
+            android:configChanges="screenSize|orientation"/>
+        <activity android:name=".MisSolicitudesActivity"
+            android:configChanges="screenSize|orientation"/>
         <!-- android:label="@string/app_name" -->
         <!-- android:theme="@style/AppTheme.NoActionBar"> -->
         <!-- <intent-filter> -->

@@ -10,10 +10,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.VeizagaTorrico.proyectotorneos.Constants;
 import com.VeizagaTorrico.proyectotorneos.HomeActivity;
+import com.VeizagaTorrico.proyectotorneos.MisSolicitudesActivity;
 import com.VeizagaTorrico.proyectotorneos.NavigationMainActivity;
 import com.VeizagaTorrico.proyectotorneos.R;
+import com.VeizagaTorrico.proyectotorneos.ResetPassActivity;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.SinginActivity;
+import com.VeizagaTorrico.proyectotorneos.UserRegisterActivity;
+import com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CompetidoresListFragment;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.NotificationSrv;
@@ -47,29 +53,37 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         Log.d("MSGNotifi", "Llega la notif: ");
         //super.onMessageReceived(remoteMessage);
+//        Log.d("MSG_NOTIF", "Datos recibidos: "+remoteMessage.getData().toString());
+
         // TODO: poner afuera el showNotif
         if (remoteMessage.getNotification() != null) {
-            Log.d("MSGNotifi", "Notificacion: :" +remoteMessage.getNotification().getBody());
-            //showNotificationPush(remoteMessage.getData().get("message"));
+            Log.d("MSG_NOTIF", "Notificacion: " +remoteMessage.getNotification().getBody());
         }
 
+        String dataToFragment = null;
         if (remoteMessage.getData().size() > 0) {
-            Log.d("MSGNotifi", "Los datos: " + remoteMessage.getData());
-
-            showNotificationPush(remoteMessage.getData().get("message"));
-            //remoteMessage.getNotification();
-//            showNotificationPush(remoteMessage.getNotification().getTitle());
-
-            if (true) {
-                squeduleJob();
-            } else {
-                handleNow();
-            }
-
-            if (remoteMessage.getNotification() != null) {
-                Log.d(TAG, "body de la notificacion:" + remoteMessage.getNotification());
-            }
+            Map<String, String> dataNotification = remoteMessage.getData();
+            dataToFragment = dataNotification.get(Constants.EXTRA_KEY_ID_COMPETENCIA);
+            Log.d("MSG_NOTIF", "Los datos de la notif: " + dataToFragment);
         }
+
+        showNotificationPush(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle(), dataToFragment);
+
+//        if (remoteMessage.getData().size() > 0) {
+//            Log.d("MSG_NOTIF", "Los datos: " + remoteMessage.getData());
+//
+//            showNotificationPush(remoteMessage.getData().get("message"));
+//
+//            if (true) {
+//                squeduleJob();
+//            } else {
+//                handleNow();
+//            }
+//
+//            if (remoteMessage.getNotification() != null) {
+//                Log.d("MSG_NOTIF", "body de la notificacion:" + remoteMessage.getNotification());
+//            }
+//        }
     }
 
 //    @Override
@@ -98,25 +112,15 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private void handleNow() {
     }
 
-    private void showNotificationPush(String message) {
+    private void showNotificationPush(String title, String body, String data) {
         Intent i = new Intent(this, NavigationMainActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // esto para indicar que activity abrir
+        i.putExtra("misSolicitudes", "MyFragment");
+        // datos para el activity
+        i.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, data);
 
-        // sacamos los datos recibidos
-        JsonObject jsonObject = new JsonParser().parse(message).getAsJsonObject();
-        Log.d("MSGNotifi", "Json notif:" +jsonObject.get("notification"));
-        String jsonNotification = jsonObject.get("notification").toString();
-
-        //Log.d(TAG, "Json not string 1:" +jsonNotification);
-
-        // buscamos los datos de la notificacion
-        JsonObject jsonNotificationObject = new JsonParser().parse(jsonNotification).getAsJsonObject();
-        String titulo = jsonNotificationObject.get("title").toString();
-        titulo = titulo.replace("\"","");
-        String body= jsonNotificationObject.get("body").toString();
-        body = body.replace("\"","");
-
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
 //        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, this.getResources().getString(R.string.notification_id_channel))
@@ -125,11 +129,9 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setWhen(System.currentTimeMillis())
 //                .setSmallIcon(R.mipmap.ic_launcher)
                 .setTicker("Tutorial test")
-//                .setContentTitle("FCM notif test")
-                .setContentTitle(titulo)
-//                .setContentText(message)
+                .setContentTitle(title)
                 .setContentText(body)
-                .setContentInfo("Information")
+                .setContentInfo("Inscripcion")
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentIntent(pendingIntent);
 

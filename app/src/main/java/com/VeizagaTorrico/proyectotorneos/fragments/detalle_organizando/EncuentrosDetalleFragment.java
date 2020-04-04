@@ -67,8 +67,8 @@ public class EncuentrosDetalleFragment extends Fragment {
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv, competidorLibre;
     private AdminDataOff adminDataOff;
-    private ManagerConfrontationOff adminEncuentrosLocal;
-    private ManagerCompetitionOff adminCopeteitionLocal;
+    //private ManagerConfrontationOff adminEncuentrosLocal;
+//    private ManagerCompetitionOff adminCopeteitionLocal;
 
     public EncuentrosDetalleFragment() {
         // Required empty public constructor
@@ -170,8 +170,9 @@ public class EncuentrosDetalleFragment extends Fragment {
     // recupera los datos almacenados en la DB local
     private void getEncuentrosOffline(Map<String, String> fecha_grupo){
 //        Log.d("ENC_LOCAL", "datos spiner: "+fecha_grupo.toString());
-        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
-        encuentros = adminEncuentrosLocal.confrontationsByCompetition(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
+//        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
+//        encuentros = adminEncuentrosLocal.confrontationsByCompetition(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
+        encuentros = adminDataOff.getConfrontationByCompetition(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
         Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
 
         mostrarEncuentros();
@@ -272,13 +273,18 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     private void cargarSpinnerFiltroEncuentrosOffline(){
         // controlamos que la competencia se encuentre almacenada localmente
-        adminCopeteitionLocal = new ManagerCompetitionOff(vista.getContext());
-        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
+//        adminCopeteitionLocal = new ManagerCompetitionOff(vista.getContext());
+//        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
         // recuperamos el nro de grupo y fase de la competencia
-        if(adminEncuentrosLocal.existByCompetition(competencia.getId())){
-            int cantGrupos = adminCopeteitionLocal.cantGroupByCompetition(competencia.getId());
-            int cantJornadas = adminCopeteitionLocal.cantJornadaByCompetition(competencia.getId());
-            String[] fases = adminCopeteitionLocal.phasesByCompetition(competencia.getId());
+//        if(adminEncuentrosLocal.existByCompetition(competencia.getId())){
+        if(adminDataOff.competitionWtihConfrontation(competencia.getId())){
+//            int cantGrupos = adminCopeteitionLocal.cantGroupByCompetition(competencia.getId());
+//            int cantJornadas = adminCopeteitionLocal.cantJornadaByCompetition(competencia.getId());
+//            String[] fases = adminCopeteitionLocal.phasesByCompetition(competencia.getId());
+
+            int cantGrupos = adminDataOff.groupsByCompetition(competencia.getId());
+            int cantJornadas = adminDataOff.jornadaByCompetition(competencia.getId());
+            String[] fases = adminDataOff.phasesByCompetition(competencia.getId());
 
             fecha_grupo.clear();
             //asigno a deportes lo que traje del servidor
