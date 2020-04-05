@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -21,9 +22,11 @@ import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.services.RefereeSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.VeizagaTorrico.proyectotorneos.utils.Validations;
 
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -52,6 +55,7 @@ public class NotificacionesFragment extends Fragment {
     private Button btnConfirmar;
     private Switch swNotifSeg;
     private Switch swNotifComp;
+    private TextView tvSinConexion;
 
     private Map<String,String> datos;
 
@@ -82,7 +86,13 @@ public class NotificacionesFragment extends Fragment {
 
         initElements();
         loadConfigNotifications();
-        listenConfirmar();
+        if(NetworkReceiver.existConnection(vista.getContext())){
+            tvSinConexion.setVisibility(View.GONE);
+            listenConfirmar();
+        }
+        else{
+            tvSinConexion.setVisibility(View.VISIBLE);
+        }
 
         return vista;
     }
@@ -93,6 +103,7 @@ public class NotificacionesFragment extends Fragment {
         btnConfirmar = vista.findViewById(R.id.btn_confir_conf_notif);
         swNotifSeg = vista.findViewById(R.id.swt_seguidor);
         swNotifComp = vista.findViewById(R.id.swt_competidor);
+        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_mis_notificaciones);
     }
 
     private void listenConfirmar(){

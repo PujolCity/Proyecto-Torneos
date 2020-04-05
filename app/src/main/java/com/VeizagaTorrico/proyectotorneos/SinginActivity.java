@@ -76,12 +76,6 @@ public class SinginActivity extends AppCompatActivity {
                 if(view.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD)) {
                     passToMisSolicitudes = true;
                     idCompetenciamisSolicitudes = bundle.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
-//                    Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
-//                    String idCompetencia = bundle.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
-//                    toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
-//                    toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                    toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                    startActivity(toMisSolicitudes);
                 }
                 //aquí va tu código en el cual validas el tipo de dato
             } catch (Exception e) {

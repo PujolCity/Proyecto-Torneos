@@ -69,7 +69,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
     private ConfrontationSrv confrontationSrv;
-    private UserSrv usersSrv;
+//    private UserSrv usersSrv;
     private Button inscribirse;
     private ImageButton downloadOff;
     private View vista;
@@ -230,7 +230,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
         follow = vista.findViewById(R.id.btnFollow);
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
-//        downloadOff = vista.findViewById(R.id.btn_download_off);
+        downloadOff = vista.findViewById(R.id.btn_download_off);
         try{
             nmb.setText(competition.getName());
             cat.setText(competition.getCategory());
@@ -333,11 +333,11 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
                 linear.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
             }
-//            if(isOtherFragment()){
-//                downloadOff.setVisibility(View.VISIBLE);
-//            }else {
-//                downloadOff.setVisibility(View.INVISIBLE);
-//            }
+            if(isOtherFragment()){
+                downloadOff.setVisibility(View.VISIBLE);
+            }else {
+                downloadOff.setVisibility(View.INVISIBLE);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

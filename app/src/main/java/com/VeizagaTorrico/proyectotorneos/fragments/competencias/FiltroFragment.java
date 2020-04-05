@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -62,6 +63,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     private Map <String,String> filtros;
     private int idUsuario;
     private String deporte,categoria,nombreCompetencia,organizacion,ciudad,genero, estado;
+    private TextView tvSinConexion;
 
     public FiltroFragment() {
     }
@@ -86,6 +88,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
 
         initElements();
         if(NetworkReceiver.existConnection(vista.getContext())) {
+            tvSinConexion.setVisibility(View.GONE);
             llenarSpinnerDeporte();
             llenarSpinnerCategoriaByServer(0);
             llenarSpinnerOrganizacion();
@@ -93,6 +96,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
             llenarSpinnerEstado();
             listeners();
         } else {
+            tvSinConexion.setVisibility(View.VISIBLE);
             sinInternet();
         }
         return vista;
@@ -219,6 +223,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
         spnnrEstado = vista.findViewById(R.id.spnnr_estado_filtro);
 
         btnSiguiente = vista.findViewById(R.id.btnFiltrar);
+        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_filtro_comp);
     }
 
     private void llenarSpinnerOrganizacion(){

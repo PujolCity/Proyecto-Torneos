@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -24,6 +25,7 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.MsgResponse;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
@@ -40,6 +42,7 @@ public class CargasDetalleFragment extends Fragment {
     private Button btnInvitar;
     private Button btnSigFase;
     private Button btnNoticias;
+    private TextView tvSinConexion;
 
     private CompetitionSrv competenciaSrv;
 
@@ -64,7 +67,14 @@ public class CargasDetalleFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_cargas_detalle, container, false);
         initElements();
-        listenButtons();
+        if(NetworkReceiver.existConnection(vista.getContext())){
+            tvSinConexion.setVisibility(View.GONE);
+            listenButtons();
+        }
+        else{
+            tvSinConexion.setVisibility(View.VISIBLE);
+            Toast.makeText(vista.getContext(), "Estas funciones solo estan disponibles cuando haya una conexion a internet activa.", Toast.LENGTH_LONG);
+        }
 
         return vista;
     }
@@ -79,7 +89,7 @@ public class CargasDetalleFragment extends Fragment {
         btnInvitar = vista.findViewById(R.id.btnInvitar);
         btnSigFase = vista.findViewById(R.id.btnSigFase);
         btnNoticias = vista.findViewById(R.id.btnPubNoticias);
-
+        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_cargas);
 
         if(competencia.getTypesOrganization().contains("grupo") || competencia.getTypesOrganization().contains("Eliminatorias")){
             btnSigFase.setVisibility(View.VISIBLE);

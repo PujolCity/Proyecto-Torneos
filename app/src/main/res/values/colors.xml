@@ -8,4 +8,5 @@
     <color name="colorFragment">#895782</color>
     <color name="colorDejarSeguir">#FF7E0101</color>
     <color name="divider">#BDBDBD</color>
+    <color name="color_sin_conexion">#F41807</color>
 </resources>

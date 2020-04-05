@@ -63,4 +63,5 @@
     <!-- STRING PANTALLAS -->
     <string name="txtPantallaPredioCompetencia"> Asigne predios a su competencia!</string>
     <string name="txtPantallaJuezCompetencia"> Asigne Jueces a su competencia!</string>
+    <string name="sin_conexion">SIN CONEXION: algunas funciones podrian no funcionar</string>
 </resources>

@@ -1,6 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil;
 
 import android.content.Context;
+import android.net.Network;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -24,6 +25,7 @@ import com.VeizagaTorrico.proyectotorneos.graphics_adapters.SolicitudesOrganizad
 import com.VeizagaTorrico.proyectotorneos.models.Invitation;
 import com.VeizagaTorrico.proyectotorneos.services.InvitationSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class InvitacionesFragment extends Fragment {
     private RecyclerView recyclerInv;
     private RecyclerView.LayoutManager manager;
     private TextView sinInitacionesTv;
+    private TextView tvSinConexion;
 
     public InvitacionesFragment() {
     }
@@ -64,7 +67,13 @@ public class InvitacionesFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_invitaciones, container, false);
         initAdapter();
-        inflarRecycler();
+        if(NetworkReceiver.existConnection(vista.getContext())){
+            tvSinConexion.setVisibility(View.GONE);
+            inflarRecycler();
+        }
+        else{
+            tvSinConexion.setVisibility(View.VISIBLE);
+        }
 
         return vista;
     }
@@ -125,7 +134,7 @@ public class InvitacionesFragment extends Fragment {
         recyclerInv.setHasFixedSize(true);
         invitacionAdapter = new SolicitudesOrganizadorRecyclerViewAdapter(vista.getContext());
         recyclerInv.setAdapter(invitacionAdapter);
-
+        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_mis_invitaciones);
     }
 
     public void onButtonPressed(Uri uri) {

@@ -46,6 +46,7 @@ public class CompetidoresDetalleFragment extends Fragment {
     private CompetitionMin competencia;
     private ImageButton solicitudes;
     private TextView sinCompetidores;
+    private TextView sinConexion;
     private CompetidoresRecyclerViewAdapter adapter;
     private AdminDataOff adminDataOff;
 
@@ -73,17 +74,23 @@ public class CompetidoresDetalleFragment extends Fragment {
         initElement();
         inflarRecycler();
 
-        solicitudes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putInt(Constants.EXTRA_KEY_ID_COMPETENCIA, competencia.getId());
+        if(NetworkReceiver.existConnection(vista.getContext())){
+            sinConexion.setVisibility(View.GONE);
+            solicitudes.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.EXTRA_KEY_ID_COMPETENCIA, String.valueOf(competencia.getId()));
 
-                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
+                    // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                    Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
 
-            }
-        });
+                }
+            });
+        }
+        else{
+            sinConexion.setVisibility(View.VISIBLE);
+        }
 
         return vista;
     }
@@ -154,6 +161,7 @@ public class CompetidoresDetalleFragment extends Fragment {
     private void initElement() {
         userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
         sinCompetidores = vista.findViewById(R.id.tv_sinCompetidores);
+        sinConexion = vista.findViewById(R.id.tv_sin_conexion_competidores);
         competidores = new ArrayList<>();
         recycle = vista.findViewById(R.id.recyclerCompetidores);
         solicitudes = vista.findViewById(R.id.btnSolicitudes);

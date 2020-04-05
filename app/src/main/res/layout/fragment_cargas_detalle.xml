@@ -9,70 +9,88 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="40dp">
+        android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btnGenerarEncuentros"
+        <TextView
+            android:id="@+id/tv_sin_conexion_cargas"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/txtbtnGenerarEncuentros">
-        </Button>
+            android:layout_height="25dp"
+            android:background="@color/color_sin_conexion"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/sin_conexion"
+            android:textAlignment="center"
+            android:textColor="#FFFFFF"
+            android:textSize="11sp"
+            android:visibility="gone" />
 
-        <Button
-            android:id="@+id/btnCargarPredio"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/txtBtnCargarPredio">
-        </Button>
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="40dp">
 
-        <Button
-            android:id="@+id/btnCargarTurno"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/txtBtnCargarTurno">
-        </Button>
+            <Button
+                android:id="@+id/btnGenerarEncuentros"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/cardview_light_background"
+                android:text="@string/txtbtnGenerarEncuentros">
+            </Button>
 
-        <Button
-            android:id="@+id/btnCargarJuez"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/txtBtnCargarJuez">
-        </Button>
+            <Button
+                android:id="@+id/btnCargarPredio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/cardview_light_background"
+                android:text="@string/txtBtnCargarPredio">
+            </Button>
 
-        <Button
-            android:id="@+id/btnInvitar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/txtInvitarCoOrg">
-        </Button>
+            <Button
+                android:id="@+id/btnCargarTurno"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/cardview_light_background"
+                android:text="@string/txtBtnCargarTurno">
+            </Button>
 
-        <Button
-            android:id="@+id/btnPubNoticias"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/txtBtnCargarNoticia"
-            android:textColor="@color/cardview_light_background">
-        </Button>
+            <Button
+                android:id="@+id/btnCargarJuez"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/cardview_light_background"
+                android:text="@string/txtBtnCargarJuez">
+            </Button>
 
-        <Button
-            android:id="@+id/btnSigFase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/colorPrimary"
-            android:textColor="@color/cardview_light_background"
-            android:text="@string/txtSigFase">
-        </Button>
+            <Button
+                android:id="@+id/btnInvitar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/cardview_light_background"
+                android:text="@string/txtInvitarCoOrg">
+            </Button>
+
+            <Button
+                android:id="@+id/btnPubNoticias"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="@string/txtBtnCargarNoticia"
+                android:textColor="@color/cardview_light_background">
+            </Button>
+
+            <Button
+                android:id="@+id/btnSigFase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@color/cardview_light_background"
+                android:text="@string/txtSigFase">
+            </Button>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>

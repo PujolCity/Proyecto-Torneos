@@ -69,6 +69,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     private View vista;
     private GenderSrv genderSrv;
     private Gender genero;
+    private TextView tvSinConexion;
 
     public CrearCompetencia1Fragment() {
         // Required empty public constructor
@@ -95,9 +96,11 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
         vista = inflater.inflate(R.layout.fragment_crear_competencia1, container, false);
         initElements();
         if(NetworkReceiver.existConnection(vista.getContext())) {
+            tvSinConexion.setVisibility(View.GONE);
             llenarSpinnerGeneros();
             listeners();
         }else {
+            tvSinConexion.setVisibility(View.VISIBLE);
             sinInternet();
         }
         return vista;
@@ -176,9 +179,6 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
         genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
 
         btnSig = vista.findViewById(R.id.btnCCSig_1);
-        //Widget TextView donde se mostrara el nombre de la competencia
-        //txtView = vista.findViewById(R.id.txtNmbComp);
-        //Wdget de donde tomo el posible nombre de la competencia
         txtNmbComp = vista.findViewById(R.id.etNmbComp);
         //Widget TextView donde se mostrara la fecha obtenida
         txtFecha = vista.findViewById(R.id.etfechaComp);
@@ -187,7 +187,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
         //Evento setOnClickListener - clic
         etCiudad = vista.findViewById(R.id.etCiudad);
         spnrGenero = vista.findViewById(R.id.spinnerGenero);
-
+        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_create);
     }
 
     public void onButtonPressed(Uri uri) {

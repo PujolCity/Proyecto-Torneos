@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.VeizagaTorrico.proyectotorneos.utils.Validations;
 
 import org.json.JSONObject;
@@ -48,6 +50,7 @@ public class MiPerfilFragment extends Fragment {
     private UserSrv apiUserService;
     private Map<String,String> newUserMap = new HashMap<>();
     RespSrvUser respSrvRegister;
+    private TextView tvSinConexion;
 
     private OnFragmentInteractionListener mListener;
 
@@ -75,7 +78,13 @@ public class MiPerfilFragment extends Fragment {
 
         updateUi();
         loadDataUser();
-        listenBotonSaveChanges();
+        if(NetworkReceiver.existConnection(vista.getContext())){
+            tvSinConexion.setVisibility(View.GONE);
+            listenBotonSaveChanges();
+        }
+        else{
+            tvSinConexion.setVisibility(View.VISIBLE);
+        }
 
         return vista;
     }
@@ -86,6 +95,7 @@ public class MiPerfilFragment extends Fragment {
         edtApellido = vista.findViewById(R.id.edt_apellido_miperfil);
         edtCorreo = vista.findViewById(R.id.edt_correo_miperfil);
         edtusuario = vista.findViewById(R.id.edt_usuario_miperfil);
+        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_mis_datos);
 
         btnSaveChanges = vista.findViewById(R.id.btn_update_miperfil);
     }
