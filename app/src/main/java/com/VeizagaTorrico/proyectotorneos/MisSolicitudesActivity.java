@@ -96,4 +96,9 @@ public class MisSolicitudesActivity extends AppCompatActivity implements Competi
         finish();
     }
 
+//    @Override
+//    public void onBackPressed() {
+//        passToInitApp();
+//    }
+
 }

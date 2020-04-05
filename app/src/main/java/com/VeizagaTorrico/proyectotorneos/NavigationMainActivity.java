@@ -174,6 +174,12 @@ public class NavigationMainActivity extends AppCompatActivity
     }
 
     private boolean obtenerEstadoButton() {
+        String inicioSesion;
+        if(ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION))
+            inicioSesion = "true";
+        else
+            inicioSesion = "false";
+        Log.d("FLAG_SESION_NAV", inicioSesion);
         return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
     }
 

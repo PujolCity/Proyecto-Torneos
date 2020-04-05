@@ -52,11 +52,15 @@ public class SinginActivity extends AppCompatActivity {
     private Map<String,String> userMapRecovery = new HashMap<>();
     private RadioButton noCerrar;
     private boolean isActivated;
+    // llegada notificacion
+    private boolean passToMisSolicitudes;
+    private String idCompetenciamisSolicitudes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singin);
+
         if(obtenerEstadoButton()){
             passToInitApp();
         }
@@ -64,6 +68,28 @@ public class SinginActivity extends AppCompatActivity {
         listenBotonSingin();
         listenBotonRecoveryPass();
         listenRadioButton();
+
+        if(getIntent().getExtras() != null) {
+            Bundle bundle = getIntent().getExtras();
+            try {
+                String view = bundle.getString(Constants.EXTRA_KEY_VIEW);
+                if(view.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD)) {
+                    passToMisSolicitudes = true;
+                    idCompetenciamisSolicitudes = bundle.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
+//                    Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
+//                    String idCompetencia = bundle.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
+//                    toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
+//                    toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                    startActivity(toMisSolicitudes);
+                }
+                //aquí va tu código en el cual validas el tipo de dato
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return;
+        }
     }
 
     // realizamos los binding con los componentes de la vista
@@ -74,6 +100,9 @@ public class SinginActivity extends AppCompatActivity {
         btnSingin = findViewById(R.id.btn_signin);
         tvRecoveryPass = findViewById(R.id.tv_recovery_pass);
         isActivated = noCerrar.isChecked();
+
+        passToMisSolicitudes = false;
+        idCompetenciamisSolicitudes = "";
     }
 
     private void listenRadioButton(){
@@ -84,6 +113,12 @@ public class SinginActivity extends AppCompatActivity {
                     noCerrar.setChecked(false);
                 }
                 isActivated = noCerrar.isChecked();
+//                if(isActivated){
+//                    Log.d("FLAG_RAD_BUTTON", "TRUE");
+//                }
+//                else{
+//                    Log.d("FLAG_RAD_BUTTON", "FALSE");
+//                }
                 ManagerSharedPreferences.getInstance().setSessionFromSharedPreferences(getApplicationContext(),FILE_SHARED_DATA_USER, KEY_SESSION, isActivated);
 
             }
@@ -91,7 +126,6 @@ public class SinginActivity extends AppCompatActivity {
     }
 
     private void listenBotonSingin(){
-
         btnSingin.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -107,6 +141,12 @@ public class SinginActivity extends AppCompatActivity {
     }
 
     private boolean obtenerEstadoButton() {
+        String inicioSesion;
+        if(ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION))
+            inicioSesion = "true";
+        else
+            inicioSesion = "false";
+        Log.d("FLAG_SESION_SIGN", inicioSesion);
         return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
     }
 
@@ -160,7 +200,16 @@ public class SinginActivity extends AppCompatActivity {
                     saveDataUserLocally(respSrvRegister);
                     reportTokenFirebase();
                     Toast.makeText(getApplicationContext(), "Sesion iniciada con exito ", Toast.LENGTH_SHORT).show();
-                    passToInitApp();
+                    if(passToMisSolicitudes){
+                        Intent toMisSolicitudes = new Intent(getApplicationContext(), MisSolicitudesActivity.class);
+                        toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetenciamisSolicitudes);
+                        toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(toMisSolicitudes);
+                    }
+                    else{
+                        passToInitApp();
+                    }
                     return;
                 }
                 if (response.code() == 400) {
@@ -260,12 +309,6 @@ public class SinginActivity extends AppCompatActivity {
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_EMAIL, respSrvRegister.getCorreo());
         ManagerSharedPreferences.getInstance().setDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME, respSrvRegister.getUsuario());
         ManagerSharedPreferences.getInstance().setSessionFromSharedPreferences(this.getApplicationContext(),FILE_SHARED_DATA_USER, KEY_SESSION, isActivated);
-
-//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_ID));
-//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_NAME));
-//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_LASTNAME));
-//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_EMAIL));
-//        Log.d("USER_SHARED", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_USERNAME));
     }
 
 

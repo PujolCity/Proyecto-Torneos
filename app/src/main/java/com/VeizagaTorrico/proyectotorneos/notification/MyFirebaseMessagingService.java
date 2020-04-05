@@ -130,10 +130,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setDefaults(Notification.DEFAULT_ALL)
                 .setWhen(System.currentTimeMillis())
 //                .setSmallIcon(R.mipmap.ic_launcher)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle())
                 .setTicker("Tutorial test")
                 .setContentTitle(title)
                 .setContentText(body)
-                .setContentInfo("Inscripcion")
+                .setContentInfo("Proyecto Torneos")
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark)
                 .setContentIntent(pendingIntent);
 
