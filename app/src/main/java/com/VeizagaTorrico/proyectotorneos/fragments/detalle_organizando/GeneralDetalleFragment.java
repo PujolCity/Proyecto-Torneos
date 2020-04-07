@@ -61,7 +61,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     private LinearLayout linear;
     private Inscription inscription;
     private ImageButton downloadOff;
-    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre, fechaInicioCompetencia;
+    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre, fechaInicioCompetencia, frecuencia;
 
     private CompetitionSrv competitionSrv;
     private ConfrontationSrv confrontationSrv;
@@ -106,7 +106,13 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
             ciudad.setText(competencia.getCiudad());
             genero.setText(competencia.getGenero());
             estado.setText(competencia.getEstado());
-            fechaInicioCompetencia.setText(fechaInicioCompetencia.getText()+" "+competencia.getFechaIni());
+            frecuencia.setText(frecuencia.getText() + " "+competencia.getFrecuencia());
+            if(NetworkReceiver.existConnection(vista.getContext())){
+                fechaInicioCompetencia.setText(fechaInicioCompetencia.getText()+" "+competencia.getFechaIni());
+            }
+            else{
+                fechaInicioCompetencia.setVisibility(View.GONE);
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -298,6 +304,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
         genero = vista.findViewById(R.id.txtGenderCompDet_organizando);
         estado = vista.findViewById(R.id.tv_estado_infograll_organizando);
         fechaInicioCompetencia = vista.findViewById(R.id.tv_fecha_infograll_organizando);
+        frecuencia = vista.findViewById(R.id.tv_frecuencia_infograll_organizando);
         btnEditar = vista.findViewById(R.id.btn_edit_competencia_organizando);
         btnInscripcion = vista.findViewById(R.id.generar_inscripcion_organizando);
         downloadOff = vista.findViewById(R.id.btn_download_off_organizando);

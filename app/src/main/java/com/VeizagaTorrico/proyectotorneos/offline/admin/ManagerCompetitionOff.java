@@ -119,6 +119,7 @@ public class ManagerCompetitionOff {
                             null,
                             cursor.getString(2),
                             cursor.getString(3),
+                            cursor.getString(6),
                             cursor.getString(7),
                             cursor.getString(8),
                             cursor.getString(5),

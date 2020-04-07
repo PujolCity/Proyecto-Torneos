@@ -23,6 +23,9 @@ public class CompetitionMin implements Serializable {
         @SerializedName("categoria")
         private String category;
 
+        @SerializedName("frecuencia")
+        private String frecuencia;
+
         @SerializedName("tipo_organizacion")
         private String typesOrganization;
 
@@ -46,7 +49,7 @@ public class CompetitionMin implements Serializable {
 
 
 
-    public CompetitionMin(int id, String name, String deporte, String category, String typesOrganization, String ciudad, String estado, String genero, List<String> rol, int duracion) {
+    public CompetitionMin(int id, String name, String deporte, String category, String typesOrganization, String ciudad, String frecuencia, String estado, String genero, List<String> rol, int duracion) {
             this.id = id;
             this.name = name;
             this.deporte = deporte;
@@ -56,104 +59,113 @@ public class CompetitionMin implements Serializable {
             this.genero = genero;
             this.estado = estado;
             this.rol = rol;
+            this.frecuencia = frecuencia;
             this.duracion = duracion;
         }
 
-        public String getName() {
-            return name;
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getTypesOrganization() {
+        return typesOrganization;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getGenero() {
+        return genero;
+    }
+
+    public void setGenero(String genero) {
+        this.genero = genero;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getFaseActual() {
+        return faseActual;
+    }
+
+    public void setFaseActual(String faseActual) {
+        this.faseActual = faseActual;
+    }
+
+    public String getDeporte() {
+            return deporte;
         }
 
-        public void setName(String name) {
-            this.name = name;
-        }
+    public void setDeporte(String deporte) {
+        this.deporte = deporte;
+    }
 
-        public String getCategory() {
-            return category;
-        }
+    public List<String> getRol() {
+        return rol;
+    }
 
-        public void setCategory(String category) {
-            this.category = category;
-        }
+    public void setRol(List<String> rol) {
+        this.rol = rol;
+    }
 
-        public String getTypesOrganization() {
-            return typesOrganization;
-        }
+    public void setTypesOrganization(String typesOrganization) {
+        this.typesOrganization = typesOrganization;
+    }
 
-        public String getCiudad() {
-            return ciudad;
-        }
+    public String getFrecuencia() {
+        return frecuencia;
+    }
 
-        public void setCiudad(String ciudad) {
-            this.ciudad = ciudad;
-        }
+    public void setFrecuencia(String frecuencia) {
+        this.frecuencia = frecuencia;
+    }
 
-        public String getGenero() {
-            return genero;
-        }
-
-        public void setGenero(String genero) {
-            this.genero = genero;
-        }
-
-        public String getEstado() {
-            return estado;
-        }
-
-        public void setEstado(String estado) {
-            this.estado = estado;
-        }
-
-        public int getId() {
-            return id;
-        }
-
-        public void setId(int id) {
-            this.id = id;
-        }
-
-        public String getFaseActual() {
-            return faseActual;
-        }
-
-        public void setFaseActual(String faseActual) {
-            this.faseActual = faseActual;
-        }
-
-        public String getDeporte() {
-                return deporte;
-            }
-
-        public void setDeporte(String deporte) {
-            this.deporte = deporte;
-        }
-
-        public List<String> getRol() {
-            return rol;
-        }
-
-        public void setRol(List<String> rol) {
-            this.rol = rol;
-        }
-
-        public void setTypesOrganization(String typesOrganization) {
-            this.typesOrganization = typesOrganization;
-        }
-
-        public int getDuracion() {
+    public int getDuracion() {
             return duracion;
         }
 
-        public void setDuracion(int duracion) {
-            this.duracion = duracion;
-        }
+    public void setDuracion(int duracion) {
+        this.duracion = duracion;
+    }
 
-        public String getFechaIni() {
-            return fechaIni;
-        }
+    public String getFechaIni() {
+        return fechaIni;
+    }
 
-        public void setFechaIni(String fechaIni) {
-            this.fechaIni = fechaIni;
-        }
+    public void setFechaIni(String fechaIni) {
+        this.fechaIni = fechaIni;
+    }
 
     @Override
     public String toString() {
