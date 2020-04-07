@@ -61,7 +61,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     private LinearLayout linear;
     private Inscription inscription;
     private ImageButton downloadOff;
-    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
+    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre, fechaInicioCompetencia;
 
     private CompetitionSrv competitionSrv;
     private ConfrontationSrv confrontationSrv;
@@ -106,6 +106,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
             ciudad.setText(competencia.getCiudad());
             genero.setText(competencia.getGenero());
             estado.setText(competencia.getEstado());
+            fechaInicioCompetencia.setText(fechaInicioCompetencia.getText()+" "+competencia.getFechaIni());
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -296,6 +297,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
         ciudad = vista.findViewById(R.id.txtCityCompDet_organizando);
         genero = vista.findViewById(R.id.txtGenderCompDet_organizando);
         estado = vista.findViewById(R.id.tv_estado_infograll_organizando);
+        fechaInicioCompetencia = vista.findViewById(R.id.tv_fecha_infograll_organizando);
         btnEditar = vista.findViewById(R.id.btn_edit_competencia_organizando);
         btnInscripcion = vista.findViewById(R.id.generar_inscripcion_organizando);
         downloadOff = vista.findViewById(R.id.btn_download_off_organizando);

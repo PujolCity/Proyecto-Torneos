@@ -65,7 +65,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
 
     private CompetitionMin competition;
     private Map<String,Integer> compFollow;
-    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre;
+    private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre, fechaInicioCompetencia;
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
     private ConfrontationSrv confrontationSrv;
@@ -221,6 +221,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
         requisitos = vista.findViewById(R.id.requisitos);
         fechaInicio = vista.findViewById(R.id.fecha_inicio);
         fechaCierre = vista.findViewById(R.id.fecha_cierre);
+        fechaInicioCompetencia = vista.findViewById(R.id.tv_fecha_infograll);
         nmb = vista.findViewById(R.id.txtNmbCompDet);
         cat = vista.findViewById(R.id.txtCatCompDet);
         org = vista.findViewById(R.id.txtOrgCompDet);
@@ -238,6 +239,7 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
             ciudad.setText(competition.getCiudad());
             genero.setText(competition.getGenero());
             estado.setText(competition.getEstado());
+            fechaInicioCompetencia.setText(fechaInicioCompetencia.getText()+" "+competition.getFechaIni());
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -14,6 +14,9 @@ public class CompetitionMin implements Serializable {
         @SerializedName("nombre")
         private String name;
 
+        @SerializedName("fecha_ini")
+        private String fechaIni;
+
         @SerializedName("deporte")
         private String deporte;
 
@@ -142,6 +145,14 @@ public class CompetitionMin implements Serializable {
 
         public void setDuracion(int duracion) {
             this.duracion = duracion;
+        }
+
+        public String getFechaIni() {
+            return fechaIni;
+        }
+
+        public void setFechaIni(String fechaIni) {
+            this.fechaIni = fechaIni;
         }
 
     @Override

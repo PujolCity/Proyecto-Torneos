@@ -149,7 +149,7 @@ public class CrearInscripcionFragment extends Fragment {
                                                 jsonObject = new JSONObject(response.errorBody().string());
                                                 String userMessage = jsonObject.getString("messaging");
                                                 Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
-                                                Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
                                             } catch (Exception e) {
                                                 e.printStackTrace();
                                             }
