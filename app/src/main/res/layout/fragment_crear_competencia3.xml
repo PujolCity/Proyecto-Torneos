@@ -50,7 +50,7 @@
                 android:id="@+id/spinnerTipoOrg"
                 android:layout_width="80dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="15dp"
+                android:layout_marginStart="5dp"
                 android:layout_weight="2"
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -93,9 +93,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="15dp"
+            android:paddingLeft="5dp"
             android:paddingTop="20dp"
-            android:paddingRight="15dp"
+            android:paddingRight="5dp"
             android:paddingBottom="10dp">
 
             <TextView
@@ -103,7 +103,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Cantidad de grupos (entre 2 y 20)"
+                android:text="Cant. de grupos (entre 2 y 20)"
+                android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/descripcionTipoOrg"></TextView>
 
@@ -124,19 +125,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingLeft="15dp"
+            android:paddingLeft="5dp"
             android:paddingTop="15dp"
-            android:paddingRight="15dp"
+            android:paddingRight="5dp"
             android:paddingBottom="15dp">
 
             <TextView
                 android:id="@+id/textView36"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="30dp"
                 android:layout_weight="1"
-                android:gravity="clip_vertical"
-                android:text="Fase: " />
+                android:gravity="center_vertical"
+                android:text="Fase "
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <Spinner
                 android:id="@+id/spinnerFase"
@@ -155,17 +157,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingLeft="15dp"
+            android:paddingLeft="5dp"
             android:paddingTop="15dp"
-            android:paddingRight="15dp"
+            android:paddingRight="5dp"
             android:paddingBottom="15dp">
 
             <TextView
                 android:id="@+id/tv_text_max_comp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:text="Limite de competidores (opcional)" />
+                android:text="Max. competidores (opcional)"
+                android:textSize="20sp"
+                app:layout_constraintStart_toStartOf="parent" />
 
             <LinearLayout
                 android:id="@+id/linl_sel_max"
@@ -177,7 +180,7 @@
                     android:id="@+id/tv_mx_comp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="0dp"
+                    android:layout_marginStart="20sp"
                     android:layout_weight="2"
                     android:gravity="clip_vertical"
                     android:text="Max competidores (opcional): " />
