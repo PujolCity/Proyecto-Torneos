@@ -10,6 +10,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.text.InputFilter;
 import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,9 +31,11 @@ import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.TypesOrganization;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.InputFilterMinMax;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
+import com.VeizagaTorrico.proyectotorneos.utils.Validations;
 
 import org.json.JSONObject;
 
@@ -48,11 +51,12 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
 
     private OnFragmentInteractionListener mListener;
 
-    //Widgets
+    private LinearLayout linl_fase, linl_grupo, linl_max_comp;
     private Button btnCrear;
     private Spinner spinner, spinnerFase;
-    private TextView txtView, tvGrupo;
+    private TextView txtView, tvGrupo, tvMaxComp;
     private EditText etGrupo;
+    private EditText etMaxCompetidores;
     private Competition competition;
     private TypesOrganizationSrv orgSrv;
     private CompetitionSrv competitionSrv;
@@ -60,11 +64,8 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
     private Map<String,String> competencia;
     private String cantGrupos;
     private int fase;
-    private boolean hayGrupo ;
-    private boolean hayFase ;
+    private boolean hayGrupo, hayFase, hayMaxComp;
     private int usuario;
-
-    private List<String> fases;
 
     public CrearCompetencia3Fragment() {
         // Required empty public constructor
@@ -108,7 +109,6 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
                     competencia.put("fecha_fin",competition.getFechaFin());
                     competencia.put("ciudad",competition.getCiudad());
                     competencia.put("genero",competition.getGenero());
-                    competencia.put("max_comp","32");
                     competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
                     competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
                     competencia.put("user_id",Integer.toString(usuario));
@@ -135,7 +135,14 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
                 }else {
                     competencia.put("fase", null);
                 }
-
+                if(hayMaxComp){
+                    if(!Validations.isEmpty(etMaxCompetidores)){
+                        competencia.put("max_comp",etMaxCompetidores.getText().toString());
+                    }
+                    else{
+                        competencia.put("max_comp", null);
+                    }
+                }
 
                 Call<Competition> call = competitionSrv.createCompetition(competencia);
                 Log.d("Url",call.request().url().toString());
@@ -221,12 +228,22 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
 
         txtView = vista.findViewById(R.id.descripcionTipoOrg);
+        tvMaxComp = vista.findViewById(R.id.tv_mx_comp);
         etGrupo = vista.findViewById(R.id.etCantGrupo);
+        etGrupo.setFilters(new InputFilter[]{ new InputFilterMinMax("2", "20")});
+        etMaxCompetidores = vista.findViewById(R.id.etMaxComp);
         btnCrear = vista.findViewById(R.id.btnCCSig_3);
         spinner = vista.findViewById(R.id.spinnerTipoOrg);
         spinnerFase = vista.findViewById(R.id.spinnerFase);
         tvGrupo = vista.findViewById(R.id.tv_grupo_crearComp3);
+
+        linl_fase = vista.findViewById(R.id.linl_fase);
+        linl_grupo = vista.findViewById(R.id.linl_grupo);
+        linl_max_comp = vista.findViewById(R.id.linl_max_comp);
+
+        hayMaxComp = false;
     }
+
      private void llenarSpinnerOrg(){
          Call<List<TypesOrganization>> call = orgSrv.getTypesOrganization();
          call.enqueue(new Callback<List<TypesOrganization>>() {
@@ -248,27 +265,7 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
                                  txtView.setText(org.getDescription());
                                  competition =(Competition) getArguments().getSerializable("competition");
                                  competition.setTypesOrganization(org);
-
-                                 if(org.getName().contains("grupo")){
-                                     Log.d("prueba" , "entra?" );
-                                     tvGrupo.setVisibility(View.VISIBLE);
-                                     etGrupo.setVisibility(View.VISIBLE);
-                                     hayGrupo = true;
-                                 } else{
-                                     tvGrupo.setVisibility(View.INVISIBLE);
-                                     etGrupo.setVisibility(View.INVISIBLE);
-                                     hayGrupo = false;
-                                 }
-
-                                 if(org.getName().contains("Eliminatorias")){
-                                     Log.d("prueba" , "entra?" );
-                                     spinnerFase.setVisibility(View.VISIBLE);
-                                     hayFase = true;
-                                     llenarSpinnerFase();
-                                 } else{
-                                     spinnerFase.setVisibility(View.INVISIBLE);
-                                     hayFase = false;
-                                 }
+                                 updateView(org.getName());
 
                              } catch (Exception e) {
                                  e.printStackTrace();
@@ -315,6 +312,39 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
 
             }
         });
+    }
+
+    private void updateView(String typeOrg){
+        if(typeOrg.contains("grupo")){
+             //Log.d("prueba" , "entra?" );
+             linl_max_comp.setVisibility(View.VISIBLE);
+             linl_grupo.setVisibility(View.VISIBLE);
+             hayGrupo = true;
+             hayMaxComp = true;
+             tvMaxComp.setText("Cantidad por grupo(entre 3 y 20): ");
+             etMaxCompetidores.setFilters(new InputFilter[]{ new InputFilterMinMax("3", "20")});
+         } else{
+            linl_grupo.setVisibility(View.GONE);
+             hayGrupo = false;
+         }
+
+         if(typeOrg.contains("Eliminatorias")){
+             linl_max_comp.setVisibility(View.GONE);
+             linl_fase.setVisibility(View.VISIBLE);
+             hayMaxComp = false;
+             hayFase = true;
+             llenarSpinnerFase();
+         } else{
+             linl_fase.setVisibility(View.GONE);
+             hayFase = false;
+         }
+        if(typeOrg.contains("Liga")) {
+            //Log.d("prueba" , "entra?" );
+            linl_max_comp.setVisibility(View.VISIBLE);
+            hayMaxComp = true;
+            tvMaxComp.setText("Cantidad total(entre 3 y 80): ");
+            etMaxCompetidores.setFilters(new InputFilter[]{ new InputFilterMinMax("3", "80")});
+        }
     }
 
     private boolean validarGrupo() {

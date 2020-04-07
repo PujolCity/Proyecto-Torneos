@@ -49,7 +49,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
 
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
-    private String fecha_ini ;
+    private String fecha_ini = "";
     private String fecha_fin ;
 
     //Variables para obtener la fecha
@@ -58,7 +58,6 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     final int anio = c.get(Calendar.YEAR);
 
     //Widgets
-    private TextView txtView;
     private ImageButton ibObtenerFecha;
     private EditText txtNmbComp, txtFecha,etCiudad;
     private Spinner spnrGenero;
@@ -114,53 +113,52 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
             }
         });
         btnSig.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View view) {
-                                          nombreComp = txtNmbComp.getText().toString();
-                                          ciudad = etCiudad.getText().toString();
+                  @Override
+                  public void onClick(View view) {
+                      nombreComp = txtNmbComp.getText().toString();
+                      ciudad = etCiudad.getText().toString();
 
-                                          Log.d("dato enviado",nombreComp);
-                                          Call<Success> call = competitionSrv.comprobar(nombreComp);
-                                          call.enqueue(new Callback<Success>() {
-                                              @Override
-                                              public void onResponse(Call<Success> call, Response<Success> response) {
-                                                  Log.d("onResponse", Integer.toString(response.code()));
-                                                  if ( response.code() == 200 && !response.body().isExiste()) {
-                                                      if(validar()){
-                                                          try{
-                                                              Bundle bundle = new Bundle();
-                                                              competition.setName(txtNmbComp.getText().toString());
-                                                              competition.setFechaInicio(fecha_ini);
-                                                              competition.setFechaFin(fecha_fin);
-                                                              competition.setGenero(genero.getNombre());
-                                                              competition.setCiudad(ciudad);
-                                                              Log.d("competencia",competition.getFechaFin());
-                                                              bundle.putSerializable("competition", competition);
-                                                              // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                                                              Navigation.findNavController(vista).navigate(R.id.crearCompetencia2Fragment, bundle);
-                                                          } catch (Exception e) {
-                                                              e.printStackTrace();
-                                                          }
-                                                      }else {
-                                                          Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
-                                                          toast.show();
-                                                      }
-                                                  }else {
-                                                      Toast toast = Toast.makeText(getContext(), "Competencia Existente", Toast.LENGTH_SHORT);
-                                                      toast.show();
-                                                  }
-                                              }
-                                              @Override
-                                              public void onFailure(Call<Success> call, Throwable t) {
-                                                  Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
-                                                  toast.show();
-                                                  Log.d("onFailure", t.getMessage());
-
-                                              }
-                                          });
+                      Log.d("dato enviado",nombreComp);
+                      Call<Success> call = competitionSrv.comprobar(nombreComp);
+                      call.enqueue(new Callback<Success>() {
+                          @Override
+                          public void onResponse(Call<Success> call, Response<Success> response) {
+                              Log.d("onResponse", Integer.toString(response.code()));
+                              if ( response.code() == 200 && !response.body().isExiste()) {
+                                  if(validar()){
+                                      try{
+                                          Bundle bundle = new Bundle();
+                                          competition.setName(txtNmbComp.getText().toString());
+                                          competition.setFechaInicio(fecha_ini);
+//                                          competition.setFechaFin(fecha_fin);
+                                          competition.setGenero(genero.getNombre());
+                                          competition.setCiudad(ciudad);
+                         //                 Log.d("competencia",competition.getFechaFin());
+                                          bundle.putSerializable("competition", competition);
+                                          // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                                          Navigation.findNavController(vista).navigate(R.id.crearCompetencia2Fragment, bundle);
+                                      } catch (Exception e) {
+                                          e.printStackTrace();
                                       }
+                                  }else {
+                                      Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
+                                      toast.show();
                                   }
-        );
+                              }else {
+                                  Toast toast = Toast.makeText(getContext(), "Competencia Existente", Toast.LENGTH_SHORT);
+                                  toast.show();
+                              }
+                          }
+                          @Override
+                          public void onFailure(Call<Success> call, Throwable t) {
+                              Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
+                              toast.show();
+                              Log.d("onFailure", t.getMessage());
+
+                          }
+                      });
+                  }
+        });
     }
 
     private boolean validar() {
@@ -168,6 +166,10 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
             return false;
         if(nombreComp.isEmpty())
             return false;
+        if(fecha_ini.isEmpty())
+            return false;
+//        if(fecha_fin.isEmpty())
+//            return false;
 
         return true;
     }
@@ -239,7 +241,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                 c.set(year,mesActual ,dayOfMonth);
                 txtFecha.setText(diaFormateado + BARRA + mesFormateado + BARRA + year);
                 fecha_ini = year + "-" + mesFormateado + "-" + diaFormateado;
-                fecha_fin = year + "-" + mes + "-" + diaFormateado;
+//                fecha_fin = year + "-" + mes + "-" + diaFormateado;
 
             }
             //Estos valores deben ir en ese orden, de lo contrario no mostrara la fecha actual
