@@ -28,6 +28,7 @@ import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.InvitationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import org.json.JSONObject;
 
@@ -35,6 +36,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 public class CoOrganizadorFragment extends Fragment {
 
@@ -96,7 +100,8 @@ public class CoOrganizadorFragment extends Fragment {
             public void onClick(View view) {
                 if(usuario.getId() != 0){
                     invitacion.put("idCompetencia",Integer.toString(competencia.getId()));
-                    invitacion.put("idUsuario", Integer.toString(usuario.getId()));
+                    invitacion.put("idUsuarioOrg", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+                    invitacion.put("idUsuarioInvitado", Integer.toString(usuario.getId()));
                     Log.d("BODY INVITACION", invitacion.toString());
                     Call<MsgRequest> call = invitationSrv.invitarUsuario(invitacion);
                     Log.d("URL INVITACION", call.request().url().toString());
