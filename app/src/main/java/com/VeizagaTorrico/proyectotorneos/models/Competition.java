@@ -30,7 +30,7 @@ public class Competition implements Serializable {
     private String genero;
 
     @SerializedName("ciudad")
-    private String ciudad;
+    private City ciudad;
 
     private int frecuencia;
 
@@ -96,11 +96,11 @@ public class Competition implements Serializable {
         this.fechaFin = fechaFin;
     }
 
-    public String getCiudad() {
+    public City getCiudad() {
         return ciudad;
     }
 
-    public void setCiudad(String ciudad) {
+    public void setCiudad(City ciudad) {
         this.ciudad = ciudad;
     }
 

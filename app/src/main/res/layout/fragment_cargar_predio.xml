@@ -43,21 +43,29 @@
         app:layout_constraintTop_toBottomOf="@+id/etNombrePredio">
     </EditText>
 
-    <!-- <ImageButton
-        android:id="@+id/btnDeletePredio"
+
+    <ImageButton
+        android:id="@+id/ib_buscar_predio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="24dp"
-        android:src="@drawable/ic_delete"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerCargaPredio"
-        app:layout_constraintHorizontal_bias="0.666"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etCiudadPredio"
-        android:visibility="invisible">
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_check"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/etCiudadPredio"
+        app:layout_constraintTop_toBottomOf="@+id/etDireccionPredio">
     </ImageButton>
--->
 
+    <Spinner
+        android:id="@+id/spinner_ciudad_predio"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/ib_buscar_predio"
+        app:layout_constraintTop_toBottomOf="@+id/etDireccionPredio">
+    </Spinner>
 
     <ImageButton
         android:id="@+id/btnDeleteCampo"
@@ -77,12 +85,12 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="32dp"
         android:backgroundTint="@color/colorPrimary"
-        android:textColor="@color/cardview_light_background"
         android:text="@string/txtBtnAgregarPredio"
+        android:textColor="@color/cardview_light_background"
         app:layout_constraintStart_toEndOf="@+id/etCiudadPredio"
-        app:layout_constraintTop_toBottomOf="@+id/etDireccionPredio">
+        app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_predio">
     </Button>
 
     <Spinner
@@ -160,6 +168,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.582"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerCargarCampo"></Button>
+        app:layout_constraintTop_toBottomOf="@+id/spinnerCargarCampo">
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -38,6 +38,8 @@ import com.VeizagaTorrico.proyectotorneos.services.GenderSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -53,7 +55,6 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     //Calendario para obtener fecha & hora
     public final Calendar c = Calendar.getInstance();
     private String fecha_ini = "";
-    private String fecha_fin ;
 
     //Variables para obtener la fecha
     final int mes = c.get(Calendar.MONTH);
@@ -61,7 +62,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     final int anio = c.get(Calendar.YEAR);
 
     //Widgets
-    private TextView txtView;
+    private TextView txtFecha;
     private ImageButton ibObtenerFecha;
     private EditText txtNmbComp,etCiudad;
     private Spinner spnrGenero,spnnerCiudad;
@@ -76,6 +77,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     private Gender genero;
     private TextView tvSinConexion;
     private ImageButton ibBuscar;
+    private City ciudadSeleccionada;
 
     public CrearCompetencia1Fragment() {
         // Required empty public constructor
@@ -120,73 +122,160 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
             }
         });
         btnSig.setOnClickListener(new View.OnClickListener() {
-                  @Override
-                  public void onClick(View view) {
-                      nombreComp = txtNmbComp.getText().toString();
-                      ciudad = etCiudad.getText().toString();
+            @Override
+            public void onClick(View view) {
+                nombreComp = txtNmbComp.getText().toString();
+//                ciudad = etCiudad.getText().toString();
 
-                      Log.d("dato enviado",nombreComp);
-                      Call<Success> call = competitionSrv.comprobar(nombreComp);
-                      call.enqueue(new Callback<Success>() {
-                          @Override
-                          public void onResponse(Call<Success> call, Response<Success> response) {
-                              Log.d("onResponse", Integer.toString(response.code()));
-                              if ( response.code() == 200 && !response.body().isExiste()) {
-                                  if(validar()){
-                                      try{
-                                          Bundle bundle = new Bundle();
-                                          competition.setName(txtNmbComp.getText().toString());
-                                          competition.setFechaInicio(fecha_ini);
-//                                          competition.setFechaFin(fecha_fin);
-                                          competition.setGenero(genero.getNombre());
-                                          competition.setCiudad(ciudad);
-                         //                 Log.d("competencia",competition.getFechaFin());
-                                          bundle.putSerializable("competition", competition);
-                                          // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                                          Navigation.findNavController(vista).navigate(R.id.crearCompetencia2Fragment, bundle);
-                                      } catch (Exception e) {
-                                          e.printStackTrace();
-                                      }
-                                  }else {
-                                      Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
-                                      toast.show();
-                                  }
-        );
+                Log.d("dato enviado",nombreComp);
+                Call<Success> call = competitionSrv.comprobar(nombreComp);
+                call.enqueue(new Callback<Success>() {
+                    @Override
+                    public void onResponse(Call<Success> call, Response<Success> response) {
+                        Log.d("onResponse", Integer.toString(response.code()));
+                        if ( response.code() == 200 && !response.body().isExiste()) {
+                            if(validar()){
+                                try{
+                                    Bundle bundle = new Bundle();
+                                    competition.setName(txtNmbComp.getText().toString());
+                                    competition.setFechaInicio(fecha_ini);
+                                    competition.setGenero(genero.getNombre());
+                                    competition.setCiudad(ciudadSeleccionada);
+                                    bundle.putSerializable("competition", competition);
+                                    reset();
+                                    // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                                    Navigation.findNavController(vista).navigate(R.id.crearCompetencia2Fragment, bundle);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }else {
+                                Toast toast = Toast.makeText(vista.getContext(), "Por favor revisar que esten bien completos los datos", Toast.LENGTH_SHORT);
+                                toast.show();
+                            }
+                        }else {
+                            Toast toast = Toast.makeText(vista.getContext(), "Competencia Existente", Toast.LENGTH_SHORT);
+                            toast.show();
+                        }
+                    }
+                    @Override
+                    public void onFailure(Call<Success> call, Throwable t) {
+                       try {
+                           Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
+                           toast.show();
+                           Log.d("onFailure", t.getMessage());
+                       } catch (Exception e) {
+                           e.printStackTrace();
+                       }
+                    }
+                });
+            }
+        });
+        ibBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ciudad = etCiudad.getText().toString();
+                if(!ciudad.isEmpty()){
+                    Call<List<City>> call = citySrv.buscarCiudad(ciudad);
+                    Log.d("URL BUSC CIUDAD", call.request().url().toString());
+                    call.enqueue(new Callback<List<City>>() {
+                        @Override
+                        public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+                            try {
+                                ciudades.clear();
+                                if(response.code() == 200){
+                                    if(response.body() != null){
+                                        ciudades.addAll(response.body());
+                                    }
+                                    adapterCiudades();
+                                    spnnerCiudad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                            ciudadSeleccionada = (City) spnnerCiudad.getSelectedItem();
+                                            ciudad = ciudadSeleccionada.toString();
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                        }
+                                    });
+                                }
+                                if(response.code() == 400){
+                                    Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                    JSONObject jsonObject = null;
+                                    try {
+                                        jsonObject = new JSONObject(response.errorBody().string());
+                                        String userMessage = jsonObject.getString("messaging");
+                                        Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
+                                        Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                        ciudades.add(new City(0,"El nombre usado no existe, intentar con otro nombre",null));
+                                        adapterCiudades();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<City>> call, Throwable t) {
+                            Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
+                            toast.show();
+                            Log.d("onFailure", t.getMessage());
+                        }
+                    });
+                } else {
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor complete el campo Ciudad", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+    }
+
+    private void reset() {
+        ciudadSeleccionada = null;
+        etCiudad.setText(null);
+        ciudad = "";
+    }
+
+    private void adapterCiudades() {
+        ArrayAdapter<City> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, ciudades);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnnerCiudad.setAdapter(adapter);
     }
 
     private boolean validar() {
-        if(ciudad.isEmpty())
+        if(ciudadSeleccionada == null)
             return false;
         if(nombreComp.isEmpty())
             return false;
         if(fecha_ini.isEmpty())
             return false;
-//        if(fecha_fin.isEmpty())
-//            return false;
-
         return true;
     }
 
-    private void initElements(){
-        competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
-        genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
-        citySrv = new RetrofitAdapter().connectionEnable().create(CitySrv.class);
+      private void initElements(){
+          competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+          genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
+          citySrv = new RetrofitAdapter().connectionEnable().create(CitySrv.class);
 
-        ciudades = new ArrayList<>();
-        competition =  new Competition();
-        ibBuscar = vista.findViewById(R.id.ib_buscar_compe);
-        spnnerCiudad = vista.findViewById(R.id.spinner_ciudad_compe);
-        btnSig = vista.findViewById(R.id.btnCCSig_1);
-        txtNmbComp = vista.findViewById(R.id.etNmbComp);
-        //Widget TextView donde se mostrara la fecha obtenida
-        txtFecha = vista.findViewById(R.id.etfechaComp);
-        //Widget ImageButton del cual usaremos el evento clic para obtener la fecha
-        ibObtenerFecha = vista.findViewById(R.id.ib_obtener_fecha);
-        //Evento setOnClickListener - clic
-        etCiudad = vista.findViewById(R.id.etCiudad);
-        spnrGenero = vista.findViewById(R.id.spinnerGenero);
-        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_create);
-    }
+          ciudades = new ArrayList<>();
+          competition =  new Competition();
+          ibBuscar = vista.findViewById(R.id.ib_buscar_compe);
+          spnnerCiudad = vista.findViewById(R.id.spinner_ciudad_compe);
+          btnSig = vista.findViewById(R.id.btnCCSig_1);
+          txtNmbComp = vista.findViewById(R.id.etNmbComp);
+          //Widget TextView donde se mostrara la fecha obtenida
+          txtFecha = vista.findViewById(R.id.etfechaComp);
+          //Widget ImageButton del cual usaremos el evento clic para obtener la fecha
+          ibObtenerFecha = vista.findViewById(R.id.ib_obtener_fecha);
+          //Evento setOnClickListener - clic
+          etCiudad = vista.findViewById(R.id.etCiudad);
+          spnrGenero = vista.findViewById(R.id.spinnerGenero);
+          tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_create);
+      }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
