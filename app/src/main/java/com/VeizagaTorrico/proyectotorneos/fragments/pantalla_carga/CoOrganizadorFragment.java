@@ -98,7 +98,7 @@ public class CoOrganizadorFragment extends Fragment {
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(usuario.getId() != 0){
+                //if(usuario.getId() != 0){
                     invitacion.put("idCompetencia",Integer.toString(competencia.getId()));
                     invitacion.put("idUsuarioOrg", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
                     invitacion.put("idUsuarioInvitado", Integer.toString(usuario.getId()));
@@ -132,7 +132,7 @@ public class CoOrganizadorFragment extends Fragment {
                             Toast.makeText(vista.getContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }
+                //}
             }
         });
 

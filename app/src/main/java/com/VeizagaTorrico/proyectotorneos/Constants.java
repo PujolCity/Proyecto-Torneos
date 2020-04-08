@@ -41,5 +41,6 @@ public class Constants {
     public static final String EXTRA_KEY_VIEW = "VIEW";
 
     // valores para reconocer que pantalla mostrar
-    public static final String EXTRA_NOTIF_VIEW_SOLICITUD = "MIS_SOLICITUDES";
+    public static final String NOTIF_VIEW_SOLICITUD = "MIS_SOLICITUDES";
+    public static final String NOTIF_VIEW_INVITACION = "MIS_INVITACIONES";
 }

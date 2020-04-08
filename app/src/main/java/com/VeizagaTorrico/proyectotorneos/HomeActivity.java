@@ -95,7 +95,9 @@ public class HomeActivity extends AppCompatActivity {
 
     private void passToSinginWithData(String typeView, String idCompetencia){
         Intent toSignIn = new Intent(this, SinginActivity.class);
-        toSignIn.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
+        if(idCompetencia != null){
+            toSignIn.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
+        }
         toSignIn.putExtra(Constants.EXTRA_KEY_VIEW, typeView);
         toSignIn.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         toSignIn.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -142,7 +144,7 @@ public class HomeActivity extends AppCompatActivity {
         String typeView = dataNotification.getString(Constants.EXTRA_KEY_VIEW);
 
         if(sesionIniciada()){
-            if(typeView.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD)){
+            if(typeView.equals(Constants.NOTIF_VIEW_SOLICITUD)){
                 String idCompetencia = dataNotification.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
                 // vamos al activity creado
                 Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
@@ -151,22 +153,35 @@ public class HomeActivity extends AppCompatActivity {
                 toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(toMisSolicitudes);
             }
+            if(typeView.equals(Constants.NOTIF_VIEW_INVITACION)){
+                // vamos al activity creado
+                Intent toMisInvitaciones = new Intent(this, MisInvitacionesActivity.class);
+                toMisInvitaciones.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                toMisInvitaciones.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(toMisInvitaciones);
+            }
             Log.d("OPEN_NOTIF", "Sesion ya iniciada");
         }
         else{
             Log.d("OPEN_NOTIF", "Sesion NO iniciada");
-            if(typeView.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD)){
+            if(typeView.equals(Constants.NOTIF_VIEW_SOLICITUD)){
                 passToSinginWithData(typeView, dataNotification.getString(Constants.EXTRA_KEY_ID_COMPETENCIA));
+            }
+            if(typeView.equals(Constants.NOTIF_VIEW_INVITACION)){
+                passToSinginWithData(typeView, null);
             }
         }
     }
 
-    // recupera los datos recibidos en las notificaciones entrantes
-//    private void getdataNotifications(Bundle dataNotification){
-//        Log.d("DAT_NOTIF_RESUME", "Busca la data de la notificacion");
-//        typeView = dataNotification.getString(Constants.EXTRA_KEY_VIEW);
-//        if(typeView.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD)) {
-//            idCompetenciaSolicitudes = dataNotification.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
-//        }
-//    }
+    private void passToInitApp() {
+        Intent toInitApp = new Intent(this, NavigationMainActivity.class);
+        toInitApp.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(toInitApp);
+        finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        passToInitApp();
+    }
 }

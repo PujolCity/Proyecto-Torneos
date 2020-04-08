@@ -70,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         }
 
         // mostramos la notificacion en el dispositivo
-        showNotificationPush(remoteMessage.getNotification().getBody(), remoteMessage.getNotification().getTitle(), idCompetencia, typeView);
+        showNotificationPush(remoteMessage.getNotification().getTitle(), remoteMessage.getNotification().getBody(), idCompetencia, typeView);
 
 //        if (remoteMessage.getData().size() > 0) {
 //            Log.d("MSG_NOTIF", "Los datos: " + remoteMessage.getData());
@@ -119,8 +119,13 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         // el activity que vamos a abrir al recibir la notificacion
         Intent i = new Intent(this, HomeActivity.class);
         i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        i.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
         i.putExtra(Constants.EXTRA_KEY_VIEW, typeView);
+
+        if(typeView != null){
+            if(typeView.equals(Constants.NOTIF_VIEW_SOLICITUD)){
+                i.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetencia);
+            }
+        }
 
         PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 

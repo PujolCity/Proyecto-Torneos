@@ -29,6 +29,9 @@ import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class CargasDetalleFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
@@ -90,6 +93,13 @@ public class CargasDetalleFragment extends Fragment {
         btnSigFase = vista.findViewById(R.id.btnSigFase);
         btnNoticias = vista.findViewById(R.id.btnPubNoticias);
         tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_cargas);
+
+        if(competencia.getRol().contains("ORGANIZADOR")){
+            btnInvitar.setVisibility(View.VISIBLE);
+        }
+        else{
+            btnInvitar.setVisibility(View.GONE);
+        }
 
         if(competencia.getTypesOrganization().contains("grupo") || competencia.getTypesOrganization().contains("Eliminatorias")){
             btnSigFase.setVisibility(View.VISIBLE);

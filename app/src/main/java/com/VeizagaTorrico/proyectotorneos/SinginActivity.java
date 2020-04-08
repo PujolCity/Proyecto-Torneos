@@ -53,7 +53,7 @@ public class SinginActivity extends AppCompatActivity {
     private RadioButton noCerrar;
     private boolean isActivated;
     // llegada notificacion
-    private boolean passToMisSolicitudes;
+    private boolean passToMisSolicitudes, passToMisInvitaciones;
     private String idCompetenciamisSolicitudes;
 
     @Override
@@ -61,7 +61,7 @@ public class SinginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_singin);
 
-        if(obtenerEstadoButton()){
+        if(sesionIniciada()){
             passToInitApp();
         }
         updateUi();
@@ -73,11 +73,13 @@ public class SinginActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             try {
                 String view = bundle.getString(Constants.EXTRA_KEY_VIEW);
-                if(view.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD)) {
+                if(view.equals(Constants.NOTIF_VIEW_SOLICITUD)) {
                     passToMisSolicitudes = true;
                     idCompetenciamisSolicitudes = bundle.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
                 }
-                //aquí va tu código en el cual validas el tipo de dato
+                if(view.equals(Constants.NOTIF_VIEW_INVITACION)) {
+                    passToMisInvitaciones = true;
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -134,7 +136,7 @@ public class SinginActivity extends AppCompatActivity {
         });
     }
 
-    private boolean obtenerEstadoButton() {
+    private boolean sesionIniciada() {
         String inicioSesion;
         if(ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION))
             inicioSesion = "true";
@@ -202,7 +204,15 @@ public class SinginActivity extends AppCompatActivity {
                         startActivity(toMisSolicitudes);
                     }
                     else{
-                        passToInitApp();
+                        if(passToMisInvitaciones){
+                            Intent toMisInvitaciones = new Intent(getApplicationContext(), MisInvitacionesActivity.class);
+                            toMisInvitaciones.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                            toMisInvitaciones.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(toMisInvitaciones);
+                        }
+                        else{
+                            passToInitApp();
+                        }
                     }
                     return;
                 }
