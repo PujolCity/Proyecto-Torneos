@@ -28,14 +28,17 @@ import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.models.City;
 import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.Gender;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
+import com.VeizagaTorrico.proyectotorneos.services.CitySrv;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GenderSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -58,17 +61,21 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     final int anio = c.get(Calendar.YEAR);
 
     //Widgets
+    private TextView txtView;
     private ImageButton ibObtenerFecha;
-    private EditText txtNmbComp, txtFecha,etCiudad;
-    private Spinner spnrGenero;
+    private EditText txtNmbComp,etCiudad;
+    private Spinner spnrGenero,spnnerCiudad;
     private Button btnSig;
     private String nombreComp, ciudad;
     private Competition competition;
     private CompetitionSrv competitionSrv;
     private View vista;
     private GenderSrv genderSrv;
+    private CitySrv citySrv;
+    private List<City> ciudades;
     private Gender genero;
     private TextView tvSinConexion;
+    private ImageButton ibBuscar;
 
     public CrearCompetencia1Fragment() {
         // Required empty public constructor
@@ -144,21 +151,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                                       Toast toast = Toast.makeText(getContext(), "Por favor complete los campos vacios", Toast.LENGTH_SHORT);
                                       toast.show();
                                   }
-                              }else {
-                                  Toast toast = Toast.makeText(getContext(), "Competencia Existente", Toast.LENGTH_SHORT);
-                                  toast.show();
-                              }
-                          }
-                          @Override
-                          public void onFailure(Call<Success> call, Throwable t) {
-                              Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
-                              toast.show();
-                              Log.d("onFailure", t.getMessage());
-
-                          }
-                      });
-                  }
-        });
+        );
     }
 
     private boolean validar() {
@@ -176,10 +169,13 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
 
     private void initElements(){
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
-
-        competition =  new Competition();
         genderSrv = new RetrofitAdapter().connectionEnable().create(GenderSrv.class);
+        citySrv = new RetrofitAdapter().connectionEnable().create(CitySrv.class);
 
+        ciudades = new ArrayList<>();
+        competition =  new Competition();
+        ibBuscar = vista.findViewById(R.id.ib_buscar_compe);
+        spnnerCiudad = vista.findViewById(R.id.spinner_ciudad_compe);
         btnSig = vista.findViewById(R.id.btnCCSig_1);
         txtNmbComp = vista.findViewById(R.id.etNmbComp);
         //Widget TextView donde se mostrara la fecha obtenida

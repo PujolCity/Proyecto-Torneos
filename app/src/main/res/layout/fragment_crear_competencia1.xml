@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true"
-    tools:context=".fragments.crear_competencias.CrearCompetencia2Fragment">
+    tools:context=".fragments.crear_competencias.CrearCompetencia1Fragment">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,7 +29,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <TextView
                 android:id="@+id/textView10"
                 android:layout_width="wrap_content"
@@ -38,10 +37,9 @@
                 android:layout_marginTop="52dp"
                 android:text="@string/txtCrearCompNmb"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.317"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
-
             </TextView>
 
             <EditText
@@ -51,52 +49,38 @@
                 android:layout_marginStart="44dp"
                 android:inputType="text"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.307"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView10">
             </EditText>
 
+
             <TextView
-                android:id="@+id/textView11"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/datePicker"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etNmbComp">
-
-            </TextView>
-
-            <EditText
                 android:id="@+id/etfechaComp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="48dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:hint="@string/formatoFecha"
-                android:inputType="date"
-                android:maxLines="1"
                 android:focusableInTouchMode="false"
+                android:maxLines="1"
+                android:text="Fecha de Inicio"
                 app:layout_constraintEnd_toStartOf="@+id/ib_obtener_fecha"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11">
-            </EditText>
+                app:layout_constraintTop_toBottomOf="@+id/etNmbComp">
+            </TextView>
 
             <ImageButton
                 android:id="@+id/ib_obtener_fecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="156dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="148dp"
                 android:src="@drawable/baseline_calendar_today_black_18dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11"
+                app:layout_constraintTop_toBottomOf="@+id/etNmbComp"
                 tools:ignore="ContentDescription" />
 
             <TextView
@@ -104,7 +88,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="44dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="44dp"
                 android:text="@string/txtCiudad"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etfechaComp">
@@ -115,21 +99,43 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.543"
+                app:layout_constraintEnd_toStartOf="@+id/ib_buscar_compe"
+                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toEndOf="@+id/textView12"
                 app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">
             </EditText>
+
+            <ImageButton
+                android:id="@+id/ib_buscar_compe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="68dp"
+                android:src="@drawable/ic_check"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">
+            </ImageButton>
+
+            <Spinner
+                android:id="@+id/spinner_ciudad_compe"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.691"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/etCiudad">
+            </Spinner>
 
             <TextView
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
+                android:layout_marginStart="52dp"
                 android:layout_marginTop="48dp"
                 android:text="@string/txtGenero"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView12">
+                app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">
             </TextView>
 
             <Spinner
@@ -137,11 +143,11 @@
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="92dp"
-                android:layout_marginTop="36dp"
+                android:layout_marginTop="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.056"
                 app:layout_constraintStart_toEndOf="@+id/textView13"
-                app:layout_constraintTop_toBottomOf="@+id/etCiudad">
+                app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">
             </Spinner>
 
             <Button
@@ -150,8 +156,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="104dp"
-                android:text="@string/txtBtnSig"
                 android:backgroundTint="@color/colorPrimary"
+                android:text="@string/txtBtnSig"
                 android:textColor="@color/cardview_light_background"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.531"

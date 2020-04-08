@@ -7,14 +7,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_sin_conexion_mis_notificaciones"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_sin_conexion"
+            android:background="@color/color_sin_conexion"
+            android:gravity="center_horizontal|center_vertical"
+            android:text="@string/sin_conexion"
+            android:textColor="#FFFFFF"
+            android:textSize="@dimen/text_size_sin_conexion"
+            tools:visibility="gone" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <Switch
                 android:id="@+id/swt_seguidor"
@@ -85,16 +96,19 @@
                 android:id="@+id/btn_confir_conf_notif"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="35dp"
                 android:layout_marginBottom="20dp"
                 android:backgroundTint="@color/colorPrimary"
+                android:gravity="center_horizontal"
                 android:text="Confirmar cambios"
                 android:textColor="#F5F8F4F4"
+                app:layout_constraintTop_toBottomOf="@+id/tv_select_notif_comp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.499"
+                app:layout_constraintHorizontal_bias="0.145"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_select_notif_comp"
-                app:layout_constraintVertical_bias="1.0" />
+
+                app:layout_constraintVertical_bias="0.95" />
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
