@@ -23,12 +23,16 @@ public class News implements Serializable {
     @SerializedName("uptime")
     private String uptime;
 
-    public News(String competencia, String titulo, String subtitulo, String cuerpo ,String uptime) {
+    @SerializedName("publisher")
+    private String publisher;
+
+    public News(String competencia, String titulo, String subtitulo, String cuerpo ,String uptime, String publisher) {
         this.competencia = competencia;
         this.titulo = titulo;
         this.subtitulo = subtitulo;
         this.cuerpo = cuerpo;
         this.uptime = uptime;
+        this.publisher = publisher;
     }
 
     public String getTitulo() {
@@ -69,6 +73,14 @@ public class News implements Serializable {
 
     public void setUptime(String uptime) {
         this.uptime = uptime;
+    }
+
+    public String getPublisher() {
+        return publisher;
+    }
+
+    public void setPublisher(String publisher) {
+        this.publisher = publisher;
     }
 
     @Override

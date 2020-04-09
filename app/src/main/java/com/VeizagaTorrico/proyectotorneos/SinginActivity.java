@@ -52,7 +52,6 @@ public class SinginActivity extends AppCompatActivity {
     private Map<String,String> userMapRecovery = new HashMap<>();
     private RadioButton noCerrar;
     private boolean isActivated;
-    // llegada notificacion
     private boolean passToMisSolicitudes, passToMisInvitaciones;
     private String idCompetenciamisSolicitudes;
 
@@ -109,12 +108,6 @@ public class SinginActivity extends AppCompatActivity {
                     noCerrar.setChecked(false);
                 }
                 isActivated = noCerrar.isChecked();
-//                if(isActivated){
-//                    Log.d("FLAG_RAD_BUTTON", "TRUE");
-//                }
-//                else{
-//                    Log.d("FLAG_RAD_BUTTON", "FALSE");
-//                }
                 ManagerSharedPreferences.getInstance().setSessionFromSharedPreferences(getApplicationContext(),FILE_SHARED_DATA_USER, KEY_SESSION, isActivated);
 
             }

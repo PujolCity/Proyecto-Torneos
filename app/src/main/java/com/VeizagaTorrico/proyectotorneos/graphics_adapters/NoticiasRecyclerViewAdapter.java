@@ -29,7 +29,7 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
     }
 
     public void setNoticias(List<News> noticias) {
-        Log.d("NOTICIAS RECIBIDAS", noticias.toString());
+//        Log.d("NOTICIAS RECIBIDAS", noticias.toString());
         this.noticias = noticias;
     }
 
@@ -58,22 +58,12 @@ public class NoticiasRecyclerViewAdapter extends RecyclerView.Adapter<NoticiasRe
             holder.competencia.setText(this.noticias.get(position).getCompetencia());
             holder.titulo.setText(noticia.getTitulo());
             holder.subtitulo.setText(noticia.getSubtitulo());
-            holder.actualizacion.setText(parsearFecha(this.noticias.get(position).getUptime()));
+            holder.actualizacion.setText(this.noticias.get(position).getUptime());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private String parsearFecha(String fechaServer) {
-        List<String> token = new ArrayList<>();
-        String fecha = fechaServer.substring(0,10);
-        String hora = fechaServer.substring(11,16);
-        StringTokenizer st = new StringTokenizer(fecha, "-");
-        while (st.hasMoreTokens()) {
-            token.add(st.nextToken());
-        }
-        return token.get(2)+"/"+ token.get(1)+"/"+token.get(0) + " " + hora + "hs";
-    }
     @Override
     public int getItemCount() {
         if(this.noticias.size() != 0){

@@ -164,7 +164,7 @@ public class NavigationMainActivity extends AppCompatActivity
     public void onBackPressed() {
         super.onBackPressed();
         try{
-            if(!obtenerEstadoButton()){
+            if(!sesionIniciada()){
                 passToHome();
             }
         } catch (Exception e) {
@@ -173,13 +173,7 @@ public class NavigationMainActivity extends AppCompatActivity
 
     }
 
-    private boolean obtenerEstadoButton() {
-        String inicioSesion;
-        if(ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION))
-            inicioSesion = "true";
-        else
-            inicioSesion = "false";
-        Log.d("FLAG_SESION_NAV", inicioSesion);
+    private boolean sesionIniciada() {
         return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
     }
 
@@ -190,22 +184,4 @@ public class NavigationMainActivity extends AppCompatActivity
         startActivity(toInitApp);
         finish();
     }
-//
-//    @Override
-//    protected void onNewIntent(Intent intent) {
-//        Bundle extras = intent.getExtras();
-//        if(extras != null){
-//            if(extras.containsKey("misSolicitudes"))
-//            {
-//                String dataNotificationPush = extras.getString(Constants.EXTRA_KEY_ID_COMPETENCIA);
-//                Log.d("NOTIF_FORGROUND", "Reconoce la clave recibida. IdComp recibido: "+dataNotificationPush);
-//                Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
-//                toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, dataNotificationPush);
-//                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(toMisSolicitudes);
-//            }
-//
-//        }
-//    }
 }

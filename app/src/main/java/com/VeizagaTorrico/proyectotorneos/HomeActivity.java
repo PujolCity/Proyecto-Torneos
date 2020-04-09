@@ -29,32 +29,6 @@ public class HomeActivity extends AppCompatActivity {
         updateUi();
         listenBotonSingin();
         listenBotonRegister();
-
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_home);
-//
-//        if((typeView != null) && (typeView.equals(Constants.EXTRA_NOTIF_VIEW_SOLICITUD))){
-//            if(sesionIniciada()){
-//                Intent toMisSolicitudes = new Intent(this, MisSolicitudesActivity.class);
-//                toMisSolicitudes.putExtra(Constants.EXTRA_KEY_ID_COMPETENCIA, idCompetenciaSolicitudes);
-//                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//                toMisSolicitudes.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(toMisSolicitudes);
-//            }
-//            else{
-//                passToSinginWithData(typeView, idCompetenciaSolicitudes);
-//            }
-//        }
-//        else{
-//            if(sesionIniciada()){
-//                passToSingin();
-//            }
-//            else{
-//                updateUi();
-//                listenBotonSingin();
-//                listenBotonRegister();
-//            }
-//        }
     }
 
     // realizamos los binding con los componentes de la vista
@@ -111,12 +85,6 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private boolean sesionIniciada() {
-        String inicioSesion;
-        if(ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION))
-            inicioSesion = "true";
-        else
-            inicioSesion = "false";
-        Log.d("FLAG_SESION_HOME", inicioSesion);
         return ManagerSharedPreferences.getInstance().getSessionFromSharedPreferences(this.getApplicationContext(), FILE_SHARED_DATA_USER, KEY_SESSION);
     }
 
@@ -127,7 +95,6 @@ public class HomeActivity extends AppCompatActivity {
             Bundle bundle = getIntent().getExtras();
             try {
               showView(bundle);
-//                getdataNotifications(bundle);
                 //aquí va tu código en el cual validas el tipo de dato
             } catch (Exception e) {
                 e.printStackTrace();
@@ -137,9 +104,6 @@ public class HomeActivity extends AppCompatActivity {
 
     // mostramos una pantalla distinta dependiendo de los datos recibidos
     private void showView(Bundle dataNotification){
-//        Log.d("NOTIF_FORGROUND", "IdCompetencia: "+dataNotification.getString(Constants.EXTRA_KEY_ID_COMPETENCIA));
-//        Log.d("NOTIF_FORGROUND", "Tipo de pantalla: "+dataNotification.getString(Constants.EXTRA_KEY_VIEW));
-
         //si no existe una sesion iniciada pasamos a iniciar sesion
         String typeView = dataNotification.getString(Constants.EXTRA_KEY_VIEW);
 
@@ -160,10 +124,10 @@ public class HomeActivity extends AppCompatActivity {
                 toMisInvitaciones.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(toMisInvitaciones);
             }
-            Log.d("OPEN_NOTIF", "Sesion ya iniciada");
+//            Log.d("OPEN_NOTIF", "Sesion ya iniciada");
         }
         else{
-            Log.d("OPEN_NOTIF", "Sesion NO iniciada");
+//            Log.d("OPEN_NOTIF", "Sesion NO iniciada");
             if(typeView.equals(Constants.NOTIF_VIEW_SOLICITUD)){
                 passToSinginWithData(typeView, dataNotification.getString(Constants.EXTRA_KEY_ID_COMPETENCIA));
             }

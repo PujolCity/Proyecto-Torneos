@@ -25,7 +25,7 @@ public class DetalleNoticiasFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private View vista;
     private News news;
-    private TextView competencia, titulo, subtitulo, cuerpo, actualizacion;
+    private TextView competencia, titulo, subtitulo, cuerpo, actualizacion, publicador;
     public DetalleNoticiasFragment() {
         // Required empty public constructor
     }
@@ -58,12 +58,14 @@ public class DetalleNoticiasFragment extends Fragment {
         subtitulo = vista.findViewById(R.id.tv_subtituloDetalle_noticia);
         cuerpo = vista.findViewById(R.id.tv_cuerpoDetalle_noticia);
         actualizacion = vista.findViewById(R.id.tv_fechaDetalle_noticia);
+        publicador = vista.findViewById(R.id.tv_publicador_noticia);
 
         competencia.setText(news.getCompetencia());
         titulo.setText(news.getTitulo());
         subtitulo.setText(news.getSubtitulo());
         cuerpo.setText(news.getCuerpo());
-        actualizacion.setText(parsearFecha(news.getUptime()));
+        actualizacion.setText(news.getUptime());
+        publicador.setText(publicador.getText().toString()+" "+news.getPublisher());
     }
 
     public void onButtonPressed(Uri uri) {
@@ -91,16 +93,6 @@ public class DetalleNoticiasFragment extends Fragment {
 
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
-    }
-    private String parsearFecha(String fechaServer) {
-        List<String> token = new ArrayList<>();
-        String fecha = fechaServer.substring(0,10);
-        String hora = fechaServer.substring(11,16);
-        StringTokenizer st = new StringTokenizer(fecha, "-");
-        while (st.hasMoreTokens()) {
-            token.add(st.nextToken());
-        }
-        return token.get(2)+"/"+ token.get(1)+"/"+token.get(0) + " " + hora + "hs";
     }
 
 }
