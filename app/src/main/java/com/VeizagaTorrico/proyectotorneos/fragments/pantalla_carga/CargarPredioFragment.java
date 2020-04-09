@@ -25,14 +25,18 @@ import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.models.City;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
+import com.VeizagaTorrico.proyectotorneos.services.CitySrv;
 import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -47,7 +51,7 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
     private String predioNombre, predioDire, predioCiudad, campoNombre, campoCapacidad,campoDimensiones;
     private EditText nombrePred, direPred, ciudadPred, nombreCampo, capacidadCampo, dimensionesCampo;
     private Button btnPredio, btnCampo;
-    private Spinner spinnerPredio, spinnerCampo;
+    private Spinner spinnerPredio, spinnerCampo, spnnerCiudad;
     private FieldSrv camposSrv;
     private Ground predioSeleccionado;
     private Field campoSeleccionado;
@@ -59,8 +63,12 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
     private List<Ground> predios;
     private List<Field> campos;
     private ArrayAdapter<Field> adapterCampo;
-  //  private ImageButton btnDeletePredio,btnDeleteCampo;
-    private ImageButton btnDeleteCampo;
+    private CitySrv citySrv;
+    private List<City> ciudades;
+    private City ciudadSeleccionada;
+    //  private ImageButton btnDeletePredio,btnDeleteCampo;
+    private ImageButton btnDeleteCampo, ibCiudad;
+    private Ground defaultPred;
 
     public CargarPredioFragment() {
         // Required empty public constructor
@@ -107,7 +115,7 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
                 if(validarPredio()){
                     predio.put("nombre", predioNombre);
                     predio.put("direccion", predioDire);
-                    predio.put("ciudad",predioCiudad);
+                    predio.put("ciudad",Integer.toString(ciudadSeleccionada.getId()));
 
                     Log.d("body predio", predio.toString());
 
@@ -120,7 +128,7 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
 
                             if(response.code() == 201){
                                 Log.d("Predio Cargado", "exito");
-
+                                reset();
                                 // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                                 Toast toast = Toast.makeText(vista.getContext(), "Predio Cargado!", Toast.LENGTH_SHORT);
                                 toast.show();
@@ -234,7 +242,86 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
                 capacidadCampo.setText(null);
             }
         });
+
+        ibCiudad.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                predioCiudad = ciudadPred.getText().toString();
+                if(!predioCiudad.isEmpty()){
+                    Call<List<City>> call = citySrv.buscarCiudad(predioCiudad);
+                    Log.d("URL BUSC CIUDAD", call.request().url().toString());
+                    call.enqueue(new Callback<List<City>>() {
+                        @Override
+                        public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+                            try {
+                                ciudades.clear();
+                                if(response.code() == 200){
+                                    if(response.body() != null){
+                                        ciudades.addAll(response.body());
+                                    }
+                                    adapterCiudades();
+                                    spnnerCiudad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                            ciudadSeleccionada = (City) spnnerCiudad.getSelectedItem();
+                                            predioCiudad = ciudadSeleccionada.toString();
+                                        }
+
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                        }
+                                    });
+                                }
+                                if(response.code() == 400){
+                                    Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                    JSONObject jsonObject = null;
+                                    try {
+                                        jsonObject = new JSONObject(response.errorBody().string());
+                                        String userMessage = jsonObject.getString("messaging");
+                                        Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
+                                        Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                        ciudades.add(new City(0,"El nombre usado no existe, intentar con otro nombre",null));
+                                        adapterCiudades();
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<List<City>> call, Throwable t) {
+                            Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
+                            toast.show();
+                            Log.d("onFailure", t.getMessage());
+                        }
+                    });
+                } else {
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor complete el campo Ciudad", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+
     }
+
+    private void reset() {
+        ciudadSeleccionada = null;
+        ciudadPred.setText(null);
+        predioCiudad = "";
+        ciudades = new ArrayList<>();
+        adapterCiudades();
+    }
+
+    private void adapterCiudades() {
+        ArrayAdapter<City> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, ciudades);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spnnerCiudad.setAdapter(adapter);
+    }
+
 
     private void eliminarCampo(final int idPredio, int idCampo) {
         delete.put("idPredio", idPredio);
@@ -293,9 +380,9 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
             public void onResponse(Call<List<Ground>> call, Response<List<Ground>> response) {
                 try {
                     Log.d("encuentro response", Integer.toString(response.code()));
-
                     if(!response.body().isEmpty()) {
                         predios.clear();
+                        predios.add(defaultPred);
                         predios.addAll(response.body());
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -303,17 +390,25 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
                         spinnerPredio.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                reset();
                                 predioSeleccionado = (Ground) spinnerPredio.getSelectedItem();
                                 if (predioSeleccionado.getId() != 0) {
                                     llenarSpinnerCampo(predioSeleccionado.getId());
                                     actualizarDatosPredio(predioSeleccionado);
                    //                 btnDeletePredio.setVisibility(View.VISIBLE);
                                 } else {
+                                    ciudadPred.setText(null);
+                                    direPred.setText(null);
+                                    nombrePred.setText(null);
+                                    capacidadCampo.setText(null);
+                                    dimensionesCampo.setText(null);
+                                    nombreCampo.setText(null);
                                     btnCampo.setVisibility(View.INVISIBLE);
                                     spinnerCampo.setVisibility(View.INVISIBLE);
                     //                btnDeletePredio.setVisibility(View.INVISIBLE);
                                     btnDeleteCampo.setVisibility(View.INVISIBLE);
-                                    msjCampos();
+                                    reset();
+                                   // msjCampos();
                                 }
                             }
                             @Override
@@ -438,6 +533,7 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
 
         predios = new ArrayList<>();
         campos = new ArrayList<>();
+        ciudades = new ArrayList<>();
 
         nombrePred = vista.findViewById(R.id.etNombrePredio);
         direPred = vista.findViewById(R.id.etDireccionPredio);
@@ -449,17 +545,21 @@ public class CargarPredioFragment extends Fragment implements MensajeSinInternet
 
         btnPredio = vista.findViewById(R.id.btnAgregarPredio);
         btnCampo = vista.findViewById(R.id.btnAgregarCampo);
+        ibCiudad = vista.findViewById(R.id.ib_buscar_predio);
     /*    btnDeletePredio = vista.findViewById(R.id.btnDeletePredio);
         btnDeleteCampo = vista.findViewById(R.id.btnDeleteCampo);
 */
         btnDeleteCampo = vista.findViewById(R.id.btnDeleteCampo);
         spinnerPredio = vista.findViewById(R.id.spinnerCargaPredio);
         spinnerCampo = vista.findViewById(R.id.spinnerCargarCampo);
-
+        spnnerCiudad = vista.findViewById(R.id.spinner_ciudad_predio);
 
         camposSrv = new RetrofitAdapter().connectionEnable().create(FieldSrv.class);
         predioSrv = new RetrofitAdapter().connectionEnable().create(GroundSrv.class);
+        citySrv = new RetrofitAdapter().connectionEnable().create(CitySrv.class);
 
+        defaultPred = new Ground(0,"Predios disponibles","","");
+        predios.add(defaultPred);
     }
 
     public void onButtonPressed(Uri uri) {

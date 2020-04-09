@@ -94,7 +94,6 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
         } else {
             sinInternet();
         }
-
         return vista;
     }
 
@@ -106,16 +105,13 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
                 try{
                     competencia.put("nombre",competition.getName());
                     competencia.put("fecha_ini",competition.getFechaInicio());
-                    competencia.put("fecha_fin",competition.getFechaFin());
-                    competencia.put("ciudad",competition.getCiudad());
+                    competencia.put("ciudad", Integer.toString(competition.getCiudad().getId()));
                     competencia.put("genero",competition.getGenero());
                     competencia.put("categoria_id", Integer.toString(competition.getCategory().getId()));
                     competencia.put("tipoorg_id",Integer.toString(competition.getTypesOrganization().getId()));
                     competencia.put("user_id",Integer.toString(usuario));
                     competencia.put("frecuencia",Integer.toString(competition.getFrecuencia()));
-
                     Log.d("BODY" , competencia.toString());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
