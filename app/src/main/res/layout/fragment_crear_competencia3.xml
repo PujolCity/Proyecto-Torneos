@@ -103,21 +103,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
-                android:text="Cant. de grupos (entre 2 y 20)"
+                android:text="Cantidad de grupos"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/descripcionTipoOrg"></TextView>
 
-            <EditText
-                android:id="@+id/etCantGrupo"
+            <Spinner
+                android:id="@+id/spinnerCantGrupos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:layout_weight="1"
-                android:inputType="numberDecimal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/tv_grupo_crearComp3"
-                app:layout_constraintTop_toBottomOf="@+id/descripcionTipoOrg"></EditText>
+                android:gravity="center_vertical"
+                android:visibility="visible"></Spinner>
         </LinearLayout>
 
         <LinearLayout
@@ -174,7 +171,8 @@
                 android:id="@+id/linl_sel_max"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="5dp">
 
                 <TextView
                     android:id="@+id/tv_mx_comp"
@@ -182,8 +180,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20sp"
                     android:layout_weight="2"
-                    android:gravity="clip_vertical"
-                    android:text="Max competidores (opcional): " />
+                    android:gravity="center_vertical"
+                    android:text="Numero maximo de competidores: " />
 
                 <EditText
                     android:id="@+id/etMaxComp"
@@ -192,6 +190,7 @@
                     android:layout_marginLeft="15dp"
                     android:layout_weight="1"
                     android:inputType="numberDecimal"
+                    android:maxLength="2"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.516"></EditText>
             </LinearLayout>
