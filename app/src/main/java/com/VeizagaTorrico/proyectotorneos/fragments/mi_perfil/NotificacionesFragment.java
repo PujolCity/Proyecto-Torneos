@@ -39,14 +39,7 @@ import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_USERNAME;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link NotificacionesFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link NotificacionesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+
 public class NotificacionesFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
