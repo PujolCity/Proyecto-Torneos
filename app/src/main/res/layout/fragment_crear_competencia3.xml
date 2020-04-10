@@ -25,7 +25,8 @@
             android:textSize="26sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"></TextView>
+            app:layout_constraintStart_toStartOf="parent">
+        </TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -44,7 +45,8 @@
                 android:text="@string/txtTipo"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView20"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/textView20">
+            </TextView>
 
             <Spinner
                 android:id="@+id/spinnerTipoOrg"
@@ -55,7 +57,8 @@
                 android:gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView21"
-                app:layout_constraintTop_toBottomOf="@+id/textView20"></Spinner>
+                app:layout_constraintTop_toBottomOf="@+id/textView20">
+            </Spinner>
         </LinearLayout>
 
         <LinearLayout
@@ -74,7 +77,8 @@
                 android:text="@string/txtDescripcion"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView21"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/textView21">
+            </TextView>
 
             <TextView
                 android:id="@+id/descripcionTipoOrg"
@@ -85,7 +89,8 @@
                 android:textAlignment="viewStart"
                 android:textSize="15sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView22"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/textView22">
+            </TextView>
         </LinearLayout>
 
         <LinearLayout
@@ -106,7 +111,8 @@
                 android:text="Cantidad de grupos"
                 android:textSize="20sp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/descripcionTipoOrg"></TextView>
+                app:layout_constraintTop_toBottomOf="@+id/descripcionTipoOrg">
+            </TextView>
 
             <Spinner
                 android:id="@+id/spinnerCantGrupos"
@@ -114,7 +120,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
-                android:visibility="visible"></Spinner>
+                android:visibility="visible">
+            </Spinner>
         </LinearLayout>
 
         <LinearLayout
@@ -146,7 +153,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_grupo_crearComp3"></Spinner>
+                app:layout_constraintTop_toBottomOf="@+id/tv_grupo_crearComp3">
+            </Spinner>
         </LinearLayout>
 
         <LinearLayout
@@ -192,7 +200,8 @@
                     android:inputType="numberDecimal"
                     android:maxLength="2"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.516"></EditText>
+                    app:layout_constraintHorizontal_bias="0.516">
+                </EditText>
             </LinearLayout>
         </LinearLayout>
 

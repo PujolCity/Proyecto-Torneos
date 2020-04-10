@@ -92,7 +92,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.707"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></ImageButton>
+                app:layout_constraintTop_toTopOf="parent">
+            </ImageButton>
 
             <ImageButton
                 android:id="@+id/btnNoFollow"
@@ -121,7 +122,8 @@
                 app:layout_constraintEnd_toStartOf="@+id/btnFollow"
                 app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"></Button>
+                app:layout_constraintTop_toTopOf="parent">
+            </Button>
 
             <TextView
                 android:id="@+id/tv_estado_infograll"

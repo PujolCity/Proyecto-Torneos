@@ -11,17 +11,22 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <TextView
-            android:id="@+id/tv_fechaDetalle_noticia"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginStart="150dp"
-            android:gravity="right"
-            android:hint="Actualizacion"
-            android:textSize="12sp">
-        </TextView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="15dp">
+
+            <TextView
+                android:id="@+id/tv_fechaDetalle_noticia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="5dp"
+                android:gravity="right"
+                android:hint="Actualizacion"
+                android:textSize="12sp">
+            </TextView>
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/tv_competenciaDetalle_noticia"
@@ -58,6 +63,17 @@
             android:layout_marginTop="12dp"
             android:hint="Cuerpa"
             android:textSize="15sp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/tv_publicador_noticia"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:hint="Publicador "
+            android:text="Publicado por: "
+            android:textSize="11sp"
+            android:textStyle="bold">
         </TextView>
 
     </LinearLayout>
