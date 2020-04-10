@@ -32,7 +32,8 @@
                 android:id="@+id/recyclerSolicitudes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:layout_editor_absoluteX="185dp"></androidx.recyclerview.widget.RecyclerView>
+                tools:layout_editor_absoluteX="185dp">
+            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/tv_sinInvitaciones"
@@ -47,7 +48,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteY="280dp"></TextView>
+                tools:layout_editor_absoluteY="280dp">
+            </TextView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

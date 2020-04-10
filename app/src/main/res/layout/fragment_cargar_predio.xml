@@ -11,10 +11,11 @@
         android:id="@+id/etNombrePredio"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="16dp"
         android:hint="Nombre de predio"
         android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
     </EditText>
@@ -27,28 +28,31 @@
         android:layout_marginTop="16dp"
         android:hint="Direccion"
         android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/etNombrePredio"
         app:layout_constraintTop_toTopOf="parent">
     </EditText>
+
 
     <EditText
         android:id="@+id/etCiudadPredio"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:hint="Ciudad"
         android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.153"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etNombrePredio">
     </EditText>
-
 
     <ImageButton
         android:id="@+id/ib_buscar_predio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="28dp"
         android:src="@drawable/ic_check"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -60,7 +64,7 @@
         android:id="@+id/spinner_ciudad_predio"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/ib_buscar_predio"
@@ -71,11 +75,11 @@
         android:id="@+id/btnDeleteCampo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="24dp"
         android:src="@drawable/ic_delete"
         android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerCargarCampo"
-        app:layout_constraintHorizontal_bias="0.932"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.336"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etCampoNombre">
     </ImageButton>
@@ -85,11 +89,13 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="56dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/txtBtnAgregarPredio"
         android:textColor="@color/cardview_light_background"
-        app:layout_constraintStart_toEndOf="@+id/etCiudadPredio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.742"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_predio">
     </Button>
 
@@ -108,11 +114,11 @@
         android:id="@+id/spinnerCargarCampo"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="32dp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.72"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.048"
+        app:layout_constraintStart_toEndOf="@+id/btnDeleteCampo"
         app:layout_constraintTop_toBottomOf="@+id/etCapacidadCampo">
     </Spinner>
 
@@ -120,10 +126,11 @@
         android:id="@+id/etCampoNombre"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:hint="Nombre del Campo"
         android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.076"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
     </EditText>
@@ -133,11 +140,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:gravity="center"
         android:hint="Capacidad"
         android:inputType="numberDecimal"
         android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/etCampoNombre"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
     </EditText>
@@ -147,11 +156,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="28dp"
         android:gravity="center"
         android:hint="dim mts2"
         android:inputType="numberDecimal"
         android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.016"
         app:layout_constraintStart_toEndOf="@+id/etCapacidadCampo"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
     </EditText>
@@ -160,13 +171,13 @@
         android:id="@+id/btnAgregarCampo"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="52dp"
         android:backgroundTint="@color/colorPrimary"
         android:text="@string/txtBtnAgregarCampo"
         android:textColor="@color/cardview_light_background"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.582"
+        app:layout_constraintHorizontal_bias="0.559"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinnerCargarCampo">
     </Button>
