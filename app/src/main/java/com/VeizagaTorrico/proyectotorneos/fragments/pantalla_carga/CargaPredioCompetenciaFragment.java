@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
+import com.VeizagaTorrico.proyectotorneos.utils.Validations;
 
 import org.json.JSONObject;
 
@@ -45,9 +48,10 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
     private CompetitionMin competencia;
     private GroundSrv groundSrv;
     private Spinner spnnrPredio, spnnrCampo,spnnrPredioAsignado;
-    private TextView tvPredioDire, tvPredioCiudad, tvCampoCapacidad, tvCampoDimension;
-    private Button btnPredio;
-    private ImageButton iBAgregar,iBDelete;
+    private TextView tvPredioDire, tvCampoCapacidad, tvCampoDimension, tvSinResultados;
+    private EditText edt_nombre_buscar;
+    private Button btnPredio, btnBuscar, btnAsignarSeleccionado;
+    private ImageButton iBDelete;
     private List<Ground> predios, prediosAsignados;
     private List<Field> campos;
     private Ground predioSeleccionado, miPredioSeleccionado;
@@ -55,6 +59,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
     private ArrayAdapter<Field> adapterCampo;
     private Field campoSeleccionado;
     private Map<String,String> data;
+    private LinearLayout lin_rdos_busqueda;
 
     public CargaPredioCompetenciaFragment() {
     }
@@ -79,7 +84,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
         initElement();
         if(NetworkReceiver.existConnection(vista.getContext())) {
             listeners();
-            llenarSpinners();
+            llenarMisPredios();
         } else {
             sinInternet();
         }
@@ -96,13 +101,20 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
         spnnrPredioAsignado = vista.findViewById(R.id.spinner_misPredios_predio);
         spnnrCampo = vista.findViewById(R.id.spinner_campos_predio);
         tvPredioDire = vista.findViewById(R.id.tv_direccion_predio);
-        tvPredioCiudad = vista.findViewById(R.id.tv_ciudad_predio);
         tvCampoCapacidad = vista.findViewById(R.id.tv_capacidad_predio);
         tvCampoDimension = vista.findViewById(R.id.tv_dimension_predio);
+        tvSinResultados = vista.findViewById(R.id.tv_no_resultados);
+        edt_nombre_buscar = vista.findViewById(R.id.edt_nombre_predio);
 
-        iBAgregar = vista.findViewById(R.id.btn_asignar_predio);
         iBDelete = vista.findViewById(R.id.btn_delete_predio);
-        btnPredio = vista.findViewById(R.id.btn_nuevo_predio);
+        btnPredio = vista.findViewById(R.id.btn_crear_predio);
+        btnAsignarSeleccionado = vista.findViewById(R.id.btn_asginar_sel);
+        btnBuscar = vista.findViewById(R.id.btn_buscar_predio);
+
+        lin_rdos_busqueda = vista.findViewById(R.id.lin_resultado_busqueda);
+        lin_rdos_busqueda.setVisibility(View.GONE);
+        tvSinResultados.setVisibility(View.GONE);
+        iBDelete.setVisibility(View.GONE);
 
         predios = new ArrayList<>();
         prediosAsignados = new ArrayList<>();
@@ -117,7 +129,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                 passToCreateGround();
             }
         });
-        iBAgregar.setOnClickListener(new View.OnClickListener() {
+        btnAsignarSeleccionado.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 asignarPredioCompetencia();
@@ -127,6 +139,13 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
             @Override
             public void onClick(View view) {
                 eliminarPredioCompetencia();
+            }
+        });
+
+        btnBuscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llenarSpinnerPredio();
             }
         });
     }
@@ -225,11 +244,6 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
         Navigation.findNavController(vista).navigate(R.id.cargarPredioFragment, bundle);
     }
 
-    private void llenarSpinners() {
-        llenarSpinnerPredio();
-        llenarMisPredios();
-    }
-
     private void llenarMisPredios() {
         prediosAsignados.clear();
         Call<List<Ground>> call = groundSrv.getPrediosAsignados(competencia.getId());
@@ -283,8 +297,15 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
     }
 
     private void llenarSpinnerPredio() {
-        Call<List<Ground>> call = groundSrv.getGrounds();
-        Log.d("call predio",call.request().url().toString());
+        String nombrePredio;
+        if(edt_nombre_buscar.getText().toString().equals("")){
+            nombrePredio = null;
+        }
+        else{
+            nombrePredio = edt_nombre_buscar.getText().toString();
+        }
+        Call<List<Ground>> call = groundSrv.findLikeName(nombrePredio);
+        Log.d("CALL_LIKE_PREDIO",call.request().url().toString());
         call.enqueue(new Callback<List<Ground>>() {
             @Override
             public void onResponse(Call<List<Ground>> call, Response<List<Ground>> response) {
@@ -292,7 +313,8 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                     Log.d("predioComp resp", Integer.toString(response.code()));
 
                     if(!response.body().isEmpty()) {
-                        iBAgregar.setVisibility(View.VISIBLE);
+                        tvSinResultados.setVisibility(View.GONE);
+                        lin_rdos_busqueda.setVisibility(View.VISIBLE);
                         predios.clear();
                         predios.addAll(response.body());
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
@@ -303,8 +325,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                 predioSeleccionado = (Ground) spnnrPredio.getSelectedItem();
                                 if (predioSeleccionado.getId() != 0) {
-                                    tvPredioCiudad.setText(predioSeleccionado.getCiudad());
-                                    tvPredioDire.setText("Direccion: " + predioSeleccionado.getDireccion());
+                                    tvPredioDire.setText("Ubicacion: "+predioSeleccionado.getDireccion()+ " - "+predioSeleccionado.getCiudad());
                                     llenarSpinnerCampo(predioSeleccionado.getId());
                                 }
                             }
@@ -314,7 +335,9 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                             }
                         });
                     }else {
-                        iBAgregar.setVisibility(View.INVISIBLE);
+                        tvSinResultados.setVisibility(View.VISIBLE);
+                        lin_rdos_busqueda.setVisibility(View.GONE);
+                        //iBAgregar.setVisibility(View.INVISIBLE);
                         Ground predio = new Ground(0, "Sin Predios", "", "");
                         predios.add(predio);
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
@@ -359,7 +382,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                                     try {
                                         campoSeleccionado = (Field) spnnrCampo.getSelectedItem();
                                         tvCampoCapacidad.setText("Capacidad: "+campoSeleccionado.getCapacidad());
-                                        tvCampoDimension.setText("Dimension: "+campoSeleccionado.getDimensiones() + " mts2");
+                                        tvCampoDimension.setText("Dimensiones: "+campoSeleccionado.getDimensiones() + " mts2");
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }

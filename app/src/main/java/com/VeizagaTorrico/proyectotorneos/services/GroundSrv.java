@@ -35,4 +35,7 @@ public interface GroundSrv {
     @DELETE( Constants.BASE_URL + "del-groundCompetition" )
     Call<Success>deletePredioCompetencia(@QueryMap Map<String,String> datos);
 
+    @GET(Constants.BASE_URL + "grounds/name")
+    Call<List<Ground>> findLikeName(@Query("nombre") String nombre);
+
 }
