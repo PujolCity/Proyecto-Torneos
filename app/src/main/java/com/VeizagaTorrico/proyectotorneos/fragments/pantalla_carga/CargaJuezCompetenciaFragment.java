@@ -15,7 +15,9 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,9 +44,11 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
     private View vista;
     private CompetitionMin competencia;
     private Spinner spnnrJuez, spnnrJuezAsignado;
-    private TextView tvJuezDni;
-    private Button btnJuez;
+    private TextView tvJuezDni, tvSinResultados;
+    private EditText edtNombreBusqueda, edtApellidoBusqueda;
+    private Button btnCrearJuez, btnAsignarjuez, btnBuscarJuez;
     private ImageButton iBAgregar,iBDelete;
+    private LinearLayout linRdosBusqueda;
     private List<Referee> jueces, juecesAsignados;
     private Referee juezSeleccionado, miJuezSeleccionado;
     private RefereeSrv refereeSrv;
@@ -72,7 +76,8 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
         initElements();
         if(NetworkReceiver.existConnection(vista.getContext())) {
             listeners();
-            llenarSpinners();
+            llenarMisJueces();
+            //llenarSpinners();
         } else {
             sinInternet();
         }
@@ -88,8 +93,16 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
         spnnrJuez = vista.findViewById(R.id.spinner_jueces_juez);
         spnnrJuezAsignado = vista.findViewById(R.id.spinner_misJueces_juez);
         tvJuezDni = vista.findViewById(R.id.tv_dni_juez);
-        btnJuez = vista.findViewById(R.id.btn_nuevo_juez);
-        iBAgregar = vista.findViewById(R.id.btn_asignarJuez_juez);
+        tvSinResultados = vista.findViewById(R.id.tv_no_resultados_jueces);
+        tvSinResultados.setVisibility(View.GONE);
+        linRdosBusqueda = vista.findViewById(R.id.lin_resultado_busqueda_juez);
+        linRdosBusqueda.setVisibility(View.GONE);
+        btnCrearJuez = vista.findViewById(R.id.btn_nuevo_juez);
+        btnAsignarjuez = vista.findViewById(R.id.btn_asginar_juez_sel);
+        btnBuscarJuez = vista.findViewById(R.id.btn_buscar_juez);
+        edtNombreBusqueda = vista.findViewById(R.id.edt_nombre_juez);
+        edtApellidoBusqueda = vista.findViewById(R.id.edt_apellido_juez);
+
         iBDelete = vista.findViewById(R.id.btn_delete_juez);
 
         jueces = new ArrayList<>();
@@ -97,21 +110,36 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
         data = new HashMap<>();
     }
 
-    private void llenarSpinners() {
-        llenarSpinerJueces();
-        llenarMisJueces();
-    }
+//    private void llenarSpinners() {
+//        llenarSpinerJueces();
+//        llenarMisJueces();
+//    }
 
     private void llenarSpinerJueces() {
-        Call<List<Referee>> call = refereeSrv.getReferees();
+        String nombreJuez, apellidoJuez;
+        if(edtNombreBusqueda.getText().toString().equals("")){
+            nombreJuez = null;
+        }
+        else{
+            nombreJuez = edtNombreBusqueda.getText().toString();
+        }
+        if(edtApellidoBusqueda.getText().toString().equals("")){
+            apellidoJuez = null;
+        }
+        else{
+            apellidoJuez = edtNombreBusqueda.getText().toString();
+        }
+
+        Call<List<Referee>> call = refereeSrv.findLikeName(nombreJuez, apellidoJuez);
         Log.d("URL JUECES", call.request().url().toString());
         call.enqueue(new Callback<List<Referee>>() {
             @Override
             public void onResponse(Call<List<Referee>> call, Response<List<Referee>> response) {
                 try {
                     Log.d("JuezComp resp", Integer.toString(response.code()));
-                    if(!response.body().isEmpty()) {
-                        iBAgregar.setVisibility(View.VISIBLE);
+                    if((!response.body().isEmpty()) && (response.body() != null)) {
+                        tvSinResultados.setVisibility(View.GONE);
+                        linRdosBusqueda.setVisibility(View.VISIBLE);
                         jueces.clear();
                         jueces.addAll(response.body());
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, jueces);
@@ -133,7 +161,9 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
                         });
 
                     }else {
-                        iBAgregar.setVisibility(View.INVISIBLE);
+                        tvSinResultados.setVisibility(View.VISIBLE);
+                        linRdosBusqueda.setVisibility(View.GONE);
+//                        iBAgregar.setVisibility(View.INVISIBLE);
                         Referee referee = new Referee(0,"Sin ", "Jueces ", 000000);
                         jueces.add(referee);
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, jueces);
@@ -211,19 +241,28 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
     }
 
     private void listeners() {
-        btnJuez.setOnClickListener(new View.OnClickListener() {
+        btnCrearJuez.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 passToCreateReferee();
             }
         });
+
+        btnBuscarJuez.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                llenarSpinerJueces();
+            }
+        });
+
         iBDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 eliminarJuezCompetencia();
             }
         });
-        iBAgregar.setOnClickListener(new View.OnClickListener() {
+
+        btnAsignarjuez.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 asignarJuezCompetencia();
@@ -329,6 +368,6 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
     public void sinInternet() {
         Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento quedaran deshabilitadas algunas funciones.", Toast.LENGTH_LONG);
         toast.show();
-        btnJuez.setVisibility(View.INVISIBLE);
+//        btn.setVisibility(View.INVISIBLE);
     }
 }

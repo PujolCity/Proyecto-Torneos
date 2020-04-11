@@ -35,4 +35,6 @@ public interface RefereeSrv {
     @POST( Constants.BASE_URL + "referee/set-competition" )
     Call<Success>asignarJuezCompetencia(@Body Map<String,String> juez);
 
+    @GET(Constants.BASE_URL + "judges/name")
+    Call<List<Referee>> findLikeName(@Query("nombre") String nombre, @Query("apellido") String apellido);
 }

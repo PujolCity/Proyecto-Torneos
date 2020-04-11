@@ -243,7 +243,8 @@
                 android:text="No se encontraron resultados"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                tools:visibility="gone"></TextView>
+                tools:visibility="gone">
+            </TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
