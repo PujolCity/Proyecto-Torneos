@@ -59,15 +59,14 @@
                 android:id="@+id/etfechaComp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
                 android:layout_marginTop="48dp"
                 android:clickable="true"
                 android:focusable="true"
                 android:focusableInTouchMode="false"
                 android:maxLines="1"
                 android:text="Fecha de Inicio"
-                app:layout_constraintEnd_toStartOf="@+id/ib_obtener_fecha"
-                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.139"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etNmbComp">
             </TextView>
@@ -76,10 +75,11 @@
                 android:id="@+id/ib_obtener_fecha"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="148dp"
+                android:layout_marginTop="36dp"
                 android:src="@drawable/baseline_calendar_today_black_18dp"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.672"
+                app:layout_constraintStart_toEndOf="@+id/etfechaComp"
                 app:layout_constraintTop_toBottomOf="@+id/etNmbComp"
                 tools:ignore="ContentDescription" />
 
@@ -87,9 +87,10 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="44dp"
+                android:layout_marginTop="48dp"
                 android:text="@string/txtCiudad"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.119"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etfechaComp">
             </TextView>
@@ -101,8 +102,8 @@
                 android:layout_marginTop="24dp"
                 android:hint="Buscar ciudad"
                 android:maxLines="1"
-                app:layout_constraintEnd_toStartOf="@+id/ib_buscar_compe"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.292"
                 app:layout_constraintStart_toEndOf="@+id/textView12"
                 app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">
             </EditText>
@@ -112,9 +113,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="68dp"
+                android:layout_marginEnd="44dp"
                 android:src="@drawable/ic_check"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/etCiudad"
                 app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">
             </ImageButton>
 
@@ -124,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.691"
+                app:layout_constraintHorizontal_bias="0.644"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/etCiudad">
             </Spinner>
@@ -133,9 +136,10 @@
                 android:id="@+id/textView13"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="52dp"
                 android:layout_marginTop="48dp"
                 android:text="@string/txtGenero"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.12"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">
             </TextView>
@@ -147,7 +151,7 @@
                 android:layout_marginStart="92dp"
                 android:layout_marginTop="48dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.056"
+                app:layout_constraintHorizontal_bias="0.05"
                 app:layout_constraintStart_toEndOf="@+id/textView13"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">
             </Spinner>

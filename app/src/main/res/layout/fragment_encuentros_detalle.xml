@@ -31,7 +31,8 @@
         android:text="Sin Encuentros"
         android:textAlignment="center"
         android:textSize="40sp"
-        android:visibility="gone"></TextView>
+        android:visibility="gone">
+    </TextView>
 
     <TextView
         android:id="@+id/tv_comp_libre"
@@ -46,6 +47,7 @@
         android:textAlignment="viewStart"
         android:textSize="16sp"
         android:visibility="visible"
-        tools:ignore="RtlCompat"></TextView>
+        tools:ignore="RtlCompat">
+    </TextView>
 
 </LinearLayout>
