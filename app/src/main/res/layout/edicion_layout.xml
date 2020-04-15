@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <TextView
+            android:id="@+id/tv_title_tipo_edicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:paddingStart="15dp"
+            android:text="Tipo de edicion"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_title_fecha_edicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_tipo_edicion"
+            android:layout_alignParentBottom="false"
+            android:paddingStart="15dp"
+            android:text="Fecha"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_title_editor_edicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_weight="1"
+            android:paddingEnd="15dp"
+            android:text="Editado por"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_tipo_edicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_title_tipo_edicion"
+            android:layout_toRightOf="@id/tv_title_tipo_edicion"
+            android:hint="Tipo de edicion"
+            android:paddingStart="10dp" />
+
+        <TextView
+            android:id="@+id/tv_fecha_edicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@id/tv_title_fecha_edicion"
+            android:layout_toRightOf="@id/tv_title_fecha_edicion"
+            android:hint="Fecha de edicion"
+            android:paddingStart="10dp" />
+
+        <TextView
+            android:id="@+id/tv_editor_edicion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title_editor_edicion"
+            android:layout_alignStart="@id/tv_title_editor_edicion"
+            android:layout_alignParentRight="false"
+            android:hint="Editor"
+            android:paddingEnd="15dp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

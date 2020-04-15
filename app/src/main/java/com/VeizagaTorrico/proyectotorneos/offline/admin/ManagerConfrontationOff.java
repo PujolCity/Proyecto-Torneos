@@ -119,7 +119,13 @@ public class ManagerConfrontationOff {
                     Integer.valueOf(cursor.getString(3))
             );
         }
-        Log.d("JUEZ_LOCAL_DB", "Nombre juez del encuentro:"+juez.getNombre());
+        if(juez != null){
+            Log.d("JUEZ_LOCAL_DB", "Nombre juez del encuentro:"+juez.getNombre());
+        }
+        else{
+            Log.d("JUEZ_LOCAL_DB", "No hay juez");
+        }
+
         instanceDb.close();
 
         return juez;

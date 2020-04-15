@@ -110,11 +110,6 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
         data = new HashMap<>();
     }
 
-//    private void llenarSpinners() {
-//        llenarSpinerJueces();
-//        llenarMisJueces();
-//    }
-
     private void llenarSpinerJueces() {
         String nombreJuez, apellidoJuez;
         if(edtNombreBusqueda.getText().toString().equals("")){
@@ -368,6 +363,5 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
     public void sinInternet() {
         Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento quedaran deshabilitadas algunas funciones.", Toast.LENGTH_LONG);
         toast.show();
-//        btn.setVisibility(View.INVISIBLE);
     }
 }

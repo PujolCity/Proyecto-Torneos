@@ -5,6 +5,9 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -15,15 +18,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.graphics_adapters.EdicionesRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
+import com.VeizagaTorrico.proyectotorneos.models.Edition;
 import com.VeizagaTorrico.proyectotorneos.models.Field;
 import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
@@ -64,6 +72,12 @@ public class DetalleEncuentroFragment extends Fragment {
     private Spinner spinnerPredio,spinnerCampo,spinnerJuez,spinnerTurno;
     private Confrontation encuentro, confrontation;
     private ConfrontationSrv confrontationSrv;
+    private RecyclerView recycleEdicion;
+    private EdicionesRecyclerViewAdapter adapterEdicion;
+    private List<Edition> ediciones;
+    private Switch swtMostrarEdicion;
+    private TextView tvSinEdiciones;
+    private RelativeLayout barEdicion;
 
     private GroundSrv prediosSrv;
     private FieldSrv camposSrv;
@@ -111,9 +125,13 @@ public class DetalleEncuentroFragment extends Fragment {
             llenarSpinnerPredio();
             llenarSpinnerTurno();
             listenerEditar();
+            barEdicion.setVisibility(View.VISIBLE);
+            listenSwitch();
         }
         else{
             adminDataOff = new AdminDataOff(vista.getContext());
+            barEdicion.setVisibility(View.GONE);
+            recycleEdicion.setVisibility(View.GONE);
             llenarSpinersOffline();
             editarOffLine();
         }
@@ -288,6 +306,19 @@ public class DetalleEncuentroFragment extends Fragment {
         spinnerJuez = vista.findViewById(R.id.spinnerJuez);
         spinnerTurno = vista.findViewById(R.id.spinnerTurno);
 
+        swtMostrarEdicion = vista.findViewById(R.id.sw_mostrar_edicion);
+        swtMostrarEdicion.setChecked(false);
+        tvSinEdiciones =  vista.findViewById(R.id.tv_sin_ediciones);
+
+        recycleEdicion = vista.findViewById(R.id.edicionesList);
+        recycleEdicion.setVisibility(View.INVISIBLE);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(vista.getContext());
+        recycleEdicion.setLayoutManager(manager);
+        recycleEdicion.setHasFixedSize(true);
+        adapterEdicion = new EdicionesRecyclerViewAdapter(vista.getContext());
+        recycleEdicion.setAdapter(adapterEdicion);
+        barEdicion = vista.findViewById(R.id.bar_title_edicion);
+
         juezSeleccionado = "";
         campoSeleccionado = "";
         turnoSeleccionado= "";
@@ -337,6 +368,8 @@ public class DetalleEncuentroFragment extends Fragment {
                 e.printStackTrace();
             }
         }
+
+        getEditions();
     }
 
     private void msjCampos() {
@@ -568,6 +601,67 @@ public class DetalleEncuentroFragment extends Fragment {
         }
     }
 
+    // recuperamos las ediciones del encuentro
+    private void getEditions(){
+        Call<List<Edition>> call = confrontationSrv.getEditions(encuentro.getId());
+        Log.d("GET_EDITIONS",call.request().url().toString());
+        call.enqueue(new Callback<List<Edition>>() {
+            @Override
+            public void onResponse(Call<List<Edition>> call, Response<List<Edition>> response) {
+                Log.d("GET_EDITIONS", Integer.toString(response.code()));
+                if(response.code() == 200){
+                    try {
+                        ediciones = response.body();
+                        if(ediciones.size() != 0){
+                            Log.d("EDICIONES ",ediciones.toString());
+                            mostrarBarraEdiciones();
+                            adapterEdicion.setEdiciones(ediciones);
+                            recycleEdicion.setAdapter(adapterEdicion);
+                        } else {
+                            ocultarBarraEdiciones();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Edition>> call, Throwable t) {
+                try {
+                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                    toast.show();
+                    Log.d("onFailure", t.getMessage());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+    }
+
+    private void mostrarBarraEdiciones(){
+        swtMostrarEdicion.setVisibility(View.VISIBLE);
+        tvSinEdiciones.setVisibility(View.GONE);
+    }
+
+    private void ocultarBarraEdiciones(){
+        swtMostrarEdicion.setVisibility(View.GONE);
+        tvSinEdiciones.setVisibility(View.VISIBLE);
+    }
+
+    private void listenSwitch(){
+         swtMostrarEdicion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    recycleEdicion.setVisibility(View.VISIBLE);
+                }
+                else {
+                    recycleEdicion.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+    }
 
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

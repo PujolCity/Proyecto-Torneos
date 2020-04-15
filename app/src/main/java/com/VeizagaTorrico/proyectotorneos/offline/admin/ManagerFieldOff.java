@@ -104,7 +104,13 @@ public class ManagerFieldOff {
                     -1, -1, null
             );
         }
-        Log.d("CAMPO_LOCAL_DB", "Nombre campo del encuentro:"+campo.getNombre());
+        if(campo != null){
+            Log.d("CAMPO_LOCAL_DB", "Nombre campo del encuentro:"+campo.getNombre());
+        }
+        else{
+            Log.d("CAMPO_LOCAL_DB", "No hay campo");
+        }
+
         instanceDb.close();
 
         return campo;
