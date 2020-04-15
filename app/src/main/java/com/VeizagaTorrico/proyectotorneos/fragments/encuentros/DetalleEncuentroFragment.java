@@ -49,7 +49,9 @@ import java.util.Map;
 
 
 import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_CONFRONTATION_OFF;
+import static com.VeizagaTorrico.proyectotorneos.Constants.FILE_SHARED_DATA_USER;
 import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_COUNT;
+import static com.VeizagaTorrico.proyectotorneos.Constants.KEY_ID;
 
 public class DetalleEncuentroFragment extends Fragment {
 
@@ -186,7 +188,6 @@ public class DetalleEncuentroFragment extends Fragment {
     }
 
     private void listenerEditar() {
-
         confirmarEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -195,6 +196,7 @@ public class DetalleEncuentroFragment extends Fragment {
                 rdo_2 = r2.getText().toString();
                 editEncuentro.put("idCompetencia", Integer.toString(encuentro.getIdCompetencia()));
                 editEncuentro.put("idEncuentro", Integer.toString(encuentro.getId()));
+                editEncuentro.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
 
                 if(!juezSeleccionado.isEmpty())
                     editEncuentro.put("idJuez",juezSeleccionado);
