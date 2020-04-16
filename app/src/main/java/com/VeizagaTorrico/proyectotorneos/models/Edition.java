@@ -7,8 +7,8 @@ import java.util.Objects;
 
 public class Edition implements Serializable {
 
-    @SerializedName("tipo")
-    private String tipo;
+    @SerializedName("operacion")
+    private String operacion;
 
     @SerializedName("editor")
     private String editor;
@@ -16,18 +16,18 @@ public class Edition implements Serializable {
     @SerializedName("fecha")
     private String fecha;
 
-    public Edition(String tipo, String editor, String fecha) {
-        this.tipo = tipo;
+    public Edition(String operacion, String editor, String fecha) {
+        this.operacion = operacion;
         this.editor = editor;
         this.fecha = fecha;
     }
 
-    public String getTipo() {
-        return tipo;
+    public String getOperacion() {
+        return operacion;
     }
 
-    public void setTipo(String tipo) {
-        this.tipo = tipo;
+    public void setOperacion(String operacion) {
+        this.operacion = operacion;
     }
 
     public String getEditor() {
@@ -48,7 +48,7 @@ public class Edition implements Serializable {
 
     @Override
     public String toString() {
-        return tipo;
+        return operacion;
     }
 
     @Override
@@ -56,11 +56,11 @@ public class Edition implements Serializable {
         if (this == o) return true;
         if (!(o instanceof Edition)) return false;
         Edition edicion = (Edition) o;
-        return Objects.equals(tipo, edicion.tipo);
+        return Objects.equals(operacion, edicion.operacion);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(tipo);
+        return Objects.hash(operacion);
     }
 }

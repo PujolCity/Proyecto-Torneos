@@ -195,12 +195,15 @@ public class DetalleEncuentroFragment extends Fragment {
         if(stringTurn != null){
             Log.d("TURNO_ENC_LOCAL"," Horario: "+stringTurn);
             Turn turnDbLocal = new Turn();
-            turnDbLocal.setHora_desde(stringTurn.substring(0,5));
-            turnDbLocal.setHora_hasta(stringTurn.substring(8,13));
-            turnos.add(turnDbLocal);
-            ArrayAdapter<Turn> adapterTurnos = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, turnos);
-            adapterTurnos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinnerTurno.setAdapter(adapterTurnos);
+            // vemos si hay turnos disponible
+            if(stringTurn.length() > 3){
+                turnDbLocal.setHora_desde(stringTurn.substring(0,5));
+                turnDbLocal.setHora_hasta(stringTurn.substring(8,13));
+                turnos.add(turnDbLocal);
+                ArrayAdapter<Turn> adapterTurnos = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, turnos);
+                adapterTurnos.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerTurno.setAdapter(adapterTurnos);
+            }
         }
 
     }
@@ -308,6 +311,7 @@ public class DetalleEncuentroFragment extends Fragment {
 
         swtMostrarEdicion = vista.findViewById(R.id.sw_mostrar_edicion);
         swtMostrarEdicion.setChecked(false);
+        swtMostrarEdicion.setVisibility(View.GONE);
         tvSinEdiciones =  vista.findViewById(R.id.tv_sin_ediciones);
 
         recycleEdicion = vista.findViewById(R.id.edicionesList);

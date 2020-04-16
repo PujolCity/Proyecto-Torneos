@@ -62,7 +62,7 @@ public class EdicionesRecyclerViewAdapter extends RecyclerView.Adapter<Ediciones
             Edition edicion = this.ediciones.get(position);
 
 //            Log.d("DATA_EDITION",encuentro.toString());
-            holder.tvTipoEdicion.setText(edicion.getTipo());
+            holder.tvOperacionEdicion.setText(edicion.getOperacion());
             holder.tvFechaEdicion.setText(edicion.getFecha());
             holder.tvEditorEdicion.setText(edicion.getEditor());
             Log.d("DATA_EDITION", "( Aca iria la info de la edicon )");
@@ -80,12 +80,12 @@ public class EdicionesRecyclerViewAdapter extends RecyclerView.Adapter<Ediciones
     }
 
     public class Holder extends RecyclerView.ViewHolder {
-        TextView tvTipoEdicion, tvFechaEdicion, tvEditorEdicion;
+        TextView tvOperacionEdicion, tvFechaEdicion, tvEditorEdicion;
 
         public Holder(@NonNull View itemView) {
             super(itemView);
             try{
-                tvTipoEdicion = itemView.findViewById(R.id.tv_tipo_edicion);
+                tvOperacionEdicion = itemView.findViewById(R.id.tv_operacion_edicion);
                 tvFechaEdicion = itemView.findViewById(R.id.tv_fecha_edicion);
                 tvEditorEdicion = itemView.findViewById(R.id.tv_editor_edicion);
             } catch (Exception e) {
