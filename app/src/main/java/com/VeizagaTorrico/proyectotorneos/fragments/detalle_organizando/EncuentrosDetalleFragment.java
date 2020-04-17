@@ -169,9 +169,6 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     // recupera los datos almacenados en la DB local
     private void getEncuentrosOffline(Map<String, String> fecha_grupo){
-//        Log.d("ENC_LOCAL", "datos spiner: "+fecha_grupo.toString());
-//        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
-//        encuentros = adminEncuentrosLocal.confrontationsByCompetition(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
         encuentros = adminDataOff.getConfrontationByCompetition(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
         Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
 
@@ -192,17 +189,33 @@ public class EncuentrosDetalleFragment extends Fragment {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
 
-                if((competencia.getRol().contains("ORGANIZADOR")) || (competencia.getRol().contains("CO-ORGANIZADOR"))){
-                    adapter.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
-                            Bundle bundle = new Bundle();
-                            encuentro.setIdCompetencia(competencia.getId());
-                            bundle.putSerializable("encuentro", encuentro);
-                            Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
-                        }
-                    });
+                if(NetworkReceiver.existConnection(vista.getContext())){
+                    if((competencia.getRol().contains("ORGANIZADOR")) || (competencia.getRol().contains("CO-ORGANIZADOR"))){
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                Bundle bundle = new Bundle();
+                                encuentro.setIdCompetencia(competencia.getId());
+                                bundle.putSerializable("encuentro", encuentro);
+                                Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                            }
+                        });
+                    }
+                }
+                else{
+                    if(competencia.getRol().contains("ORGANIZADOR")){
+                        adapter.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Confrontation encuentro = encuentros.get(recycleCon.getChildAdapterPosition(view));
+                                Bundle bundle = new Bundle();
+                                encuentro.setIdCompetencia(competencia.getId());
+                                bundle.putSerializable("encuentro", encuentro);
+                                Navigation.findNavController(vista).navigate(R. id.detalleEncuentroFragment, bundle);
+                            }
+                        });
+                    }
                 }
             } catch (Exception e) {
                 e.printStackTrace();

@@ -146,8 +146,8 @@ public class DetalleEncuentroFragment extends Fragment {
                 editEncuentro.clear();
                 rdo_1 = r1.getText().toString();
                 rdo_2 = r2.getText().toString();
-//                editEncuentro.put("idCompetencia", Integer.toString(encuentro.getIdCompetencia()));
                 editEncuentro.put("idEncuentro", Integer.toString(encuentro.getId()));
+                editEncuentro.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
                 if(validar()){
                     editEncuentro.put("rdo_comp1", rdo_1);
                     editEncuentro.put("rdo_comp2",rdo_2);

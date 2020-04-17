@@ -46,7 +46,6 @@ public class ManagerUpdateConfrontation {
             Log.d("MANAGER_UPDATE", "No hay datos por actualizar");
         }
         else{
-            //List<Map<String,String>> encuentrosEdit = new ArrayList<>();
             List<ConfrontationEdit> encuentrosEdit = getConfrontationsUpdateDbLocal(context, cantRegistrosEncuentros);
             List<ConfrontationEdit> encuentrosMin = cleanRegisterUpdate(encuentrosEdit);
 
@@ -61,7 +60,6 @@ public class ManagerUpdateConfrontation {
     // recupera los encuentros pendientes por actualizacion
     private List<ConfrontationEdit> getConfrontationsUpdateDbLocal(Context context, int cantRegistrosEncuentros){
         List<ConfrontationEdit> encuentrosEdit = new ArrayList<>();
-//        Gson gson = new Gson();
         // rearmamos los objetos encuentros y los mandamos a actualizar al server
         for (int i = 1; i <= cantRegistrosEncuentros ; i++) {
             String confrontationObject = ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(context, FILE_SHARED_CONFRONTATION_OFF, String.valueOf(i));
@@ -107,6 +105,7 @@ public class ManagerUpdateConfrontation {
     private void updateConfrontationServer(List<ConfrontationEdit> registros, final Context context){
         String jsonEncuentrosEdit = adminJson.toJson(registros);
         Map<String,String> encuentrosBody = new HashMap<>();
+//        Log.d("ENC_EDIT_OFF",jsonEncuentrosEdit);
         encuentrosBody.put("encuentros", jsonEncuentrosEdit);
         Call<MsgRequest> call = encuentrosSrv.syncToServer(encuentrosBody);
         Log.d("UPDATE_ENC_OFF", call.request().url().toString());
@@ -134,6 +133,7 @@ public class ManagerUpdateConfrontation {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
+                    Log.d("UPDATE_ENC_OFF", "Error: "+e.toString());
                 }
             }
 
