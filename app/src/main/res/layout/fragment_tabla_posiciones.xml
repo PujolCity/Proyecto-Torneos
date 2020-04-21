@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <include android:id="@+id/barGroup"
+        layout="@layout/busqueda_layout">
+    </include>
+
+    <LinearLayout
+        android:id="@+id/linn_title_tabla"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F57C00"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingTop="3dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="3dp">
+
+        <TextView
+            android:id="@+id/tv_title_competidor_posiciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:background="#F57C00"
+            android:text="Competidor"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_title_pts_posiciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F57C00"
+            android:paddingEnd="2dp"
+            android:text="Pts"
+            android:textAlignment="textEnd"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_title_pj_posiciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F57C00"
+            android:paddingEnd="2dp"
+            android:text="PJ"
+            android:textAlignment="textEnd"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_title_pg_posiciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F57C00"
+            android:paddingEnd="2dp"
+            android:text="PG"
+            android:textAlignment="textEnd"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_title_pe_posiciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F57C00"
+            android:paddingEnd="2dp"
+            android:text="PE"
+            android:textAlignment="textEnd"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_title_pp_posiciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F57C00"
+            android:paddingEnd="2dp"
+            android:text="PP"
+            android:textAlignment="textEnd"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/tv_title_dif_posiciones"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#F57C00"
+            android:paddingEnd="2dp"
+            android:text="Dif"
+            android:textAlignment="textEnd"
+            android:textColor="#FFFFFF" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/posicionesList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/tv_sinTabla"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:padding="15dp"
+        android:text="La competencia no cuenta con una tabla"
+        android:textAlignment="center"
+        android:textSize="22dp"></TextView>
+
+</LinearLayout>

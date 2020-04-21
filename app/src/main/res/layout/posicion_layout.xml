@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#C3BEBA"
+    android:orientation="horizontal"
+    android:paddingStart="13dp"
+    android:paddingTop="3dp"
+    android:paddingEnd="13dp"
+    android:paddingBottom="3dp">
+
+    <TextView
+        android:id="@+id/tv_competidor_posiciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="4"
+        android:background="#FFC3BEBA"
+        android:text="Competidor" />
+
+    <TextView
+        android:id="@+id/tv_pts_posiciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FFC3BEBA"
+        android:paddingEnd="2dp"
+        android:text="Pts"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/tv_pj_posiciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FFC3BEBA"
+        android:paddingEnd="2dp"
+        android:text="PJ"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/tv_pg_posiciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FFC3BEBA"
+        android:paddingEnd="2dp"
+        android:text="PG"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/tv_pe_posiciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FFC3BEBA"
+        android:paddingEnd="2dp"
+        android:text="PE"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/tv_pp_posiciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FFC3BEBA"
+        android:paddingEnd="2dp"
+        android:text="PP"
+        android:textAlignment="textEnd" />
+
+    <TextView
+        android:id="@+id/tv_dif_posiciones"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="#FFC3BEBA"
+        android:paddingEnd="2dp"
+        android:text="Dif"
+        android:textAlignment="textEnd" />
+</LinearLayout>

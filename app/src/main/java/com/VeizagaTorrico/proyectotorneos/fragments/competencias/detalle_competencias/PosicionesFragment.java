@@ -1,41 +1,36 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.FrameLayout;
 import android.widget.Spinner;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
+import com.VeizagaTorrico.proyectotorneos.graphics_adapters.PosicionesRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.PositionCompetitor;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.PositionCompetitorSrv;
-import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import retrofit2.Call;
@@ -50,7 +45,6 @@ public class PosicionesFragment extends Fragment {
 
     private PositionCompetitorSrv positionSrv;
 
-    private TableLayout tablaPosiciones;
     private CompetitionMin competition;
     private List<PositionCompetitor> posiciones;
     private CompetitionSrv competitionSrv;
@@ -58,6 +52,9 @@ public class PosicionesFragment extends Fragment {
     private Integer nroGrupo;
     private ConstraintLayout barSpinners;
     private TextView tvSinTabla;
+    private TextView tvPtsEmpatados;
+    private RecyclerView recyclePosicion;
+    private PosicionesRecyclerViewAdapter adapterPosicion;
 
     public PosicionesFragment() {
         // Required empty public constructor
@@ -79,7 +76,7 @@ public class PosicionesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_posiciones, container, false);
+        vista = inflater.inflate(R.layout.fragment_tabla_posiciones, container, false);
 
         initElements();
         showTablePosotion();
@@ -87,7 +84,6 @@ public class PosicionesFragment extends Fragment {
     }
 
     private void initElements() {
-        tablaPosiciones = vista.findViewById(R.id.TablaPosiciones);
         spin_grupo = vista.findViewById(R.id.spinnerGrupo);
         // ocultamos los spinners que no necesitamos
         spin_jornada = vista.findViewById(R.id.spinnerJornada);
@@ -96,6 +92,14 @@ public class PosicionesFragment extends Fragment {
         spin_fase.setVisibility(View.GONE);
         barSpinners = vista.findViewById(R.id.barGroup);
         tvSinTabla = vista.findViewById(R.id.tv_sinTabla);
+        tvPtsEmpatados = vista.findViewById(R.id.tv_title_pe_posiciones);
+
+        recyclePosicion = vista.findViewById(R.id.posicionesList);
+        RecyclerView.LayoutManager manager = new LinearLayoutManager(vista.getContext());
+        recyclePosicion.setLayoutManager(manager);
+        recyclePosicion.setHasFixedSize(true);
+        adapterPosicion = new PosicionesRecyclerViewAdapter(vista.getContext());
+        recyclePosicion.setAdapter(adapterPosicion);
 
         positionSrv = new RetrofitAdapter().connectionEnable().create(PositionCompetitorSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
@@ -106,36 +110,27 @@ public class PosicionesFragment extends Fragment {
         if(competition.getTypesOrganization().contains("Eliminatoria")){
             barSpinners.setVisibility(View.GONE);
             tvSinTabla.setVisibility(View.VISIBLE);
-            tablaPosiciones.setVisibility(View.GONE);
+            recyclePosicion.setVisibility(View.GONE);
         }
         else{
             // analizamos el tipo de competencia
             if(competition.getTypesOrganization().contains("Liga")){
                 barSpinners.setVisibility(View.GONE);
-
-                tablaPosiciones.setVisibility(View.VISIBLE);
-                tvSinTabla.setVisibility(View.INVISIBLE);
+                recyclePosicion.setVisibility(View.VISIBLE);
+                tvSinTabla.setVisibility(View.GONE);
                 callTablePosition(competition.getId());
             }
             if(competition.getTypesOrganization().contains("grupo")){
                 barSpinners.setVisibility(View.VISIBLE);
-
-                tablaPosiciones.setVisibility(View.VISIBLE);
-                tvSinTabla.setVisibility(View.INVISIBLE);
+                recyclePosicion.setVisibility(View.VISIBLE);
+                tvSinTabla.setVisibility(View.GONE);
                 cargarSpinnerGrupo(competition.getId());
             }
         }
     }
 
-    // vaciar la pantalla de posiciones para mostrar solo una tabla de posiciones
-    private void emptyScreenTable(){
-        if (tablaPosiciones.getChildCount() > 0)
-            tablaPosiciones.removeAllViews();
-    }
-
     // recupera la tabla de posiciones de una competencia del tipo LIGA
     private void callTablePosition(int idCompetencia){
-        emptyScreenTable();
         Call<List<PositionCompetitor>> call = positionSrv.getTablePositions(idCompetencia);
 
         try{
@@ -146,10 +141,14 @@ public class PosicionesFragment extends Fragment {
                         posiciones = response.body();
                         // si recibimos los resultados de las posiciones de los competidores
                         if(posiciones != null){
-                            // sino es definitavamente una liga
-                            showTablePositions(posiciones);
+                            adapterPosicion.setPosiciones(posiciones);
+                            recyclePosicion.setAdapter(adapterPosicion);
+                            if(posiciones.get(0).getEmpatados() == null){
+                                tvPtsEmpatados.setVisibility(View.GONE);
+                            }
                         }
                         else{
+                            tvSinTabla.setVisibility(View.VISIBLE);
                             Toast.makeText(vista.getContext(), "Aun no se han disputados encuentros de la competencia", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -180,7 +179,6 @@ public class PosicionesFragment extends Fragment {
 
     // recupera la tabla de posiciones de una competencia por grupo, para el tipo FASE_DE_GRUPOS
     private void callTablePositionByGroup(int idCompetencia, int grupo){
-        emptyScreenTable();
         Call<List<PositionCompetitor>> call = positionSrv.getTablePositionsByGroup(idCompetencia, grupo);
         try{
             call.enqueue(new Callback<List<PositionCompetitor>>() {
@@ -191,10 +189,12 @@ public class PosicionesFragment extends Fragment {
                         // si recibimos los resultados de las posiciones de los competidores
                         if(posiciones != null){
                             // sino es definitavamente una liga
-                            showTablePositions(posiciones);
+                            adapterPosicion.setPosiciones(posiciones);
+                            recyclePosicion.setAdapter(adapterPosicion);
                         }
                         else{
                             Toast.makeText(vista.getContext(), "Aun no se han disputados encuentros de la competencia", Toast.LENGTH_SHORT).show();
+                            tvPtsEmpatados.setVisibility(View.VISIBLE);
                         }
                     }
 
@@ -288,133 +288,6 @@ public class PosicionesFragment extends Fragment {
                 itemGrupos.add(String.valueOf(i));
         }
         return itemGrupos;
-    }
-
-    // crea una tabla de posiciones con los resultados
-    // pre: existen equipos para mostrar
-    private void showTablePositions(List<PositionCompetitor> posiciones) {
-        Collections.sort(posiciones, new Comparator<PositionCompetitor>() {
-            @Override
-            public int compare(PositionCompetitor pos1, PositionCompetitor pos2) {
-                return pos1.getPuntos().compareTo(pos2.getPuntos());
-            }
-        });
-        Collections.reverse(posiciones);
-
-        // agregamos la cabecera a la tabla
-        addHeaderTable();
-
-        // agregamos los resultados de las posiciones
-        for (int i = 0; i < posiciones.size(); i++) {
-            TableRow resultadoCompetidor = getRowTable(posiciones.get(i));
-            tablaPosiciones.addView(resultadoCompetidor);
-        }
-//        Log.d("TABLA_POS", "entro a MostararTabla");
-    }
-
-    // crea una nueva fila para la tabla de resultados desde la info recuperada del servidor
-    private TableRow getRowTable(PositionCompetitor posicionCompetidor){
-        // creamos una fila vacia
-        TableRow tbrow = new TableRow(vista.getContext());
-
-        // agregamos los valores de las columnas
-        TextView tvCompetidor = new TextView(vista.getContext());
-        tvCompetidor.setText(posicionCompetidor.getCompetidor());
-        tvCompetidor.setTextColor(Color.BLACK);
-        tvCompetidor.setGravity(Gravity.LEFT);
-        tvCompetidor.setPadding(20,5,20,5);
-        tbrow.addView(tvCompetidor);
-        TextView tvPj = new TextView(vista.getContext());
-        tvPj.setText(posicionCompetidor.getJugados());
-        tvPj.setTextColor(Color.BLACK);
-        tvPj.setGravity(Gravity.CENTER);
-        tvPj.setPadding(230,5,20,5);
-        tbrow.addView(tvPj);
-        TextView tvPg = new TextView(vista.getContext());
-        tvPg.setText(posicionCompetidor.getGanados());
-        tvPg.setTextColor(Color.BLACK);
-        tvPg.setGravity(Gravity.CENTER);
-        tvPg.setPadding(20,5,20,5);
-        tbrow.addView(tvPg);
-        TextView tvPe = new TextView(vista.getContext());
-        tvPe.setText(posicionCompetidor.getEmpatados());
-        tvPe.setTextColor(Color.BLACK);
-        tvPe.setGravity(Gravity.CENTER);
-        tvPe.setPadding(20,5,20,5);
-        tbrow.addView(tvPe);
-        TextView tvPp = new TextView(vista.getContext());
-        tvPp.setText(posicionCompetidor.getPerdidos());
-        tvPp.setTextColor(Color.BLACK);
-        tvPp.setGravity(Gravity.CENTER);
-        tvPp.setPadding(20,5,20,5);
-        tbrow.addView(tvPp);
-        TextView tvPts = new TextView(vista.getContext());
-        tvPts.setText(posicionCompetidor.getPuntos());
-        tvPts.setTextColor(Color.BLACK);
-        tvPts.setGravity(Gravity.CENTER);
-        tvPts.setPadding(20,5,20,5);
-        tbrow.addView(tvPts);
-
-        return tbrow;
-    }
-
-    // crea una nueva fila para la tabla de resultados desde la info recuperada del servidor
-    private TableRow addHeaderTable(){
-        // creamos una fila vacia
-        TableRow tbrow = new TableRow(vista.getContext());
-        tbrow.setBackgroundColor(Color.CYAN);
-
-        // agregamos los valores de las columnas
-        TextView tvCompetidor = new TextView(vista.getContext());
-        tvCompetidor.setText("COMPETIDOR");
-        tvCompetidor.setTextColor(Color.GRAY);
-        tvCompetidor.setGravity(Gravity.CENTER);
-        tvCompetidor.setPadding(20,5,20,5);
-        tbrow.addView(tvCompetidor);
-        TextView tvPj = new TextView(vista.getContext());
-        tvPj.setText("PJ");
-        tvPj.setTextColor(Color.GRAY);
-        tvPj.setGravity(Gravity.CENTER);
-        tvPj.setPadding(230,5,20,5);
-        tbrow.addView(tvPj);
-        TextView tvPg = new TextView(vista.getContext());
-        tvPg.setText("PG");
-        tvPg.setTextColor(Color.GRAY);
-        tvPg.setGravity(Gravity.CENTER);
-        tvPg.setPadding(20,5,20,5);
-        tbrow.addView(tvPg);
-        TextView tvPe = new TextView(vista.getContext());
-        tvPe.setText("PE");
-        tvPe.setTextColor(Color.GRAY);
-        tvPe.setGravity(Gravity.CENTER);
-        tvPe.setPadding(20,5,20,5);
-        tbrow.addView(tvPe);
-        TextView tvPp = new TextView(vista.getContext());
-        tvPp.setText("PP");
-        tvPp.setTextColor(Color.GRAY);
-        tvPp.setGravity(Gravity.CENTER);
-        tvPp.setPadding(20,5,20,5);
-        tbrow.addView(tvPp);
-        TextView tvPts = new TextView(vista.getContext());
-        tvPts.setText("Pts");
-        tvPts.setTextColor(Color.GRAY);
-        tvPts.setGravity(Gravity.CENTER);
-        tvPts.setPadding(20,5,20,5);
-        tbrow.addView(tvPts);
-
-        tablaPosiciones.addView(tbrow);
-
-        // agregamos el separador
-        TableRow tbrowsep = new TableRow(vista.getContext());
-        FrameLayout separator = new FrameLayout(vista.getContext());
-
-        separator.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.FILL_PARENT, 2));
-        separator.setBackgroundColor(Color.WHITE);
-        tbrowsep.addView(separator);
-
-        tablaPosiciones.addView(tbrowsep);
-
-        return tbrow;
     }
 
     public void onButtonPressed(Uri uri) {

@@ -24,13 +24,17 @@ public class PositionCompetitor implements Serializable {
     @SerializedName("Pts")
     private String puntos;
 
-    public PositionCompetitor(String competidor, String jugados, String ganados, String empatados, String perdidos, String puntos) {
+    @SerializedName("Dif")
+    private String diferencia;
+
+    public PositionCompetitor(String competidor, String jugados, String ganados, String empatados, String perdidos, String puntos, String diferencia) {
         this.competidor = competidor;
         this.jugados = jugados;
         this.ganados = ganados;
         this.empatados = empatados;
         this.perdidos = perdidos;
         this.puntos = puntos;
+        this.diferencia = diferencia;
     }
 
     public String getCompetidor() {
@@ -79,6 +83,14 @@ public class PositionCompetitor implements Serializable {
 
     public void setPuntos(String puntos) {
         this.puntos = puntos;
+    }
+
+    public String getDiferencia() {
+        return diferencia;
+    }
+
+    public void setDiferencia(String diferencia) {
+        this.diferencia = diferencia;
     }
 
     @Override
