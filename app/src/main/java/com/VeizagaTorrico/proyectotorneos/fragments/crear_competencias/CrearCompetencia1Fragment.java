@@ -62,7 +62,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     final int anio = c.get(Calendar.YEAR);
 
     //Widgets
-    private TextView txtFecha;
+    private TextView txtFecha, tvSelCiudad;
     private ImageButton ibObtenerFecha;
     private EditText txtNmbComp,etCiudad;
     private Spinner spnrGenero,spnnerCiudad;
@@ -186,19 +186,11 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                                     if(response.body() != null){
                                         ciudades.addAll(response.body());
                                     }
-                                    adapterCiudades();
-                                    spnnerCiudad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                        @Override
-                                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                            ciudadSeleccionada = (City) spnnerCiudad.getSelectedItem();
-                                            ciudad = ciudadSeleccionada.toString();
-                                        }
-
-                                        @Override
-                                        public void onNothingSelected(AdapterView<?> adapterView) {
-
-                                        }
-                                    });
+                                    if(response.body().size() > 0){
+                                        tvSelCiudad.setText("Seleccione una ciudad.");
+                                        spnnerCiudad.setVisibility(View.VISIBLE);
+                                        mostrarCiudades();
+                                    }
                                 }
                                 if(response.code() == 400){
                                     Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
@@ -207,9 +199,12 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                                         jsonObject = new JSONObject(response.errorBody().string());
                                         String userMessage = jsonObject.getString("messaging");
                                         Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
-                                        Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
-                                        ciudades.add(new City(0,"El nombre usado no existe, intentar con otro nombre",null));
-                                        adapterCiudades();
+//                                        Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                                        //ciudades.add(new City(0,"El nombre usado no existe, intentar con otro nombre",null));
+                                        tvSelCiudad.setVisibility(View.VISIBLE);
+                                        tvSelCiudad.setText("No se han encontrado resultados. Intente con otro nombre.");
+                                        spnnerCiudad.setVisibility(View.GONE);
+                                        //adapterCiudades();
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -240,10 +235,23 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
         ciudad = "";
     }
 
-    private void adapterCiudades() {
+    private void mostrarCiudades() {
         ArrayAdapter<City> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, ciudades);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spnnerCiudad.setAdapter(adapter);
+
+        spnnerCiudad.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ciudadSeleccionada = (City) spnnerCiudad.getSelectedItem();
+                ciudad = ciudadSeleccionada.toString();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private boolean validar() {
@@ -267,6 +275,9 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
           spnnerCiudad = vista.findViewById(R.id.spinner_ciudad_compe);
           btnSig = vista.findViewById(R.id.btnCCSig_1);
           txtNmbComp = vista.findViewById(R.id.etNmbComp);
+          tvSelCiudad = vista.findViewById(R.id.tv_rdos_buscar);
+          tvSelCiudad.setVisibility(View.GONE);
+          spnnerCiudad.setVisibility(View.GONE);
           //Widget TextView donde se mostrara la fecha obtenida
           txtFecha = vista.findViewById(R.id.etfechaComp);
           //Widget ImageButton del cual usaremos el evento clic para obtener la fecha

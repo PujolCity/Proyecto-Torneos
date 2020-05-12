@@ -25,153 +25,289 @@
             android:textSize="@dimen/text_size_sin_conexion"
             android:visibility="gone" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="match_parent">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView10"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="25dp"-->
+<!--                android:text="@string/txtCrearCompNmb"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.317"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"></TextView>-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/etNmbComp"-->
+<!--                android:layout_width="250dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:inputType="text"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.307"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/textView10"></EditText>-->
+
+
+<!--            <TextView-->
+<!--                android:id="@+id/etfechaComp"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="48dp"-->
+<!--                android:clickable="true"-->
+<!--                android:focusable="true"-->
+<!--                android:focusableInTouchMode="false"-->
+<!--                android:maxLines="1"-->
+<!--                android:text="Fecha de Inicio"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.139"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/etNmbComp">-->
+<!--            </TextView>-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/ib_obtener_fecha"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="36dp"-->
+<!--                android:src="@drawable/baseline_calendar_today_black_18dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.672"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/etfechaComp"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/etNmbComp"-->
+<!--                tools:ignore="ContentDescription" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView12"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="48dp"-->
+<!--                android:text="@string/txtCiudad"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.119"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/etfechaComp">-->
+<!--            </TextView>-->
+
+<!--            <EditText-->
+<!--                android:id="@+id/etCiudad"-->
+<!--                android:layout_width="150dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="24dp"-->
+<!--                android:hint="Buscar ciudad"-->
+<!--                android:maxLines="1"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.292"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/textView12"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">-->
+<!--            </EditText>-->
+
+<!--            <ImageButton-->
+<!--                android:id="@+id/ib_buscar_compe"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="24dp"-->
+<!--                android:layout_marginEnd="44dp"-->
+<!--                android:src="@drawable/search"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.0"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/etCiudad"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">-->
+<!--            </ImageButton>-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/spinner_ciudad_compe"-->
+<!--                android:layout_width="200dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="16dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.644"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/etCiudad">-->
+<!--            </Spinner>-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView13"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="48dp"-->
+<!--                android:text="@string/txtGenero"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.12"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">-->
+<!--            </TextView>-->
+
+<!--            <Spinner-->
+<!--                android:id="@+id/spinnerGenero"-->
+<!--                android:layout_width="150dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="92dp"-->
+<!--                android:layout_marginTop="48dp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.05"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/textView13"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">-->
+<!--            </Spinner>-->
+
+<!--            <Button-->
+<!--                android:id="@+id/btnCCSig_1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center"-->
+<!--                android:layout_marginTop="104dp"-->
+<!--                android:backgroundTint="@color/colorPrimary"-->
+<!--                android:text="@string/txtBtnSig"-->
+<!--                android:textColor="@color/cardview_light_background"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.531"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/spinnerGenero">-->
+<!--            </Button>-->
+
+<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingStart="25dp"
+            android:paddingEnd="25dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingTop="25dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txtCrearCompNmb"></TextView>
+
+                <EditText
+                    android:id="@+id/etNmbComp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/etfechaComp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="5"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="false"
+                    android:maxLines="1"
+                    android:text="Fecha de Inicio"
+                    android:textSize="15sp"></TextView>
+
+                <ImageButton
+                    android:id="@+id/ib_obtener_fecha"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/baseline_calendar_today_black_18dp"></ImageButton>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp">
+
+                <!--                <TextView-->
+                <!--                    android:id="@+id/textView12"-->
+                <!--                    android:layout_width="0dp"-->
+                <!--                    android:layout_weight="Ciudad que"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:text="@string/txtCiudad"></TextView>-->
+
+                <EditText
+                    android:id="@+id/etCiudad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="5"
+                    android:hint="Buscar ciudad"
+                    android:maxLines="1"></EditText>
+
+                <ImageButton
+                    android:id="@+id/ib_buscar_compe"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/search"></ImageButton>
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/tv_rdos_buscar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:layout_marginTop="52dp"
-                android:text="@string/txtCrearCompNmb"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.317"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-            </TextView>
-
-            <EditText
-                android:id="@+id/etNmbComp"
-                android:layout_width="250dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="44dp"
-                android:inputType="text"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.307"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10">
-            </EditText>
-
-
-            <TextView
-                android:id="@+id/etfechaComp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:focusableInTouchMode="false"
-                android:maxLines="1"
-                android:text="Fecha de Inicio"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.139"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etNmbComp">
-            </TextView>
-
-            <ImageButton
-                android:id="@+id/ib_obtener_fecha"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="36dp"
-                android:src="@drawable/baseline_calendar_today_black_18dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.672"
-                app:layout_constraintStart_toEndOf="@+id/etfechaComp"
-                app:layout_constraintTop_toBottomOf="@+id/etNmbComp"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:text="@string/txtCiudad"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.119"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etfechaComp">
-            </TextView>
-
-            <EditText
-                android:id="@+id/etCiudad"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:hint="Buscar ciudad"
-                android:maxLines="1"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.292"
-                app:layout_constraintStart_toEndOf="@+id/textView12"
-                app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">
-            </EditText>
-
-            <ImageButton
-                android:id="@+id/ib_buscar_compe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
-                android:layout_marginEnd="44dp"
-                android:src="@drawable/ic_check"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/etCiudad"
-                app:layout_constraintTop_toBottomOf="@+id/ib_obtener_fecha">
-            </ImageButton>
+                android:layout_marginTop="5dp"
+                android:paddingTop="10dp"
+                android:text="Seleccione una ciudad"
+                android:textStyle="bold"></TextView>
 
             <Spinner
                 android:id="@+id/spinner_ciudad_compe"
-                android:layout_width="200dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.644"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etCiudad">
-            </Spinner>
+                android:paddingTop="3dp"
+                android:paddingBottom="5dp"></Spinner>
 
-            <TextView
-                android:id="@+id/textView13"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
-                android:text="@string/txtGenero"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.12"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">
-            </TextView>
+                android:orientation="horizontal"
+                android:paddingTop="25dp"
+                android:paddingBottom="8dp">
 
-            <Spinner
-                android:id="@+id/spinnerGenero"
-                android:layout_width="150dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="92dp"
-                android:layout_marginTop="48dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.05"
-                app:layout_constraintStart_toEndOf="@+id/textView13"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_compe">
-            </Spinner>
+                <TextView
+                    android:id="@+id/textView13"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/txtGenero"></TextView>
+
+                <Spinner
+                    android:id="@+id/spinnerGenero"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"></Spinner>
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/btnCCSig_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="104dp"
+                android:layout_marginTop="35dp"
                 android:backgroundTint="@color/colorPrimary"
                 android:text="@string/txtBtnSig"
                 android:textColor="@color/cardview_light_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.531"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinnerGenero">
-            </Button>
+                app:layout_constraintHorizontal_bias="0.531"></Button>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
