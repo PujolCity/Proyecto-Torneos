@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
 
 import android.content.Context;
@@ -153,3 +154,5 @@ public class CompetidoresListFragment extends Fragment {
         recycle.setAdapter(adapter);
     }
 }
+=======
+>>>>>>> Stashed changes

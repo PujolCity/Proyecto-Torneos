@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 package com.VeizagaTorrico.proyectotorneos.graphics_adapters;
 
 import android.app.ProgressDialog;
@@ -186,3 +187,5 @@ public class SolicitudesOrganizadorRecyclerViewAdapter extends RecyclerView.Adap
 
 
 }
+=======
+>>>>>>> Stashed changes

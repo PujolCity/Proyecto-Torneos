@@ -1,3 +1,4 @@
+<<<<<<< Updated upstream
 package com.VeizagaTorrico.proyectotorneos.graphics_adapters;
 
 import androidx.annotation.NonNull;
@@ -170,3 +171,5 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
         }
     }
 }
+=======
+>>>>>>> Stashed changes
