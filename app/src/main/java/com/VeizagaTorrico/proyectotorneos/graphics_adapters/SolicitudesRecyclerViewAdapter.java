@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +33,7 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
     private Map<String,String> solicitud;
     private Context context;
     private UserSrv userSrv;
+    private ProgressDialog progressDialog;
 
     public SolicitudesRecyclerViewAdapter(Context context) {
         this.context = context;
@@ -59,7 +61,6 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
         final User usuario = this.competidores.get(position);
 
         try {
-            Log.d("COMPETIDORES",usuario.getApellido());
             holder.txtNombUsuario.setText(usuario.getNombreUsuario());
             holder.txtNombre.setText(usuario.getNombre());
             holder.txtApellido.setText(usuario.getApellido());
@@ -74,12 +75,14 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
 
                     Call<Success> call = userSrv.refusePetitionerUser(solicitud);
                     Log.d("URL", call.request().url().toString());
+                    showMsgWaitServer(context);
                     call.enqueue(new Callback<Success>() {
                         @Override
                         public void onResponse(Call<Success> call, Response<Success> response) {
                             if(response.code() == 200){
+                                endMsgWaitServer(context);
                                 Log.d("response code", Integer.toString(response.code()));
-                                Toast toast = Toast.makeText(context, "Solicitud Rechazada", Toast.LENGTH_SHORT);
+                                Toast toast = Toast.makeText(context, "Solicitud rechazada", Toast.LENGTH_SHORT);
                                 toast.show();
                                 holder.btnAceptar.setVisibility(View.INVISIBLE);
                                 holder.btnRechazar.setVisibility(View.INVISIBLE);
@@ -87,6 +90,7 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
                         }
                         @Override
                         public void onFailure(Call<Success> call, Throwable t) {
+                            endMsgWaitServer(context);
                             Toast toast = Toast.makeText(context, "Ver", Toast.LENGTH_SHORT);
                             toast.show();
                         }
@@ -99,10 +103,14 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
                     solicitud = new HashMap<>();
                     solicitud.put("idUsuario",Integer.toString(usuario.getId()));
                     solicitud.put("idCompetencia",Integer.toString(idComptencia));
+
                     Call<Success> call = userSrv.acceptPetitionUser(solicitud);
+                    Log.d("URL", call.request().url().toString());
+                    showMsgWaitServer(context);
                     call.enqueue(new Callback<Success>() {
                         @Override
                         public void onResponse(Call<Success> call, Response<Success> response) {
+                            endMsgWaitServer(context);
                             Log.d("response code", Integer.toString(response.code()));
                             Toast toast = Toast.makeText(context, "Solicitud Aceptada", Toast.LENGTH_SHORT);
                             toast.show();
@@ -112,7 +120,7 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
 
                         @Override
                         public void onFailure(Call<Success> call, Throwable t) {
-
+                            endMsgWaitServer(context);
                         }
                     });
                 }
@@ -128,6 +136,20 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
            return this.competidores.size();
         }
         return 0;
+    }
+
+
+    private void showMsgWaitServer(Context context) {
+        progressDialog = new ProgressDialog(context);
+        Log.d("MSG_LOADING", "Entro a mostrar mje nuevo");
+        progressDialog.setIcon(R.mipmap.ic_launcher);
+        progressDialog.setMessage("Esperando respuesta del servidor...");
+        progressDialog.show();
+    }
+
+    private void endMsgWaitServer(Context context) {
+        progressDialog.dismiss();
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

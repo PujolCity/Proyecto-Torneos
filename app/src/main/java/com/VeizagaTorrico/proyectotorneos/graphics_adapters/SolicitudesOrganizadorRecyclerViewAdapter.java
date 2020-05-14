@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.graphics_adapters;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -54,6 +55,7 @@ public class SolicitudesOrganizadorRecyclerViewAdapter extends RecyclerView.Adap
             holder.txtCompetencia.setText(invitacion.getCompetencia());
             holder.txtOrganizador.setText(invitacion.getOrganizador());
             holder.txtCategoria.setText(invitacion.getCategoria());
+
             holder.btnAceptar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -61,8 +63,8 @@ public class SolicitudesOrganizadorRecyclerViewAdapter extends RecyclerView.Adap
                     call.enqueue(new Callback<MsgRequest>() {
                         @Override
                         public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                            Log.d("RESP_CODE", Integer.toString(response.code()));
                             if(response.code() == 200) {
-                                Log.d("response code", Integer.toString(response.code()));
                                 Toast toast = Toast.makeText(context, "Invitacion Aceptada", Toast.LENGTH_SHORT);
                                 toast.show();
                                 holder.btnAceptar.setVisibility(View.INVISIBLE);
@@ -89,16 +91,16 @@ public class SolicitudesOrganizadorRecyclerViewAdapter extends RecyclerView.Adap
                     });
                 }
             });
+
             holder.btnRechazar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Call<MsgRequest> call = invitationSrv.rechazarInvitacion(invitacion.getId());
-                    Log.d("Url invitacion",call.request().url().toString());
                     call.enqueue(new Callback<MsgRequest>() {
                         @Override
                         public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                            Log.d("RESP_CODE", Integer.toString(response.code()));
                             if(response.code() == 200) {
-                                Log.d("response code", Integer.toString(response.code()));
                                 Toast toast = Toast.makeText(context, "Invitacion Rechazada", Toast.LENGTH_SHORT);
                                 toast.show();
                                 holder.btnAceptar.setVisibility(View.INVISIBLE);

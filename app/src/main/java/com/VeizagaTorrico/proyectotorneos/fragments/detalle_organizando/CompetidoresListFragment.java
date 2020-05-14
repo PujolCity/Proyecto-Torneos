@@ -75,7 +75,6 @@ public class CompetidoresListFragment extends Fragment {
         //En call viene el tipo de dato que espero del servidor
         Call<List<User>> call = userSrv.getPetitionersByCompetition(idCompetencia);
         Log.d("CALL_SOLIC", call.request().url().toString());
-        Log.d("CALL_SOLIC_IDCOMP", String.valueOf(idCompetencia));
         call.enqueue(new Callback<List<User>>() {
             @Override
             public void onResponse(Call<List<User>> call, Response<List<User>> response) {
@@ -111,7 +110,7 @@ public class CompetidoresListFragment extends Fragment {
         sinSolicitudes.setVisibility(View.VISIBLE);
     }
 
-    public void setCompetencia(int competencia) {
+    public void setCompetencia(int idCompetencia) {
     this.idCompetencia = idCompetencia;
 }
 
@@ -152,6 +151,5 @@ public class CompetidoresListFragment extends Fragment {
         recycle.setHasFixedSize(true);
         adapter = new SolicitudesRecyclerViewAdapter(vista.getContext());
         recycle.setAdapter(adapter);
-
     }
 }
