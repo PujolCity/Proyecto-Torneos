@@ -28,7 +28,6 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.Inscription;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
-import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.ConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.offline.model.DataOffline;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
@@ -68,12 +67,6 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     private UserSrv usersSrv;
     private List<ConfrontationOff> encuentrosServer;
     private AdminDataOff adminDataOff;
-//    private ManagerCompetitionOff adminCompetenciasOff;
-//    private ManagerCompetitorOff adminCompetitorsOff;
-//    private ManagerJudgeOff adminJuecesOff;
-//    private ManagerFieldOff adminCamposOff;
-//    private ManagerInscriptionOff adminInscripcionOff;
-//    private ManagerConfrontationOff adminEncuentroOff;
     private Map<String,String> userComp = new HashMap<>();
     private DataOffline dataServer;
 
@@ -144,9 +137,9 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder builder =new AlertDialog.Builder(vista.getContext());
-                builder.setTitle("Descargar Datos de la Competencia?");
-                builder.setMessage("Si acepta se descargaran los datos de esta competencia." +
-                        "\n Esta seguro?");
+                builder.setTitle("Descargar datos de la competencia?");
+                builder.setMessage("Se guardarán localmente los datos y encuentros de la competencia." +
+                        "\n ¿Está seguro?");
 
                 builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                     @Override
@@ -204,12 +197,6 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     }
 
     private void dowloadDataCompettition(){
-//        adminCompetenciasOff = new ManagerCompetitionOff(vista.getContext());
-//        adminCompetitorsOff = new ManagerCompetitorOff(vista.getContext());
-//        adminCamposOff = new ManagerFieldOff(vista.getContext());
-//        adminJuecesOff = new ManagerJudgeOff(vista.getContext());
-//        adminInscripcionOff = new ManagerInscriptionOff(vista.getContext());
-
         usersSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
 
         userComp.put("idUsuario", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
@@ -285,7 +272,6 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
 
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
         adminDataOff = new AdminDataOff(vista.getContext());
-//        adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
 
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);

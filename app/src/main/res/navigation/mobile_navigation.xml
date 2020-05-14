@@ -28,8 +28,8 @@
     <fragment
         android:id="@+id/crearCompetencia1Fragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia1Fragment"
-        android:label="Crea Tu Competencia"
-        tools:layout="@layout/fragment_crear_competencia1" >
+        android:label="Crea tu competencia"
+        tools:layout="@layout/fragment_crear_competencia1">
         <action
             android:id="@+id/toPantalla2"
             app:destination="@id/crearCompetencia2Fragment" />
@@ -38,8 +38,8 @@
     <fragment
         android:id="@+id/crearCompetencia2Fragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia2Fragment"
-        android:label="Crea Tu Competencia"
-        tools:layout="@layout/fragment_crear_competencia2" >
+        android:label="Crea tu competencia"
+        tools:layout="@layout/fragment_crear_competencia2">
         <action
             android:id="@+id/toPantalla3"
             app:destination="@id/crearCompetencia3Fragment" />
@@ -50,8 +50,8 @@
     <fragment
         android:id="@+id/crearCompetencia3Fragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias.CrearCompetencia3Fragment"
-        android:label="Crea Tu Competencia"
-        tools:layout="@layout/fragment_crear_competencia3" >
+        android:label="Crea tu competencia"
+        tools:layout="@layout/fragment_crear_competencia3">
         <action
             android:id="@+id/toPantalla2"
             app:destination="@id/crearCompetencia2Fragment" />
@@ -105,8 +105,8 @@
     <fragment
         android:id="@+id/filtroFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.competencias.FiltroFragment"
-        android:label="Filtrar Competencias"
-        tools:layout="@layout/fragment_filtro" >
+        android:label="Buscar competencias"
+        tools:layout="@layout/fragment_filtro">
         <action
             android:id="@+id/action_filtroFragment_to_competenciasListFragment"
             app:destination="@id/competenciasListFragment" />
@@ -240,7 +240,7 @@
     <fragment
         android:id="@+id/miPerfilFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.MiPerfilFragment"
-        android:label="fragment_mi_perfil"
+        android:label="Mi perfil"
         tools:layout="@layout/fragment_mi_perfil" />
     <fragment
         android:id="@+id/editCompetenciaFragment"

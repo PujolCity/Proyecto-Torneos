@@ -12,6 +12,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -67,8 +68,6 @@ public class EncuentrosDetalleFragment extends Fragment {
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv, competidorLibre;
     private AdminDataOff adminDataOff;
-    //private ManagerConfrontationOff adminEncuentrosLocal;
-//    private ManagerCompetitionOff adminCopeteitionLocal;
 
     public EncuentrosDetalleFragment() {
         // Required empty public constructor
@@ -258,6 +257,9 @@ public class EncuentrosDetalleFragment extends Fragment {
                         e.printStackTrace();
                     }
                 }
+                if (response.code() == 204){
+                    sinEncuentros();
+                }
                 if (response.code() == 400) {
                     JSONObject jsonObject = null;
                     try {
@@ -285,15 +287,7 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     private void cargarSpinnerFiltroEncuentrosOffline(){
         // controlamos que la competencia se encuentre almacenada localmente
-//        adminCopeteitionLocal = new ManagerCompetitionOff(vista.getContext());
-//        adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
-        // recuperamos el nro de grupo y fase de la competencia
-//        if(adminEncuentrosLocal.existByCompetition(competencia.getId())){
         if(adminDataOff.competitionWtihConfrontation(competencia.getId())){
-//            int cantGrupos = adminCopeteitionLocal.cantGroupByCompetition(competencia.getId());
-//            int cantJornadas = adminCopeteitionLocal.cantJornadaByCompetition(competencia.getId());
-//            String[] fases = adminCopeteitionLocal.phasesByCompetition(competencia.getId());
-
             int cantGrupos = adminDataOff.groupsByCompetition(competencia.getId());
             int cantJornadas = adminDataOff.jornadaByCompetition(competencia.getId());
             String[] fases = adminDataOff.phasesByCompetition(competencia.getId());

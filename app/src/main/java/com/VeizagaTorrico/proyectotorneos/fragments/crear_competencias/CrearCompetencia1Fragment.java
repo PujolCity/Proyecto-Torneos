@@ -187,7 +187,8 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                                         ciudades.addAll(response.body());
                                     }
                                     if(response.body().size() > 0){
-                                        tvSelCiudad.setText("Seleccione una ciudad.");
+                                        tvSelCiudad.setVisibility(View.VISIBLE);
+                                        tvSelCiudad.setText("Seleccione una ciudad");
                                         spnnerCiudad.setVisibility(View.VISIBLE);
                                         mostrarCiudades();
                                     }

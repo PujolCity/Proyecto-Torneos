@@ -26,34 +26,50 @@
             app:layout_constraintTop_toTopOf="parent">
         </ImageButton>
 
+        <TextView
+            android:id="@+id/tv_download_comp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="13dp"
+            android:text="Descargar datos"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_download_off_organizando"
+            app:layout_constraintTop_toTopOf="parent"></TextView>
+
+        <TextView
+            android:id="@+id/tv_download_descripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Administre sus competencias sin conexion a la red"
+            android:textSize="9sp"
+            app:layout_constraintStart_toEndOf="@+id/btn_download_off_organizando"
+            app:layout_constraintTop_toBottomOf="@+id/tv_download_comp"></TextView>
+
         <Button
             android:id="@+id/btn_edit_competencia_organizando"
-            android:layout_width="55dp"
+            android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="2dp"
             android:backgroundTint="#107683"
             android:text="Editar"
             android:textColor="@color/cardview_light_background"
-            app:layout_constraintEnd_toStartOf="@+id/btnFollow"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/btn_download_off_organizando"
-            app:layout_constraintTop_toTopOf="parent">
-        </Button>
+            app:layout_constraintEnd_toStartOf="@+id/generar_inscripcion_organizando"
+            app:layout_constraintTop_toBottomOf="@+id/btn_download_off_organizando"></Button>
 
         <Button
             android:id="@+id/generar_inscripcion_organizando"
             android:layout_width="wrap_content"
             android:layout_height="37dp"
-            android:layout_marginTop="12dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="20dp"
             android:backgroundTint="#107683"
             android:text="Crear Inscripcion"
             android:textColor="@color/cardview_light_background"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/btn_edit_competencia_organizando"
-            app:layout_constraintTop_toTopOf="parent">
-        </Button>
+            app:layout_constraintTop_toBottomOf="@+id/btn_download_off_organizando"></Button>
 
         <TextView
             android:id="@+id/txtNmbCompDet_organizando"
@@ -168,10 +184,9 @@
                 android:id="@+id/include"
                 layout="@layout/fragment_inscripcion_detalle"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 tools:layout_editor_absoluteX="-10dp"
-                tools:layout_editor_absoluteY="391dp">
-            </include>
+                tools:layout_editor_absoluteY="391dp"></include>
         </LinearLayout>
 
 

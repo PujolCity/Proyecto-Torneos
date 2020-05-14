@@ -1,54 +1,54 @@
 <resources>
     <string name="app_name">Proyecto Torneos</string>
     //Strings de creado de competencia
-    <string name="Txt_creaCompetencia"> Crea Tu Competencia</string>
-    <string name="txtCrearCompNmb"> Coloque el nombre de su competencia</string>
-    <string name="datePicker"> Fecha de inicio de la Competencia </string>
+    <string name="Txt_creaCompetencia"> Crea tu Competencia</string>
+    <string name="txtCrearCompNmb"> Ingrese el nombre de su competencia</string>
+    <string name="datePicker"> Fecha de inicio de la competencia </string>
     <string name="formatoFecha"> dd/mm/yyyy </string>
     <string name="formatoHora"> HH:MM </string>
     <string name="txtTipoOrg"> Seleccione la organizacion de su competencia </string>
-    <string name="txtTipo"> Organizacion</string>
+    <string name="txtTipo"> Organización</string>
     <string name="txtSeleccioneDeporte"> Seleccione el deporte de su competencia </string>
     <string name="txtDeporte"> Deporte</string>
     <string name="txtCategoria"> Categoria</string>
     <string name="txtDescripcion"> Descripcion </string>
 
-    <string name="txtNombreUsuario"> Nombre de Usuario</string>
+    <string name="txtNombreUsuario"> Nombre de usuario</string>
     <string name="txtNombre"> Nombre </string>
     <string name="txtApellido"> Apellido </string>
 
     <!-- BUSQUEDA / FILTRO-->
     <string name="txtBusqueda"> Buscar </string>
-    <string name="txtFiltro"> Filtrar Competencias</string>
+    <string name="txtFiltro"> Buscar competencias</string>
     <string name="txtCiudad"> Ciudad </string>
-    <string name="txtGenero"> Genero </string>
+    <string name="txtGenero"> Género </string>
 
     <!--  BARRA MENU LATERAL -->
     <string name="menu_Ininio"> Inicio </string>
-    <string name="menu_MiPerfil"> Mi Perfil </string>
-    <string name="menu_CreaMisCompetencias"> Crea Tu Competencia </string>
+    <string name="menu_MiPerfil"> Mi perfil </string>
+    <string name="menu_CreaMisCompetencias"> Crea tu competencia </string>
     <string name="menu_Competencias">Competencias</string>
-    <string name="menu_MisCompetencias"> Mis Competencias </string>
+    <string name="menu_MisCompetencias"> Mis competencias </string>
     <string name="menu_config">Configuracion</string>
     <string name="menu_solicitudes"> Mis solicitudes</string>
-    <string name="menu_competidores">Solicitud de Competidores</string>
+    <string name="menu_competidores">Solicitud de competidores</string>
 
     <!-- Strings botones-->
     <string name="txtBtnSig"> Siguiente</string>
     <string name="txtBtnVolver"> Volver</string>
     <string name="txtCrear"> Crear</string>
-    <string name="txtbtnGenerarEncuentros"> Generar Encuentros</string>
-    <string name="txtBtnCrearInscripcion"> Crear Inscripcion </string>
-    <string name="txtBtnCargarPredio"> Cargar Predios y Campos</string>
-    <string name="txtBtnCargarTurno"> Cargar Turnos</string>
-    <string name="txtBtnCargarJuez"> Cargar Jueces</string>
-    <string name="txtBtnCargarNoticia"> Cargar Noticia</string>
-    <string name="txtEnviarInvitacion"> Enviar Invitacion</string>
-    <string name="txtInvitarCoOrg"> Invitar Co-Organizador</string>
-    <string name="txtSigFase"> Pasar a siguiente Fase</string>
-    <string name="txtComprobarUsername"> Comprobar Nombre Usuario</string>
-    <string name="txtBtnAgregarPredio"> Agregar Predio</string>
-    <string name="txtBtnAgregarCampo"> Agregar Campo</string>
+    <string name="txtbtnGenerarEncuentros"> Generar encuentros</string>
+    <string name="txtBtnCrearInscripcion"> Crear inscripcion </string>
+    <string name="txtBtnCargarPredio"> Cargar predios y campos</string>
+    <string name="txtBtnCargarTurno"> Cargar turnos</string>
+    <string name="txtBtnCargarJuez"> Cargar jueces</string>
+    <string name="txtBtnCargarNoticia"> Cargar noticia</string>
+    <string name="txtEnviarInvitacion"> Enviar invitacion</string>
+    <string name="txtInvitarCoOrg"> Invitar co-organizador</string>
+    <string name="txtSigFase"> Pasar a siguiente fase</string>
+    <string name="txtComprobarUsername"> Comprobar nombre usuario</string>
+    <string name="txtBtnAgregarPredio"> Agregar predio</string>
+    <string name="txtBtnAgregarCampo"> Agregar campo</string>
     <string name="txtBtnAgregarTurno"> Agregar turno</string>
     <string name="txtBtnAgregarJuez"> Agregar juez</string>
     <!-- TODO: Remove or change this placeholder text -->

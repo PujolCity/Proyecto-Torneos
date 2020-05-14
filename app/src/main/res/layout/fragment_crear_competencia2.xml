@@ -17,106 +17,106 @@
             android:id="@+id/textView7"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="15dp"
             android:text="@string/txtDeporte"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </TextView>
+            app:layout_constraintTop_toTopOf="parent"></TextView>
 
         <Spinner
             android:id="@+id/spinnerDeporte"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="92dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toTopOf="parent">
-        </Spinner>
+            app:layout_constraintTop_toTopOf="parent"></Spinner>
 
         <TextView
             android:id="@+id/textView17"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="35dp"
             android:text="@string/txtCategoria"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView7">
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/textView7"></TextView>
 
         <Spinner
             android:id="@+id/spinnerCategoria"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="35dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toEndOf="@+id/textView17"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerDeporte">
-        </Spinner>
+            app:layout_constraintTop_toBottomOf="@+id/spinnerDeporte"></Spinner>
 
 
         <TextView
             android:id="@+id/textView18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="35dp"
             android:text="@string/txtDescripcion"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView17">
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/textView17"></TextView>
 
         <TextView
             android:id="@+id/descripcionCategoria"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="44dp"
+            android:layout_marginTop="15dp"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView18">
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/textView18"></TextView>
 
         <TextView
             android:id="@+id/textView19"
             android:layout_width="200dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="44dp"
-            android:text="Frecuencia de juego \n(Cada cuantos dias es una jornada)"
-            android:textSize="16sp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="35dp"
+            android:text="Frecuencia de juego"
+            android:textSize="20sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descripcionCategoria">
-        </TextView>
+            app:layout_constraintTop_toBottomOf="@+id/descripcionCategoria"></TextView>
+
+        <TextView
+            android:id="@+id/textViewJornada"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:text="Dias entre jornadas"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView19"></TextView>
 
         <Spinner
             android:id="@+id/spinner_frecuencia_creaComp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="15dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/textView19"
-            app:layout_constraintTop_toBottomOf="@+id/descripcionCategoria">
-        </Spinner>
+            app:layout_constraintTop_toBottomOf="@+id/textView19"></Spinner>
 
         <Button
             android:id="@+id/btnCCSig_2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="72dp"
-            android:text="@string/txtBtnSig"
+            android:layout_marginTop="60dp"
             android:backgroundTint="@color/colorPrimary"
+            android:text="@string/txtBtnSig"
             android:textColor="@color/cardview_light_background"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView19">
-        </Button>
+            app:layout_constraintTop_toBottomOf="@+id/textViewJornada"></Button>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
