@@ -48,7 +48,6 @@ public class NotificacionesFragment extends Fragment {
     private Button btnConfirmar;
     private Switch swNotifSeg;
     private Switch swNotifComp;
-    private TextView tvSinConexion;
 
     private Map<String,String> datos;
 
@@ -58,8 +57,7 @@ public class NotificacionesFragment extends Fragment {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static NotificacionesFragment newInstance(String param1, String param2) {
+    public static NotificacionesFragment newInstance() {
         NotificacionesFragment fragment = new NotificacionesFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
@@ -80,11 +78,7 @@ public class NotificacionesFragment extends Fragment {
         initElements();
         loadConfigNotifications();
         if(NetworkReceiver.existConnection(vista.getContext())){
-            tvSinConexion.setVisibility(View.GONE);
             listenConfirmar();
-        }
-        else{
-            tvSinConexion.setVisibility(View.VISIBLE);
         }
 
         return vista;
@@ -96,7 +90,6 @@ public class NotificacionesFragment extends Fragment {
         btnConfirmar = vista.findViewById(R.id.btn_confir_conf_notif);
         swNotifSeg = vista.findViewById(R.id.swt_seguidor);
         swNotifComp = vista.findViewById(R.id.swt_competidor);
-        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_mis_notificaciones);
     }
 
     private void listenConfirmar(){
@@ -182,7 +175,6 @@ public class NotificacionesFragment extends Fragment {
         });
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -206,18 +198,7 @@ public class NotificacionesFragment extends Fragment {
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
     }
 }

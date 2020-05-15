@@ -5,15 +5,18 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.ViewPagerAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.google.android.material.tabs.TabLayout;
 
 public class DetalleOrganizandoFragment extends Fragment {
@@ -24,7 +27,8 @@ public class DetalleOrganizandoFragment extends Fragment {
     private ViewPagerAdapter adapter;
     private ViewPager pager;
     private TabLayout tabLayout;
-
+    private SwipeRefreshLayout refreshLayout;
+    private TextView sinConexion;
 
     public DetalleOrganizandoFragment() {
         // Required empty public constructor
@@ -47,9 +51,41 @@ public class DetalleOrganizandoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_detalle_organizando, container, false);
-
-        pager = vista.findViewById(R.id.pagerDetalle);
+        initElements();
         llenarPager();
+
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            sinConexion.setVisibility(View.GONE);
+            refresh();
+        }
+        else{
+            sinConexion.setVisibility(View.VISIBLE);
+            refresh();
+        }
+        return vista;
+    }
+
+    private void refresh() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    sinConexion.setVisibility(View.GONE);
+                    llenarPager();
+                }
+                else{
+                    sinConexion.setVisibility(View.VISIBLE);
+                    llenarPager();
+                }
+                refreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void initElements() {
+        refreshLayout = vista.findViewById(R.id.refreshTabOrganizando);
+        sinConexion = vista.findViewById(R.id.tv_sin_conexion_tabOrganizando);
+        pager = vista.findViewById(R.id.pagerDetalle);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -59,7 +95,6 @@ public class DetalleOrganizandoFragment extends Fragment {
         tabLayout = vista.findViewById(R.id.tabLayoutDetalle);
         tabLayout.setupWithViewPager(pager);
 
-        return vista;
     }
 
     public void onButtonPressed(Uri uri) {

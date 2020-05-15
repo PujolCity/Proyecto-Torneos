@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -64,6 +65,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     private int idUsuario;
     private String deporte,categoria,nombreCompetencia,organizacion,ciudad,genero, estado;
     private TextView tvSinConexion;
+    private SwipeRefreshLayout refreshLayout;
 
     public FiltroFragment() {
     }
@@ -85,21 +87,45 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_filtro, container, false);
-
         initElements();
+        refresh();
         if(NetworkReceiver.existConnection(vista.getContext())) {
             tvSinConexion.setVisibility(View.GONE);
-            llenarSpinnerDeporte();
-            llenarSpinnerCategoriaByServer(0);
-            llenarSpinnerOrganizacion();
-            llenarSpinnerGeneros();
-            llenarSpinnerEstado();
+            llenarAllSpinners();
             listeners();
+            refresh();
         } else {
             tvSinConexion.setVisibility(View.VISIBLE);
             sinInternet();
+            refresh();
         }
         return vista;
+    }
+
+    private void llenarAllSpinners() {
+        llenarSpinnerDeporte();
+        llenarSpinnerCategoriaByServer(0);
+        llenarSpinnerOrganizacion();
+        llenarSpinnerGeneros();
+        llenarSpinnerEstado();
+    }
+
+    private void refresh() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    tvSinConexion.setVisibility(View.GONE);
+                    llenarAllSpinners();
+                    btnSiguiente.setVisibility(View.VISIBLE);
+                }
+                else{
+                    sinInternet();
+                    tvSinConexion.setVisibility(View.VISIBLE);
+                }
+                refreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void listeners() {
@@ -200,6 +226,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     }
 
     private void initElements() {
+        refreshLayout = vista.findViewById(R.id.refreshFiltro);
         Category category = new Category(0,"Seleccione..."," ",0,0);
         idUsuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(getContext(), FILE_SHARED_DATA_USER, KEY_ID));
 

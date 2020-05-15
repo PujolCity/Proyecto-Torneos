@@ -6,14 +6,17 @@ import android.os.Bundle;
 
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.ViewPagerAdapter;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -25,7 +28,9 @@ public class MisCompetenciasFragment extends Fragment {
     private ViewPager pager;
     private Toolbar toolbar;
     private TabLayout tabLayout;
-
+    private SwipeRefreshLayout refreshLayout;
+    private TextView sinConexion;
+    private View vista;
     public MisCompetenciasFragment() {
         // Required empty public constructor
     }
@@ -48,12 +53,44 @@ public class MisCompetenciasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View vista = inflater.inflate(R.layout.fragment_mis_competencias, container, false);
-
-        toolbar = vista.findViewById(R.id.toolbarLayout);
-
-        pager = vista.findViewById(R.id.pager);
+        vista = inflater.inflate(R.layout.fragment_mis_competencias, container, false);
+        initElements();
         llenarPager();
+
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            sinConexion.setVisibility(View.GONE);
+            refresh();
+        }
+        else{
+            sinConexion.setVisibility(View.VISIBLE);
+            refresh();
+        }
+        return vista;
+    }
+
+    private void refresh() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    sinConexion.setVisibility(View.GONE);
+                    llenarPager();
+                }
+                else{
+                    sinConexion.setVisibility(View.VISIBLE);
+                    llenarPager();
+                }
+                refreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void initElements() {
+        toolbar = vista.findViewById(R.id.toolbarLayout);
+        refreshLayout = vista.findViewById(R.id.refreshTabMisCompetencias);
+        sinConexion = vista.findViewById(R.id.tv_sin_conexion_tabMisCompetencias);
+        pager = vista.findViewById(R.id.pager);
+        tabLayout = vista.findViewById(R.id.tabLayout);
 
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
@@ -61,10 +98,9 @@ public class MisCompetenciasFragment extends Fragment {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
         });
-        tabLayout = vista.findViewById(R.id.tabLayout);
+
         tabLayout.setupWithViewPager(pager);
 
-        return vista;
     }
 
     public void onButtonPressed(Uri uri) {

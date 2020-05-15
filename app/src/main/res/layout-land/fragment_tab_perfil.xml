@@ -1,30 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/refreshPerfil"
     tools:context=".fragments.mi_perfil.TabPerfilFragment">
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tabPerfil"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="4dp"
-        android:background="?attr/colorPrimary"
-        android:minHeight="?attr/actionBarSize"
-        app:tabMode="fixed"
-        app:tabGravity="fill"
-        app:tabTextColor="#fff"
-        app:tabSelectedTextColor="@color/colorAccent">
-    </com.google.android.material.tabs.TabLayout>
+        android:layout_height="match_parent">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/pagerPerfil"
-        android:layout_marginTop="48dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-    </androidx.viewpager.widget.ViewPager>
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabPerfil"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:elevation="4dp"
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize"
+            app:tabMode="fixed"
+            app:tabGravity="fill"
+            app:tabTextColor="#fff"
+            app:tabSelectedTextColor="@color/colorAccent">
+        </com.google.android.material.tabs.TabLayout>
 
-</FrameLayout>
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/pagerPerfil"
+            android:layout_marginTop="48dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </androidx.viewpager.widget.ViewPager>
+
+    </androidx.cardview.widget.CardView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

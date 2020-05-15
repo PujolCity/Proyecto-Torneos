@@ -16,17 +16,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_sin_conexion_mis_datos"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_sin_conexion"
-                android:background="@color/color_sin_conexion"
-                android:gravity="center_horizontal|center_vertical"
-                android:text="@string/sin_conexion"
-                android:textColor="#FFFFFF"
-                android:textSize="@dimen/text_size_sin_conexion"
-                tools:visibility="gone" />
-
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">

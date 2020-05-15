@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -49,6 +50,8 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
     private NewsSrv newsSrv;
     private TextView textNoticias;
     private int usuario;
+    private SwipeRefreshLayout refreshLayout;
+    private TextView sinConexion;
 
 
     public NoticiasFragment() {
@@ -71,15 +74,39 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_noticias, container, false);
         initElement();
+        refresh();
         if(NetworkReceiver.existConnection(vista.getContext())) {
+            sinConexion.setVisibility(View.GONE);
             inflarRecycler();
-        } else {
+            refresh();
+        }
+        else{
+            sinConexion.setVisibility(View.VISIBLE);
             sinInternet();
+            refresh();
         }
         return vista;
     }
 
+    private void refresh() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    sinConexion.setVisibility(View.GONE);
+                    inflarRecycler();
+                }
+                else{
+                    sinInternet();
+                    sinConexion.setVisibility(View.VISIBLE);
+                }
+                refreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
     private void inflarRecycler() {
+        recyclerNoticias.setVisibility(View.VISIBLE);
         Call<List<News>> call = newsSrv.getNews(usuario);
         Log.d("URL NOTICIAS", call.request().url().toString());
         call.enqueue(new Callback<List<News>>() {
@@ -137,6 +164,8 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
     }
 
     private void initElement() {
+        refreshLayout = vista.findViewById(R.id.refreshNoticias);
+        sinConexion = vista.findViewById(R.id.tv_sin_conexion_noticias);
         newsSrv = new RetrofitAdapter().connectionEnable().create(NewsSrv.class);
         recyclerNoticias = vista.findViewById(R.id.recyclerNoticias);
         textNoticias = vista.findViewById(R.id.tv_noticias);

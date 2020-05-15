@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -43,7 +44,8 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
     private RecyclerView recycleComp;
     private RecyclerView.LayoutManager manager;
     private Map<String,String> filtros;
-
+    private TextView sinConexion;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public CompetenciasListFragment() {
         // Required empty public constructor
@@ -69,10 +71,26 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
         initAdapter();
         if(NetworkReceiver.existConnection(vista.getContext())) {
             inflarRecycler();
+            refresh();
         } else {
             sinInternet();
+            refresh();
         }
         return vista;
+    }
+
+    private void refresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    inflarRecycler();
+                } else {
+                    sinInternet();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
 
@@ -101,10 +119,10 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
 
     @Override
     public void sinInternet() {
+        sinConexion.setVisibility(View.VISIBLE);
         Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet, por el momento no se podran ver las competencias. Por favor intente mas tarde", Toast.LENGTH_LONG);
         toast.show();
         sinCompetencias();
-        sinCompetencias.setText("SIN CONEXION A INTERNET");
     }
 
     public interface OnFragmentInteractionListener {
@@ -125,6 +143,9 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
         recycleComp.setHasFixedSize(true);
         adapter = new CompetenciasMinRecyclerViewAdapter(vista.getContext());
         recycleComp.setAdapter(adapter);
+        sinConexion = vista.findViewById(R.id.tv_sin_conexion_compe);
+        swipeRefreshLayout = vista.findViewById(R.id.refreshCompe);
+
     }
 
 
@@ -139,6 +160,8 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
 
 
     private void inflarRecycler() {
+        recycleComp.setVisibility(View.VISIBLE);
+        sinConexion.setVisibility(View.GONE);
         //En call viene el tipo de dato que espero del servidor
         Call<List<CompetitionMin>> call = competitionSrv.findCompetitionsByFilters(filtros);
         Log.d("URL FILTROS: ",call.request().url().toString());
@@ -152,6 +175,7 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
                     competitions = response.body();
                     Log.d("RESP CODE COMPETITION", competitions.toString());
                     if(competitions.size() != 0){
+                        sinCompetencias.setVisibility(View.INVISIBLE);
                         adapter.setCompetencias(competitions);
                         //CREO EL ADAPTER Y LO SETEO PARA QUE INFLE EL LAYOUT
                         recycleComp.setAdapter(adapter);
@@ -186,6 +210,5 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
     private void sinCompetencias() {
         recycleComp.setVisibility(View.INVISIBLE);
         sinCompetencias.setVisibility(View.VISIBLE);
-
     }
 }

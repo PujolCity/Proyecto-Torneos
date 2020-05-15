@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -37,6 +38,7 @@ import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.VeizagaTorrico.proyectotorneos.utils.Support;
 
@@ -47,7 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EncuentrosDetalleFragment extends Fragment {
+public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinInternet {
 
     private OnFragmentInteractionListener mListener;
 
@@ -68,6 +70,7 @@ public class EncuentrosDetalleFragment extends Fragment {
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv, competidorLibre;
     private AdminDataOff adminDataOff;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public EncuentrosDetalleFragment() {
         // Required empty public constructor
@@ -97,6 +100,8 @@ public class EncuentrosDetalleFragment extends Fragment {
 
     private void initElements() {
         try {
+            swipeRefreshLayout = vista.findViewById(R.id.refreshEncuentro);
+
             fecha_grupo = new HashMap<>();
             sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
             sinEncuentrosTv.setVisibility(View.GONE);
@@ -122,14 +127,32 @@ public class EncuentrosDetalleFragment extends Fragment {
 
             if(NetworkReceiver.existConnection(vista.getContext())) {
                 cargarSpinnerFiltroEncuentros();
+                refresh();
             }
             else{
                 cargarSpinnerFiltroEncuentrosOffline();
+                sinInternet();
+                refresh();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void refresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    cargarSpinnerFiltroEncuentros();
+                } else {
+                    cargarSpinnerFiltroEncuentrosOffline();
+                    sinInternet();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void getEncuentros(Map<String, String> fechaGrupo) {
@@ -304,11 +327,11 @@ public class EncuentrosDetalleFragment extends Fragment {
     }
 
     private void sinEncuentros() {
-        recycleCon.setVisibility(View.INVISIBLE);
+        swipeRefreshLayout.setVisibility(View.GONE);
         sinEncuentrosTv.setVisibility(View.VISIBLE);
     }
     private void conEncuentros() {
-        recycleCon.setVisibility(View.VISIBLE);
+        swipeRefreshLayout.setVisibility(View.VISIBLE);
         sinEncuentrosTv.setVisibility(View.INVISIBLE);
     }
 
@@ -589,6 +612,12 @@ public class EncuentrosDetalleFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet", Toast.LENGTH_LONG);
+        toast.show();
     }
 
     public interface OnFragmentInteractionListener {

@@ -5,16 +5,19 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager.widget.ViewPager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.ViewPagerAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.google.android.material.tabs.TabLayout;
 
 
@@ -25,6 +28,8 @@ public class DetalleCompetenciaFragment extends Fragment {
     private ViewPagerAdapter adapter;
     private ViewPager pager;
     private TabLayout tabLayout;
+    private SwipeRefreshLayout refreshLayout;
+    private TextView sinConexion;
 
     public DetalleCompetenciaFragment() {
         // Required empty public constructor
@@ -47,18 +52,51 @@ public class DetalleCompetenciaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_detalle_competencia, container, false);
-        pager = vista.findViewById(R.id.pagerCompetencias);
+        initElements();
         llenarPager();
+
+        if(NetworkReceiver.existConnection(vista.getContext())) {
+            sinConexion.setVisibility(View.GONE);
+            refresh();
+        }
+        else{
+            sinConexion.setVisibility(View.VISIBLE);
+            refresh();
+        }
+
+        return vista;
+    }
+
+    private void refresh() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    sinConexion.setVisibility(View.GONE);
+                    llenarPager();
+                }
+                else{
+                    sinConexion.setVisibility(View.VISIBLE);
+                    llenarPager();
+                }
+                refreshLayout.setRefreshing(false);
+            }
+        });
+    }
+
+    private void initElements() {
+        sinConexion = vista.findViewById(R.id.tv_sin_conexion_tabCompetencias);
+        refreshLayout = vista.findViewById(R.id.refreshTabCompetencias);
+        pager = vista.findViewById(R.id.pagerCompetencias);
+        tabLayout = vista.findViewById(R.id.tabLayoutCompetencias);
         pager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener(){
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
                 super.onPageScrolled(position, positionOffset, positionOffsetPixels);
             }
         });
-        tabLayout = vista.findViewById(R.id.tabLayoutCompetencias);
         tabLayout.setupWithViewPager(pager);
 
-        return vista;
     }
 
     public void onButtonPressed(Uri uri) {
@@ -108,7 +146,7 @@ public class DetalleCompetenciaFragment extends Fragment {
         adapter = new ViewPagerAdapter(getChildFragmentManager());
 
         // le pasamos la competencia a cada fragment
-        adapter.addFragment(infoGeneral,"Info General");
+        adapter.addFragment(infoGeneral,"Info general");
         infoGeneral.setCompetencia(competition);
 
         adapter.addFragment(encuentrosFragment, "Encuentros");

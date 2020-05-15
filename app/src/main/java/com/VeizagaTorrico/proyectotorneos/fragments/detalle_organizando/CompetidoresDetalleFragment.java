@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,7 +47,6 @@ public class CompetidoresDetalleFragment extends Fragment {
     private CompetitionMin competencia;
     private ImageButton solicitudes;
     private TextView sinCompetidores;
-    private TextView sinConexion;
     private CompetidoresRecyclerViewAdapter adapter;
     private AdminDataOff adminDataOff;
 
@@ -72,30 +72,27 @@ public class CompetidoresDetalleFragment extends Fragment {
         // Inflate the layout for this fragment
         vista = inflater.inflate(R.layout.fragment_competidores_detalle, container, false);
         initElement();
+        listeners();
         inflarRecycler();
-
-        if(NetworkReceiver.existConnection(vista.getContext())){
-            sinConexion.setVisibility(View.GONE);
-            solicitudes.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString(Constants.EXTRA_KEY_ID_COMPETENCIA, String.valueOf(competencia.getId()));
-
-                    // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                    Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
-
-                }
-            });
-        }
-        else{
-            sinConexion.setVisibility(View.VISIBLE);
-        }
 
         return vista;
     }
 
+    private void listeners() {
+        solicitudes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putString(Constants.EXTRA_KEY_ID_COMPETENCIA, String.valueOf(competencia.getId()));
+
+                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
+            }
+        });
+    }
+
     private void inflarRecycler() {
+        recycle.setVisibility(View.VISIBLE);
         if(NetworkReceiver.existConnection(vista.getContext())) {
             getCompetitors();
         }
@@ -118,6 +115,7 @@ public class CompetidoresDetalleFragment extends Fragment {
                             Log.d("COMPETIDORES",competidores.toString());
                             adapter.setCompetidores(competidores);
                             recycle.setAdapter(adapter);
+                            sinCompetidores.setVisibility(View.INVISIBLE);
                         } else {
                             sinCompetidores();
                         }
@@ -148,6 +146,7 @@ public class CompetidoresDetalleFragment extends Fragment {
             Log.d("COMPETIDORES",competidores.toString());
             adapter.setCompetidores(competidores);
             recycle.setAdapter(adapter);
+            sinCompetidores.setVisibility(View.INVISIBLE);
         } else {
             sinCompetidores();
         }
@@ -161,7 +160,6 @@ public class CompetidoresDetalleFragment extends Fragment {
     private void initElement() {
         userSrv = new RetrofitAdapter().connectionEnable().create(UserSrv.class);
         sinCompetidores = vista.findViewById(R.id.tv_sinCompetidores);
-        sinConexion = vista.findViewById(R.id.tv_sin_conexion_competidores);
         competidores = new ArrayList<>();
         recycle = vista.findViewById(R.id.recyclerCompetidores);
         solicitudes = vista.findViewById(R.id.btnSolicitudes);

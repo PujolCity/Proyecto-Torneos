@@ -136,7 +136,7 @@
     <fragment
         android:id="@+id/detalleOrganizandoFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment"
-        android:label="A Organizar!!"
+        android:label="A organizar!!"
         tools:layout="@layout/fragment_detalle_organizando" >
         <action
             android:id="@+id/action_detalleOrganizandoFragment_to_generalDetalleFragment"
@@ -145,7 +145,7 @@
     <fragment
         android:id="@+id/cargasDetalleFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CargasDetalleFragment"
-        android:label="fragment_cargas_detalle"
+        android:label=""
         tools:layout="@layout/fragment_cargas_detalle" >
         <action
             android:id="@+id/action_cargasDetalleFragment_to_encuentrosDetalleFragment"
@@ -210,7 +210,7 @@
     <fragment
         android:id="@+id/cargarPredioFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment"
-        android:label="Cargar Predios y campos"
+        android:label="Cargar predios y campos"
         tools:layout="@layout/fragment_cargar_predio" />
     <fragment
         android:id="@+id/cargarJuezFragment"
@@ -225,7 +225,7 @@
     <fragment
         android:id="@+id/coOrganizadorFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment"
-        android:label="Invita a un Usuario a organizar"
+        android:label="Invita a un usuario a organizar"
         tools:layout="@layout/fragment_co_organizador" />
     <fragment
         android:id="@+id/misInvitaciones"
@@ -245,11 +245,11 @@
     <fragment
         android:id="@+id/editCompetenciaFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.EditCompetenciaFragment"
-        android:label="EditCompetenciaFragment" />
+        android:label="" />
     <fragment
         android:id="@+id/tabPerfilFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.TabPerfilFragment"
-        android:label="Mi Perfil"
+        android:label="Mi perfil"
         tools:layout="@layout/fragment_tab_perfil" >
         <action
             android:id="@+id/action_tabPerfilFragment_to_miPerfilFragment"
@@ -283,22 +283,22 @@
     <fragment
         android:id="@+id/notificacionesFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.mi_perfil.NotificacionesFragment"
-        android:label="fragment_notificaciones"
+        android:label=""
         tools:layout="@layout/fragment_notificaciones" />
     <fragment
         android:id="@+id/cerrarSesionFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.CerrarSesionFragment"
-        android:label="fragment_cerrar_sesion"
+        android:label=""
         tools:layout="@layout/fragment_cerrar_sesion" />
     <fragment
         android:id="@+id/crearInscripcionFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.CrearInscripcionFragment"
-        android:label="Crear Inscripcion"
+        android:label="Crear inscripcion"
         tools:layout="@layout/fragment_crear_inscripcion" />
     <fragment
         android:id="@+id/generalDetalleFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.GeneralDetalleFragment"
-        android:label="info_general_organizando_competencia"
+        android:label=""
         tools:layout="@layout/info_general_organizando_competencia" >
         <action
             android:id="@+id/action_generalDetalleFragment_to_editCompetenciaFragment"
@@ -316,7 +316,7 @@
     <fragment
         android:id="@+id/encuentrosFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias.EncuentrosFragment"
-        android:label="fragment_encuentros"
+        android:label=""
         tools:layout="@layout/fragment_encuentros" />
     <fragment
         android:id="@+id/cargaPredioCompetenciaFragment"

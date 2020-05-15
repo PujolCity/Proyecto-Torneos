@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -63,6 +64,8 @@ public class EncuentrosFragment extends Fragment {
     private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv, competidorLibre;
+    private TextView sinConexion;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public EncuentrosFragment() {
         // Required empty public constructor
@@ -84,7 +87,7 @@ public class EncuentrosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        vista = inflater.inflate(R.layout.fragment_encuentros_detalle, container, false);
+        vista = inflater.inflate(R.layout.fragment_encuentros, container, false);
         initElements();
 
         return vista;
@@ -93,6 +96,9 @@ public class EncuentrosFragment extends Fragment {
 
     private void initElements() {
         try {
+            sinConexion = vista.findViewById(R.id.tv_sin_conexion_encuentrosDetalle);
+            swipeRefreshLayout = vista.findViewById(R.id.refreshEncuentro);
+
             fecha_grupo = new HashMap<>();
             sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
             competidorLibre = vista.findViewById(R.id.tv_comp_libre);
@@ -113,6 +119,7 @@ public class EncuentrosFragment extends Fragment {
             itemsFase = new ArrayList<>();
             itemsGrupo = new ArrayList<>();
             btnBuscar = vista.findViewById(R.id.btnBuscar);
+
 
             cargarSpinnerFiltroEncuentros();
 

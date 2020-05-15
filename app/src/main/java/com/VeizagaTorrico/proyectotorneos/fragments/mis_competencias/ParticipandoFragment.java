@@ -179,7 +179,7 @@ public class ParticipandoFragment extends Fragment implements MensajeSinInternet
                         bundle.putSerializable("competencia", competition);
                         // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
 //                        Navigation.findNavController(vista).navigate(R.id.detalleCompetenciaFragment, bundle);
-                        Navigation.findNavController(vista).navigate(R.id.detalleOrganizandoFragment, bundle);
+                        Navigation.findNavController(vista).navigate(R.id.detalleCompetenciaFragment, bundle);
                     }
                 });
             } catch (Exception e) {

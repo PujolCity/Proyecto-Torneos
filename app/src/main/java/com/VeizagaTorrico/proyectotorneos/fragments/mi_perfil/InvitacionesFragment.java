@@ -45,7 +45,6 @@ public class InvitacionesFragment extends Fragment {
     private RecyclerView recyclerInv;
     private RecyclerView.LayoutManager manager;
     private TextView sinInitacionesTv;
-    private TextView tvSinConexion;
 
     public InvitacionesFragment() {
     }
@@ -68,11 +67,7 @@ public class InvitacionesFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_invitaciones, container, false);
         initAdapter();
         if(NetworkReceiver.existConnection(vista.getContext())){
-            tvSinConexion.setVisibility(View.GONE);
             inflarRecycler();
-        }
-        else{
-            tvSinConexion.setVisibility(View.VISIBLE);
         }
 
         return vista;
@@ -134,7 +129,6 @@ public class InvitacionesFragment extends Fragment {
         recyclerInv.setHasFixedSize(true);
         invitacionAdapter = new SolicitudesOrganizadorRecyclerViewAdapter(vista.getContext());
         recyclerInv.setAdapter(invitacionAdapter);
-        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_mis_invitaciones);
     }
 
     public void onButtonPressed(Uri uri) {

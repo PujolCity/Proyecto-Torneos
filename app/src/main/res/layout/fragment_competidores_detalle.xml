@@ -2,24 +2,14 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".fragments.detalle_organizando.CompetidoresDetalleFragment">
 
-    <TextView
-        android:id="@+id/tv_sin_conexion_competidores"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_sin_conexion"
-        android:background="@color/color_sin_conexion"
-        android:gravity="center_horizontal|center_vertical"
-        android:text="@string/sin_conexion"
-        android:textColor="#FFFFFF"
-        android:textSize="@dimen/text_size_sin_conexion"
-        tools:visibility="gone" />
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp">
 
         <ImageButton
             android:id="@+id/btnSolicitudes"
@@ -32,18 +22,20 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.918"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"></ImageButton>
+            app:layout_constraintTop_toTopOf="parent">
+        </ImageButton>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerCompetidores"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="60dp"
             android:layout_marginEnd="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnSolicitudes"></androidx.recyclerview.widget.RecyclerView>
+            app:layout_constraintTop_toBottomOf="@+id/btnSolicitudes">
+        </androidx.recyclerview.widget.RecyclerView>
 
         <TextView
             android:id="@+id/tv_sinCompetidores"

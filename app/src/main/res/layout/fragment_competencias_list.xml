@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,22 +8,46 @@
     android:padding="5dp"
     tools:context=".fragments.competencias.CompetenciasListFragment">
 
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleCompView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </androidx.recyclerview.widget.RecyclerView>
-
     <TextView
-        android:id="@+id/tv_sinCompetencias"
-        android:layout_gravity="center_horizontal|center_vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sin Competencias"
-        android:textSize="40sp"
-        android:gravity="center_vertical|center_horizontal"
-        android:visibility="invisible">
-    </TextView>
+        android:id="@+id/tv_sin_conexion_compe"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_sin_conexion"
+        android:background="@color/color_sin_conexion"
+        android:gravity="center_horizontal|center_vertical"
+        android:text="@string/sin_conexion"
+        android:textColor="#FFFFFF"
+        android:textSize="@dimen/text_size_sin_conexion"
+        android:visibility="gone"/>
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="25dp">
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/refreshCompe"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycleCompView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </androidx.recyclerview.widget.RecyclerView>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+        <TextView
+            android:id="@+id/tv_sinCompetencias"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|center_vertical"
+            android:layout_marginTop="260dp"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Sin Competencias"
+            android:textSize="40sp"
+            android:visibility="invisible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/refreshCompe">
+        </TextView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

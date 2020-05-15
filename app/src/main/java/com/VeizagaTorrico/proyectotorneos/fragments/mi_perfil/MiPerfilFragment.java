@@ -50,7 +50,6 @@ public class MiPerfilFragment extends Fragment {
     private UserSrv apiUserService;
     private Map<String,String> newUserMap = new HashMap<>();
     RespSrvUser respSrvRegister;
-    private TextView tvSinConexion;
 
     private OnFragmentInteractionListener mListener;
 
@@ -79,11 +78,7 @@ public class MiPerfilFragment extends Fragment {
         updateUi();
         loadDataUser();
         if(NetworkReceiver.existConnection(vista.getContext())){
-            tvSinConexion.setVisibility(View.GONE);
             listenBotonSaveChanges();
-        }
-        else{
-            tvSinConexion.setVisibility(View.VISIBLE);
         }
 
         return vista;
@@ -95,7 +90,6 @@ public class MiPerfilFragment extends Fragment {
         edtApellido = vista.findViewById(R.id.edt_apellido_miperfil);
         edtCorreo = vista.findViewById(R.id.edt_correo_miperfil);
         edtusuario = vista.findViewById(R.id.edt_usuario_miperfil);
-        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_mis_datos);
 
         btnSaveChanges = vista.findViewById(R.id.btn_update_miperfil);
     }

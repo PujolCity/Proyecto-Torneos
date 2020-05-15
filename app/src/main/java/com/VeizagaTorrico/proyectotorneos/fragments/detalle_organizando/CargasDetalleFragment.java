@@ -45,7 +45,6 @@ public class CargasDetalleFragment extends Fragment {
     private Button btnInvitar;
     private Button btnSigFase;
     private Button btnNoticias;
-    private TextView tvSinConexion;
 
     private CompetitionSrv competenciaSrv;
 
@@ -71,11 +70,9 @@ public class CargasDetalleFragment extends Fragment {
         vista = inflater.inflate(R.layout.fragment_cargas_detalle, container, false);
         initElements();
         if(NetworkReceiver.existConnection(vista.getContext())){
-            tvSinConexion.setVisibility(View.GONE);
             listenButtons();
         }
         else{
-            tvSinConexion.setVisibility(View.VISIBLE);
             Toast.makeText(vista.getContext(), "Estas funciones solo estan disponibles cuando haya una conexion a internet activa.", Toast.LENGTH_LONG);
         }
 
@@ -92,7 +89,6 @@ public class CargasDetalleFragment extends Fragment {
         btnInvitar = vista.findViewById(R.id.btnInvitar);
         btnSigFase = vista.findViewById(R.id.btnSigFase);
         btnNoticias = vista.findViewById(R.id.btnPubNoticias);
-        tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_cargas);
 
         if(competencia.getRol().contains("ORGANIZADOR")){
             btnInvitar.setVisibility(View.VISIBLE);
@@ -164,7 +160,7 @@ public class CargasDetalleFragment extends Fragment {
                                 toast.show();
                             }
                             if (response.code() == 400) {
-                                Log.d("RESP_SIGNIN_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                Log.d("RESP_SIGNIN_ERROR", "PETICION MAL FORMADA: "+response.errorBody().toString());
                                 JSONObject jsonObject = null;
                                 try {
                                     jsonObject = new JSONObject(response.errorBody().string());
