@@ -55,12 +55,12 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
 
     private View vista;
     private ConfrontationSrv confrontationSrv;
-    private List<Confrontation> encuentros;
     private EncuentrosRecyclerViewAdapter adapter;
+    private List<Confrontation> encuentros;
     private RecyclerView recycleCon;
     private RecyclerView.LayoutManager manager;
-    private CompetitionSrv competitionSrv;
     private CompetitionMin competencia;
+    private CompetitionSrv competitionSrv;
     private Spinner spinnerJornada, spinnerGrupo, spinnerFase;
     private boolean enableSpinJornada, enableSpinFase, enableSpinGrupo;
     private CompetitionOrg dataOrgCompetition;
@@ -100,10 +100,10 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
 
     private void initElements() {
         try {
-            swipeRefreshLayout = vista.findViewById(R.id.refreshEncuentro);
+            swipeRefreshLayout = vista.findViewById(R.id.refreshEncuentroDetalle);
 
             fecha_grupo = new HashMap<>();
-            sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
+            sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentrosDetalle);
             sinEncuentrosTv.setVisibility(View.GONE);
             competidorLibre = vista.findViewById(R.id.tv_comp_libre);
             competidorLibre.setVisibility(View.GONE);
@@ -327,11 +327,9 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
     }
 
     private void sinEncuentros() {
-        swipeRefreshLayout.setVisibility(View.GONE);
         sinEncuentrosTv.setVisibility(View.VISIBLE);
     }
     private void conEncuentros() {
-        swipeRefreshLayout.setVisibility(View.VISIBLE);
         sinEncuentrosTv.setVisibility(View.INVISIBLE);
     }
 
