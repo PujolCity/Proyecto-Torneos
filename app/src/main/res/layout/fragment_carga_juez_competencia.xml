@@ -27,7 +27,7 @@
                 android:textSize="18sp">
             </TextView>
 
-<!--            busqueda de juez-->
+            <!--            busqueda de juez-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,8 +73,7 @@
                         android:textColor="#FFFFFF" />
                 </LinearLayout>
             </LinearLayout>
-
-<!--            resultado de la busqueda-->
+            <!--            resultado de la busqueda-->
             <LinearLayout
                 android:id="@+id/lin_resultado_busqueda_juez"
                 android:layout_width="match_parent"
@@ -176,8 +175,7 @@
                         android:textSize="12sp" />
                 </LinearLayout>
             </LinearLayout>
-
-<!--            tv sin resultados-->
+            <!--            tv sin resultados-->
             <TextView
                 android:id="@+id/tv_no_resultados_jueces"
                 android:layout_width="match_parent"
