@@ -36,27 +36,6 @@ public class Support {
     public static String spinnerGetNroFaseElim(String f){
 //        Log.d("SPIN_SEL_FASE", "Opcion elegida: "+f);
         String fase = null;
-//        if(f == "Grupos"){
-//            fase = "0";
-//        }
-//        if((f == "Final") || f == "Ida"){
-//            fase = "1";
-//        }
-//        if((f == "Semi") || (f == "Vuelta")){
-//            fase = "2";
-//        }
-//        if(f == "4º final"){
-//            fase = "3";
-//        }
-//        if(f == "8º final"){
-//            fase = "4";
-//        }
-//        if(f == "16º final"){
-//            fase = "5";
-//        }
-//        if(f == "32º final"){
-//            fase = "6";
-//        }
         if(f.equals("Grupos")){
             fase = "0";
         }

@@ -85,28 +85,25 @@
                 android:id="@+id/btnFollow"
                 android:layout_width="42dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="3dp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:src="@drawable/baseline_thumb_up_black_18dp"
                 android:tint="@color/cardview_light_background"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.707"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-            </ImageButton>
+                app:layout_constraintEnd_toStartOf="@+id/btnNoFollow"
+                app:layout_constraintTop_toBottomOf="@+id/btn_download_off"></ImageButton>
 
             <ImageButton
                 android:id="@+id/btnNoFollow"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="50dp"
                 android:backgroundTint="@color/colorDejarSeguir"
                 android:src="@drawable/baseline_thumb_down"
                 android:tint="@color/cardview_light_background"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/btnFollow"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/btn_download_off">
 
             </ImageButton>
 
@@ -114,16 +111,13 @@
                 android:id="@+id/inscribirse"
                 android:layout_width="110dp"
                 android:layout_height="40dp"
-                android:layout_marginStart="148dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="3dp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:text="Inscribirse"
                 android:textColor="@color/cardview_light_background"
                 app:layout_constraintEnd_toStartOf="@+id/btnFollow"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-            </Button>
+                app:layout_constraintTop_toBottomOf="@+id/btn_download_off"></Button>
 
             <TextView
                 android:id="@+id/tv_estado_infograll"
@@ -181,16 +175,35 @@
                 android:id="@+id/btn_download_off"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="28dp"
+                android:layout_marginStart="44dp"
+                android:layout_marginTop="8dp"
                 android:src="@drawable/ic_download"
-                android:text="Descragar"
+                android:text="Descargar"
                 android:textColor="@color/cardview_light_background"
-                app:layout_constraintEnd_toStartOf="@+id/inscribirse"
-                app:layout_constraintHorizontal_bias="0.365"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
             </ImageButton>
+
+            <TextView
+                android:id="@+id/tv_down_comp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="13dp"
+                android:text="Descargar datos"
+                android:textSize="14sp"
+                app:layout_constraintStart_toEndOf="@+id/btn_download_off"
+                app:layout_constraintTop_toTopOf="parent"></TextView>
+
+            <TextView
+                android:id="@+id/tv_down_descripcion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="3dp"
+                android:text="Administre sus competencias sin conexion a la red"
+                android:textSize="9sp"
+                app:layout_constraintStart_toEndOf="@+id/btn_download_off"
+                app:layout_constraintTop_toBottomOf="@+id/tv_down_comp"></TextView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

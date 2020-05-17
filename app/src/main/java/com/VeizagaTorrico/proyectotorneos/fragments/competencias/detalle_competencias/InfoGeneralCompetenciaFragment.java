@@ -69,9 +69,9 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
     private ImageButton follow, noFollow;
     private CompetitionSrv competitionSrv;
     private ConfrontationSrv confrontationSrv;
-//    private UserSrv usersSrv;
     private Button inscribirse;
     private ImageButton downloadOff;
+    private TextView tvDescargarOff, tvDescDecargarOff;
     private View vista;
     private Map<String,String> solicitud;
     private boolean comprobado, isOtherFragment;
@@ -206,9 +206,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
     }
 
     private void initElements() {
-//        adminData = new AdminDataOff();
-//        adminEncuentroOff = new ManagerConfrontationOff(vista.getContext());
-
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
         inscriptionSrv = new RetrofitAdapter().connectionEnable().create(InscriptionSrv.class);
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
@@ -233,6 +230,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
         noFollow = vista.findViewById(R.id.btnNoFollow);
         inscribirse = vista.findViewById(R.id.inscribirse);
         downloadOff = vista.findViewById(R.id.btn_download_off);
+        tvDescargarOff = vista.findViewById(R.id.tv_down_comp);
+        tvDescDecargarOff = vista.findViewById(R.id.tv_down_descripcion);
         try{
             nmb.setText(competition.getName());
             cat.setText(competition.getCategory());
@@ -337,10 +336,15 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
                 linear.setVisibility(View.INVISIBLE);
                 inscribirse.setVisibility(View.INVISIBLE);
             }
+            // permite q cuando se llame desde menu diferentes se vea o no el boton
             if(isOtherFragment()){
                 downloadOff.setVisibility(View.VISIBLE);
+                tvDescargarOff.setVisibility(View.VISIBLE);
+                tvDescDecargarOff.setVisibility(View.VISIBLE);
             }else {
                 downloadOff.setVisibility(View.INVISIBLE);
+                tvDescargarOff.setVisibility(View.INVISIBLE);
+                tvDescDecargarOff.setVisibility(View.INVISIBLE);
             }
 
         } catch (Exception e) {
@@ -446,8 +450,6 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
 
         Call<MsgRequest> call = competitionSrv.solicitudCompetition(solicitud);
         Log.d("body", solicitud.toString());
-
-        Log.d("response Dialog", call.request().url().toString());
 
         call.enqueue(new Callback<MsgRequest>() {
             @Override

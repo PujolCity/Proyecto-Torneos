@@ -21,10 +21,13 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.VeizagaTorrico.proyectotorneos.Constants.ACTUALIZANDO_DATOS;
 
 public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<SolicitudesRecyclerViewAdapter.ViewHolder>{
 
@@ -112,7 +115,7 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
                         public void onResponse(Call<Success> call, Response<Success> response) {
                             endMsgWaitServer(context);
                             Log.d("response code", Integer.toString(response.code()));
-                            Toast toast = Toast.makeText(context, "Solicitud Aceptada", Toast.LENGTH_SHORT);
+                            Toast toast = Toast.makeText(context, "Solicitud aceptada", Toast.LENGTH_SHORT);
                             toast.show();
                             holder.btnAceptar.setVisibility(View.INVISIBLE);
                             holder.btnRechazar.setVisibility(View.INVISIBLE);
@@ -140,10 +143,7 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
 
 
     private void showMsgWaitServer(Context context) {
-        progressDialog = new ProgressDialog(context);
-        Log.d("MSG_LOADING", "Entro a mostrar mje nuevo");
-        progressDialog.setIcon(R.mipmap.ic_launcher);
-        progressDialog.setMessage("Esperando respuesta del servidor...");
+        progressDialog = ManagerMsgView.getMsgLoading(context, ACTUALIZANDO_DATOS);
         progressDialog.show();
     }
 

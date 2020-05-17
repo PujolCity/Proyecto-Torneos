@@ -43,4 +43,7 @@ public class Constants {
     // valores para reconocer que pantalla mostrar
     public static final String NOTIF_VIEW_SOLICITUD = "MIS_SOLICITUDES";
     public static final String NOTIF_VIEW_INVITACION = "MIS_INVITACIONES";
+
+    // mjes para el mje de carga de datos
+    public static final String ACTUALIZANDO_DATOS = "Rgistrando cambios en el servidor";
 }
