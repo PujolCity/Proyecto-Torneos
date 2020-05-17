@@ -33,8 +33,11 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.Confrontation;
 import com.VeizagaTorrico.proyectotorneos.models.ConfrontationsCompetition;
+import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
+import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.VeizagaTorrico.proyectotorneos.utils.Support;
 
 import org.json.JSONObject;
@@ -44,9 +47,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class EncuentrosFragment extends Fragment {
+public class EncuentrosFragment extends Fragment  implements MensajeSinInternet {
 
-    private EncuentrosDetalleFragment.OnFragmentInteractionListener mListener;
+    private OnFragmentInteractionListener mListener;
 
     private View vista;
     private ConfrontationSrv confrontationSrv;
@@ -61,18 +64,17 @@ public class EncuentrosFragment extends Fragment {
     private CompetitionOrg dataOrgCompetition;
     private List<String> itemsJornada, itemsFase, itemsGrupo;
     private String nroJornada, nroGrupo, nroFase;
-    private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
     private TextView sinEncuentrosTv, competidorLibre;
-    private TextView sinConexion;
+    private AdminDataOff adminDataOff;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     public EncuentrosFragment() {
         // Required empty public constructor
     }
 
-    public static EncuentrosFragment newInstance() {
-        EncuentrosFragment fragment = new EncuentrosFragment();
+    public static EncuentrosDetalleFragment newInstance() {
+        EncuentrosDetalleFragment fragment = new EncuentrosDetalleFragment();
         Bundle args = new Bundle();
         fragment.setArguments(args);
         return fragment;
@@ -93,20 +95,19 @@ public class EncuentrosFragment extends Fragment {
         return vista;
     }
 
-
     private void initElements() {
         try {
-            sinConexion = vista.findViewById(R.id.tv_sin_conexion_encuentrosDetalle);
             swipeRefreshLayout = vista.findViewById(R.id.refreshEncuentro);
 
             fecha_grupo = new HashMap<>();
             sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentros);
-            competidorLibre = vista.findViewById(R.id.tv_comp_libre);
+            sinEncuentrosTv.setVisibility(View.GONE);
+            competidorLibre = vista.findViewById(R.id.tv_comp_libre_encuentro);
             competidorLibre.setVisibility(View.GONE);
             confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
             competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
             encuentros = new ArrayList<>();
-            recycleCon = vista.findViewById(R.id.recyclerEncuentrosDetalle);
+            recycleCon = vista.findViewById(R.id.recyclerEncuentros);
             manager = new LinearLayoutManager(vista.getContext());
             recycleCon.setLayoutManager(manager);
             recycleCon.setHasFixedSize(true);
@@ -118,14 +119,36 @@ public class EncuentrosFragment extends Fragment {
             itemsJornada = new ArrayList<>();
             itemsFase = new ArrayList<>();
             itemsGrupo = new ArrayList<>();
-            btnBuscar = vista.findViewById(R.id.btnBuscar);
+            adminDataOff = new AdminDataOff(vista.getContext());
 
-
-            cargarSpinnerFiltroEncuentros();
+            if(NetworkReceiver.existConnection(vista.getContext())) {
+                cargarSpinnerFiltroEncuentros();
+                refresh();
+            }
+            else{
+                cargarSpinnerFiltroEncuentrosOffline();
+                sinInternet();
+                refresh();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void refresh() {
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    cargarSpinnerFiltroEncuentros();
+                } else {
+                    cargarSpinnerFiltroEncuentrosOffline();
+                    sinInternet();
+                }
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
     }
 
     private void getEncuentros(Map<String, String> fechaGrupo) {
@@ -136,9 +159,10 @@ public class EncuentrosFragment extends Fragment {
         call.enqueue(new Callback<ConfrontationsCompetition>() {
             @Override
             public void onResponse(Call<ConfrontationsCompetition> call, Response<ConfrontationsCompetition> response) {
-                if(response.code() == 200){
+                if (response.code() == 200) {
                     try {
-                        Log.d("REQ_ENCUENTROS_RESP", Integer.toString(response.code()));
+                        Log.d("REQ_ENCUENTROS_RESP", response.body().toString());
+
                         encuentros.clear();
                         encuentros.addAll(response.body().getEncuentros());
                         mostrarEncuentros();
@@ -161,12 +185,29 @@ public class EncuentrosFragment extends Fragment {
         });
     }
 
+    // recupera los datos almacenados en la DB local
+    private void getEncuentrosOffline(Map<String, String> fecha_grupo){
+        encuentros = adminDataOff.getConfrontationByCompetition(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
+        Log.d("ENC_LOCAL", "Cant de encuentros almacenados localmente "+encuentros.size()+" de compId: "+competencia.getId());
+
+        mostrarEncuentros();
+
+        String competidorLibre = adminDataOff.competitorFreeByJornada(competencia.getId(), competencia.getTypesOrganization(), fecha_grupo);
+        if(fecha_grupo.get("jornada") != null){
+            mostrarCompetidorLibre(competidorLibre);
+        }
+    }
+
     private void mostrarEncuentros(){
+        Log.d("ROL COMPETENCIA", competencia.getRol().toString());
+
         if((encuentros != null) && (encuentros.size() != 0)){
             conEncuentros();
             try {
                 adapter.setEncuentros(encuentros);
                 recycleCon.setAdapter(adapter);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -177,10 +218,12 @@ public class EncuentrosFragment extends Fragment {
 
     // mostramos el alias del competidor libre si es que lo hay
     private void mostrarCompetidorLibre(String competidor){
+        Log.d("SHOW_FREE", "Competidor libre: "+competidor);
         if(competidor == null){
             competidorLibre.setVisibility(View.GONE);
         }
         else{
+            Log.d("SHOW_FREE", "Setea VISIBLE el tv: "+competidor);
             competidorLibre.setVisibility(View.VISIBLE);
             competidorLibre.setText("LIBRE: " + competidor);
         }
@@ -190,11 +233,10 @@ public class EncuentrosFragment extends Fragment {
     private void cargarSpinnerFiltroEncuentros() {
         //En call viene el tipo de dato que espero del servidor
         Call<CompetitionOrg> call = competitionSrv.getFaseGrupoCompetition(competencia.getId());
-//        Log.d("SPIN_ENC_REQ", call.request().url().toString());
+        Log.d("SPIN_ENC_REQ", call.request().url().toString());
         call.enqueue(new Callback<CompetitionOrg>() {
             @Override
             public void onResponse(Call<CompetitionOrg> call, Response<CompetitionOrg> response) {
-                Log.d("SPIN_ENC_RESP", response.body().toString());
                 if (response.code() == 200) {
                     try{
                         fecha_grupo.clear();
@@ -203,17 +245,19 @@ public class EncuentrosFragment extends Fragment {
                         // actualizamos la vissualizacion de los spiners y sus datos
                         updateDataSpinners();
                         updateViewSpinners();
-
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+                if (response.code() == 204){
+                    sinEncuentros();
                 }
                 if (response.code() == 400) {
                     JSONObject jsonObject = null;
                     try {
                         jsonObject = new JSONObject(response.errorBody().string());
                         String userMessage = jsonObject.getString("messaging");
-                        Log.d("REC_ENC", "Msg de la repuesta: "+userMessage);
+                        Log.d("RE_ENC_DET", "Msg de la repuesta: "+userMessage);
                         Toast.makeText(vista.getContext(), "Error en la peticion: "+userMessage+" >>", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -233,15 +277,31 @@ public class EncuentrosFragment extends Fragment {
         });
     }
 
-    private void sinEncuentros() {
-        recycleCon.setVisibility(View.INVISIBLE);
-        sinEncuentrosTv.setVisibility(View.VISIBLE);
+    private void cargarSpinnerFiltroEncuentrosOffline(){
+        // controlamos que la competencia se encuentre almacenada localmente
+        if(adminDataOff.competitionWtihConfrontation(competencia.getId())){
+            int cantGrupos = adminDataOff.groupsByCompetition(competencia.getId());
+            int cantJornadas = adminDataOff.jornadaByCompetition(competencia.getId());
+            String[] fases = adminDataOff.phasesByCompetition(competencia.getId());
+
+            fecha_grupo.clear();
+            //asigno a deportes lo que traje del servidor
+            dataOrgCompetition = new CompetitionOrg(cantGrupos,cantJornadas,fases,"Creado desde la DB local");
+            updateDataSpinners();
+            updateViewSpinners();
+        }
+        else{
+            sinEncuentros();
+        }
     }
 
+    private void sinEncuentros() {
+        sinEncuentrosTv.setVisibility(View.VISIBLE);
+    }
     private void conEncuentros() {
-        recycleCon.setVisibility(View.VISIBLE);
         sinEncuentrosTv.setVisibility(View.INVISIBLE);
     }
+
 
     // actualizamos la barra de busqueda segun el tipo y la fase actual de la competencia
     // llenamos los spinnersen base a la misma info
@@ -274,11 +334,12 @@ public class EncuentrosFragment extends Fragment {
         if(competencia.getTypesOrganization().contains("Eliminatoria")){
             if(dataOrgCompetition.getCantFases().length != 0) {
                 enableSpinFase = true;
+//                Log.d("LOAD_ITEM_ACT", "Cant de fases a cargar: "+dataOrgCompetition.getCantFases().length);
                 loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
 
                 enableSpinJornada = true;
                 itemsJornada.add("Ida");
-                if(competencia.getTypesOrganization().contains(Constants.TIPO_ELIMINATORIAS_DOBLE)){
+                if(competencia.getTypesOrganization().contains("Double")){
                     itemsJornada.add("Vuelta");
                 }
             }
@@ -289,6 +350,7 @@ public class EncuentrosFragment extends Fragment {
                 loadItemsFaseElim(dataOrgCompetition.getCantFases(), itemsFase);
                 loadItems(dataOrgCompetition.getCantJornadas(), itemsJornada);
                 loadItems(dataOrgCompetition.getCantGrupos(), itemsGrupo);
+                Log.d("LOAD_ITEM_ACT", "Fase actual db local comp: "+competencia.getFaseActual());
                 if(competencia.getFaseActual().equals(Constants.FASE_GRUPOS)){
                     enableSpinJornada = true;
                     enableSpinGrupo = true;
@@ -346,7 +408,6 @@ public class EncuentrosFragment extends Fragment {
                     String itemSelected = (String) spinnerFase.getSelectedItem();
                     nroFase = Support.spinnerGetNroFaseElim(itemSelected);
                 }
-                // analizamos en el caso de una LIGA
                 if(competencia.getTypesOrganization().contains("Liga")){
                     // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
@@ -376,7 +437,12 @@ public class EncuentrosFragment extends Fragment {
                     }
                 }
                 fecha_grupo.put("fase", nroFase);
-                getEncuentros(fecha_grupo);
+                if(NetworkReceiver.existConnection(vista.getContext())){
+                    getEncuentros(fecha_grupo);
+                }
+                else{
+                    getEncuentrosOffline(fecha_grupo);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -419,7 +485,12 @@ public class EncuentrosFragment extends Fragment {
                     nroJornada = Support.spinnerGetNroFaseElim((String) spinnerJornada.getSelectedItem());
                 }
                 fecha_grupo.put("jornada", nroJornada);
-                getEncuentros(fecha_grupo);
+                if(NetworkReceiver.existConnection(vista.getContext())){
+                    getEncuentros(fecha_grupo);
+                }
+                else{
+                    getEncuentrosOffline(fecha_grupo);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -448,7 +519,12 @@ public class EncuentrosFragment extends Fragment {
                     nroGrupo = (String) spinnerGrupo.getSelectedItem();
                 }
                 fecha_grupo.put("grupo", nroGrupo);
-                getEncuentros(fecha_grupo);
+                if(NetworkReceiver.existConnection(vista.getContext())){
+                    getEncuentros(fecha_grupo);
+                }
+                else{
+                    getEncuentrosOffline(fecha_grupo);
+                }
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -482,6 +558,7 @@ public class EncuentrosFragment extends Fragment {
         return;
     }
 
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -491,8 +568,8 @@ public class EncuentrosFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof EncuentrosDetalleFragment.OnFragmentInteractionListener) {
-            mListener = (EncuentrosDetalleFragment.OnFragmentInteractionListener) context;
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -505,6 +582,12 @@ public class EncuentrosFragment extends Fragment {
         mListener = null;
     }
 
+    @Override
+    public void sinInternet() {
+        Toast toast = Toast.makeText(vista.getContext(), "Sin Conexion a Internet", Toast.LENGTH_LONG);
+        toast.show();
+    }
+
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Uri uri);
     }
@@ -512,5 +595,4 @@ public class EncuentrosFragment extends Fragment {
     public void setCompetencia(CompetitionMin competencia) {
         this.competencia = competencia;
     }
-
 }

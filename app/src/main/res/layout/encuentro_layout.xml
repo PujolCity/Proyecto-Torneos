@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="horizontal"
         android:paddingTop="10dp">
 
@@ -17,6 +17,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:text="competidor 1"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -31,6 +33,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:focusableInTouchMode="false"
+            android:layout_gravity="top"
             android:gravity="center"
             android:hint="-"
             android:inputType="numberDecimal"
@@ -45,8 +48,8 @@
             android:layout_width="45dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_weight="1"
             android:focusableInTouchMode="false"
+            android:layout_gravity="center_horizontal"
             android:gravity="center"
             android:hint="-"
             android:inputType="numberDecimal"
@@ -64,6 +67,8 @@
             android:layout_marginTop="8dp"
             android:layout_weight="2"
             android:text="competidor 2"
+            android:layout_gravity="center_vertical"
+            android:gravity="center"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.062"
@@ -71,6 +76,6 @@
             app:layout_constraintTop_toTopOf="parent">
         </TextView>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
 </androidx.cardview.widget.CardView>

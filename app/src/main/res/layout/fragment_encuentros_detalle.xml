@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout android:layout_width="match_parent"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/refreshEncuentro">
+    android:id="@+id/refreshEncuentroDetalle">
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -43,7 +43,7 @@
             </TextView>
 
             <TextView
-                android:id="@+id/tv_sinEncuentros"
+                android:id="@+id/tv_sinEncuentrosDetalle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
@@ -53,7 +53,6 @@
                 android:textSize="40sp"
                 android:visibility="gone">
             </TextView>
-
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
