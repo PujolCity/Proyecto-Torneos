@@ -2,6 +2,7 @@ package com.VeizagaTorrico.proyectotorneos;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.models.RespSrvUser;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.Validations;
 
 import org.json.JSONObject;
@@ -23,6 +25,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.VeizagaTorrico.proyectotorneos.Constants.ACTUALIZANDO_DATOS;
+
 public class UserRegisterActivity extends AppCompatActivity {
 
     private UserSrv apiUserService;
@@ -30,6 +34,7 @@ public class UserRegisterActivity extends AppCompatActivity {
     Button btn_register;
     EditText edt_nombre, edt_apellido, edt_nombreUsuario, edt_correo, edt_pass, edt_confPass;
     String nombre, apellido, usuario, correo, pass, confPass;
+    private ProgressDialog progressDialog;
     private Map<String,String> userMapRegister = new HashMap<>();
 
     @Override
@@ -140,9 +145,12 @@ public class UserRegisterActivity extends AppCompatActivity {
         userMapRegister.put("token", "ACA_VA_EL_TOKEN_FIREBASE");
 
         Call<RespSrvUser> call = apiUserService.register(userMapRegister);
+        progressDialog = ManagerMsgView.getMsgLoading(this, ACTUALIZANDO_DATOS);
+        progressDialog.show();
         call.enqueue(new Callback<RespSrvUser>() {
             @Override
             public void onResponse(Call<RespSrvUser> call, Response<RespSrvUser> response) {
+                progressDialog.dismiss();
                 if (response.code() == 201) {
                     Toast.makeText(getApplicationContext(), "Se registro el usuario exitosamente ", Toast.LENGTH_SHORT).show();
                     response.raw();
@@ -156,7 +164,7 @@ public class UserRegisterActivity extends AppCompatActivity {
                         jsonObject = new JSONObject(response.errorBody().string());
                         String userMessage = jsonObject.getString("messaging");
                         Log.d("RESP_CREATE_ERROR", "Msg de la repuesta: "+userMessage);
-                        Toast.makeText(getApplicationContext(), "No se pudo registrar el usuario:  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "No se pudo registrar el usuario:  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -166,8 +174,9 @@ public class UserRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RespSrvUser> call, Throwable t) {
+                progressDialog.dismiss();
                 Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
-                Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_LONG).show();
             }
         });
     }
