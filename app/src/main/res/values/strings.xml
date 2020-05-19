@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name">Proyecto Torneos</string>
-    //Strings de creado de competencia
+<!--    Strings de creado de competencia-->
     <string name="Txt_creaCompetencia"> Crea tu Competencia</string>
     <string name="txtCrearCompNmb"> Ingrese el nombre de su competencia</string>
     <string name="datePicker"> Fecha de inicio de la competencia </string>
