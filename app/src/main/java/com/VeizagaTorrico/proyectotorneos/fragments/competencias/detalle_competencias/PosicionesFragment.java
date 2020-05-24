@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,11 +49,11 @@ public class PosicionesFragment extends Fragment {
     private CompetitionMin competition;
     private List<PositionCompetitor> posiciones;
     private CompetitionSrv competitionSrv;
-    private Spinner spin_grupo, spin_jornada, spin_fase;
+    private Spinner spin_grupo, spin_jornada;
     private Integer nroGrupo;
-    private ConstraintLayout barSpinners;
+    private LinearLayout barSpinners, linnTitlePoscion;
     private TextView tvSinTabla;
-    private TextView tvPtsEmpatados;
+    private TextView tvPtsEmpatados, tvTitleJornada;
     private RecyclerView recyclePosicion;
     private PosicionesRecyclerViewAdapter adapterPosicion;
 
@@ -87,13 +88,12 @@ public class PosicionesFragment extends Fragment {
         spin_grupo = vista.findViewById(R.id.spinnerGrupo);
         // ocultamos los spinners que no necesitamos
         spin_jornada = vista.findViewById(R.id.spinnerJornada);
+        tvTitleJornada = vista.findViewById(R.id.tv_title_jornada);
         spin_jornada.setVisibility(View.GONE);
-        spin_fase = vista.findViewById(R.id.spinnerFase);
-        spin_fase.setVisibility(View.GONE);
         barSpinners = vista.findViewById(R.id.barGroup);
         tvSinTabla = vista.findViewById(R.id.tv_sinTabla);
         tvPtsEmpatados = vista.findViewById(R.id.tv_title_pe_posiciones);
-
+        linnTitlePoscion = vista.findViewById(R.id.linn_title_tabla);
         recyclePosicion = vista.findViewById(R.id.posicionesList);
         RecyclerView.LayoutManager manager = new LinearLayoutManager(vista.getContext());
         recyclePosicion.setLayoutManager(manager);
@@ -108,22 +108,24 @@ public class PosicionesFragment extends Fragment {
     private void showTablePosotion(){
         // vemos si es eliminatoria
         if(competition.getTypesOrganization().contains("Eliminatoria")){
+            linnTitlePoscion.setVisibility(View.GONE);
             barSpinners.setVisibility(View.GONE);
             tvSinTabla.setVisibility(View.VISIBLE);
             recyclePosicion.setVisibility(View.GONE);
         }
         else{
+            recyclePosicion.setVisibility(View.VISIBLE);
+            tvSinTabla.setVisibility(View.GONE);
             // analizamos el tipo de competencia
             if(competition.getTypesOrganization().contains("Liga")){
+                linnTitlePoscion.setVisibility(View.VISIBLE);
                 barSpinners.setVisibility(View.GONE);
-                recyclePosicion.setVisibility(View.VISIBLE);
-                tvSinTabla.setVisibility(View.GONE);
                 callTablePosition(competition.getId());
             }
             if(competition.getTypesOrganization().contains("grupo")){
+                spin_jornada.setVisibility(View.GONE);
+                tvTitleJornada.setVisibility(View.GONE);
                 barSpinners.setVisibility(View.VISIBLE);
-                recyclePosicion.setVisibility(View.VISIBLE);
-                tvSinTabla.setVisibility(View.GONE);
                 cargarSpinnerGrupo(competition.getId());
             }
         }
@@ -283,7 +285,7 @@ public class PosicionesFragment extends Fragment {
     // creamos la lista de opciones del spinner
     private List<String> getItemGrupos(int nroGrupos){
         List<String> itemGrupos = new ArrayList<>();
-        itemGrupos.add("Grupo ");
+        itemGrupos.add("seleccione.. ");
         for (int i = 1; i <= nroGrupos ; i++) {
                 itemGrupos.add(String.valueOf(i));
         }

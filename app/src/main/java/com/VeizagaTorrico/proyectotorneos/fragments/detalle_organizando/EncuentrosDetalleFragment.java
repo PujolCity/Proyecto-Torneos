@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -68,9 +69,10 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
     private String nroJornada, nroGrupo, nroFase;
     private ImageButton btnBuscar;
     private Map<String,String> fecha_grupo;
-    private TextView sinEncuentrosTv, competidorLibre;
+    private TextView sinEncuentrosTv, competidorLibre, tvTitleGrupo, tvTitleJornada;
     private AdminDataOff adminDataOff;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private LinearLayout barJorGrupo, barFase;
 
     public EncuentrosDetalleFragment() {
         // Required empty public constructor
@@ -101,6 +103,8 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
     private void initElements() {
         try {
             swipeRefreshLayout = vista.findViewById(R.id.refreshEncuentroDetalle);
+            barJorGrupo = vista.findViewById(R.id.bar_jor_gupo_detalle);
+            barFase = vista.findViewById(R.id.bar_fase_detalle);
 
             fecha_grupo = new HashMap<>();
             sinEncuentrosTv = vista.findViewById(R.id.tv_sinEncuentrosDetalle);
@@ -117,7 +121,9 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
             adapter = new EncuentrosRecyclerViewAdapter(vista.getContext());
             recycleCon.setAdapter(adapter);
             spinnerJornada = vista.findViewById(R.id.spinnerJornada);
+            tvTitleJornada = vista.findViewById(R.id.tv_title_jornada);
             spinnerGrupo = vista.findViewById(R.id.spinnerGrupo);
+            tvTitleGrupo = vista.findViewById(R.id.tv_title_grupo);
             spinnerFase = vista.findViewById(R.id.spinnerFase);
             itemsJornada = new ArrayList<>();
             itemsFase = new ArrayList<>();
@@ -327,6 +333,8 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
     }
 
     private void sinEncuentros() {
+        barFase.setVisibility(View.GONE);
+        barJorGrupo.setVisibility(View.GONE);
         sinEncuentrosTv.setVisibility(View.VISIBLE);
     }
     private void conEncuentros() {
@@ -342,9 +350,9 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
         itemsJornada.clear();
         itemsGrupo.clear();
         itemsFase.clear();
-        itemsJornada.add("Jornada");
-        itemsFase.add("Fase");
-        itemsGrupo.add("Grupo");
+        itemsJornada.add("-");
+        itemsFase.add("Seleccione");
+        itemsGrupo.add("-");
 
         if(competencia.getTypesOrganization().contains("Liga")){
             if(dataOrgCompetition.getCantJornadas() != 0){
@@ -438,6 +446,7 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
                     String itemSelected = (String) spinnerFase.getSelectedItem();
                     nroFase = Support.spinnerGetNroFaseElim(itemSelected);
                 }
+                barJorGrupo.setVisibility(View.VISIBLE);
                 if(competencia.getTypesOrganization().contains("Liga")){
                     // vemos si selecciono la vuelta
                     if((nroFase != null) && (nroFase.equals("2"))){
@@ -457,13 +466,21 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
                 if(competencia.getTypesOrganization().contains("grupo")){
                     if(nroFase.equals("0")){
                         spinnerJornada.setVisibility(View.VISIBLE);
+                        tvTitleJornada.setVisibility(View.VISIBLE);
                         spinnerGrupo.setVisibility(View.VISIBLE);
+                        tvTitleGrupo.setVisibility(View.VISIBLE);
                         loadSpinnerJornada();
                         loadSpinnerGrupo();
+                        fecha_grupo.put("jornada", null);
+                        fecha_grupo.put("grupo", null);
+                        encuentros.clear();
                     }
                     else{
+                        barJorGrupo.setVisibility(View.GONE);
                         spinnerJornada.setVisibility(View.GONE);
+                        tvTitleJornada.setVisibility(View.GONE);
                         spinnerGrupo.setVisibility(View.GONE);
+                        tvTitleGrupo.setVisibility(View.GONE);
                     }
                 }
                 fecha_grupo.put("fase", nroFase);
@@ -570,21 +587,29 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
         else{
             spinnerFase.setVisibility(View.GONE);
         }
-        if(enableSpinJornada){
+        if(enableSpinJornada && !competencia.getTypesOrganization().contains("grupo")){
             spinnerJornada.setVisibility(View.VISIBLE);
+            tvTitleJornada.setVisibility(View.VISIBLE);
             loadSpinnerJornada();
         }
         else{
             spinnerJornada.setVisibility(View.GONE);
+            tvTitleJornada.setVisibility(View.GONE);
         }
-        if(enableSpinGrupo) {
+        if(enableSpinGrupo && !competencia.getTypesOrganization().contains("grupo")) {
             spinnerGrupo.setVisibility(View.VISIBLE);
+            tvTitleGrupo.setVisibility(View.VISIBLE);
             loadSpinnerGrupo();
         }
         else{
-            spinnerGrupo.setVisibility(View.GONE);
+            spinnerGrupo.setVisibility(View.INVISIBLE);
+            tvTitleGrupo.setVisibility(View.INVISIBLE);
         }
 
+        // mostramos la 2da barra de spinner solo cuando hay seleccionado una fase
+        if(competencia.getTypesOrganization().contains("grupo")){
+            barJorGrupo.setVisibility(View.GONE);
+        }
         return;
     }
 
