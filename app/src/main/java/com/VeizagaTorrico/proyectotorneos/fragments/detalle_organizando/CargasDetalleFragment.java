@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -41,7 +42,7 @@ public class CargasDetalleFragment extends Fragment {
     private View vista;
     private CompetitionMin competencia;
     private Button btnPredio, btnTurno, btnJuez, btnGenerar, btnInvitar, btnSigFase, btnNoticias;
-    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
 
     private CompetitionSrv competenciaSrv;
 
@@ -148,20 +149,20 @@ public class CargasDetalleFragment extends Fragment {
                 Call<MsgRequest> call = competenciaSrv.generarEncuentros(competencia.getId());
                 Log.d("Url Call", call.request().url().toString());
                 // mostramos mje de carga
-                progressDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Generando encuentros..");
-                progressDialog.show();
+                alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Generando encuentros..");
+                alertDialog.show();
                 try {
                     call.enqueue(new Callback<MsgRequest>() {
                         @Override
                         public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                             Log.d("response",Integer.toString(response.code()));
                             if(response.code() == 200) {
-                                progressDialog.dismiss();
+                                alertDialog.dismiss();
                                 Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
                                 toast.show();
                             }
                             if (response.code() == 400) {
-                                progressDialog.dismiss();
+                                alertDialog.dismiss();
                                 Log.d("RESP_SIGNIN_ERROR", "PETICION MAL FORMADA: "+response.errorBody().toString());
                                 JSONObject jsonObject = null;
                                 try {
@@ -178,7 +179,7 @@ public class CargasDetalleFragment extends Fragment {
 
                         @Override
                         public void onFailure(Call<MsgRequest> call, Throwable t) {
-                            progressDialog.dismiss();
+                            alertDialog.dismiss();
                             Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                             toast.show();
                         }

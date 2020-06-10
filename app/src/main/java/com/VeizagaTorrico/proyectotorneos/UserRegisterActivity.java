@@ -2,6 +2,7 @@ package com.VeizagaTorrico.proyectotorneos;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -34,7 +35,7 @@ public class UserRegisterActivity extends AppCompatActivity {
     Button btn_register;
     EditText edt_nombre, edt_apellido, edt_nombreUsuario, edt_correo, edt_pass, edt_confPass;
     String nombre, apellido, usuario, correo, pass, confPass;
-    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
     private Map<String,String> userMapRegister = new HashMap<>();
 
     @Override
@@ -145,12 +146,12 @@ public class UserRegisterActivity extends AppCompatActivity {
         userMapRegister.put("token", "ACA_VA_EL_TOKEN_FIREBASE");
 
         Call<RespSrvUser> call = apiUserService.register(userMapRegister);
-        progressDialog = ManagerMsgView.getMsgLoading(this, ACTUALIZANDO_DATOS);
-        progressDialog.show();
+        alertDialog = ManagerMsgView.getMsgLoading(this, ACTUALIZANDO_DATOS);
+        alertDialog.show();
         call.enqueue(new Callback<RespSrvUser>() {
             @Override
             public void onResponse(Call<RespSrvUser> call, Response<RespSrvUser> response) {
-                progressDialog.dismiss();
+                alertDialog.dismiss();
                 if (response.code() == 201) {
                     Toast.makeText(getApplicationContext(), "Se registro el usuario exitosamente ", Toast.LENGTH_SHORT).show();
                     response.raw();
@@ -174,7 +175,7 @@ public class UserRegisterActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<RespSrvUser> call, Throwable t) {
-                progressDialog.dismiss();
+                alertDialog.dismiss();
                 Log.d("RESP_CREATE_ERROR", "error: "+t.getMessage());
                 Toast.makeText(getApplicationContext(), "Existen problemas con el servidor ", Toast.LENGTH_LONG).show();
             }

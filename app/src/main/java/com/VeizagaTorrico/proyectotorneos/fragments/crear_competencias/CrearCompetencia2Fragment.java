@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.VeizagaTorrico.proyectotorneos.models.Competition;
 import com.VeizagaTorrico.proyectotorneos.models.Sport;
 import com.VeizagaTorrico.proyectotorneos.services.CategorySrv;
 import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
@@ -46,6 +48,7 @@ public class CrearCompetencia2Fragment extends Fragment implements MensajeSinInt
     private CategorySrv categorySrv;
     private Competition competencia;
     private View vista;
+    private AlertDialog alertDialog;
 
     public CrearCompetencia2Fragment() {
         // Required empty public constructor
@@ -76,6 +79,7 @@ public class CrearCompetencia2Fragment extends Fragment implements MensajeSinInt
             llenarSpinnerFrecuencia();
             listeners();
             llenarSpinnerDeporte();
+
         }else {
             sinInternet();
         }
@@ -86,11 +90,12 @@ public class CrearCompetencia2Fragment extends Fragment implements MensajeSinInt
     private void llenarSpinnerDeporte() {
         //En call viene el tipo de dato que espero del servidor
         Call<List<Sport>> call = sportsSrv.getSports();
+        alertDialog.show();
         call.enqueue(new Callback<List<Sport>>() {
             @Override
             public void onResponse(Call<List<Sport>> call, Response<List<Sport>> response) {
                 List<Sport> deportes;
-
+                alertDialog.dismiss();
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
                     //asigno a deportes lo que traje del servidor
@@ -125,6 +130,7 @@ public class CrearCompetencia2Fragment extends Fragment implements MensajeSinInt
             @Override
             public void onFailure(Call<List<Sport>> call, Throwable t) {
                 try{
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
@@ -151,6 +157,7 @@ public class CrearCompetencia2Fragment extends Fragment implements MensajeSinInt
 
     private void initElement() {
         competencia = (Competition) getArguments().getSerializable("competition");
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
 
         spinnerDeporte = vista.findViewById(R.id.spinnerDeporte);
         spinnerCategoria = vista.findViewById(R.id.spinnerCategoria);

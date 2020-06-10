@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,6 +29,7 @@ import com.VeizagaTorrico.proyectotorneos.models.CompetitionOrg;
 import com.VeizagaTorrico.proyectotorneos.models.PositionCompetitor;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.PositionCompetitorSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 
 import org.json.JSONObject;
 
@@ -56,6 +58,7 @@ public class PosicionesFragment extends Fragment {
     private TextView tvPtsEmpatados, tvTitleJornada;
     private RecyclerView recyclePosicion;
     private PosicionesRecyclerViewAdapter adapterPosicion;
+    private AlertDialog alertDialog;
 
     public PosicionesFragment() {
         // Required empty public constructor
@@ -103,6 +106,8 @@ public class PosicionesFragment extends Fragment {
 
         positionSrv = new RetrofitAdapter().connectionEnable().create(PositionCompetitorSrv.class);
         competitionSrv = new RetrofitAdapter().connectionEnable().create(CompetitionSrv.class);
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
+
     }
 
     private void showTablePosotion(){
@@ -181,11 +186,13 @@ public class PosicionesFragment extends Fragment {
 
     // recupera la tabla de posiciones de una competencia por grupo, para el tipo FASE_DE_GRUPOS
     private void callTablePositionByGroup(int idCompetencia, int grupo){
+        alertDialog.show();
         Call<List<PositionCompetitor>> call = positionSrv.getTablePositionsByGroup(idCompetencia, grupo);
         try{
             call.enqueue(new Callback<List<PositionCompetitor>>() {
                 @Override
                 public void onResponse(Call<List<PositionCompetitor>> call, Response<List<PositionCompetitor>> response) {
+                    alertDialog.dismiss();
                     if(response.code() == 200){
                         posiciones = response.body();
                         // si recibimos los resultados de las posiciones de los competidores
@@ -216,6 +223,7 @@ public class PosicionesFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<List<PositionCompetitor>> call, Throwable t) {
+                    alertDialog.dismiss();
                     Log.d("On failure", t.getMessage());
                     Toast toast = Toast.makeText(vista.getContext(), "No se pudieron recuperar las posiciones de la competencia con el grupo ingresado", Toast.LENGTH_SHORT);
                     toast.show();

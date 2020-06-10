@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.competencias.detalle_competencias;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ import com.VeizagaTorrico.proyectotorneos.models.ConfrontationsCompetition;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.AdminDataOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.VeizagaTorrico.proyectotorneos.utils.Support;
@@ -70,6 +72,7 @@ public class EncuentrosFragment extends Fragment  implements MensajeSinInternet 
     private AdminDataOff adminDataOff;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout barJorGrupo, barFase;
+    private AlertDialog alertDialog;
 
     public EncuentrosFragment() {
         // Required empty public constructor
@@ -126,6 +129,7 @@ public class EncuentrosFragment extends Fragment  implements MensajeSinInternet 
             itemsFase = new ArrayList<>();
             itemsGrupo = new ArrayList<>();
             adminDataOff = new AdminDataOff(vista.getContext());
+            alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
 
             if(NetworkReceiver.existConnection(vista.getContext())) {
                 cargarSpinnerFiltroEncuentros();
@@ -159,7 +163,7 @@ public class EncuentrosFragment extends Fragment  implements MensajeSinInternet 
 
     private void getEncuentros(Map<String, String> fechaGrupo) {
         Log.d("REQ_ENCUENTROS_BODY", fecha_grupo.toString());
-
+        alertDialog.show();
         Call<ConfrontationsCompetition> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
         Log.d("REQ_ENCUENTROS_URL",call.request().url().toString());
         call.enqueue(new Callback<ConfrontationsCompetition>() {
@@ -167,8 +171,8 @@ public class EncuentrosFragment extends Fragment  implements MensajeSinInternet 
             public void onResponse(Call<ConfrontationsCompetition> call, Response<ConfrontationsCompetition> response) {
                 if (response.code() == 200) {
                     try {
+                        alertDialog.dismiss();
                         Log.d("REQ_ENCUENTROS_RESP", response.body().toString());
-
                         encuentros.clear();
                         encuentros.addAll(response.body().getEncuentros());
                         mostrarEncuentros();
@@ -181,6 +185,7 @@ public class EncuentrosFragment extends Fragment  implements MensajeSinInternet 
             @Override
             public void onFailure(Call<ConfrontationsCompetition> call, Throwable t) {
                 try {
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
@@ -238,11 +243,13 @@ public class EncuentrosFragment extends Fragment  implements MensajeSinInternet 
     // cuando llega la info con los datos de la competencia actualizamos los spiners
     private void cargarSpinnerFiltroEncuentros() {
         //En call viene el tipo de dato que espero del servidor
+        alertDialog.show();
         Call<CompetitionOrg> call = competitionSrv.getFaseGrupoCompetition(competencia.getId());
         Log.d("SPIN_ENC_REQ", call.request().url().toString());
         call.enqueue(new Callback<CompetitionOrg>() {
             @Override
             public void onResponse(Call<CompetitionOrg> call, Response<CompetitionOrg> response) {
+                alertDialog.dismiss();
                 if (response.code() == 200) {
                     try{
                         fecha_grupo.clear();
@@ -277,6 +284,7 @@ public class EncuentrosFragment extends Fragment  implements MensajeSinInternet 
             }
             @Override
             public void onFailure(Call<CompetitionOrg> call, Throwable t) {
+                alertDialog.dismiss();
                 Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
                 Log.d("onFailure", t.getMessage());
             }

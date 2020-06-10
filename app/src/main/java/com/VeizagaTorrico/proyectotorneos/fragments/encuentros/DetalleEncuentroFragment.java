@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.encuentros;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,6 +45,7 @@ import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
 import com.VeizagaTorrico.proyectotorneos.services.RefereeSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TurnSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.google.gson.Gson;
@@ -99,6 +101,7 @@ public class DetalleEncuentroFragment extends Fragment {
     private ManagerConfrontationOff adminEncuentrosLocal;
     private AdminDataOff adminDataOff;
     private Gson gson;
+    private AlertDialog alertDialog;
 
     public DetalleEncuentroFragment() {
     }
@@ -230,12 +233,13 @@ public class DetalleEncuentroFragment extends Fragment {
                     editEncuentro.put("rdo_comp2",rdo_2);
                 }
                 Log.d("body edit",editEncuentro.toString());
-
+                alertDialog.show();
                 Call<MsgRequest> call = confrontationSrv.editEncuentro(editEncuentro);
                 Log.d("url call", call.request().url().toString());
                 call.enqueue(new Callback<MsgRequest>() {
                     @Override
                     public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                        alertDialog.dismiss();
                         try{
                             if(response.code() == 200){
                                 Toast toast = Toast.makeText(vista.getContext(), "Edicion realizada con exito", Toast.LENGTH_SHORT);
@@ -261,6 +265,7 @@ public class DetalleEncuentroFragment extends Fragment {
                     @Override
                     public void onFailure(Call<MsgRequest> call, Throwable t) {
                         Log.d("SERVER_ERROR: ", t.getMessage());
+                        alertDialog.dismiss();
                     }
                 });
             }
@@ -279,6 +284,7 @@ public class DetalleEncuentroFragment extends Fragment {
 
 
     private void initElements(){
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Guardando cambios..");
         adminEncuentrosLocal = new ManagerConfrontationOff(vista.getContext());
         confrontationSrv = new RetrofitAdapter().connectionEnable().create(ConfrontationSrv.class);
         prediosSrv = new RetrofitAdapter().connectionEnable().create(GroundSrv.class);

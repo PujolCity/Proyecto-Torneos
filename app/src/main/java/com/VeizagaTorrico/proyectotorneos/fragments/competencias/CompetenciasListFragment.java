@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.competencias;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.CompetenciasMinRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
@@ -46,6 +48,7 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
     private Map<String,String> filtros;
     private TextView sinConexion;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private AlertDialog alertDialog;
 
     public CompetenciasListFragment() {
         // Required empty public constructor
@@ -145,6 +148,7 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
         recycleComp.setAdapter(adapter);
         sinConexion = vista.findViewById(R.id.tv_sin_conexion_compe);
         swipeRefreshLayout = vista.findViewById(R.id.refreshCompe);
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
 
     }
 
@@ -162,12 +166,14 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
     private void inflarRecycler() {
         recycleComp.setVisibility(View.VISIBLE);
         sinConexion.setVisibility(View.GONE);
+        alertDialog.show();
         //En call viene el tipo de dato que espero del servidor
         Call<List<CompetitionMin>> call = competitionSrv.findCompetitionsByFilters(filtros);
         Log.d("URL FILTROS: ",call.request().url().toString());
         call.enqueue(new Callback<List<CompetitionMin>>() {
             @Override
             public void onResponse(Call<List<CompetitionMin>> call, Response<List<CompetitionMin>> response) {
+                alertDialog.dismiss();
                 Log.d("RESP CODE COMPETITION", Integer.toString(response.code()));
                 //codigo 200 si salio tdo bien
                 if (response.code() == 200) {
@@ -196,6 +202,7 @@ public class CompetenciasListFragment extends Fragment implements MensajeSinInte
             @Override
             public void onFailure(Call<List<CompetitionMin>> call, Throwable t) {
                 try{
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_LONG);
                     toast.show();
                     Log.d("onFailure", t.getMessage());

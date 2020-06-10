@@ -1,5 +1,7 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.noticias;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +27,7 @@ import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.graphics_adapters.NoticiasRecyclerViewAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.News;
 import com.VeizagaTorrico.proyectotorneos.services.NewsSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
@@ -52,7 +55,7 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
     private int usuario;
     private SwipeRefreshLayout refreshLayout;
     private TextView sinConexion;
-
+    private AlertDialog alertDialog;
 
     public NoticiasFragment() {
     }
@@ -109,11 +112,13 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
         recyclerNoticias.setVisibility(View.VISIBLE);
         Call<List<News>> call = newsSrv.getNews(usuario);
         Log.d("URL NOTICIAS", call.request().url().toString());
+        alertDialog.show();
         call.enqueue(new Callback<List<News>>() {
             @Override
             public void onResponse(Call<List<News>> call, Response<List<News>> response) {
                 Log.d("RESPONSE NOTICIAS",Integer.toString(response.code()));
                     if(response.code() == 200){
+                        alertDialog.dismiss();
                         noticias = response.body();
                         Log.d("DATOS NOTICIAS",noticias.toString());
                         if(!noticias.isEmpty()){
@@ -129,10 +134,12 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
                                 }
                             });
                         } else {
+                            alertDialog.dismiss();
                             sinNoticias();
                         }
                     }
                     if (response.code() == 400) {
+                        alertDialog.dismiss();
                         Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
                         //JSONObject jsonObject = null;
                         try {
@@ -146,12 +153,14 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
                         }
                     }
                     if(response.code() == 204){
+                        alertDialog.dismiss();
                         sinNoticias();
                     }
             }
             @Override
             public void onFailure(Call<List<News>> call, Throwable t) {
                 try {
+                    alertDialog.dismiss();
                     Log.d("onFailure", t.getMessage());
                     Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                     toast.show();
@@ -176,6 +185,7 @@ public class NoticiasFragment extends Fragment implements MensajeSinInternet {
         recyclerNoticias.setAdapter(newsAdapter);
         this.noticias = new ArrayList<>();
         usuario = Integer.valueOf(ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
     }
 
     private void sinNoticias() {

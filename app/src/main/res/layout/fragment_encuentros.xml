@@ -18,16 +18,19 @@
 
             <include
                 android:id="@+id/bar_fase"
-                layout="@layout/busqueda_fase_layout"></include>
+                layout="@layout/busqueda_fase_layout">
+            </include>
 
             <include
                 android:id="@+id/bar_jor_gupo"
-                layout="@layout/busqueda_layout"></include>
+                layout="@layout/busqueda_layout">
+            </include>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerEncuentros"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></androidx.recyclerview.widget.RecyclerView>
+                android:layout_height="wrap_content">
+            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/tv_comp_libre_encuentro"
@@ -44,7 +47,8 @@
                 android:textColor="#FAF6F5"
                 android:textSize="16sp"
                 android:visibility="visible"
-                tools:ignore="RtlCompat"></TextView>
+                tools:ignore="RtlCompat">
+            </TextView>
 
             <TextView
                 android:id="@+id/tv_sinEncuentros"
@@ -55,7 +59,8 @@
                 android:text="Sin Encuentros"
                 android:textAlignment="center"
                 android:textSize="40sp"
-                android:visibility="gone"></TextView>
+                android:visibility="gone">
+            </TextView>
 
         </LinearLayout>
     </androidx.cardview.widget.CardView>
