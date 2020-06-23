@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.competencias;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -34,6 +35,7 @@ import com.VeizagaTorrico.proyectotorneos.services.GenderSrv;
 import com.VeizagaTorrico.proyectotorneos.services.SportsSrv;
 import com.VeizagaTorrico.proyectotorneos.services.StatusSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
@@ -66,6 +68,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     private String deporte,categoria,nombreCompetencia,organizacion,ciudad,genero, estado;
     private TextView tvSinConexion;
     private SwipeRefreshLayout refreshLayout;
+    private AlertDialog alertDialog;
 
     public FiltroFragment() {
     }
@@ -251,6 +254,8 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
 
         btnSiguiente = vista.findViewById(R.id.btnFiltrar);
         tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_filtro_comp);
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
+
     }
 
     private void llenarSpinnerOrganizacion(){
@@ -306,9 +311,11 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     private void llenarSpinnerDeporte() {
         //En call viene el tipo de dato que espero del servidor
         Call<List<Sport>> call = sportsSrv.getSports();
+        alertDialog.show();
         call.enqueue(new Callback<List<Sport>>() {
             @Override
             public void onResponse(Call<List<Sport>> call, Response<List<Sport>> response) {
+                alertDialog.dismiss();
                 List<Sport> deportes = new ArrayList<>();
                 Sport sport = new Sport(0,"Seleccione...");
                 deportes.add(sport);
@@ -353,6 +360,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
             @Override
             public void onFailure(Call<List<Sport>> call, Throwable t) {
                 try{
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
@@ -364,6 +372,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     }
 
     private void llenarSpinnerCategoriaByServer(int idDeporte) {
+        alertDialog.show();
         Call<List<Category>> call;
         if(idDeporte == 0){
             call = categorySrv.getCategorias();
@@ -375,6 +384,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
         call.enqueue(new Callback<List<Category>>() {
             @Override
             public void onResponse(Call<List<Category>> call, Response<List<Category>> response) {
+                alertDialog.dismiss();
                 List<Category> categorias = new ArrayList<>();
                 Category category = new Category(0,"Seleccione..."," ",0,0);
                 categorias.add(category);
@@ -415,6 +425,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
             @Override
             public void onFailure(Call<List<Category>> call, Throwable t) {
                 try{
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
@@ -427,12 +438,14 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     }
 
     private void llenarSpinnerGeneros() {
+        alertDialog.show();
         //En call viene el tipo de dato que espero del servidor
         Call<List<Gender>> call = genderSrv.getGenders();
         Log.d("request gender", call.request().url().toString());
         call.enqueue(new Callback<List<Gender>>() {
             @Override
             public void onResponse(Call<List<Gender>> call, Response<List<Gender>> response) {
+                alertDialog.dismiss();
                 List<Gender> generos = new ArrayList<>();
                 Gender gender = new Gender("Seleccione...");
                 generos.add(gender);
@@ -475,6 +488,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
             @Override
             public void onFailure(Call<List<Gender>> call, Throwable t) {
                 try {
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
@@ -487,6 +501,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
     }
 
     private void llenarSpinnerEstado(){
+        alertDialog.show();
         apiStatusServicce = new RetrofitAdapter().connectionEnable().create(StatusSrv.class);
         Call<List<Gender>> call = apiStatusServicce.getStatus();
         Log.d("Call Estados",call.request().url().toString());
@@ -494,6 +509,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
             @Override
             public void onResponse(Call<List<Gender>> call, Response<List<Gender>> response) {
                 List<Gender> estados = new ArrayList<>();
+                alertDialog.dismiss();
                 Gender gender = new Gender("Seleccione...");
                 estados.add(gender);
                 try{
@@ -528,6 +544,7 @@ public class FiltroFragment extends Fragment implements MensajeSinInternet {
             @Override
             public void onFailure(Call<List<Gender>> call, Throwable t) {
                 try{
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                 } catch (Exception e) {

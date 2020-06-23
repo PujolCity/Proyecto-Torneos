@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -25,7 +26,7 @@ import android.widget.Toast;
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
-import com.VeizagaTorrico.proyectotorneos.models.Ground;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.models.Referee;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.RefereeSrv;
@@ -53,6 +54,7 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
     private Referee juezSeleccionado, miJuezSeleccionado;
     private RefereeSrv refereeSrv;
     private Map<String,String> data;
+    private AlertDialog alertDialog;
 
     public CargaJuezCompetenciaFragment() {
     }
@@ -108,6 +110,8 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
         jueces = new ArrayList<>();
         juecesAsignados = new ArrayList<>();
         data = new HashMap<>();
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
+
     }
 
     private void llenarSpinerJueces() {
@@ -127,12 +131,15 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
 
         Call<List<Referee>> call = refereeSrv.findLikeName(nombreJuez, apellidoJuez);
         Log.d("URL JUECES", call.request().url().toString());
+        // mostramos mje de carga
+        alertDialog.show();
         call.enqueue(new Callback<List<Referee>>() {
             @Override
             public void onResponse(Call<List<Referee>> call, Response<List<Referee>> response) {
                 try {
                     Log.d("JuezComp resp", Integer.toString(response.code()));
                     if((!response.body().isEmpty()) && (response.body() != null)) {
+                        alertDialog.dismiss();
                         tvSinResultados.setVisibility(View.GONE);
                         linRdosBusqueda.setVisibility(View.VISIBLE);
                         jueces.clear();
@@ -156,6 +163,7 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
                         });
 
                     }else {
+                        alertDialog.dismiss();
                         tvSinResultados.setVisibility(View.VISIBLE);
                         linRdosBusqueda.setVisibility(View.GONE);
 //                        iBAgregar.setVisibility(View.INVISIBLE);
@@ -174,6 +182,7 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
             @Override
             public void onFailure(Call<List<Referee>> call, Throwable t) {
                 try{
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                     toast.show();
                 } catch (Exception e) {

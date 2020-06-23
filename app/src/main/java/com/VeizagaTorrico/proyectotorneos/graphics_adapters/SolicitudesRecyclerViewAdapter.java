@@ -6,6 +6,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.util.Log;
@@ -36,7 +37,7 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
     private Map<String,String> solicitud;
     private Context context;
     private UserSrv userSrv;
-    private ProgressDialog progressDialog;
+    private AlertDialog alertDialog;
 
     public SolicitudesRecyclerViewAdapter(Context context) {
         this.context = context;
@@ -143,12 +144,12 @@ public class SolicitudesRecyclerViewAdapter extends RecyclerView.Adapter<Solicit
 
 
     private void showMsgWaitServer(Context context) {
-        progressDialog = ManagerMsgView.getMsgLoading(context, ACTUALIZANDO_DATOS);
-        progressDialog.show();
+        alertDialog = ManagerMsgView.getMsgLoading(context, ACTUALIZANDO_DATOS);
+        alertDialog.show();
     }
 
     private void endMsgWaitServer(Context context) {
-        progressDialog.dismiss();
+        alertDialog.dismiss();
 
     }
 

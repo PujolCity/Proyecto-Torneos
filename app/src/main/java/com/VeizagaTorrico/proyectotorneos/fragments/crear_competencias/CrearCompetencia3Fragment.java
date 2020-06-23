@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import com.VeizagaTorrico.proyectotorneos.models.TypesOrganization;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.TypesOrganizationSrv;
 import com.VeizagaTorrico.proyectotorneos.utils.InputFilterMinMax;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
@@ -65,6 +67,7 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
     private int fase, cantGrupo;
     private boolean hayGrupo, hayFase, hayMaxComp;
     private int usuario;
+    private AlertDialog alertDialog;
 
     public CrearCompetencia3Fragment() {
         // Required empty public constructor
@@ -101,15 +104,17 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
         btnCrear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 if(recuperarValoresIngresados()){
+                    alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Creando competencia..");
                     Call<Competition> call = competitionSrv.createCompetition(competencia);
                     Log.d("Url",call.request().url().toString());
-
+                    alertDialog.show();
                     call.enqueue(new Callback<Competition>() {
                         @Override
                         public void onResponse(Call<Competition> call, Response<Competition> response) {
                             Log.d("Response code",Integer.toString(response.code()));
-
+                            alertDialog.dismiss();
                             if(response.code() == 201){
                                 Log.d("COMPETENCIA CREADA", competencia.toString());
                                 // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
@@ -136,8 +141,13 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
                         }
                         @Override
                         public void onFailure(Call<Competition> call, Throwable t) {
-                            Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
-                            toast.show();
+                            try {
+                                alertDialog.dismiss();
+                                Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
+                                toast.show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }
@@ -253,12 +263,14 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
     }
 
      private void llenarSpinnerOrg(){
+         alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
          Call<List<TypesOrganization>> call = orgSrv.getTypesOrganization();
+         alertDialog.show();
          call.enqueue(new Callback<List<TypesOrganization>>() {
              @Override
              public void onResponse(Call<List<TypesOrganization>> call, Response<List<TypesOrganization>> response) {
                  List<TypesOrganization> tipos;
-
+                 alertDialog.dismiss();
                  if(response.code() == 200){
                      tipos = response.body();
                      Log.d("RESPONSECODE OrgActvty",  Integer.toString(response.code()) );
@@ -289,6 +301,7 @@ public class CrearCompetencia3Fragment extends Fragment implements MensajeSinInt
 
              @Override
              public void onFailure(Call<List<TypesOrganization>> call, Throwable t) {
+                 alertDialog.dismiss();
                  Toast.makeText(getContext(), "Por favor recargar pestaña", Toast.LENGTH_SHORT).show();
                  Log.d("onFailure", t.getMessage());
              }

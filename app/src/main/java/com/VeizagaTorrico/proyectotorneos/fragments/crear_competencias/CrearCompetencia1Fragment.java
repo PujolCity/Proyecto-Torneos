@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.crear_competencias;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -35,6 +36,7 @@ import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.CitySrv;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GenderSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 
@@ -78,6 +80,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
     private TextView tvSinConexion;
     private ImageButton ibBuscar;
     private City ciudadSeleccionada;
+    private AlertDialog alertDialog;
 
     public CrearCompetencia1Fragment() {
         // Required empty public constructor
@@ -173,6 +176,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
         ibBuscar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                alertDialog.show();
                 ciudad = etCiudad.getText().toString();
                 if(!ciudad.isEmpty()){
                     Call<List<City>> call = citySrv.buscarCiudad(ciudad);
@@ -180,6 +184,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                     call.enqueue(new Callback<List<City>>() {
                         @Override
                         public void onResponse(Call<List<City>> call, Response<List<City>> response) {
+                            alertDialog.dismiss();
                             try {
                                 ciudades.clear();
                                 if(response.code() == 200){
@@ -217,12 +222,14 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
 
                         @Override
                         public void onFailure(Call<List<City>> call, Throwable t) {
+                            alertDialog.dismiss();
                             Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
                             toast.show();
                             Log.d("onFailure", t.getMessage());
                         }
                     });
                 } else {
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor complete el campo Ciudad", Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -287,6 +294,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
           etCiudad = vista.findViewById(R.id.etCiudad);
           spnrGenero = vista.findViewById(R.id.spinnerGenero);
           tvSinConexion = vista.findViewById(R.id.tv_sin_conexion_create);
+          alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
       }
 
     public void onButtonPressed(Uri uri) {

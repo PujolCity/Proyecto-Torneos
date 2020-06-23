@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -39,6 +40,7 @@ import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerCompetitionOff;
 import com.VeizagaTorrico.proyectotorneos.offline.admin.ManagerConfrontationOff;
 import com.VeizagaTorrico.proyectotorneos.services.CompetitionSrv;
 import com.VeizagaTorrico.proyectotorneos.services.ConfrontationSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.VeizagaTorrico.proyectotorneos.utils.Support;
@@ -73,6 +75,7 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
     private AdminDataOff adminDataOff;
     private SwipeRefreshLayout swipeRefreshLayout;
     private LinearLayout barJorGrupo, barFase;
+    private AlertDialog alertDialog;
 
     public EncuentrosDetalleFragment() {
         // Required empty public constructor
@@ -102,6 +105,8 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
 
     private void initElements() {
         try {
+            alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
+
             swipeRefreshLayout = vista.findViewById(R.id.refreshEncuentroDetalle);
             barJorGrupo = vista.findViewById(R.id.bar_jor_gupo_detalle);
             barFase = vista.findViewById(R.id.bar_fase_detalle);
@@ -163,12 +168,13 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
 
     private void getEncuentros(Map<String, String> fechaGrupo) {
         Log.d("REQ_ENCUENTROS_BODY", fecha_grupo.toString());
-
+        alertDialog.show();
         Call<ConfrontationsCompetition> call = confrontationSrv.getConfrontations(competencia.getId(), fechaGrupo);
         Log.d("REQ_ENCUENTROS_URL",call.request().url().toString());
         call.enqueue(new Callback<ConfrontationsCompetition>() {
             @Override
             public void onResponse(Call<ConfrontationsCompetition> call, Response<ConfrontationsCompetition> response) {
+                alertDialog.dismiss();
                 if (response.code() == 200) {
                     try {
                         Log.d("REQ_ENCUENTROS_RESP", response.body().toString());
@@ -185,6 +191,7 @@ public class EncuentrosDetalleFragment extends Fragment  implements MensajeSinIn
             @Override
             public void onFailure(Call<ConfrontationsCompetition> call, Throwable t) {
                 try {
+                    alertDialog.dismiss();
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
                     toast.show();
                     Log.d("onFailure", t.getMessage());
