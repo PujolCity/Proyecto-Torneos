@@ -1,116 +1,159 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="15dp"
     tools:context=".fragments.pantalla_carga.CargarTurnosFragment">
 
 
     <TextView
         android:id="@+id/tvTitleHora"
-        android:layout_width="233dp"
-        android:layout_height="26dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="32dp"
-        android:text="Asigne un horario para el turno"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Administre sus turnos"
         android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.447"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </TextView>
+        android:textStyle="bold"></TextView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <TextView
+            android:id="@+id/tvPrimerTurno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_weight="3"
+            android:text="Horario del primer turno"
+            android:textSize="14sp"></TextView>
+
+        <EditText
+            android:id="@+id/horaHasta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="false"
+            android:gravity="center"
+            android:hint="00:00"></EditText>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <TextView
+            android:id="@+id/tvDuracion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="3"
+            android:text="Duracion del turno (min)"
+            android:textSize="14sp"></TextView>
+
+        <EditText
+            android:id="@+id/etDuracion"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:hint="duracion"
+            android:inputType="numberDecimal"></EditText>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp">
+
+        <TextView
+            android:id="@+id/tvCantTurnos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_weight="3"
+            android:text="Cantidad de turnos"
+            android:textSize="14sp"></TextView>
+
+        <EditText
+            android:id="@+id/et_cantidadTurnos_turnos"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:hint="n turnos"
+            android:inputType="numberDecimal"></EditText>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btnCrearTurno"
-        android:layout_width="140dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginEnd="30dp"
         android:backgroundTint="@color/colorPrimary"
-        android:text="Generar turnos"
-        android:textColor="@color/cardview_light_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.265"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_cantidadTurnos_turnos" />
-
-    <EditText
-        android:id="@+id/horaHasta"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="108dp"
-        android:hint="Desde Hs"
-        android:gravity="center"
-        android:clickable="true"
-        android:focusable="true"
-        android:focusableInTouchMode="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </EditText>
-
-    <EditText
-        android:id="@+id/etDuracion"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="108dp"
-        android:gravity="center"
-        android:hint="Duracion"
-        android:inputType="numberDecimal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.193"
-        app:layout_constraintStart_toEndOf="@+id/horaHasta"
-        app:layout_constraintTop_toTopOf="parent">
-    </EditText>
+        android:text="Crear turnos"
+        android:textColor="@color/cardview_light_background" />
 
     <TextView
+        android:id="@+id/tvEliminarTurnos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Elimine sus turnos"
+        android:textSize="14sp"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/tvSelTurno"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:hint="Duracion"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.357"
-        app:layout_constraintStart_toEndOf="@+id/horaHasta"
-        app:layout_constraintTop_toBottomOf="@+id/etDuracion">
+        android:layout_marginTop="10dp"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="Seleccione el turno"
+        android:textSize="14sp"></TextView>
 
-    </TextView>
-
-    <EditText
-        android:id="@+id/et_cantidadTurnos_turnos"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="16dp"
-        android:hint="Cant de Turnos"
-        android:gravity="center"
-        android:inputType="numberDecimal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/horaHasta">
-    </EditText>
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-    <Spinner
-        android:id="@+id/spinnerCargaTurno"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="64dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.911"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCrearTurno">
-    </Spinner>
+        <Spinner
+            android:id="@+id/spinnerCargaTurno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"></Spinner>
 
-    <ImageButton
-        android:id="@+id/deleteTurno"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:src="@drawable/ic_delete"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerCargaTurno"
-        app:layout_constraintHorizontal_bias="0.837"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnCrearTurno">
-    </ImageButton>
+        <ImageButton
+            android:id="@+id/deleteTurno"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:src="@drawable/ic_delete"
+            android:visibility="invisible"></ImageButton>
+    </LinearLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

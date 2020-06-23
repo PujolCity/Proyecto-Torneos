@@ -122,7 +122,7 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
             apellidoJuez = null;
         }
         else{
-            apellidoJuez = edtNombreBusqueda.getText().toString();
+            apellidoJuez = edtApellidoBusqueda.getText().toString();
         }
 
         Call<List<Referee>> call = refereeSrv.findLikeName(nombreJuez, apellidoJuez);

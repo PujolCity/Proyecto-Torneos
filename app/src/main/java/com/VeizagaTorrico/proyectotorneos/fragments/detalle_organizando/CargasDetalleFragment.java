@@ -116,9 +116,14 @@ public class CargasDetalleFragment extends Fragment {
         btnTurno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competencia", competencia);
-                Navigation.findNavController(vista).navigate(R.id.cargarTurnoFragment, bundle);
+                if(!competencia.getEstado().contains("INICIADA")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("competencia", competencia);
+                    Navigation.findNavController(vista).navigate(R.id.cargarTurnoFragment, bundle);
+                }
+                else{
+                    Toast.makeText(vista.getContext(), "No se pueden modificar los turnos de una competencia iniciada", Toast.LENGTH_LONG).show();
+                }
             }
         });
 

@@ -10,65 +10,65 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="15dp">
 
             <TextView
                 android:id="@+id/textView26"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="15dp"
-                android:layout_marginBottom="20dp"
-                android:text="@string/txtPantallaJuezCompetencia"
-                android:textSize="18sp">
-            </TextView>
+                android:layout_marginEnd="10dp"
+                android:text="Administre sus jueces"
+                android:textSize="16sp"
+                android:textStyle="bold"></TextView>
 
             <!--            busqueda de juez-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
                 android:orientation="vertical">
 
                 <EditText
                     android:id="@+id/edt_nombre_juez"
                     android:layout_width="150dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:ems="8"
-                    android:hint="@string/txtNombre"
-                    android:inputType="textPersonName" />
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:hint="nombre"
+                    android:inputType="textPersonName"
+                    android:textSize="15dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <EditText
                         android:id="@+id/edt_apellido_juez"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
-                        android:layout_marginEnd="20dp"
-                        android:layout_weight="1"
-                        android:ems="8"
-                        android:hint="@string/txtApellido"
-                        android:inputType="textPersonName" />
+                        android:layout_marginEnd="5dp"
+                        android:layout_weight="3"
+                        android:hint="apellido"
+                        android:inputType="textPersonName"
+                        android:textSize="15dp" />
 
                     <Button
                         android:id="@+id/btn_buscar_juez"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_weight="1"
+                        android:layout_weight="2"
                         android:background="@color/colorPrimary"
+                        android:padding="10dp"
                         android:text="Buscar"
                         android:textColor="#FFFFFF" />
                 </LinearLayout>
@@ -89,8 +89,7 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
                     android:text="Informacion de jueces encontrados"
-                    android:textSize="14sp">
-                </TextView>
+                    android:textSize="14sp"></TextView>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -111,8 +110,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
-                        android:text="Seleccione un juez: ">
-                    </TextView>
+                        android:text="Seleccione un juez: "></TextView>
 
                     <Spinner
                         android:id="@+id/spinner_jueces_juez"
@@ -121,8 +119,7 @@
                         android:layout_marginStart="5dp"
                         android:layout_marginTop="5dp"
                         android:layout_marginEnd="5dp"
-                        android:gravity="center_vertical">
-                    </Spinner>
+                        android:gravity="center_vertical"></Spinner>
                 </LinearLayout>
 
                 <TextView
@@ -133,8 +130,7 @@
                     android:layout_marginTop="5dp"
                     android:text="DNI"
                     android:textColor="#918C8C"
-                    android:textSize="12sp">
-                </TextView>
+                    android:textSize="12sp"></TextView>
 
                 <LinearLayout
                     android:id="@+id/lin_btn_accion_juez"
@@ -187,52 +183,87 @@
                 android:text="No se encontraron resultados"
                 android:textAlignment="center"
                 android:textSize="18sp"
-                tools:visibility="gone">
-            </TextView>
+                tools:visibility="gone"></TextView>
+
+<!--            <LinearLayout-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:orientation="vertical">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/textView27"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginStart="25dp"-->
+<!--                    android:layout_marginTop="10dp"-->
+<!--                    android:text="Mis jueces asignados"></TextView>-->
+
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:paddingStart="35dp"-->
+<!--                    android:paddingEnd="35dp">-->
+
+<!--                    <Spinner-->
+<!--                        android:id="@+id/spinner_misJueces_juez"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:layout_marginEnd="15dp"-->
+<!--                        android:layout_weight="3"></Spinner>-->
+
+<!--                    <ImageButton-->
+<!--                        android:id="@+id/btn_delete_juez"-->
+<!--                        android:layout_width="wrap_content"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_marginStart="5dp"-->
+<!--                        android:layout_marginTop="5dp"-->
+<!--                        android:background="@color/cardview_light_background"-->
+<!--                        android:src="@drawable/ic_delete"-->
+<!--                        android:visibility="gone"></ImageButton>-->
+<!--                </LinearLayout>-->
+<!--            </LinearLayout>-->
+            <TextView
+                android:id="@+id/tvEliminarJueces"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:text="Elimine sus jueces"
+                android:textSize="14sp"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/tvSelJuez"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:text="Seleccione el juez"
+                android:textSize="14sp"></TextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/textView27"
-                    android:layout_width="wrap_content"
+                <Spinner
+                    android:id="@+id/spinner_misJueces_juez"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="25dp"
-                    android:layout_marginTop="10dp"
-                    android:text="Mis jueces asignados">
-                </TextView>
+                    android:layout_weight="5"></Spinner>
 
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <ImageButton
+                    android:id="@+id/btn_delete_juez"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="35dp"
-                    android:paddingEnd="35dp">
-
-                    <Spinner
-                        android:id="@+id/spinner_misJueces_juez"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_weight="3">
-                    </Spinner>
-
-                    <ImageButton
-                        android:id="@+id/btn_delete_juez"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="5dp"
-                        android:background="@color/cardview_light_background"
-                        android:src="@drawable/ic_delete"
-                        android:visibility="gone">
-                    </ImageButton>
-                </LinearLayout>
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_delete"
+                    android:visibility="invisible"></ImageButton>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
