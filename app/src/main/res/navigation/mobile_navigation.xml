@@ -210,22 +210,22 @@
     <fragment
         android:id="@+id/cargarPredioFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarPredioFragment"
-        android:label="Cargar predios y campos"
+        android:label="Administre sus predios y campos"
         tools:layout="@layout/fragment_cargar_predio" />
     <fragment
         android:id="@+id/cargarJuezFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarJuezFragment"
-        android:label="Cargar jueces"
+        android:label="Administre sus jueces"
         tools:layout="@layout/fragment_cargar_juez" />
     <fragment
         android:id="@+id/cargarTurnoFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarTurnosFragment"
-        android:label="Cargar turnos"
+        android:label="Administre sus turnos"
         tools:layout="@layout/fragment_cargar_turnos" />
     <fragment
         android:id="@+id/coOrganizadorFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CoOrganizadorFragment"
-        android:label="Invita a un usuario a organizar"
+        android:label="Invita a un colaborador"
         tools:layout="@layout/fragment_co_organizador" />
     <fragment
         android:id="@+id/misInvitaciones"
@@ -235,7 +235,7 @@
     <fragment
         android:id="@+id/cargaFaseFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaFaseFragment"
-        android:label="Preparando la siguiente fase"
+        android:label="Administre sus fases"
         tools:layout="@layout/fragment_carga_fase" />
     <fragment
         android:id="@+id/miPerfilFragment"
@@ -264,8 +264,8 @@
     <fragment
         android:id="@+id/noticiasFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.noticias.NoticiasFragment"
-        android:label="Noticias!"
-        tools:layout="@layout/fragment_noticias" >
+        android:label="Noticias"
+        tools:layout="@layout/fragment_noticias">
         <action
             android:id="@+id/action_noticiasFragment_to_detalleNoticiasFragment"
             app:destination="@id/detalleNoticiasFragment" />
@@ -278,7 +278,7 @@
     <fragment
         android:id="@+id/cargarNoticiaFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargarNoticiaFragment"
-        android:label=""
+        android:label="Administre sus noticias"
         tools:layout="@layout/fragment_cargar_noticia" />
     <fragment
         android:id="@+id/notificacionesFragment"
@@ -321,8 +321,8 @@
     <fragment
         android:id="@+id/cargaPredioCompetenciaFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaPredioCompetenciaFragment"
-        android:label=""
-        tools:layout="@layout/fragment_carga_predio_competencia" >
+        android:label="Administre sus predios y campos"
+        tools:layout="@layout/fragment_carga_predio_competencia">
         <action
             android:id="@+id/action_cargaPredioCompetenciaFragment_to_cargarPredioFragment"
             app:destination="@id/cargarPredioFragment" />
@@ -330,8 +330,8 @@
     <fragment
         android:id="@+id/cargaJuezCompetenciaFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga.CargaJuezCompetenciaFragment"
-        android:label=""
-        tools:layout="@layout/fragment_carga_juez_competencia" >
+        android:label="Administre sus jueces"
+        tools:layout="@layout/fragment_carga_juez_competencia">
         <action
             android:id="@+id/action_cargaJuezCompetenciaFragment_to_cargarJuezFragment"
             app:destination="@id/cargarJuezFragment" />

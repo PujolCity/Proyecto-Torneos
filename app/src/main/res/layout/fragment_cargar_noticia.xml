@@ -8,77 +8,159 @@
     android:fillViewport="true"
     tools:context=".fragments.pantalla_carga.CargarNoticiaFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+<!--    <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent">-->
+
+
+<!--        <EditText-->
+<!--            android:id="@+id/edt_descripcion_new"-->
+<!--            android:layout_width="221dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="40dp"-->
+<!--            android:layout_marginEnd="80dp"-->
+<!--            android:hint="Descripcion de la noticia"-->
+<!--            android:inputType="textMultiLine"-->
+<!--            android:maxLength="400"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edt_resume_news" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/edt_resume_news"-->
+<!--            android:layout_width="221dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="40dp"-->
+<!--            android:layout_marginEnd="80dp"-->
+<!--            android:hint="Resumen"-->
+<!--            android:inputType="textMultiLine"-->
+<!--            android:maxLength="80"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edt_title_news" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_title_load_news"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="70dp"-->
+<!--            android:layout_marginTop="35dp"-->
+<!--            android:layout_marginEnd="70dp"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:text="Datos de la noticia"-->
+<!--            android:textSize="@dimen/title_fragment"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--        <EditText-->
+<!--            android:id="@+id/edt_title_news"-->
+<!--            android:layout_width="221dp"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="40dp"-->
+<!--            android:layout_marginTop="40dp"-->
+<!--            android:layout_marginEnd="80dp"-->
+<!--            android:hint="Titulo"-->
+<!--            android:maxLength="40"-->
+<!--            android:inputType="textAutoCorrect"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/tv_title_load_news" />-->
+
+<!--        <Button-->
+<!--            android:id="@+id/btn_publish_new"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="148dp"-->
+<!--            android:layout_marginTop="92dp"-->
+<!--            android:backgroundTint="@color/colorPrimary"-->
+<!--            android:text="Publicar"-->
+<!--            android:textColor="#F5F5F2F2"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintHorizontal_bias="0.069"-->
+<!--            app:layout_constraintStart_toStartOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/edt_descripcion_new" />-->
+<!--    </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-        <EditText
-            android:id="@+id/edt_descripcion_new"
-            android:layout_width="221dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="80dp"
-            android:hint="Descripcion de la noticia"
-            android:inputType="textMultiLine"
-            android:maxLength="400"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_resume_news" />
-
-        <EditText
-            android:id="@+id/edt_resume_news"
-            android:layout_width="221dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginEnd="80dp"
-            android:hint="Resumen"
-            android:inputType="textMultiLine"
-            android:maxLength="80"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_title_news" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="15dp">
 
         <TextView
-            android:id="@+id/tv_title_load_news"
+            android:id="@+id/tv_titulo_carga_noticias"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="70dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginEnd="70dp"
-            android:gravity="center_horizontal"
-            android:text="Datos de la noticia"
-            android:textSize="@dimen/title_fragment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_marginEnd="10dp"
+            android:text="Informe sus novedades"
+            android:textSize="16sp"
+            android:textStyle="bold"></TextView>
 
-        <EditText
-            android:id="@+id/edt_title_news"
-            android:layout_width="221dp"
+        <TextView
+            android:id="@+id/tv_sbtitulo_carga_noticia"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="40dp"
-            android:layout_marginTop="40dp"
-            android:layout_marginEnd="80dp"
-            android:hint="Titulo"
-            android:maxLength="40"
-            android:inputType="textAutoCorrect"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title_load_news" />
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="15dp"
+            android:text="Ingrese los datos de su noticia"
+            android:textSize="14sp"></TextView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="5dp"
+            android:orientation="vertical">
+
+            <EditText
+                android:id="@+id/edt_title_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:hint="Titulo"
+                android:inputType="textAutoCorrect"
+                android:maxLength="40"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edt_resume_news"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:hint="Resumen"
+                android:inputType="textMultiLine"
+                android:maxLength="80"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/edt_descripcion_new"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:hint="Descripcion"
+                android:inputType="textMultiLine"
+                android:maxLength="400"
+                android:textSize="14sp" />
+
+        </LinearLayout>
 
         <Button
             android:id="@+id/btn_publish_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="148dp"
-            android:layout_marginTop="92dp"
+            android:layout_marginTop="40dp"
             android:backgroundTint="@color/colorPrimary"
             android:text="Publicar"
-            android:textColor="#F5F5F2F2"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.069"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/edt_descripcion_new" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:textColor="#F5F5F2F2" />
+
+    </LinearLayout>
 </ScrollView>

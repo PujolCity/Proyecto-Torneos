@@ -21,9 +21,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="10dp"
-                android:text="Administre sus jueces"
+                android:text="Asigne sus jueces"
                 android:textSize="16sp"
                 android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/tv_titulo_buscar_juez"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:text="Encuentre su juez por nombre y/o apellido"
+                android:textSize="14sp"></TextView>
 
             <!--            busqueda de juez-->
             <LinearLayout
@@ -184,47 +193,6 @@
                 android:textSize="18sp"
                 tools:visibility="gone"></TextView>
 
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginTop="20dp"-->
-<!--                android:orientation="vertical">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView27"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="25dp"-->
-<!--                    android:layout_marginTop="10dp"-->
-<!--                    android:text="Mis jueces asignados"></TextView>-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_gravity="center_vertical"-->
-<!--                    android:orientation="horizontal"-->
-<!--                    android:paddingStart="35dp"-->
-<!--                    android:paddingEnd="35dp">-->
-
-<!--                    <Spinner-->
-<!--                        android:id="@+id/spinner_misJueces_juez"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginTop="5dp"-->
-<!--                        android:layout_marginEnd="15dp"-->
-<!--                        android:layout_weight="3"></Spinner>-->
-
-<!--                    <ImageButton-->
-<!--                        android:id="@+id/btn_delete_juez"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="5dp"-->
-<!--                        android:layout_marginTop="5dp"-->
-<!--                        android:background="@color/cardview_light_background"-->
-<!--                        android:src="@drawable/ic_delete"-->
-<!--                        android:visibility="gone"></ImageButton>-->
-<!--                </LinearLayout>-->
-<!--            </LinearLayout>-->
             <TextView
                 android:id="@+id/tvEliminarJueces"
                 android:layout_width="match_parent"
