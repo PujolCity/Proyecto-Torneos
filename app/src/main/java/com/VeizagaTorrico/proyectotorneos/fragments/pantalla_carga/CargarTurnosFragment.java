@@ -20,13 +20,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
 import com.VeizagaTorrico.proyectotorneos.RetrofitAdapter;
 import com.VeizagaTorrico.proyectotorneos.models.CompetitionMin;
+import com.VeizagaTorrico.proyectotorneos.models.Ground;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.models.Turn;
 import com.VeizagaTorrico.proyectotorneos.services.TurnSrv;
@@ -51,6 +54,8 @@ public class CargarTurnosFragment extends Fragment {
     private ImageButton delete;
     private Spinner spinnerTurnos;
     private EditText etHoraDesde, etDuracion, etCantidad;
+    private TextView tvSinTurnos;
+    private LinearLayout linElimTurnos;
     private final Calendar c = Calendar.getInstance();
     private List<String> hsDesde;
     private String duracion, cantidad;
@@ -210,7 +215,8 @@ public class CargarTurnosFragment extends Fragment {
                         }
                     }
                     if(!response.body().isEmpty()){
-                        delete.setVisibility(View.VISIBLE);
+                        tvSinTurnos.setVisibility(View.GONE);
+                        linElimTurnos.setVisibility(View.VISIBLE);
                         turnos = response.body();
                         ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -227,7 +233,9 @@ public class CargarTurnosFragment extends Fragment {
                             }
                         });
                     }else {
-                        delete.setVisibility(View.INVISIBLE);
+                        tvSinTurnos.setVisibility(View.VISIBLE);
+                        turnos.clear();
+                        linElimTurnos.setVisibility(View.INVISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -302,6 +310,8 @@ public class CargarTurnosFragment extends Fragment {
         turnos = new ArrayList<>();
         datos = new HashMap<>();
         segundos = "00";
+        tvSinTurnos = vista.findViewById(R.id.tvMjeSinTurnos);
+        linElimTurnos = vista.findViewById(R.id.linn_elim_turnos);
         btnTurno = vista.findViewById(R.id.btnCrearTurno);
         delete = vista.findViewById(R.id.deleteTurno);
         spinnerTurnos = vista.findViewById(R.id.spinnerCargaTurno);

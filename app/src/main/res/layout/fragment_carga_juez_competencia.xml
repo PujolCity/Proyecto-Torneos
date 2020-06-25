@@ -45,13 +45,13 @@
 
                 <EditText
                     android:id="@+id/edt_nombre_juez"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
                     android:hint="nombre"
                     android:inputType="textPersonName"
-                    android:textSize="15dp" />
+                    android:textSize="18sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -68,7 +68,7 @@
                         android:layout_weight="3"
                         android:hint="apellido"
                         android:inputType="textPersonName"
-                        android:textSize="15dp" />
+                        android:textSize="18sp" />
 
                     <Button
                         android:id="@+id/btn_buscar_juez"
@@ -96,7 +96,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="5dp"
-                    android:text="Informacion de jueces encontrados"
+                    android:text="Resultados encontrados"
                     android:textSize="14sp"></TextView>
 
                 <LinearLayout
@@ -203,35 +203,57 @@
                 android:textStyle="bold"></TextView>
 
             <TextView
-                android:id="@+id/tvSelJuez"
-                android:layout_width="wrap_content"
+                android:id="@+id/tvSinJuez"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:paddingStart="10dp"
                 android:paddingEnd="10dp"
-                android:text="Seleccione el juez"
-                android:textSize="14sp"></TextView>
+                android:text="Aun no cuenta con jueces asignados"
+                android:textColor="#EC0D0D"
+                android:textSize="14sp"
+                android:textStyle="bold"></TextView>
 
             <LinearLayout
+                android:id="@+id/linElimJueces"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <Spinner
-                    android:id="@+id/spinner_misJueces_juez"
-                    android:layout_width="0dp"
+                <TextView
+                    android:id="@+id/tvSelJuez"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"></Spinner>
+                    android:layout_marginTop="10dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="10dp"
+                    android:text="Seleccione el juez"
+                    android:textSize="14sp"></TextView>
 
-                <ImageButton
-                    android:id="@+id/btn_delete_juez"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:id="@+id/linElimJuez"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:src="@drawable/ic_delete"
-                    android:visibility="invisible"></ImageButton>
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <Spinner
+                        android:id="@+id/spinner_misJueces_juez"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"></Spinner>
+
+                    <ImageButton
+                        android:id="@+id/btn_delete_juez"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_delete"></ImageButton>
+                </LinearLayout>
+
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 </androidx.cardview.widget.CardView>

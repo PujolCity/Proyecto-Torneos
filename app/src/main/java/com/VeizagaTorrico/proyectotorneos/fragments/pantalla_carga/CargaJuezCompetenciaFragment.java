@@ -47,6 +47,8 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
     private Spinner spnnrJuez, spnnrJuezAsignado;
     private TextView tvJuezDni, tvSinResultados;
     private EditText edtNombreBusqueda, edtApellidoBusqueda;
+    private TextView tvSinJueces;
+    private LinearLayout linnElimJueces;
     private Button btnCrearJuez, btnAsignarjuez, btnBuscarJuez;
     private ImageButton iBAgregar,iBDelete;
     private LinearLayout linRdosBusqueda;
@@ -104,6 +106,9 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
         btnBuscarJuez = vista.findViewById(R.id.btn_buscar_juez);
         edtNombreBusqueda = vista.findViewById(R.id.edt_nombre_juez);
         edtApellidoBusqueda = vista.findViewById(R.id.edt_apellido_juez);
+
+        tvSinJueces = vista.findViewById(R.id.tvSinJuez);
+        linnElimJueces = vista.findViewById(R.id.linElimJueces);
 
         iBDelete = vista.findViewById(R.id.btn_delete_juez);
 
@@ -201,7 +206,8 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
             public void onResponse(Call<List<Referee>> call, Response<List<Referee>> response) {
                 try {
                     if(!response.body().isEmpty()){
-                        iBDelete.setVisibility(View.VISIBLE);
+                        linnElimJueces.setVisibility(View.VISIBLE);
+                        tvSinJueces.setVisibility(View.GONE);
                         juecesAsignados.clear();
                         juecesAsignados.addAll(response.body());
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, juecesAsignados);
@@ -219,13 +225,9 @@ public class CargaJuezCompetenciaFragment extends Fragment implements MensajeSin
                             }
                         });
                     } else {
-                        iBDelete.setVisibility(View.INVISIBLE);
                         juecesAsignados.clear();
-                        Referee referee = new Referee(0,"Sin ", "Jueces ", 000000);
-                        juecesAsignados.add(referee);
-                        ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item, juecesAsignados);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spnnrJuezAsignado.setAdapter(adapter);
+                        linnElimJueces.setVisibility(View.INVISIBLE);
+                        tvSinJueces.setVisibility(View.VISIBLE);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

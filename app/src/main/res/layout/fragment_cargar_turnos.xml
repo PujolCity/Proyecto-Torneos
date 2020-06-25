@@ -126,34 +126,54 @@
         android:textStyle="bold"></TextView>
 
     <TextView
-        android:id="@+id/tvSelTurno"
-        android:layout_width="wrap_content"
+        android:id="@+id/tvMjeSinTurnos"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:paddingStart="10dp"
         android:paddingEnd="10dp"
-        android:text="Seleccione el turno"
-        android:textSize="14sp"></TextView>
+        android:text="Aun no cuenta con turnos asignados "
+        android:textColor="#E61420"
+        android:textSize="14sp"
+        android:textStyle="bold"></TextView>
 
     <LinearLayout
+        android:id="@+id/linn_elim_turnos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-        <Spinner
-            android:id="@+id/spinnerCargaTurno"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tvSelTurno"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="5"></Spinner>
+            android:layout_marginTop="10dp"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="Seleccione el turno"
+            android:textSize="14sp"></TextView>
 
-        <ImageButton
-            android:id="@+id/deleteTurno"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:src="@drawable/ic_delete"
-            android:visibility="invisible"></ImageButton>
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <Spinner
+                android:id="@+id/spinnerCargaTurno"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"></Spinner>
+
+            <ImageButton
+                android:id="@+id/deleteTurno"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_delete"></ImageButton>
+        </LinearLayout>
+
     </LinearLayout>
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,7 +18,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.VeizagaTorrico.proyectotorneos.R;
@@ -28,6 +31,7 @@ import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.User;
 import com.VeizagaTorrico.proyectotorneos.services.InvitationSrv;
 import com.VeizagaTorrico.proyectotorneos.services.UserSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.ManagerSharedPreferences;
 
 import org.json.JSONObject;
@@ -55,6 +59,9 @@ public class CoOrganizadorFragment extends Fragment {
     private User usuario;
     private InvitationSrv invitationSrv;
     private Map<String,String> invitacion;
+    private AlertDialog alertDialog;
+    private TextView tvSinUsuarios;
+    private LinearLayout linUsuariosEncontrados;
 
     public CoOrganizadorFragment() {
     }
@@ -90,6 +97,7 @@ public class CoOrganizadorFragment extends Fragment {
                     llenarSpinnerUser(username);
                 }else {
                     Log.d("Llenar el campo","edit text vacio");
+                    Toast.makeText(vista.getContext(), "Debe ingresar un nombre para realizar la busqueda", Toast.LENGTH_LONG).show();
                 }
 
             }
@@ -98,7 +106,6 @@ public class CoOrganizadorFragment extends Fragment {
         btnEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //if(usuario.getId() != 0){
                     invitacion.put("idCompetencia",Integer.toString(competencia.getId()));
                     invitacion.put("idUsuarioOrg", ManagerSharedPreferences.getInstance().getDataFromSharedPreferences(vista.getContext(), FILE_SHARED_DATA_USER, KEY_ID));
                     invitacion.put("idUsuarioInvitado", Integer.toString(usuario.getId()));
@@ -110,8 +117,7 @@ public class CoOrganizadorFragment extends Fragment {
                         public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
                             if(response.code() == 200) {
                                 Log.d("response code", Integer.toString(response.code()));
-                                Toast toast = Toast.makeText(vista.getContext(), "Invitacion Enviada", Toast.LENGTH_SHORT);
-                                toast.show();
+                                Toast.makeText(vista.getContext(), "Invitacion enviada", Toast.LENGTH_SHORT).show();
                             }
                             if (response.code() == 400) {
                                 Log.d("RESP_RECOVERY_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
@@ -141,11 +147,15 @@ public class CoOrganizadorFragment extends Fragment {
     private void llenarSpinnerUser(final String username) {
         Call<List<User>> call = userSrv.getUsuariosByUsername(username);
         Log.d("Call URL", call.request().url().toString());
+        alertDialog.show();
         try {
             call.enqueue(new Callback<List<User>>() {
                 @Override
                 public void onResponse(Call<List<User>> call, Response<List<User>> response) {
                     if(!response.body().isEmpty()){
+                        alertDialog.dismiss();
+                        linUsuariosEncontrados.setVisibility(View.VISIBLE);
+                        tvSinUsuarios.setVisibility(View.GONE);
                         usuarios = response.body();
                         adapterUser = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, usuarios);
                         adapterUser.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -162,11 +172,17 @@ public class CoOrganizadorFragment extends Fragment {
                             }
                         });
                     }
+                    if(response.body().isEmpty()) {
+                        alertDialog.dismiss();
+                        linUsuariosEncontrados.setVisibility(View.INVISIBLE);
+                        tvSinUsuarios.setVisibility(View.VISIBLE);
+                    }
                 }
 
                 @Override
                 public void onFailure(Call<List<User>> call, Throwable t) {
-
+                    alertDialog.dismiss();
+                    linUsuariosEncontrados.setVisibility(View.INVISIBLE);
                 }
             });
         } catch (Exception e) {
@@ -189,6 +205,11 @@ public class CoOrganizadorFragment extends Fragment {
         invitacion = new HashMap<>();
         usuarios = new ArrayList<>();
         competencia = (CompetitionMin) getArguments().getSerializable("competencia");
+        tvSinUsuarios = vista.findViewById(R.id.tv_sin_usuarios);
+        tvSinUsuarios.setVisibility(View.INVISIBLE);
+        linUsuariosEncontrados = vista.findViewById(R.id.lin_usuarios_encontrados);
+        linUsuariosEncontrados.setVisibility(View.INVISIBLE);
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
 
         etUsername = vista.findViewById(R.id.etUsername);
         btnComprobar = vista.findViewById(R.id.btnComprobar);

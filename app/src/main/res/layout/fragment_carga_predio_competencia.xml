@@ -48,20 +48,18 @@
 
                 <EditText
                     android:id="@+id/edt_nombre_predio"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="5dp"
                     android:layout_weight="2"
                     android:hint="nombre"
                     android:inputType="textPersonName"
-                    android:textSize="14dp" />
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/btn_buscar_predio"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="5dp"
+                    android:layout_marginStart="5dp"
                     android:layout_weight="1"
                     android:backgroundTint="@color/colorPrimary"
                     android:text="buscar"
@@ -80,11 +78,10 @@
                     android:id="@+id/tv_resultado_busqueda"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
+                    android:layout_marginStart="5dp"
                     android:layout_marginTop="5dp"
-                    android:text="Informacion de predios encontrados"
-                    android:textSize="14sp">
-                </TextView>
+                    android:text="Resultados encontrados"
+                    android:textSize="14sp"></TextView>
 
                 <LinearLayout
                     android:id="@+id/lin_predio_busqueda"
@@ -97,9 +94,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
-                        android:layout_marginEnd="20dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginBottom="5dp"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
@@ -107,113 +104,98 @@
 
                         <TextView
                             android:id="@+id/tv_sel_predio"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:text="Seleccione un predio: "></TextView>
+                            android:layout_weight="1"
+                            android:text="Predio: "></TextView>
 
                         <Spinner
                             android:id="@+id/spinner_predios_predio"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_marginEnd="5dp"
-                            android:gravity="center_vertical">
-                        </Spinner>
+                            android:layout_weight="1"
+                            android:gravity="center_vertical"></Spinner>
                     </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_direccion_predio"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:layout_marginTop="5dp"
+                        android:layout_marginTop="0dp"
                         android:text="Ubicacion: "
                         android:textColor="#918C8C"
-                        android:textSize="12sp">
-                    </TextView>
+                        android:textSize="12sp"></TextView>
                     <!--                Spinner campos del predio seleccionado-->
                     <LinearLayout
                         android:id="@+id/lin_campos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginStart="20dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="15dp"
                         android:layout_marginEnd="10dp"
+                        android:layout_marginBottom="5dp"
                         android:orientation="horizontal">
 
                         <TextView
                             android:id="@+id/tv_titulo_campos"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="5dp"
-                            android:text="Campos del predio: ">
-                        </TextView>
+                            android:layout_weight="1"
+                            android:text="Campos del predio: "></TextView>
 
                         <Spinner
                             android:id="@+id/spinner_campos_predio"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginBottom="5dp">
-                        </Spinner>
+                            android:layout_weight="1"></Spinner>
                     </LinearLayout>
                     <!--                Informacion del campo-->
                     <LinearLayout
                         android:id="@+id/lin_info_campos"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:orientation="horizontal">
+                        android:layout_marginStart="15dp"
+                        android:layout_marginEnd="15dp"
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_capacidad_predio"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:hint="Capacidad"
+                            android:hint="Capacidad: "
                             android:textColor="#918C8C"
-                            android:textSize="12sp">
-                        </TextView>
+                            android:textSize="12sp"></TextView>
 
                         <TextView
                             android:id="@+id/tv_dimension_predio"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="5dp"
-                            android:layout_weight="1"
-                            android:hint="Dimension"
+                            android:hint="Dimensiones: "
                             android:textColor="#918C8C"
-                            android:textSize="12sp">
-                        </TextView>
+                            android:textSize="12sp"></TextView>
                     </LinearLayout>
 
                     <LinearLayout
                         android:id="@+id/lin_btn_accion"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="10dp"
-                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="5dp"
                         android:layout_marginBottom="10dp"
                         android:orientation="horizontal">
 
                         <Button
                             android:id="@+id/btn_asginar_sel"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="10dp"
-                            android:layout_marginTop="10dp"
                             android:layout_marginEnd="5dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:backgroundTint="@color/colorPrimary"
                             android:text="Asignar seleccionado"
@@ -222,12 +204,9 @@
 
                         <Button
                             android:id="@+id/btn_crear_predio"
-                            android:layout_width="wrap_content"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="5dp"
-                            android:layout_marginTop="10dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_marginBottom="5dp"
                             android:layout_weight="1"
                             android:backgroundTint="@color/colorPrimary"
                             android:text="Crear predio"
@@ -266,40 +245,61 @@
                     android:textStyle="bold"></TextView>
 
                 <TextView
-                    android:id="@+id/tvSelPredio"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/tvSinPredios"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp"
-                    android:text="Seleccione el predio"
-                    android:textSize="14sp"></TextView>
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="15dp"
+                    android:text="Aun no cuenta con predios asignados"
+                    android:textColor="#EF0C0C"
+                    android:textSize="14sp"
+                    android:textStyle="bold"></TextView>
 
                 <LinearLayout
+                    android:id="@+id/linn_elim_predios"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingStart="10dp"
-                    android:paddingEnd="10dp">
+                    android:orientation="vertical">
 
-                    <Spinner
-                        android:id="@+id/spinner_misPredios_predio"
-                        android:layout_width="0dp"
+                    <TextView
+                        android:id="@+id/tvSelPredio"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginEnd="15dp"
-                        android:layout_weight="4"></Spinner>
+                        android:layout_marginTop="10dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="10dp"
+                        android:text="Seleccione el predio"
+                        android:textSize="14sp"></TextView>
 
-                    <ImageButton
-                        android:id="@+id/btn_delete_predio"
-                        android:layout_width="0dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@color/cardview_light_background"
-                        android:src="@drawable/ic_delete"
-                        android:visibility="gone"></ImageButton>
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="4"
+                        android:orientation="horizontal"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp">
+
+                        <Spinner
+                            android:id="@+id/spinner_misPredios_predio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:layout_marginEnd="5dp"
+                            android:layout_weight="4"></Spinner>
+
+                        <ImageButton
+                            android:id="@+id/btn_delete_predio"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/cardview_light_background"
+                            android:src="@drawable/ic_delete"
+                            android:visibility="gone"></ImageButton>
+                    </LinearLayout>
                 </LinearLayout>
+
             </LinearLayout>
 
         </LinearLayout>

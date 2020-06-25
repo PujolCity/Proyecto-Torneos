@@ -1,5 +1,6 @@
 package com.VeizagaTorrico.proyectotorneos.fragments.pantalla_carga;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -31,6 +32,7 @@ import com.VeizagaTorrico.proyectotorneos.models.MsgRequest;
 import com.VeizagaTorrico.proyectotorneos.models.Success;
 import com.VeizagaTorrico.proyectotorneos.services.FieldSrv;
 import com.VeizagaTorrico.proyectotorneos.services.GroundSrv;
+import com.VeizagaTorrico.proyectotorneos.utils.ManagerMsgView;
 import com.VeizagaTorrico.proyectotorneos.utils.MensajeSinInternet;
 import com.VeizagaTorrico.proyectotorneos.utils.NetworkReceiver;
 import com.VeizagaTorrico.proyectotorneos.utils.Validations;
@@ -50,6 +52,8 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
     private Spinner spnnrPredio, spnnrCampo,spnnrPredioAsignado;
     private TextView tvPredioDire, tvCampoCapacidad, tvCampoDimension, tvSinResultados;
     private EditText edt_nombre_buscar;
+    private LinearLayout linElimPredios;
+    private TextView tvSinPredios;
     private Button btnPredio, btnBuscar, btnAsignarSeleccionado;
     private ImageButton iBDelete;
     private List<Ground> predios, prediosAsignados;
@@ -60,6 +64,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
     private Field campoSeleccionado;
     private Map<String,String> data;
     private LinearLayout lin_rdos_busqueda;
+    private AlertDialog alertDialog;
 
     public CargaPredioCompetenciaFragment() {
     }
@@ -115,6 +120,9 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
         lin_rdos_busqueda.setVisibility(View.GONE);
         tvSinResultados.setVisibility(View.GONE);
         iBDelete.setVisibility(View.GONE);
+        linElimPredios = vista.findViewById(R.id.linn_elim_predios);
+        tvSinPredios = vista.findViewById(R.id.tvSinPredios);
+        alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");
 
         predios = new ArrayList<>();
         prediosAsignados = new ArrayList<>();
@@ -253,7 +261,9 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
             public void onResponse(Call<List<Ground>> call, Response<List<Ground>> response) {
                 try {
                     if(!response.body().isEmpty()) {
-                        iBDelete.setVisibility(View.VISIBLE);
+                        //iBDelete.setVisibility(View.VISIBLE);
+                        linElimPredios.setVisibility(View.VISIBLE);
+                        tvSinPredios.setVisibility(View.GONE);
                         prediosAsignados.clear();
                         prediosAsignados.addAll(response.body());
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, prediosAsignados);
@@ -271,13 +281,9 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                             }
                         });
                     }else {
-                        iBDelete.setVisibility(View.INVISIBLE);
+                        linElimPredios.setVisibility(View.INVISIBLE);
+                        tvSinPredios.setVisibility(View.VISIBLE);
                         prediosAsignados.clear();
-                        Ground predio = new Ground(0, "Sin Predios", "", "");
-                        prediosAsignados.add(predio);
-                        ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, prediosAsignados);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spnnrPredioAsignado.setAdapter(adapter);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -306,6 +312,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
         }
         Call<List<Ground>> call = groundSrv.findLikeName(nombrePredio);
         Log.d("CALL_LIKE_PREDIO",call.request().url().toString());
+        alertDialog.show();
         call.enqueue(new Callback<List<Ground>>() {
             @Override
             public void onResponse(Call<List<Ground>> call, Response<List<Ground>> response) {
@@ -313,6 +320,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                     Log.d("predioComp resp", Integer.toString(response.code()));
 
                     if(!response.body().isEmpty()) {
+                        alertDialog.dismiss();
                         tvSinResultados.setVisibility(View.GONE);
                         lin_rdos_busqueda.setVisibility(View.VISIBLE);
                         predios.clear();
@@ -335,6 +343,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                             }
                         });
                     }else {
+                        alertDialog.dismiss();
                         tvSinResultados.setVisibility(View.VISIBLE);
                         lin_rdos_busqueda.setVisibility(View.GONE);
                         //iBAgregar.setVisibility(View.INVISIBLE);
@@ -350,6 +359,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
             }
             @Override
             public void onFailure(Call<List<Ground>> call, Throwable t) {
+                alertDialog.dismiss();
                 try{
                     Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_LONG);
                     toast.show();
@@ -381,7 +391,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
                                 public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                                     try {
                                         campoSeleccionado = (Field) spnnrCampo.getSelectedItem();
-                                        tvCampoCapacidad.setText("Capacidad: "+campoSeleccionado.getCapacidad());
+                                        tvCampoCapacidad.setText("Capacidad: "+campoSeleccionado.getCapacidad()+ " individuos");
                                         tvCampoDimension.setText("Dimensiones: "+campoSeleccionado.getDimensiones() + " mts2");
                                     } catch (Exception e) {
                                         e.printStackTrace();

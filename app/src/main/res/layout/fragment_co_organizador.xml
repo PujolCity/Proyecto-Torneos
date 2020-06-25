@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="2"
                 android:hint="usuario"
-                android:textSize="14sp"></EditText>
+                android:textSize="18sp"></EditText>
 
             <Button
                 android:id="@+id/btnComprobar"
@@ -60,11 +60,24 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/tv_sin_usuarios"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start"
+        android:padding="15dp"
+        android:text="No se encontraron resultados"
+        android:textColor="#F40606"
+        android:textStyle="bold"
+        tools:visibility="gone"></TextView>
+
     <LinearLayout
+        android:id="@+id/lin_usuarios_encontrados"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="15dp">
+        android:padding="15dp"
+        tools:visibility="invisible">
 
         <TextView
             android:id="@+id/tv_rdo_busqueda"
@@ -72,14 +85,15 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:paddingTop="5dp"
-            android:paddingBottom="15dp"
-            android:text="Usuarios encontrados"
+            android:paddingBottom="10dp"
+            android:text="Resultados encontrados"
             android:textSize="14sp"></TextView>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            tools:visibility="visible">
 
             <Spinner
                 android:id="@+id/spinnerUsers"
