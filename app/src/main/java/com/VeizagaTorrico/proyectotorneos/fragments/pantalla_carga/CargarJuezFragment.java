@@ -49,10 +49,7 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
     private Button btnCrear;
     private RefereeSrv refereeSrv;
     private Map<String,String> datos;
-    private ImageButton delete;
-    private Spinner spinnerJuez;
     private List<Referee> jueces;
-    private Referee juezSeleccionado;
 
 
     public CargarJuezFragment() {
@@ -77,7 +74,7 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
         vista = inflater.inflate(R.layout.fragment_cargar_juez, container, false);
         initElements();
         if(NetworkReceiver.existConnection(vista.getContext())) {
-            llenarSpinnerJuez();
+            // llenarSpinnerJuez();
             listeners();
         } else {
             sinInternet();
@@ -106,7 +103,7 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
                                 // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
                                 Toast toast = Toast.makeText(vista.getContext(), "Juez Cargado!", Toast.LENGTH_SHORT);
                                 toast.show();
-                                llenarSpinnerJuez();
+                                // llenarSpinnerJuez();
                             }
                         }
                         @Override
@@ -119,33 +116,6 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
                     Toast toast = Toast.makeText(vista.getContext(), "Por favor completar todos los campos", Toast.LENGTH_SHORT);
                     toast.show();
                 }
-            }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog dialogo = new AlertDialog
-                        .Builder(vista.getContext()) // NombreDeTuActividad.this, o getActivity() si es dentro de un fragmento
-                        .setPositiveButton("Sí, eliminar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón positivo, así que la acción está confirmada
-                                eliminarJuez(juezSeleccionado.getId());
-                            }
-                        })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                // Hicieron click en el botón negativo, no confirmaron
-                                // Simplemente descartamos el diálogo
-                                dialog.dismiss();
-                            }
-                        })
-                        .setTitle("Esta seguro?") // El título
-                        .setMessage("Desea eliminar el juez seleccionado?") // El mensaje
-                        .create();// No olvides llamar a Create, ¡pues eso crea el AlertDialog!
-                dialogo.show();
             }
         });
 
@@ -177,7 +147,7 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
             public void onResponse(Call<Success> call, Response<Success> response) {
                 if(response.code() == 200){
                     jueces.clear();
-                    llenarSpinnerJuez();
+                    //llenarSpinnerJuez();
                     Toast toast = Toast.makeText(vista.getContext(), "Juez Eliminado!", Toast.LENGTH_SHORT);
                     toast.show();
                 }
@@ -190,62 +160,16 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
         });
     }
 
-    private void llenarSpinnerJuez() {
-        jueces.clear();
-        Call<List<Referee>> call = refereeSrv.getReferees();
-        Log.d("Call Juez",call.request().url().toString());
-        call.enqueue(new Callback<List<Referee>>() {
-            @Override
-            public void onResponse(Call<List<Referee>> call, Response<List<Referee>> response) {
-                try{
-                    if(!response.body().isEmpty()){
-                        jueces = response.body();
-                        ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerJuez.setAdapter(adapter);
-                        spinnerJuez.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                            @Override
-                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                juezSeleccionado = (Referee) spinnerJuez.getSelectedItem();
-                                actualizarDatos(juezSeleccionado);
-                            }
-                            @Override
-                            public void onNothingSelected(AdapterView<?> adapterView) {
-
-                            }
-                        });
-                    }else {
-                        delete.setVisibility(View.INVISIBLE);
-                        Referee referee = new Referee(0, "Sin Jueces", " ",0);
-                        jueces.add(referee);
-                        ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerJuez.setAdapter(adapter);
-                    }
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Referee>> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Recargue la pestaña", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-    }
-
-    private void actualizarDatos(Referee juez) {
-        try {
-            etNombre.setText(juez.getNombre());
-            etApellido.setText(juez.getApellido());
-            etDNI.setText(Integer.toString(juez.getDni()));
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-    }
+//    private void actualizarDatos(Referee juez) {
+//        try {
+//            etNombre.setText(juez.getNombre());
+//            etApellido.setText(juez.getApellido());
+//            etDNI.setText(Integer.toString(juez.getDni()));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//
+//    }
 
     private boolean validar() {
         if(nombre.isEmpty())
@@ -262,9 +186,6 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
         competencia = (CompetitionMin) getArguments().getSerializable("competencia");
         refereeSrv = new RetrofitAdapter().connectionEnable().create(RefereeSrv.class);
         jueces = new ArrayList<>();
-
-        spinnerJuez = vista.findViewById(R.id.spinnerCargaJuez);
-        delete = vista.findViewById(R.id.btnDeleteJuez);
 
         btnCrear = vista.findViewById(R.id.btnAgregarJuez);
 

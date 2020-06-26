@@ -1,92 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    tools:context=".fragments.pantalla_carga.CargarJuezFragment">-->
+
+
+<!--    <EditText-->
+<!--        android:id="@+id/etNombreJuez"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:hint="Nombre"-->
+<!--        android:textSize="15sp"-->
+<!--        android:gravity="center"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+<!--    </EditText>-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/etApellidoJuez"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:hint="Apellido"-->
+<!--        android:textSize="15sp"-->
+<!--        android:gravity="center"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/etNombreJuez"-->
+<!--        app:layout_constraintTop_toTopOf="parent">-->
+<!--    </EditText>-->
+
+<!--    <EditText-->
+<!--        android:id="@+id/etDNIJuez"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:hint="Dni"-->
+<!--        android:textSize="15sp"-->
+<!--        android:inputType="number"-->
+<!--        android:gravity="center"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/etNombreJuez">-->
+<!--    </EditText>-->
+
+<!--    <Button-->
+<!--        android:id="@+id/btnAgregarJuez"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="20dp"-->
+<!--        android:layout_marginTop="20dp"-->
+<!--        android:backgroundTint="@color/colorPrimary"-->
+<!--        android:textColor="@color/cardview_light_background"-->
+<!--        android:text="@string/txtBtnAgregarJuez"-->
+<!--        app:layout_constraintStart_toEndOf="@+id/etDNIJuez"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/etApellidoJuez">-->
+<!--    </Button>-->
+
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerCargaJuez"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="28dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.606"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btnAgregarJuez">-->
+<!--    </Spinner>-->
+
+<!--    <ImageButton-->
+<!--        android:id="@+id/btnDeleteJuez"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginTop="84dp"-->
+<!--        android:src="@drawable/ic_delete"-->
+<!--        android:visibility="invisible"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/spinnerCargaJuez"-->
+<!--        app:layout_constraintHorizontal_bias="0.854"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/etApellidoJuez">-->
+<!--    </ImageButton>-->
+<!--    -->
+<!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="10dp"
+    android:layout_marginTop="15dp"
+    android:layout_marginEnd="10dp"
+    android:layout_marginBottom="15dp"
+    android:orientation="vertical"
     tools:context=".fragments.pantalla_carga.CargarJuezFragment">
 
+    <TextView
+        android:id="@+id/tv_tit_crear_juez"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:text="Registre un juez"
+        android:textSize="@dimen/size_title_1"
+        android:textStyle="bold"></TextView>
+
+    <TextView
+        android:id="@+id/tv_subtit_crear_juez"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="Ingrese los datos del juez"
+        android:textSize="@dimen/size_subtitle1"></TextView>
 
     <EditText
         android:id="@+id/etNombreJuez"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:hint="Nombre"
-        android:textSize="15sp"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </EditText>
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start"
+        android:hint="nombre"
+        android:textSize="@dimen/size_hint_create"></EditText>
 
     <EditText
         android:id="@+id/etApellidoJuez"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="16dp"
-        android:hint="Apellido"
-        android:textSize="15sp"
-        android:gravity="center"
-        app:layout_constraintStart_toEndOf="@+id/etNombreJuez"
-        app:layout_constraintTop_toTopOf="parent">
-    </EditText>
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:hint="apellido"
+        android:textSize="@dimen/size_hint_create"></EditText>
 
     <EditText
         android:id="@+id/etDNIJuez"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginTop="20dp"
-        android:hint="Dni"
-        android:textSize="15sp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:gravity="start"
+        android:hint="dni"
         android:inputType="number"
-        android:gravity="center"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etNombreJuez">
-    </EditText>
+        android:textSize="@dimen/size_hint_create"></EditText>
 
     <Button
         android:id="@+id/btnAgregarJuez"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="30dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
         android:backgroundTint="@color/colorPrimary"
-        android:textColor="@color/cardview_light_background"
-        android:text="@string/txtBtnAgregarJuez"
-        app:layout_constraintStart_toEndOf="@+id/etDNIJuez"
-        app:layout_constraintTop_toBottomOf="@+id/etApellidoJuez">
-    </Button>
+        android:text="Crear"
+        android:textColor="@color/cardview_light_background"></Button>
 
-    <Spinner
-        android:id="@+id/spinnerCargaJuez"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.606"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAgregarJuez">
-    </Spinner>
+<!--    <Spinner-->
+<!--        android:id="@+id/spinnerCargaJuez"-->
+<!--        android:layout_width="200dp"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginTop="28dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintHorizontal_bias="0.606"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/btnAgregarJuez"></Spinner>-->
 
-    <ImageButton
-        android:id="@+id/btnDeleteJuez"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="84dp"
-        android:src="@drawable/ic_delete"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toStartOf="@+id/spinnerCargaJuez"
-        app:layout_constraintHorizontal_bias="0.854"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/etApellidoJuez">
-    </ImageButton>
-    <!--
+<!--    <ImageButton-->
+<!--        android:id="@+id/btnDeleteJuez"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="32dp"-->
+<!--        android:layout_marginTop="84dp"-->
+<!--        android:src="@drawable/ic_delete"-->
+<!--        android:visibility="invisible"-->
+<!--        app:layout_constraintEnd_toStartOf="@+id/spinnerCargaJuez"-->
+<!--        app:layout_constraintHorizontal_bias="0.854"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/etApellidoJuez"></ImageButton>-->
 
-
-
-    -->
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

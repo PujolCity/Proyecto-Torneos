@@ -12,4 +12,7 @@
     <dimen name="height_sin_conexion">25dp</dimen>
     <dimen name="text_size_sin_conexion">11sp</dimen>
     <dimen name="height_nav_encuentros">50dp</dimen>
+    <dimen name="size_title_1">16sp</dimen>
+    <dimen name="size_subtitle1">14sp</dimen>
+    <dimen name="size_hint_create">18sp</dimen>
 </resources>
