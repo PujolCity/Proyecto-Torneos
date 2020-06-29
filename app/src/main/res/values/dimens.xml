@@ -15,4 +15,5 @@
     <dimen name="size_title_1">16sp</dimen>
     <dimen name="size_subtitle1">14sp</dimen>
     <dimen name="size_hint_create">18sp</dimen>
+    <dimen name="size_hint_search">14sp</dimen>
 </resources>

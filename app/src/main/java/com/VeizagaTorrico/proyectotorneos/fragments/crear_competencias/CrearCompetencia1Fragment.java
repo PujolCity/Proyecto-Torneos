@@ -205,12 +205,9 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                                         jsonObject = new JSONObject(response.errorBody().string());
                                         String userMessage = jsonObject.getString("messaging");
                                         Log.d("RESP_RECOVERY_ERROR", "Msg de la repuesta: "+userMessage);
-//                                        Toast.makeText(vista.getContext(), "Hubo un problema :  << "+userMessage+" >>", Toast.LENGTH_SHORT).show();
-                                        //ciudades.add(new City(0,"El nombre usado no existe, intentar con otro nombre",null));
                                         tvSelCiudad.setVisibility(View.VISIBLE);
                                         tvSelCiudad.setText("No se han encontrado resultados. Intente con otro nombre.");
                                         spnnerCiudad.setVisibility(View.GONE);
-                                        //adapterCiudades();
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -223,8 +220,7 @@ public class CrearCompetencia1Fragment extends Fragment implements MensajeSinInt
                         @Override
                         public void onFailure(Call<List<City>> call, Throwable t) {
                             alertDialog.dismiss();
-                            Toast toast = Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
-                            toast.show();
+                            Toast.makeText(getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT).show();
                             Log.d("onFailure", t.getMessage());
                         }
                     });

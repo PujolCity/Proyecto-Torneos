@@ -7,184 +7,437 @@
     android:fillViewport="true"
     tools:context=".fragments.pantalla_carga.CargarPredioFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etNombrePredio"
-            android:layout_width="150dp"
+<!--        registre un predio-->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="Nombre de predio"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.153"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-        </EditText>
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/etDireccionPredio"
-            android:layout_width="150dp"
+            <TextView
+                android:id="@+id/tv_tit_crear_predio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="Registre un predio"
+                android:textSize="@dimen/size_title_1"
+                android:textStyle="bold"></TextView>
+
+            <TextView
+                android:id="@+id/tv_subtit_crear_predio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Ingrese los datos del predio"
+                android:textSize="@dimen/size_subtitle1"></TextView>
+
+            <!--            nombre y dire predio-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etNombrePredio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="1"
+                    android:hint="nombre"
+                    android:textSize="@dimen/size_hint_create"></EditText>
+
+                <EditText
+                    android:id="@+id/etDireccionPredio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_weight="2"
+                    android:hint="direccion"
+                    android:textSize="@dimen/size_hint_create"></EditText>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_buscar_ciudad_predio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:text="Buscar ciudad por nombre"
+                    android:textSize="@dimen/size_subtitle1"
+                    tools:visibility="visible"></TextView>
+
+                <!--                buscar ciudad-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="5dp"
+                    android:visibility="visible"
+                    tools:visibility="visible">
+
+                    <EditText
+                        android:id="@+id/et_buscar_ciudad_predio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:hint="ciudad"
+                        android:textSize="@dimen/size_hint_search"></EditText>
+
+                    <ImageButton
+                        android:id="@+id/ib_buscar_ciudad_predio"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:src="@drawable/search"></ImageButton>
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/tv_sin_rdos_buscar_ciudad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="No se encontraron resultados"
+                    android:textColor="#EC0A0A"
+                    android:textStyle="bold"
+                    tools:visibility="gone"></TextView>
+
+                <!--                resultados buscar ciudad-->
+                <LinearLayout
+                    android:id="@+id/lin_rdos_buscar_ciudad_predio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    tools:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_rdos_buscar_ciudad_predio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Resultados encontrados"
+                        android:textColor="#979292"
+                        android:textStyle="bold"></TextView>
+
+                    <Spinner
+                        android:id="@+id/spinner_ciudad_predio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="5dp"></Spinner>
+
+                    <Button
+                        android:id="@+id/btnAgregarPredio"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="30dp"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginEnd="30dp"
+                        android:backgroundTint="@color/colorPrimary"
+                        android:text="Crear predio"
+                        android:textColor="@color/cardview_light_background"></Button>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+<!--        administre sus predios asginados-->
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="16dp"
-            android:hint="Direccion"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/etNombrePredio"
-            app:layout_constraintTop_toTopOf="parent">
-        </EditText>
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="5dp"
+            android:orientation="vertical"
+            android:visibility="visible"
+            tools:visibility="visible">
 
+            <TextView
+                android:id="@+id/tv_tit_admin_campos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
+                android:text="Administre los campos de su predio"
+                android:textSize="@dimen/size_title_1"
+                android:textStyle="bold"></TextView>
 
-        <EditText
-            android:id="@+id/etCiudadPredio"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:hint="Ciudad"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.153"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etNombrePredio">
-        </EditText>
+            <TextView
+                android:id="@+id/tv_subtit_admin_campo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:text="Buscar predio por nombre"
+                android:textSize="@dimen/size_subtitle1"
+                tools:visibility="visible"></TextView>
 
-        <ImageButton
-            android:id="@+id/ib_buscar_predio"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:src="@drawable/ic_check"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/etCiudadPredio"
-            app:layout_constraintTop_toBottomOf="@+id/etDireccionPredio">
-        </ImageButton>
+            <!-- buscar predio -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="horizontal"
+                tools:visibility="visible">
 
-        <Spinner
-            android:id="@+id/spinner_ciudad_predio"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/ib_buscar_predio"
-            app:layout_constraintTop_toBottomOf="@+id/etDireccionPredio">
-        </Spinner>
+                <EditText
+                    android:id="@+id/et_buscar_predio"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight="5"
+                    android:hint="predio"
+                    android:textSize="@dimen/size_hint_search"></EditText>
 
-        <ImageButton
-            android:id="@+id/btnDeleteCampo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:src="@drawable/ic_delete"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.336"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/etCampoNombre">
-        </ImageButton>
+                <ImageButton
+                    android:id="@+id/ib_buscar_predio"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/search"></ImageButton>
 
-        <Button
-            android:id="@+id/btnAgregarPredio"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginTop="56dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/txtBtnAgregarPredio"
-            android:textColor="@color/cardview_light_background"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.742"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinner_ciudad_predio">
-        </Button>
+            </LinearLayout>
 
-        <Spinner
-            android:id="@+id/spinnerCargaPredio"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.72"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnAgregarPredio">
-        </Spinner>
+            <TextView
+                android:id="@+id/tv_sin_rdos_buscar_predios"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="10dp"
+                android:text="No se encontraron resultados"
+                android:textColor="#EC0A0A"
+                android:textStyle="bold"
+                android:visibility="gone"></TextView>
 
-        <Spinner
-            android:id="@+id/spinnerCargarCampo"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.048"
-            app:layout_constraintStart_toEndOf="@+id/btnDeleteCampo"
-            app:layout_constraintTop_toBottomOf="@+id/etCapacidadCampo">
-        </Spinner>
+            <!-- resultados buscar predio -->
+            <LinearLayout
+                android:id="@+id/lin_rdos_buscar_predio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:visibility="visible">
 
-        <EditText
-            android:id="@+id/etCampoNombre"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:hint="Nombre del Campo"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.076"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
-        </EditText>
+                <TextView
+                    android:id="@+id/tv_rdos_buscar_predio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Resultados encontrados"
+                    android:textColor="#979292"></TextView>
 
-        <EditText
-            android:id="@+id/etCapacidadCampo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="28dp"
-            android:gravity="center"
-            android:hint="Capacidad"
-            android:inputType="numberDecimal"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/etCampoNombre"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
-        </EditText>
+                <Spinner
+                    android:id="@+id/spinnerCargaPredio"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="5dp"></Spinner>
 
-        <EditText
-            android:id="@+id/etDimensionesCampo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="28dp"
-            android:gravity="center"
-            android:hint="dim mts2"
-            android:inputType="numberDecimal"
-            android:textSize="15sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.016"
-            app:layout_constraintStart_toEndOf="@+id/etCapacidadCampo"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCargaPredio">
-        </EditText>
+            </LinearLayout>
 
-        <Button
-            android:id="@+id/btnAgregarCampo"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="52dp"
-            android:backgroundTint="@color/colorPrimary"
-            android:text="@string/txtBtnAgregarCampo"
-            android:textColor="@color/cardview_light_background"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.559"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerCargarCampo">
-        </Button>
+            <LinearLayout
+                android:id="@+id/lin_sel_campo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:orientation="vertical"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                tools:visibility="visible">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tv_sel_campo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Campos del predio"
+                    android:textColor="#979292"></TextView>
+
+                <!--                eliminar campo-->
+                <!--                <LinearLayout-->
+                <!--                    android:id="@+id/lin_elim_campo"-->
+                <!--                    android:layout_width="match_parent"-->
+                <!--                    android:layout_height="wrap_content"-->
+                <!--                    android:orientation="horizontal">-->
+
+                <!--                    <Spinner-->
+                <!--                        android:id="@+id/spinnerCargarCampo"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="match_parent"-->
+                <!--                        android:layout_weight="4"></Spinner>-->
+
+                <!--                    <ImageButton-->
+                <!--                        android:id="@+id/btnDeleteCampo"-->
+                <!--                        android:layout_width="0dp"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:layout_weight="1"-->
+                <!--                        android:src="@drawable/ic_delete"></ImageButton>-->
+
+                <!--                </LinearLayout>-->
+                <Spinner
+                    android:id="@+id/spinnerCargarCampo"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"></Spinner>
+
+            </LinearLayout>
+
+            <!--            datos del campo-->
+            <LinearLayout
+                android:id="@+id/lin_datos_campo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:orientation="vertical"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/tv_datos_campo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Datos del campo"></TextView>
+
+                <!--                nombre del campo-->
+                <LinearLayout
+                    android:id="@+id/lin_datos_nombre_campo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_nombre_campo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Nombre: "></TextView>
+
+                    <EditText
+                        android:id="@+id/etCampoNombre"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:textSize="@dimen/size_hint_search"></EditText>
+
+                </LinearLayout>
+                <!--                Capacidad y sup del campo-->
+                <LinearLayout
+                    android:id="@+id/lin_datos_cap_sup_campo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_capacidad_campo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="Max. personas: "></TextView>
+
+                    <EditText
+                        android:id="@+id/etCapacidadCampo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="3dp"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/size_hint_search"></EditText>
+
+                    <TextView
+                        android:id="@+id/tv_superficie_campo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="3"
+                        android:text="Dimension (m2): "
+                        android:textSize="@dimen/size_hint_search"></TextView>
+
+                    <EditText
+                        android:id="@+id/etDimensionesCampo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center_horizontal"
+                        android:inputType="numberDecimal"
+                        android:textAlignment="center"
+                        android:textSize="@dimen/size_hint_search"></EditText>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <!-- botones de admin campo -->
+            <LinearLayout
+                android:id="@+id/lin_btn_admin_campo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btnNuevoCampo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="NUEVO CAMPO"
+                    android:textColor="@color/cardview_light_background"></Button>
+                <Button
+                    android:id="@+id/btnCancelarNuevoCampo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="CANCELAR"
+                    android:textColor="@color/cardview_light_background"></Button>
+                <Button
+                    android:id="@+id/btnAgregarCampo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="crear campo"
+                    android:textColor="@color/cardview_light_background"
+                    tools:visibility="visible"></Button>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 </ScrollView>
