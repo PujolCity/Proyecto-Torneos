@@ -67,12 +67,7 @@ public class CargasDetalleFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_cargas_detalle, container, false);
         initElements();
-        if(NetworkReceiver.existConnection(vista.getContext())){
-            listenButtons();
-        }
-        else{
-            Toast.makeText(vista.getContext(), "Estas funciones solo estan disponibles cuando haya una conexion a internet activa.", Toast.LENGTH_LONG);
-        }
+        listenButtons();
 
         return vista;
     }
@@ -107,9 +102,14 @@ public class CargasDetalleFragment extends Fragment {
         btnPredio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competencia", competencia);
-                Navigation.findNavController(vista).navigate(R.id.cargaPredioCompetenciaFragment    , bundle);
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("competencia", competencia);
+                    Navigation.findNavController(vista).navigate(R.id.cargaPredioCompetenciaFragment    , bundle);
+                }
+                else{
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -117,13 +117,18 @@ public class CargasDetalleFragment extends Fragment {
         btnTurno.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!competencia.getEstado().contains("INICIADA")) {
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("competencia", competencia);
-                    Navigation.findNavController(vista).navigate(R.id.cargarTurnoFragment, bundle);
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    if(!competencia.getEstado().contains("INICIADA")) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("competencia", competencia);
+                        Navigation.findNavController(vista).navigate(R.id.cargarTurnoFragment, bundle);
+                    }
+                    else{
+                        Toast.makeText(vista.getContext(), "No se pueden modificar los turnos de una competencia iniciada", Toast.LENGTH_LONG).show();
+                    }
                 }
                 else{
-                    Toast.makeText(vista.getContext(), "No se pueden modificar los turnos de una competencia iniciada", Toast.LENGTH_LONG).show();
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -132,9 +137,14 @@ public class CargasDetalleFragment extends Fragment {
         btnJuez.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competencia", competencia);
-                Navigation.findNavController(vista).navigate(R.id.cargaJuezCompetenciaFragment, bundle);
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("competencia", competencia);
+                    Navigation.findNavController(vista).navigate(R.id.cargaJuezCompetenciaFragment, bundle);
+                }
+                else{
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -142,96 +152,45 @@ public class CargasDetalleFragment extends Fragment {
         btnNoticias.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competencia", competencia);
-                Navigation.findNavController(vista).navigate(R.id.cargarNoticiaFragment, bundle);
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("competencia", competencia);
+                    Navigation.findNavController(vista).navigate(R.id.cargarNoticiaFragment, bundle);
+                }
+                else{
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         btnGenerar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Call<MsgRequest> call = competenciaSrv.generarEncuentros(competencia.getId());
-                Log.d("Url Call", call.request().url().toString());
-                // mostramos mje de carga
-                alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Generando encuentros..");
-                alertDialog.show();
-                try {
-                    call.enqueue(new Callback<MsgRequest>() {
-                        @Override
-                        public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
-                            Log.d("response",Integer.toString(response.code()));
-                            if(response.code() == 200) {
-                                alertDialog.dismiss();
-                                Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
-                                toast.show();
-                            }
-                            if (response.code() == 400) {
-                                alertDialog.dismiss();
-                                Log.d("RESP_SIGNIN_ERROR", "PETICION MAL FORMADA: "+response.errorBody().toString());
-                                JSONObject jsonObject = null;
-                                try {
-                                    jsonObject = new JSONObject(response.errorBody().string());
-                                    String userMessage = jsonObject.getString("msg");
-                                    Log.d("RESP_SIGNIN_ERROR", "Msg de la repuesta: "+userMessage);
-                                    Toast.makeText(vista.getContext(), "No se pueden generar mas encuentros:  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                return;
-                            }
-                        }
-
-                        @Override
-                        public void onFailure(Call<MsgRequest> call, Throwable t) {
-                            alertDialog.dismiss();
-                            Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                            toast.show();
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        btnInvitar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("competencia", competencia);
-                Navigation.findNavController(vista).navigate(R.id.coOrganizadorFragment, bundle);
-
-            }
-        });
-
-        btnSigFase.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(competencia.getFaseActual().equals("1")){
-                    Toast.makeText(vista.getContext(), "La competencia ya se encuentra en su fase final", Toast.LENGTH_LONG).show();
-                }
-                else{
-                    Call<MsgResponse> call = competenciaSrv.faseCompleta(competencia.getId());
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    Call<MsgRequest> call = competenciaSrv.generarEncuentros(competencia.getId());
                     Log.d("Url Call", call.request().url().toString());
+                    // mostramos mje de carga
+                    alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Generando encuentros..");
+                    alertDialog.show();
                     try {
-                        call.enqueue(new Callback<MsgResponse>() {
+                        call.enqueue(new Callback<MsgRequest>() {
                             @Override
-                            public void onResponse(Call<MsgResponse> call, Response<MsgResponse> response) {
-                                Log.d("response",Integer.toString(response.code()));
-                                if(response.code() == 200) {
-                                    Bundle bundle = new Bundle();
-                                    bundle.putSerializable("competencia", competencia);
-                                    Navigation.findNavController(vista).navigate(R.id.cargaFaseFragment, bundle);
+                            public void onResponse(Call<MsgRequest> call, Response<MsgRequest> response) {
+                                Log.d("response", Integer.toString(response.code()));
+                                if (response.code() == 200) {
+                                    alertDialog.dismiss();
+                                    Toast toast = Toast.makeText(vista.getContext(), "Encuentros generados", Toast.LENGTH_SHORT);
+                                    toast.show();
                                 }
                                 if (response.code() == 400) {
-                                    Log.d("BTN_SIG_FASE_ERROR", "PETICION MAL FORMADA: "+response.errorBody());
+                                    alertDialog.dismiss();
+                                    Log.d("RESP_SIGNIN_ERROR", "PETICION MAL FORMADA: " + response.errorBody().toString());
                                     JSONObject jsonObject = null;
                                     try {
                                         jsonObject = new JSONObject(response.errorBody().string());
-                                        String userMessage = jsonObject.getString("messaging");
-                                        Log.d("BTN_SIG_FASE", "Msg de la repuesta: "+userMessage);
-                                        Toast.makeText(vista.getContext(), "No es posible esta opcion:  << "+userMessage+" >>", Toast.LENGTH_LONG).show();
+                                        String userMessage = jsonObject.getString("msg");
+                                        Log.d("RESP_SIGNIN_ERROR", "Msg de la repuesta: " + userMessage);
+                                        Toast.makeText(vista.getContext(), "No se pueden generar mas encuentros:  << " + userMessage + " >>", Toast.LENGTH_LONG).show();
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -240,14 +199,83 @@ public class CargasDetalleFragment extends Fragment {
                             }
 
                             @Override
-                            public void onFailure(Call<MsgResponse> call, Throwable t) {
-                                Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
-                                Log.d("onFailure", t.getMessage());
+                            public void onFailure(Call<MsgRequest> call, Throwable t) {
+                                alertDialog.dismiss();
+                                Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
+                                toast.show();
                             }
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
+                }
+                else{
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnInvitar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("competencia", competencia);
+                    Navigation.findNavController(vista).navigate(R.id.coOrganizadorFragment, bundle);
+                }
+                else{
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        btnSigFase.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    if (competencia.getFaseActual().equals("1")) {
+                        Toast.makeText(vista.getContext(), "La competencia ya se encuentra en su fase final", Toast.LENGTH_LONG).show();
+                    } else {
+                        Call<MsgResponse> call = competenciaSrv.faseCompleta(competencia.getId());
+                        Log.d("Url Call", call.request().url().toString());
+                        try {
+                            call.enqueue(new Callback<MsgResponse>() {
+                                @Override
+                                public void onResponse(Call<MsgResponse> call, Response<MsgResponse> response) {
+                                    Log.d("response", Integer.toString(response.code()));
+                                    if (response.code() == 200) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putSerializable("competencia", competencia);
+                                        Navigation.findNavController(vista).navigate(R.id.cargaFaseFragment, bundle);
+                                    }
+                                    if (response.code() == 400) {
+                                        Log.d("BTN_SIG_FASE_ERROR", "PETICION MAL FORMADA: " + response.errorBody());
+                                        JSONObject jsonObject = null;
+                                        try {
+                                            jsonObject = new JSONObject(response.errorBody().string());
+                                            String userMessage = jsonObject.getString("messaging");
+                                            Log.d("BTN_SIG_FASE", "Msg de la repuesta: " + userMessage);
+                                            Toast.makeText(vista.getContext(), "No es posible esta opcion:  << " + userMessage + " >>", Toast.LENGTH_LONG).show();
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
+                                        return;
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(Call<MsgResponse> call, Throwable t) {
+                                    Toast.makeText(vista.getContext(), "Problemas con el servidor: intente recargar la pestaña", Toast.LENGTH_SHORT).show();
+                                    Log.d("onFailure", t.getMessage());
+                                }
+                            });
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                else{
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
                 }
             }
         });

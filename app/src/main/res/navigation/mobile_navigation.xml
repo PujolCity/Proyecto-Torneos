@@ -136,8 +136,8 @@
     <fragment
         android:id="@+id/detalleOrganizandoFragment"
         android:name="com.VeizagaTorrico.proyectotorneos.fragments.detalle_organizando.DetalleOrganizandoFragment"
-        android:label="A organizar!!"
-        tools:layout="@layout/fragment_detalle_organizando" >
+        android:label="Detalle"
+        tools:layout="@layout/fragment_detalle_organizando">
         <action
             android:id="@+id/action_detalleOrganizandoFragment_to_generalDetalleFragment"
             app:destination="@id/generalDetalleFragment" />

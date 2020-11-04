@@ -61,7 +61,7 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
     private Inscription inscription;
     private ImageButton downloadOff;
     private TextView nmb, cat, org, ciudad, genero, estado,monto, requisitos, fechaInicio,fechaCierre, fechaInicioCompetencia, frecuencia;
-
+    private TextView tvDownloadMje, tvDownloadDescripcion;
     private CompetitionSrv competitionSrv;
     private ConfrontationSrv confrontationSrv;
     private UserSrv usersSrv;
@@ -130,6 +130,8 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
         btnInscripcion.setVisibility(View.INVISIBLE);
         btnEditar.setVisibility(View.INVISIBLE);
         downloadOff.setVisibility(View.INVISIBLE);
+        tvDownloadMje.setVisibility(View.INVISIBLE);
+        tvDownloadDescripcion.setVisibility(View.INVISIBLE);
     }
 
     private void listenerDownload() {
@@ -282,6 +284,9 @@ public class GeneralDetalleFragment extends Fragment implements MensajeSinIntern
         requisitos = vista.findViewById(R.id.requisitos);
         fechaInicio = vista.findViewById(R.id.fecha_inicio);
         fechaCierre = vista.findViewById(R.id.fecha_cierre);
+
+        tvDownloadMje = vista.findViewById(R.id.tv_download_comp);
+        tvDownloadDescripcion = vista.findViewById(R.id.tv_download_descripcion);
 
         nmb = vista.findViewById(R.id.txtNmbCompDet_organizando);
         cat = vista.findViewById(R.id.txtCatCompDet_organizando);

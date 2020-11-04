@@ -119,7 +119,7 @@ public class CargaPredioCompetenciaFragment extends Fragment implements MensajeS
         lin_rdos_busqueda = vista.findViewById(R.id.lin_resultado_busqueda);
         lin_rdos_busqueda.setVisibility(View.GONE);
         tvSinResultados.setVisibility(View.GONE);
-        iBDelete.setVisibility(View.GONE);
+
         linElimPredios = vista.findViewById(R.id.linn_elim_predios);
         tvSinPredios = vista.findViewById(R.id.tvSinPredios);
         alertDialog = ManagerMsgView.getMsgLoading(vista.getContext(), "Espere un momento..");

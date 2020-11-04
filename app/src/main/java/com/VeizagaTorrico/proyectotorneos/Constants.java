@@ -4,7 +4,7 @@ public class Constants {
     // URL BASE del servidor
 
     public static final String BASE_URL = "http://132.255.7.152:20203/api/";
-    //public static final String BASE_URL = "http://192.168.1.41:8000/api/";
+    //public static final String BASE_URL = "http://192.168.1.48:8000/api/";
 
     // nombre del archivo donde se guardan los datos del token de firebase de manera local
     public static final String FILE_SHARED_TOKEN_FIREBASE = "TokenFirebase";

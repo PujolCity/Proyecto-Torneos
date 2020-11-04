@@ -82,11 +82,16 @@ public class CompetidoresDetalleFragment extends Fragment {
         solicitudes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString(Constants.EXTRA_KEY_ID_COMPETENCIA, String.valueOf(competencia.getId()));
+                if(NetworkReceiver.existConnection(vista.getContext())) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString(Constants.EXTRA_KEY_ID_COMPETENCIA, String.valueOf(competencia.getId()));
 
-                // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
-                Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
+                    // ACA ES DONDE PUEDO PASAR A OTRO FRAGMENT Y DE PASO MANDAR UN OBJETO QUE CREE CON EL BUNDLE
+                    Navigation.findNavController(vista).navigate(R.id.competidoresListFragment, bundle);
+                }
+                else{
+                    Toast.makeText(vista.getContext(), R.string.mjeSinConexion, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -128,8 +133,7 @@ public class CompetidoresDetalleFragment extends Fragment {
             @Override
             public void onFailure(Call<List<User>> call, Throwable t) {
                 try {
-                    Toast toast = Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(vista.getContext(), "Por favor recargue la pestaña", Toast.LENGTH_SHORT).show();
                     Log.d("onFailure", t.getMessage());
                 } catch (Exception e) {
                     e.printStackTrace();

@@ -117,6 +117,8 @@ public class InfoGeneralCompetenciaFragment extends Fragment implements MensajeS
         inscribirse.setVisibility(View.INVISIBLE);
         downloadOff.setVisibility(View.INVISIBLE);
         linear.setVisibility(View.INVISIBLE);
+        tvDescargarOff.setVisibility(View.INVISIBLE);
+        tvDescDecargarOff.setVisibility(View.INVISIBLE);
     }
 
     private void listeners() {
