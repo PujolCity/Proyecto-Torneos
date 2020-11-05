@@ -27,12 +27,33 @@
                 android:textStyle="bold"></TextView>
 
             <TextView
+                android:id="@+id/tv_titulo_crear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:text="Registre un nuevo predio en el sistema"
+                android:textSize="14sp"></TextView>
+
+            <Button
+                android:id="@+id/btn_crear_predio"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Registrar predio"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/tv_titulo_buscar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
                 android:layout_marginTop="15dp"
-                android:text="Encuentre su predio por nombre"
+                android:text="Encuentre un predio por nombre"
                 android:textSize="14sp"></TextView>
 
 <!--            Busqueda predios-->
@@ -202,16 +223,6 @@
                             android:textColor="#FFFFFF"
                             android:textSize="12sp" />
 
-                        <Button
-                            android:id="@+id/btn_crear_predio"
-                            android:layout_width="0dp"
-                            android:layout_height="match_parent"
-                            android:layout_marginStart="5dp"
-                            android:layout_weight="1"
-                            android:backgroundTint="@color/colorPrimary"
-                            android:text="Crear predio"
-                            android:textColor="#FFFFFF"
-                            android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
             </LinearLayout>

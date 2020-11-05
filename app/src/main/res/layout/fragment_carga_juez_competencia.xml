@@ -26,6 +26,28 @@
                 android:textStyle="bold"></TextView>
 
             <TextView
+                android:id="@+id/tv_titulo_crear_juez"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="15dp"
+                android:text="Registre un juez en el sistema"
+                android:textSize="14sp"></TextView>
+
+            <Button
+                android:id="@+id/btn_nuevo_juez"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="5dp"
+                android:backgroundTint="@color/colorPrimary"
+                android:text="Registrar juez"
+                android:textColor="#FFFFFF"
+                android:textSize="12sp" />
+
+            <TextView
                 android:id="@+id/tv_titulo_buscar_juez"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,6 +101,7 @@
                         android:padding="10dp"
                         android:text="Buscar"
                         android:textColor="#FFFFFF" />
+
                 </LinearLayout>
             </LinearLayout>
             <!--            resultado de la busqueda-->
@@ -152,7 +175,7 @@
 
                     <Button
                         android:id="@+id/btn_asginar_juez_sel"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="10dp"
                         android:layout_marginTop="10dp"
@@ -161,20 +184,6 @@
                         android:layout_weight="1"
                         android:backgroundTint="@color/colorPrimary"
                         android:text="Asignar seleccionado"
-                        android:textColor="#FFFFFF"
-                        android:textSize="12sp" />
-
-                    <Button
-                        android:id="@+id/btn_nuevo_juez"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="5dp"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="5dp"
-                        android:layout_weight="1"
-                        android:backgroundTint="@color/colorPrimary"
-                        android:text="Crear juez"
                         android:textColor="#FFFFFF"
                         android:textSize="12sp" />
                 </LinearLayout>

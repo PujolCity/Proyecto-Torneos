@@ -108,13 +108,11 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
                         }
                         @Override
                         public void onFailure(Call<Success> call, Throwable t) {
-                            Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
-                            toast.show();
+                            Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }else {
-                    Toast toast = Toast.makeText(vista.getContext(), "Por favor completar todos los campos", Toast.LENGTH_SHORT);
-                    toast.show();
+                    Toast.makeText(vista.getContext(), "Por favor verifique que los datos de los campos sean correctos", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -139,26 +137,26 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
         });
     }
 
-    private void eliminarJuez(int idJuez) {
-        Call<Success> call = refereeSrv.deleteReferee(idJuez);
-        Log.d("Call Juez",call.request().url().toString());
-        call.enqueue(new Callback<Success>() {
-            @Override
-            public void onResponse(Call<Success> call, Response<Success> response) {
-                if(response.code() == 200){
-                    jueces.clear();
-                    //llenarSpinnerJuez();
-                    Toast toast = Toast.makeText(vista.getContext(), "Juez Eliminado!", Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-            @Override
-            public void onFailure(Call<Success> call, Throwable t) {
-                Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        });
-    }
+//    private void eliminarJuez(int idJuez) {
+//        Call<Success> call = refereeSrv.deleteReferee(idJuez);
+//        Log.d("Call Juez",call.request().url().toString());
+//        call.enqueue(new Callback<Success>() {
+//            @Override
+//            public void onResponse(Call<Success> call, Response<Success> response) {
+//                if(response.code() == 200){
+//                    jueces.clear();
+//                    //llenarSpinnerJuez();
+//                    Toast toast = Toast.makeText(vista.getContext(), "Juez Eliminado!", Toast.LENGTH_SHORT);
+//                    toast.show();
+//                }
+//            }
+//            @Override
+//            public void onFailure(Call<Success> call, Throwable t) {
+//                Toast toast = Toast.makeText(vista.getContext(), "Problemas con el servidor", Toast.LENGTH_SHORT);
+//                toast.show();
+//            }
+//        });
+//    }
 
 //    private void actualizarDatos(Referee juez) {
 //        try {
@@ -176,7 +174,7 @@ public class CargarJuezFragment extends Fragment implements MensajeSinInternet {
             return false;
         if(apellido.isEmpty())
             return false;
-        if(dni.isEmpty())
+        if((dni.isEmpty()) || (dni.length() != 8))
             return false;
         return true;
     }
