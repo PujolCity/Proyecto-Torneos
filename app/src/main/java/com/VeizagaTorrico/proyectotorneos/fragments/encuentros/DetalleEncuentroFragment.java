@@ -19,9 +19,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -70,16 +72,17 @@ public class DetalleEncuentroFragment extends Fragment {
     private View vista;
     private EditText r1,r2;
     private TextView comp1, comp2,txtCampo,txtPredio,txtJuez,txtTurno;
-    private ImageButton confirmarEdit;
+//    private ImageButton confirmarEdit;
+    private Button confirmarEdit;
     private Spinner spinnerPredio,spinnerCampo,spinnerJuez,spinnerTurno;
-    private Confrontation encuentro, confrontation;
+    private Confrontation encuentro;
     private ConfrontationSrv confrontationSrv;
     private RecyclerView recycleEdicion;
     private EdicionesRecyclerViewAdapter adapterEdicion;
     private List<Edition> ediciones;
     private Switch swtMostrarEdicion;
     private TextView tvSinEdiciones;
-    private RelativeLayout barEdicion;
+    private LinearLayout barEdicion;
 
     private GroundSrv prediosSrv;
     private FieldSrv camposSrv;
@@ -123,6 +126,8 @@ public class DetalleEncuentroFragment extends Fragment {
                              Bundle savedInstanceState) {
         vista = inflater.inflate(R.layout.fragment_detalle_encuentro, container, false);
         initElements();
+        llenarDatosAsignados();
+        getEditions();
         if(NetworkReceiver.existConnection(vista.getContext())) {
             llenarSpinnerJuez();
             llenarSpinnerPredio();
@@ -298,14 +303,15 @@ public class DetalleEncuentroFragment extends Fragment {
         jueces = new ArrayList<>();
         turnos = new ArrayList<>();
         editEncuentro = new HashMap<>();
-        confirmarEdit = vista.findViewById(R.id.checConfirmar);
+
+        confirmarEdit = vista.findViewById(R.id.btn_guardar_cambios);
         comp1 = vista.findViewById(R.id.txtComp1Titulo);
         comp2 = vista.findViewById(R.id.txtComp2Titulo);
 
-        txtCampo = vista.findViewById(R.id.txtCampo);
-        txtPredio = vista.findViewById(R.id.txtPredio);
-        txtJuez = vista.findViewById(R.id.txtJuez);
-        txtTurno = vista.findViewById(R.id.txtTurno);
+        txtCampo = vista.findViewById(R.id.tv_campo_edit_enc);
+        txtPredio = vista.findViewById(R.id.tv_predio_edit_enc);
+        txtJuez = vista.findViewById(R.id.tv_juez_edit_enc);
+        txtTurno = vista.findViewById(R.id.tv_turno_edit_enc);
 
         r1 = vista.findViewById(R.id.resultadoComp1);
         r2 = vista.findViewById(R.id.resultadoComp2);
@@ -329,9 +335,9 @@ public class DetalleEncuentroFragment extends Fragment {
         recycleEdicion.setAdapter(adapterEdicion);
         barEdicion = vista.findViewById(R.id.bar_title_edicion);
 
-        juezSeleccionado = "";
-        campoSeleccionado = "";
-        turnoSeleccionado= "";
+//        juezSeleccionado = "";
+//        campoSeleccionado = "";
+//        turnoSeleccionado= "";
         comp1.setText(encuentro.getCompetidor1());
         comp2.setText(encuentro.getCompetidor2());
 
@@ -342,54 +348,52 @@ public class DetalleEncuentroFragment extends Fragment {
             r2.setText(Integer.toString(encuentro.getRdoc2()));
         }
 
-        referee = new Referee(0, "Elija un juez", " ",0);
-        predio = new Ground(0, "Elije un predio", "", "");
-        campo = new Field(0, "Elije un campo de Juego", 0, 0, null);
-        turno = new Turn(0,0,"Elije un turno", "");
+        referee = new Referee(0, "-", " ",0);
+        predio = new Ground(0, "-", "", "");
+        campo = new Field(0, "-", 0, 0, null);
+        turno = new Turn(0,0,"-", "");
 
+    }
+
+    private void llenarDatosAsignados(){
+        Log.d("DATOS: ", "Aca van los datos del encuentro");
         if(encuentro.getCampo() != null){
-            campos.clear();
-            campo = new Field(encuentro.getCampo().getId(), encuentro.getCampo().toString(), 0, 0, encuentro.getCampo().getPredio());
+//            campos.clear();
+//            campo = new Field(encuentro.getCampo().getId(), encuentro.getCampo().toString(), 0, 0, encuentro.getCampo().getPredio());
             Log.d("INIT CAMPO", campo.toString());
             //campos.add(campo);
-            //txtCampo.setText(encuentro.getCampo().toString());
-            if(encuentro.getCampo().getPredio() != null){
-                predios.clear();
-                predio = new Ground(encuentro.getCampo().getPredio().getId(), encuentro.getCampo().getPredio().getNombre(), "", "");
-                Log.d("INIT PREDIO", campo.getPredio().toString());
-                //predios.add(predio);
-                //txtPredio.setText(encuentro.getCampo().getPredio().toString());
-            }
+            txtCampo.setText(encuentro.getCampo().toString());
+            txtPredio.setText(encuentro.getCampo().getPredio().toString());
+        }
+        else{
+            txtCampo.setText("Sin asignar");
+            txtPredio.setText("Sin asignar");
         }
         if(encuentro.getJuez() != null){
-            jueces.clear();
-            referee = new Referee(encuentro.getJuez().getId(), encuentro.getJuez().getNombre(), encuentro.getJuez().getApellido(),0);
+//            jueces.clear();
+//            referee = new Referee(encuentro.getJuez().getId(), encuentro.getJuez().getNombre(), encuentro.getJuez().getApellido(),0);
             //jueces.add(referee);
-            //txtJuez.setText(encuentro.getJuez().toString());
+            txtJuez.setText(encuentro.getJuez().toString());
+        }
+        else{
+            txtJuez.setText("Sin asignar");
         }
         if(encuentro.getTurno() != null){
-            try {
-                turnos.clear();
-                Log.d("hora", encuentro.getTurno().toString());
-                //txtTurno.setText(encuentro.getTurno().parsearHora());
-                turno = new Turn(encuentro.getTurno().getId(),0,encuentro.getTurno().getHoraDesde(), encuentro.getTurno().getHoraHasta());
-                //turnos.add(turno);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            txtTurno.setText(encuentro.getTurno().toString());
         }
-
-        getEditions();
+        else{
+            txtTurno.setText("Sin asignar");
+        }
     }
 
-    private void msjCampos() {
-        campos.clear();
-        campo = new Field(0,"Sin Campos",0,0,null);
-        campos.add(campo);
-        adapterCampo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,campos);
-        adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerCampo.setAdapter(adapterCampo);
-    }
+//    private void msjCampos() {
+//        campos.clear();
+//        campo = new Field(0,"-sdad",0,0,null);
+//        campos.add(campo);
+//        adapterCampo = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,campos);
+//        adapterCampo.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        spinnerCampo.setAdapter(adapterCampo);
+//    }
 
     private void llenarSpinnerTurno() {
         spinnerPredio.setVisibility(View.VISIBLE);
@@ -400,7 +404,7 @@ public class DetalleEncuentroFragment extends Fragment {
                 if(response.code() == 200){
                     try {
                         if(!response.body().isEmpty()){
-                            turnos.add(turno);
+                            //turnos.add(turno);
                             turnos.addAll(response.body());
                             ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
                             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -418,11 +422,7 @@ public class DetalleEncuentroFragment extends Fragment {
                                 }
                             });
                         }else {
-                            turno = new Turn(0,0,"Cargar turnos en pantalla de carga", "Cargar turnos en pantalla de carga");
-                            turnos.add(turno);
-                            ArrayAdapter<Turn> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,turnos);
-                            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            spinnerTurno.setAdapter(adapter);
+                            // ver si colocar algun mje
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -450,11 +450,12 @@ public class DetalleEncuentroFragment extends Fragment {
                 try{
                     if(!response.body().isEmpty()){
                         List<Referee> aux = response.body();
-                        jueces.add(referee);
+                        //jueces.add(referee);
                         for(int i = 0; i < aux.size(); i++){
-                            if(!referee.equals(aux.get(i))){
-                                jueces.add(aux.get(i));
-                            }
+//                            if(!referee.equals(aux.get(i))){
+//                                jueces.add(aux.get(i));
+//                            }
+                            jueces.add(aux.get(i));
                         }
                         ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -472,11 +473,7 @@ public class DetalleEncuentroFragment extends Fragment {
                             }
                         });
                     }else {
-                        referee = new Referee(0, "Por favor agregar jueces en la pantalla de carga", " ",0);
-                        jueces.add(referee);
-                        ArrayAdapter<Referee> adapter = new ArrayAdapter<>(vista.getContext(),android.R.layout.simple_spinner_item,jueces);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerJuez.setAdapter(adapter);
+                        // ver si colocar alguna mje
                     }
                 } catch (Exception e) {
                         e.printStackTrace();
@@ -497,7 +494,7 @@ public class DetalleEncuentroFragment extends Fragment {
     }
 
     private void llenarSpinnerPredio(){
-        Call<List<Ground>> call = prediosSrv.getGrounds();
+        Call<List<Ground>> call = prediosSrv.getPrediosAsignados(encuentro.getIdCompetencia());
         Log.d("call predio",call.request().url().toString());
         call.enqueue(new Callback<List<Ground>>() {
             @Override
@@ -506,11 +503,14 @@ public class DetalleEncuentroFragment extends Fragment {
                     Log.d("encuentro response", Integer.toString(response.code()));
                     if(!response.body().isEmpty()) {
                         List<Ground> aux = response.body();
-                        predios.add(predio);
+//                        predios.add(predio);
+//                        for(int i = 0; i < aux.size(); i++){
+//                            if(!predio.equals(aux.get(i))){
+//                                predios.add(aux.get(i));
+//                            }
+//                        }
                         for(int i = 0; i < aux.size(); i++){
-                            if(!predio.equals(aux.get(i))){
-                                predios.add(aux.get(i));
-                            }
+                            predios.add(aux.get(i));
                         }
                         ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
                         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -522,9 +522,10 @@ public class DetalleEncuentroFragment extends Fragment {
                                 if (predio.getId() != 0) {
                                     // hacer algo para despues actualizar el encuentro
                                     llenarSpinnerCampos(predio.getId());
-                                } else {
-                                    msjCampos();
                                 }
+//                                else {
+//                                    msjCampos();
+//                                }
                             }
                             @Override
                             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -532,11 +533,7 @@ public class DetalleEncuentroFragment extends Fragment {
                             }
                         });
                     }else {
-                        predio = new Ground(0, "Por favor agregar predios en la pantalla de carga", "", "");
-                        predios.add(predio);
-                        ArrayAdapter<Ground> adapter = new ArrayAdapter<>(vista.getContext(), android.R.layout.simple_spinner_item, predios);
-                        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        spinnerPredio.setAdapter(adapter);
+                        // ver si colocar alguna mje
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -561,14 +558,14 @@ public class DetalleEncuentroFragment extends Fragment {
                         if(!response.body().isEmpty()) {
                             campos.clear();
                             Log.d("RESPONSE CAMPOS", response.body().toString());
-                            Log.d("idPREDIO", Integer.toString(idPredio));
                             if(campo.getPredio() != null){
-                                campos.add(campo);
+//                                campos.add(campo);
                                 List<Field> aux = response.body();
                                 for(int i = 0; i < aux.size(); i++){
-                                    if(!campo.equals(aux.get(i))){
-                                        campos.add(aux.get(i));
-                                    }
+//                                    if(!campo.equals(aux.get(i))){
+//                                        campos.add(aux.get(i));
+//                                    }
+                                    campos.add(aux.get(i));
                                 }
                             } else {
                                 campos.addAll(response.body());
@@ -589,8 +586,9 @@ public class DetalleEncuentroFragment extends Fragment {
 
                                 }
                             });
-                        }else {
-                            msjCampos();
+                        }
+                        else{
+                            // ver si colocar alguna mje
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -606,9 +604,10 @@ public class DetalleEncuentroFragment extends Fragment {
                     }
                 }
             });
-        }else {
-            msjCampos();
         }
+//        else {
+//            msjCampos();
+//        }
     }
 
     // recuperamos las ediciones del encuentro

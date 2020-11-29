@@ -91,15 +91,14 @@ public class Turn implements Serializable {
 
     @Override
     public String toString() {
+        // esto es un parche dado que a la hora de realizar los servicios se trabajan con 2 nombres de campo distintos
         if(horaDesde == null){
-            return "Desde : " + hora_desde + " - " +
-                    " Hasta : " + hora_hasta ;
+            return hora_desde + " - " + hora_hasta;
         }else
             return parsearHora();
     }
 
     public String parsearHora() {
-        return "Desde : " + horaDesde + " - " +
-                " Hasta : " + horaHasta ;
+        return horaDesde + " - " + horaHasta ;
     }
 }
